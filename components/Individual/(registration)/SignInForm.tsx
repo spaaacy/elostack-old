@@ -167,7 +167,7 @@ const SocialLoginButton = ({ service, logoPath }) => (
       width={25}
       height={25}
     />
-    <span className="ml-4">Create account with {service}</span>
+    <span className="ml-4">SignIn {service}</span>
   </button>
 );
 

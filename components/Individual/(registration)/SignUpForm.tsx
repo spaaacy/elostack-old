@@ -1,35 +1,73 @@
 "use client";
 import { useState } from "react";
-import { z } from "zod";
 import Image from "next/image";
+import { z } from "zod";
 import { useRouter } from "next/navigation";
 
-const FormSchema = z.object({
-  email: z
-    .string()
-    .email("Please enter a valid email")
-    .refine((value) => value !== "", "Email required"),
-  password: z
-    .string()
-    .refine((value) => value !== "", "Password required")
-    .refine(
-      (value) => value.length >= 8,
-      "Password must be at least 8 characters"
-    ),
-});
+const FormSchema = z
+  .object({
+    username: z
+      .string()
+      .max(100, "Username too long")
+      .refine((value) => value !== "", "Please enter a username"),
+    email: z
+      .string()
+      .email("Please enter a valid email")
+      .refine((value) => value !== "", "Email required"),
+    password: z
+      .string()
+      .refine((value) => value !== "", "Password required")
+      .refine(
+        (value) => value.length >= 8,
+        "Password must be at least 8 characters"
+      ),
+    confirmPassword: z
+      .string()
+      .refine((value) => value !== "", "Please confirm your password"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
 
-const SignInForm = () => {
+const RegistrationForm = () => {
   const router = useRouter();
+
   const [formData, setFormData] = useState({
+    username: "",
     email: "",
     password: "",
+    confirmPassword: "",
   });
   const [formErrors, setFormErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+  const onSubmit = async (values: z.infer<typeof FormSchema>) => {
+    const response = await fetch("/api/user", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: values.username,
+        email: values.email,
+        password: values.password,
+      }),
+    });
+    if (response.ok) {
+      router.push("/signIn");
+    } else {
+      toast({
+        title: "Error",
+        description: "Oops! Something went wrong. Please try again.",
+        style: { backgroundColor: "red", color: "white" }, // Add this line
+      });
+    }
   };
 
   const handleSubmit = (event) => {
@@ -37,6 +75,7 @@ const SignInForm = () => {
     const result = FormSchema.safeParse(formData);
     if (!result.success) {
       const errors = result.error.flatten().fieldErrors;
+      // Only take the first error message for each field
       for (let field in errors) {
         errors[field] = errors[field][0];
       }
@@ -44,7 +83,7 @@ const SignInForm = () => {
     } else {
       console.log("Form submission successful", formData);
       setFormErrors({});
-      router.push("/admin");
+      onSubmit(result.data); // Call onSubmit with the valid form data
     }
   };
 
@@ -52,17 +91,38 @@ const SignInForm = () => {
 
   // Calculate the dynamic margin-bottom based on unfilled fields
   const unfilledFieldsCount = Object.keys(formErrors).length;
-  const baseMarginTop = 19; // Base margin-top value
+  const baseMarginTop = 29.5; // Base margin-top value
   const socialButtonsMarginTop = `${
-    baseMarginTop + unfilledFieldsCount * 1.1
+    baseMarginTop + unfilledFieldsCount * 1
   }rem`;
-
   return (
     <div className="flex justify-center items-center h-full w-1/2 relative">
       <form
-        className="p-8 bg-gray-100 rounded-lg shadow max-w-md w-full xl:w-1/2 xl:-mt-40 relative"
+        className="p-8  bg-gray-100  rounded-lg shadow max-w-md w-full xl:w-1/2 xl:-mt-40 relative"
         onSubmit={handleSubmit}
       >
+        {/* Username Input */}
+        <div className="mb-5">
+          <label
+            htmlFor="username"
+            className="block text-black text-sm font-bold mb-2"
+          >
+            Username
+          </label>
+          <input
+            type="text"
+            name="username"
+            id="username"
+            value={formData.username}
+            onChange={handleInputChange}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+          {formErrors.username && (
+            <p className="text-red-500 text-xs italic">{formErrors.username}</p>
+          )}
+        </div>
+
+        {/* Email Input */}
         <div className="mb-5">
           <label
             htmlFor="email"
@@ -83,6 +143,7 @@ const SignInForm = () => {
           )}
         </div>
 
+        {/* Password Input */}
         <div className="mb-4 relative">
           <label
             htmlFor="password"
@@ -103,25 +164,53 @@ const SignInForm = () => {
           )}
           <button
             type="button"
-            onClick={togglePasswordVisibility}
-            className="absolute inset-y-0 right-0 pr-3 flex items-center text-black"
-            style={{ top: formErrors.password ? "0.9rem" : "1.9rem" }} // Adjust these values as needed
+            onClick={() => setShowPassword((prev) => !prev)}
+            className="absolute inset-y-0 right-0 pr-3 flex items-center"
+            style={{ bottom: `${formErrors.password ? "-12px" : "-25px"}` }} // Adjust the position here
           >
-            {showPassword ? (
-              <Image
-                src="/Hide.svg"
-                alt="Hide password"
-                width={25}
-                height={25}
-              />
-            ) : (
-              <Image
-                src="/Unhide.png"
-                alt="Show password"
-                width={25}
-                height={25}
-              />
-            )}
+            <Image
+              src={showPassword ? "/Hide.svg" : "/Unhide.png"}
+              alt="Toggle Password Visibility"
+              width={25} // Increase the size here
+              height={30} // Increase the size here
+            />
+          </button>
+        </div>
+
+        <div className="mb-4 relative">
+          <label
+            htmlFor="confirmPassword"
+            className="block text-black text-sm font-bold mb-2"
+          >
+            Confirm Password
+          </label>
+          <input
+            type={showConfirmPassword ? "text" : "password"}
+            name="confirmPassword"
+            id="confirmPassword"
+            value={formData.confirmPassword}
+            onChange={handleInputChange}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+          {formErrors.confirmPassword && (
+            <p className="text-red-500 text-xs italic">
+              {formErrors.confirmPassword}
+            </p>
+          )}
+          <button
+            type="button"
+            onClick={() => setShowConfirmPassword((prev) => !prev)}
+            className="absolute inset-y-0 right-0 pr-3 flex items-center"
+            style={{
+              bottom: `${formErrors.confirmPassword ? "-12px" : "-25px"}`,
+            }} // Adjust the position here
+          >
+            <Image
+              src={showConfirmPassword ? "/Hide.svg" : "/Unhide.png"}
+              alt="Toggle Password Visibility"
+              width={25} // Increase the size here
+              height={30} // Increase the size here
+            />
           </button>
         </div>
 
@@ -134,13 +223,15 @@ const SignInForm = () => {
         <div className="flex items-center justify-center space-x-2 mt-4">
           <span className="text-black">Already have an account?</span>
           <a
-            href="/auth/SignIn"
-            className="text-blue-500 hover:text-blue-900 font-bold focus:outline-none focus:shadow-outline"
+            href="/auth/SignIn" // replace with your correct sign in path
+            className="text-blueprimary hover:text-blue-700 font-bold focus:outline-none focus:shadow-outline"
           >
-            Sign In
+            Sign in
           </a>
         </div>
       </form>
+
+      {/* Social Login Buttons with dynamic margin */}
       <div
         className="absolute"
         style={{
@@ -157,7 +248,6 @@ const SignInForm = () => {
     </div>
   );
 };
-
 const SocialLoginButton = ({ service, logoPath }) => (
   <button className="flex items-center p-4 text-black bg-gray-100 ml-8bg-iron rounded-lg shadow hover:bg-blue-400 w-full">
     <Image
@@ -167,8 +257,8 @@ const SocialLoginButton = ({ service, logoPath }) => (
       width={25}
       height={25}
     />
-    <span className="ml-4">Create account with {service}</span>
+    <span className="ml-4">Create an account with {service}</span>
   </button>
 );
 
-export default SignInForm;
+export default RegistrationForm;

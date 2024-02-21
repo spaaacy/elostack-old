@@ -10,7 +10,7 @@ const NavBar = () => {
         EloStack
       </Link>
       <Link
-        href={"/auth/SignIn"}
+        href={"/auth/signin"}
         className="rounded-lg bg-gray-700 hover:bg-blueprimary text-white px-4 py-2"
       >
         Sign in

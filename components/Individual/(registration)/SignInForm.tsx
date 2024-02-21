@@ -21,7 +21,7 @@ const SignInForm = () => {
   const router = useRouter();
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
-  const [formErrors, setFormErrors] = useState({}); 
+  const [formErrors, setFormErrors] = useState({});
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -47,9 +47,8 @@ const SignInForm = () => {
     setShowPassword(!showPassword);
   };
 
-
   const unfilledFieldsCount = Object.keys(formErrors).length;
-  const baseMarginTop = 19; 
+  const baseMarginTop = 19;
   const socialButtonsMarginTop = `${
     baseMarginTop + unfilledFieldsCount * 1.1
   }rem`;
@@ -131,7 +130,7 @@ const SignInForm = () => {
         <div className="flex items-center justify-center space-x-2 mt-4">
           <span className="text-black">Don&apos;t have an account?</span>
           <a
-            href="/auth/SignUp"
+            href="/auth/signup"
             className="text-blue-500 hover:text-blue-900 font-bold focus:outline-none focus:shadow-outline"
           >
             Sign Up

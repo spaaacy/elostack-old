@@ -63,14 +63,15 @@ const RegistrationForm = () => {
   const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
 
   const unfilledFieldsCount = Object.keys(formErrors).length;
-  const baseMarginTop = 29.5; 
+  const baseMarginTop = 29.5;
   const socialButtonsMarginTop = `${
     baseMarginTop + unfilledFieldsCount * 1
   }rem`;
- 
+
   return (
     <div className="flex justify-center items-center h-full w-1/2 relative">
-      <form onSubmit={handleSubmit}
+      <form
+        onSubmit={handleSubmit}
         className="p-8  bg-gray-100  rounded-lg shadow max-w-md w-full xl:w-1/2 xl:-mt-40 relative"
         onSubmit={handleSubmit}
       >
@@ -144,8 +145,8 @@ const RegistrationForm = () => {
             <Image
               src={showPassword ? "/Hide.svg" : "/Unhide.png"}
               alt="Toggle Password Visibility"
-              width={25} 
-              height={30} 
+              width={25}
+              height={30}
             />
           </button>
         </div>
@@ -176,13 +177,13 @@ const RegistrationForm = () => {
             className="absolute inset-y-0 right-0 pr-3 flex items-center"
             style={{
               bottom: `${formErrors.confirmPassword ? "-12px" : "-25px"}`,
-            }} 
+            }}
           >
             <Image
               src={showConfirmPassword ? "/Hide.svg" : "/Unhide.png"}
               alt="Toggle Password Visibility"
-              width={25} 
-              height={30} 
+              width={25}
+              height={30}
             />
           </button>
         </div>
@@ -196,7 +197,7 @@ const RegistrationForm = () => {
         <div className="flex items-center justify-center space-x-2 mt-4">
           <span className="text-black">Already have an account?</span>
           <a
-            href="/auth/SignIn" 
+            href="/auth/signin"
             className="text-blueprimary hover:text-blue-900 font-bold focus:outline-none focus:shadow-outline"
           >
             Sign in

@@ -50,7 +50,6 @@ const RegistrationForm = () => {
     const result = FormSchema.safeParse(formData);
     if (!result.success) {
       const errors = result.error.flatten().fieldErrors;
-      // Only take the first error message for each field
       for (let field in errors) {
         errors[field] = errors[field][0];
       }
@@ -63,9 +62,8 @@ const RegistrationForm = () => {
 
   const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
 
-  // Calculate the dynamic margin-bottom based on unfilled fields
   const unfilledFieldsCount = Object.keys(formErrors).length;
-  const baseMarginTop = 29.5; // Base margin-top value
+  const baseMarginTop = 29.5; 
   const socialButtonsMarginTop = `${
     baseMarginTop + unfilledFieldsCount * 1
   }rem`;
@@ -141,13 +139,13 @@ const RegistrationForm = () => {
             type="button"
             onClick={() => setShowPassword((prev) => !prev)}
             className="absolute inset-y-0 right-0 pr-3 flex items-center"
-            style={{ bottom: `${formErrors.password ? "-12px" : "-25px"}` }} // Adjust the position here
+            style={{ bottom: `${formErrors.password ? "-12px" : "-25px"}` }}
           >
             <Image
               src={showPassword ? "/Hide.svg" : "/Unhide.png"}
               alt="Toggle Password Visibility"
-              width={25} // Increase the size here
-              height={30} // Increase the size here
+              width={25} 
+              height={30} 
             />
           </button>
         </div>
@@ -178,13 +176,13 @@ const RegistrationForm = () => {
             className="absolute inset-y-0 right-0 pr-3 flex items-center"
             style={{
               bottom: `${formErrors.confirmPassword ? "-12px" : "-25px"}`,
-            }} // Adjust the position here
+            }} 
           >
             <Image
               src={showConfirmPassword ? "/Hide.svg" : "/Unhide.png"}
               alt="Toggle Password Visibility"
-              width={25} // Increase the size here
-              height={30} // Increase the size here
+              width={25} 
+              height={30} 
             />
           </button>
         </div>
@@ -198,7 +196,7 @@ const RegistrationForm = () => {
         <div className="flex items-center justify-center space-x-2 mt-4">
           <span className="text-black">Already have an account?</span>
           <a
-            href="/auth/SignIn" // replace with your correct sign in path
+            href="/auth/SignIn" 
             className="text-blueprimary hover:text-blue-900 font-bold focus:outline-none focus:shadow-outline"
           >
             Sign in

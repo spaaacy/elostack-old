@@ -17,23 +17,18 @@ const FormSchema = z.object({
       "Password must be at least 8 characters"
     ),
 });
-
 const SignInForm = () => {
   const router = useRouter();
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-  const [formErrors, setFormErrors] = useState({});
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
+  const [formErrors, setFormErrors] = useState({}); 
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleSubmit = (e) => {
+    e.preventDefault();
     const result = FormSchema.safeParse(formData);
     if (!result.success) {
       const errors = result.error.flatten().fieldErrors;
@@ -48,11 +43,13 @@ const SignInForm = () => {
     }
   };
 
-  const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
-  // Calculate the dynamic margin-bottom based on unfilled fields
+
   const unfilledFieldsCount = Object.keys(formErrors).length;
-  const baseMarginTop = 19; // Base margin-top value
+  const baseMarginTop = 19; 
   const socialButtonsMarginTop = `${
     baseMarginTop + unfilledFieldsCount * 1.1
   }rem`;
@@ -105,7 +102,7 @@ const SignInForm = () => {
             type="button"
             onClick={togglePasswordVisibility}
             className="absolute inset-y-0 right-0 pr-3 flex items-center text-black"
-            style={{ top: formErrors.password ? "0.9rem" : "1.9rem" }} // Adjust these values as needed
+            style={{ top: formErrors.password ? "0.9rem" : "1.9rem" }}
           >
             {showPassword ? (
               <Image
@@ -160,7 +157,7 @@ const SignInForm = () => {
 
 const SocialLoginButton = ({ service, logoPath }) => (
   <button className="flex items-center p-4 text-black bg-gray-100 ml-8bg-iron rounded-lg shadow hover:bg-blue-400 w-full">
-    <Image
+    <img
       className="ml-4"
       src={logoPath}
       alt={`${service} Logo`}

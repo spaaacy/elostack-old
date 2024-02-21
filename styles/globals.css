@@ -29,3 +29,18 @@
     @apply font-roboto;
   }
 }
+
+@layer components {
+  .outline-button {
+    @apply border border-gray-800 text-lg font-normal rounded-lg py-2 px-4;
+  }
+
+  .max-width {
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+
+  .input-box {
+    @apply border rounded-lg px-4 py-2 focus:outline-blue-400;
+  }
+}

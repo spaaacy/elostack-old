@@ -6,7 +6,7 @@
 
 @layer base {
   h1 {
-    @apply font-roboto text-3xl;
+    @apply font-roboto;
   }
 
   h2 {

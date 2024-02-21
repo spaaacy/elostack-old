@@ -39,4 +39,8 @@
     max-width: 1080px;
     margin: 0 auto;
   }
+
+  .input-box {
+    @apply border rounded-lg px-4 py-2 focus:outline-blue-400;
+  }
 }

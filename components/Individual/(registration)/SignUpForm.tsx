@@ -2,7 +2,6 @@
 import { useState } from "react";
 import Image from "next/image";
 import { z } from "zod";
-import { useRouter } from "next/navigation";
 
 const FormSchema = z
   .object({
@@ -31,8 +30,6 @@ const FormSchema = z
   });
 
 const RegistrationForm = () => {
-  const router = useRouter();
-
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -46,28 +43,6 @@ const RegistrationForm = () => {
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-  const onSubmit = async (values: z.infer<typeof FormSchema>) => {
-    const response = await fetch("/api/user", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username: values.username,
-        email: values.email,
-        password: values.password,
-      }),
-    });
-    if (response.ok) {
-      router.push("/signIn");
-    } else {
-      toast({
-        title: "Error",
-        description: "Oops! Something went wrong. Please try again.",
-        style: { backgroundColor: "red", color: "white" }, // Add this line
-      });
-    }
   };
 
   const handleSubmit = (event) => {
@@ -83,7 +58,6 @@ const RegistrationForm = () => {
     } else {
       console.log("Form submission successful", formData);
       setFormErrors({});
-      onSubmit(result.data); // Call onSubmit with the valid form data
     }
   };
 
@@ -95,9 +69,10 @@ const RegistrationForm = () => {
   const socialButtonsMarginTop = `${
     baseMarginTop + unfilledFieldsCount * 1
   }rem`;
+ 
   return (
     <div className="flex justify-center items-center h-full w-1/2 relative">
-      <form
+      <form onSubmit={handleSubmit}
         className="p-8  bg-gray-100  rounded-lg shadow max-w-md w-full xl:w-1/2 xl:-mt-40 relative"
         onSubmit={handleSubmit}
       >
@@ -224,7 +199,7 @@ const RegistrationForm = () => {
           <span className="text-black">Already have an account?</span>
           <a
             href="/auth/SignIn" // replace with your correct sign in path
-            className="text-blueprimary hover:text-blue-700 font-bold focus:outline-none focus:shadow-outline"
+            className="text-blueprimary hover:text-blue-900 font-bold focus:outline-none focus:shadow-outline"
           >
             Sign in
           </a>

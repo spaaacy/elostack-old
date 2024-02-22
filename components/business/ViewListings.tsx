@@ -9,8 +9,8 @@ const ViewListings = () => {
       description: "Develop and maintain software applications",
       company: "Acme Corp",
       location: "Seattle, WA",
-      minimumPay: "$80,000",
-      maximumPay: "$120,000",
+      minimumPay: "80,000",
+      maximumPay: "120,000",
       remote: false,
     },
     {
@@ -19,8 +19,8 @@ const ViewListings = () => {
       description: "Analyze and interpret data to solve business problems",
       company: "Big Data Inc",
       location: "San Francisco, CA",
-      minimumPay: "$90,000",
-      maximumPay: "$130,000",
+      minimumPay: "90,000",
+      maximumPay: "130,000",
       remote: true,
     },
     {
@@ -29,8 +29,8 @@ const ViewListings = () => {
       description: "Manage the development and launch of new products",
       company: "StartupX",
       location: "New York City, NY",
-      minimumPay: "$70,000",
-      maximumPay: "$100,000",
+      minimumPay: "70,000",
+      maximumPay: "100,000",
       remote: false,
     },
     {
@@ -39,8 +39,8 @@ const ViewListings = () => {
       description: "Develop and maintain software applications",
       company: "Acme Corp",
       location: "Seattle, WA",
-      minimumPay: "$80,000",
-      maximumPay: "$120,000",
+      minimumPay: "80,000",
+      maximumPay: "120,000",
       remote: false,
     },
     {
@@ -49,8 +49,8 @@ const ViewListings = () => {
       description: "Analyze and interpret data to solve business problems",
       company: "Big Data Inc",
       location: "San Francisco, CA",
-      minimumPay: "$90,000",
-      maximumPay: "$130,000",
+      minimumPay: "90,000",
+      maximumPay: "130,000",
       remote: true,
     },
     {
@@ -59,8 +59,8 @@ const ViewListings = () => {
       description: "Manage the development and launch of new products",
       company: "StartupX",
       location: "New York City, NY",
-      minimumPay: "$70,000",
-      maximumPay: "$100,000",
+      minimumPay: "70,000",
+      maximumPay: "100,000",
       remote: false,
     },
     {
@@ -69,8 +69,8 @@ const ViewListings = () => {
       description: "Develop and maintain software applications",
       company: "Acme Corp",
       location: "Seattle, WA",
-      minimumPay: "$80,000",
-      maximumPay: "$120,000",
+      minimumPay: "80,000",
+      maximumPay: "120,000",
       remote: false,
     },
     {
@@ -79,8 +79,8 @@ const ViewListings = () => {
       description: "Analyze and interpret data to solve business problems",
       company: "Big Data Inc",
       location: "San Francisco, CA",
-      minimumPay: "$90,000",
-      maximumPay: "$130,000",
+      minimumPay: "90,000",
+      maximumPay: "130,000",
       remote: true,
     },
     {
@@ -89,8 +89,8 @@ const ViewListings = () => {
       description: "Manage the development and launch of new products",
       company: "StartupX",
       location: "New York City, NY",
-      minimumPay: "$70,000",
-      maximumPay: "$100,000",
+      minimumPay: "70,000",
+      maximumPay: "100,000",
       remote: false,
     },
     {
@@ -99,8 +99,8 @@ const ViewListings = () => {
       description: "Develop and maintain software applications",
       company: "Acme Corp",
       location: "Seattle, WA",
-      minimumPay: "$80,000",
-      maximumPay: "$120,000",
+      minimumPay: "80,000",
+      maximumPay: "120,000",
       remote: false,
     },
     {
@@ -109,8 +109,8 @@ const ViewListings = () => {
       description: "Analyze and interpret data to solve business problems",
       company: "Big Data Inc",
       location: "San Francisco, CA",
-      minimumPay: "$90,000",
-      maximumPay: "$130,000",
+      minimumPay: "90,000",
+      maximumPay: "130,000",
       remote: true,
     },
     {
@@ -119,8 +119,8 @@ const ViewListings = () => {
       description: "Manage the development and launch of new products",
       company: "StartupX",
       location: "New York City, NY",
-      minimumPay: "$70,000",
-      maximumPay: "$100,000",
+      minimumPay: "70,000",
+      maximumPay: "100,000",
       remote: false,
     },
     {
@@ -129,8 +129,8 @@ const ViewListings = () => {
       description: "Develop and maintain software applications",
       company: "Acme Corp",
       location: "Seattle, WA",
-      minimumPay: "$80,000",
-      maximumPay: "$120,000",
+      minimumPay: "80,000",
+      maximumPay: "120,000",
       remote: false,
     },
     {
@@ -139,8 +139,8 @@ const ViewListings = () => {
       description: "Analyze and interpret data to solve business problems",
       company: "Big Data Inc",
       location: "San Francisco, CA",
-      minimumPay: "$90,000",
-      maximumPay: "$130,000",
+      minimumPay: "90,000",
+      maximumPay: "130,000",
       remote: true,
     },
     {
@@ -149,8 +149,8 @@ const ViewListings = () => {
       description: "Manage the development and launch of new products",
       company: "StartupX",
       location: "New York City, NY",
-      minimumPay: "$70,000",
-      maximumPay: "$100,000",
+      minimumPay: "70,000",
+      maximumPay: "100,000",
       remote: false,
     },
     {
@@ -159,8 +159,8 @@ const ViewListings = () => {
       description: "Develop and maintain software applications",
       company: "Acme Corp",
       location: "Seattle, WA",
-      minimumPay: "$80,000",
-      maximumPay: "$120,000",
+      minimumPay: "80,000",
+      maximumPay: "120,000",
       remote: false,
     },
     {
@@ -169,8 +169,8 @@ const ViewListings = () => {
       description: "Analyze and interpret data to solve business problems",
       company: "Big Data Inc",
       location: "San Francisco, CA",
-      minimumPay: "$90,000",
-      maximumPay: "$130,000",
+      minimumPay: "90,000",
+      maximumPay: "130,000",
       remote: true,
     },
     {
@@ -179,14 +179,14 @@ const ViewListings = () => {
       description: "Manage the development and launch of new products",
       company: "StartupX",
       location: "New York City, NY",
-      minimumPay: "$70,000",
-      maximumPay: "$100,000",
+      minimumPay: "70,000",
+      maximumPay: "100,000",
       remote: false,
     },
   ];
 
   return (
-    <ul className="flex flex-col gap-4 max-h-[820px] overflow-auto">
+    <ul className="flex flex-col gap-4 w-full">
       {jobListings.map((listing, i) => {
         return (
           <li key={listing.id}>

@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { z } from "zod";
+import { useRouter } from "next/navigation";
 
 const FormSchema = z
   .object({
@@ -29,7 +30,8 @@ const FormSchema = z
     path: ["confirmPassword"],
   });
 
-const RegistrationForm = () => {
+const SignUpForm = () => {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -45,11 +47,31 @@ const RegistrationForm = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const onSubmit = async (value: z.infer<typeof FormSchema>) => {
+    const response = await fetch("/api/user", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: value.username,
+        email: value.email,
+        password: value.password,
+      }),
+    });
+    if (response.ok) {
+      router.push("/signin");
+    } else {
+      console.error("Registration failed!");
+    }
+  };
+  
   const handleSubmit = (event) => {
     event.preventDefault();
     const result = FormSchema.safeParse(formData);
     if (!result.success) {
       const errors = result.error.flatten().fieldErrors;
+      // Only take the first error message for each field
       for (let field in errors) {
         errors[field] = errors[field][0];
       }
@@ -57,6 +79,7 @@ const RegistrationForm = () => {
     } else {
       console.log("Form submission successful", formData);
       setFormErrors({});
+      onSubmit(result.data); // Call onSubmit with the valid form data
     }
   };
 
@@ -197,7 +220,7 @@ const RegistrationForm = () => {
         <div className="flex items-center justify-center space-x-2 mt-4">
           <span className="text-black">Already have an account?</span>
           <a
-            href="/auth/signin"
+            href="/auth/signIn"
             className="text-blueprimary hover:text-blue-900 font-bold focus:outline-none focus:shadow-outline"
           >
             Sign in
@@ -235,4 +258,4 @@ const SocialLoginButton = ({ service, logoPath }) => (
   </button>
 );
 
-export default RegistrationForm;
+export default SignUpForm;

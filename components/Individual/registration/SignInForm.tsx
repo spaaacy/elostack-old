@@ -3,7 +3,8 @@ import { useState } from "react";
 import { z } from "zod";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-
+import { signIn } from "next-auth/react";
+import { sign } from "crypto";
 const FormSchema = z.object({
   email: z
     .string()
@@ -27,11 +28,12 @@ const SignInForm = () => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = (event) => {
+    event.preventDefault();
     const result = FormSchema.safeParse(formData);
     if (!result.success) {
       const errors = result.error.flatten().fieldErrors;
+      // Only take the first error message for each field
       for (let field in errors) {
         errors[field] = errors[field][0];
       }
@@ -39,10 +41,9 @@ const SignInForm = () => {
     } else {
       console.log("Form submission successful", formData);
       setFormErrors({});
-      router.push("/admin");
+      onSubmit(result.data); // Call onSubmit with the valid form data
     }
   };
-
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -53,6 +54,18 @@ const SignInForm = () => {
     baseMarginTop + unfilledFieldsCount * 1.1
   }rem`;
 
+  const onSubmit = async (values: z.infer<typeof FormSchema>) => {
+    const signInData = await signIn("credentials", {
+      email: values.email,
+      password: values.password,
+      redirect: false,
+    });
+    if (signInData?.error) {
+      console.log(signInData.error);
+    } else {
+      router.push("/admin");
+    }
+  };
   return (
     <div className="flex justify-center items-center h-full w-1/2 relative">
       <form

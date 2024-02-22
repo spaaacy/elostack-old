@@ -47,16 +47,16 @@ const SignUpForm = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const onSubmit = async (value: z.infer<typeof FormSchema>) => {
+  const onSubmit = async (values: z.infer<typeof FormSchema>) => {
     const response = await fetch("/api/user", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        username: value.username,
-        email: value.email,
-        password: value.password,
+        username: values.username,
+        email: values.email,
+        password: values.password,
       }),
     });
     if (response.ok) {

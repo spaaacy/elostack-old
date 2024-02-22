@@ -2,11 +2,11 @@ import { JobListing } from "@/types/JobListing";
 import Link from "next/link";
 import { FC } from "react";
 
-interface JobListingItemProps {
+interface JobListingCardProps {
   listing: JobListing;
 }
 
-const JobListingItem: FC<JobListingItemProps> = ({ listing }) => {
+const JobListingCard: FC<JobListingCardProps> = ({ listing }) => {
   return (
     <Link href={`/listings/${listing.id}`}>
       <div className="bg-gray-200 rounded-md p-4">
@@ -26,4 +26,4 @@ const JobListingItem: FC<JobListingItemProps> = ({ listing }) => {
   );
 };
 
-export default JobListingItem;
+export default JobListingCard;

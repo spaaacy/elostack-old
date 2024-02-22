@@ -1,14 +1,26 @@
-import { SidebarButtonState } from "@/app/business/page";
 import React, { FC } from "react";
+
+export enum SidebarButtonState {
+  SearchCandidates,
+  ViewListings,
+  Create,
+}
 
 interface SidebarProps {
   selectedButton: SidebarButtonState;
   setSelectedButton: React.Dispatch<React.SetStateAction<SidebarButtonState>>;
 }
 
+// TODO: Add icons
+
 const Sidebar: FC<SidebarProps> = ({ selectedButton, setSelectedButton }) => {
   return (
     <div className="fixed left-4 flex flex-col items-start gap-4">
+      <SidebarButton
+        sidebarState={{ selectedButton, setSelectedButton }}
+        buttonTitle="Search for candidates"
+        buttonState={SidebarButtonState.SearchCandidates}
+      />
       <SidebarButton
         sidebarState={{ selectedButton, setSelectedButton }}
         buttonTitle="View listings"

@@ -1,5 +1,5 @@
 import { JobListing } from "@/types/JobListing";
-import JobListingItem from "./JobListingItem";
+import JobListingCard from "./JobListingCard";
 
 const ViewListings = () => {
   const jobListings: JobListing[] = [
@@ -190,7 +190,7 @@ const ViewListings = () => {
       {jobListings.map((listing, i) => {
         return (
           <li key={listing.id}>
-            <JobListingItem listing={listing} />
+            <JobListingCard listing={listing} />
           </li>
         );
       })}

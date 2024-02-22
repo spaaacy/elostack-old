@@ -12,6 +12,7 @@ export const CreateJob = () => {
       maximumPay,
       position,
       remote,
+      location,
     });
   };
 

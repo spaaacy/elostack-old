@@ -32,7 +32,7 @@ const Business = () => {
         <div className="flex flex-col items-start gap-4">
           <button
             className={`outline-button w-[180px] ${
-              selectedButton == SelectedButton.View ? "bg-blueprimary border-blueprimary text-white font-bold" : ""
+              selectedButton === SelectedButton.View ? "bg-blueprimary border-blueprimary text-white font-bold" : ""
             }`}
             onClick={() => setSelectedButton(SelectedButton.View)}
           >
@@ -40,7 +40,7 @@ const Business = () => {
           </button>
           <button
             className={`outline-button w-[180px] ${
-              selectedButton == SelectedButton.Create ? "bg-blueprimary border-blueprimary text-white font-bold" : ""
+              selectedButton === SelectedButton.Create ? "bg-blueprimary border-blueprimary text-white font-bold" : ""
             }`}
             onClick={() => setSelectedButton(SelectedButton.Create)}
           >

@@ -1,10 +1,16 @@
+import NavBar from "@/components/NavBar";
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 
-const page = async () => {
+const Page = async () => {
   const session = await getServerSession(authOptions);
 
-  return <div>Welcome to admin </div>;
+  return (
+    <>
+      <NavBar />
+      <div>Welcome to admin</div>
+    </>
+  );
 };
 
-export default page;
+export default Page;

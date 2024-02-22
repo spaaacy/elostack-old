@@ -60,12 +60,12 @@ const SignUpForm = () => {
       }),
     });
     if (response.ok) {
-      router.push("/signin");
+      router.push("/SignIn");
     } else {
       console.error("Registration failed!");
     }
   };
-  
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const result = FormSchema.safeParse(formData);
@@ -220,7 +220,7 @@ const SignUpForm = () => {
         <div className="flex items-center justify-center space-x-2 mt-4">
           <span className="text-black">Already have an account?</span>
           <a
-            href="/auth/signIn"
+            href="/SignIn"
             className="text-blueprimary hover:text-blue-900 font-bold focus:outline-none focus:shadow-outline"
           >
             Sign in

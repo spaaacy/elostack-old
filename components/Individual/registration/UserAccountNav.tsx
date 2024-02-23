@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { signOut, useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 const UserAccountNav = () => {
   const { data: session } = useSession();
@@ -8,13 +8,19 @@ const UserAccountNav = () => {
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
+  const handleSignOut = async () => {
+    await signOut({ redirect: false });
+    window.location.reload(); // Refresh the page to update the session state
+  };
+
   return (
     <div className="relative">
-      {session && (
+      {session ? (
+        // User is signed in
         <>
           <img
             onClick={toggleDropdown}
-            src={session.user.image || "/Default_pfp.png"} // Placeholder for default profile picture
+            src={session.user.image || "/Default_pfp.png"}
             alt="Profile"
             className="cursor-pointer rounded-full w-10 h-10"
           />
@@ -33,9 +39,7 @@ const UserAccountNav = () => {
                 Settings
               </a>
               <button
-                onClick={() =>
-                  signOut({ redirect: true, callbackUrl: "/SignIn" })
-                }
+                onClick={handleSignOut}
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
               >
                 Sign Out
@@ -43,6 +47,14 @@ const UserAccountNav = () => {
             </div>
           )}
         </>
+      ) : (
+        // User is not signed in
+        <button
+          onClick={() => signIn()}
+          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+        >
+          Sign In
+        </button>
       )}
     </div>
   );

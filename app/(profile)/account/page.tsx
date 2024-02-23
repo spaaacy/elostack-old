@@ -1,12 +1,11 @@
-import Account from "@/components/Individual/profile/account";
+import AccountPage from "@/components/Individual/profile/AccountPage";
 import NavBar from "@/components/NavBar";
 const Accounts = () => (
-    <>
+  <>
     <NavBar />
-  <div className="flex h-screen">
-
-    <Account />
-  </div>
+    <div className="flex h-screen">
+      <AccountPage />
+    </div>
   </>
 );
 

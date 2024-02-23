@@ -17,13 +17,8 @@ const FormSchema = z
     password: z
       .string()
       .refine((value) => value !== "", "Password required")
-      .refine(
-        (value) => value.length >= 8,
-        "Password must be at least 8 characters"
-      ),
-    confirmPassword: z
-      .string()
-      .refine((value) => value !== "", "Please confirm your password"),
+      .refine((value) => value.length >= 8, "Password must be at least 8 characters"),
+    confirmPassword: z.string().refine((value) => value !== "", "Please confirm your password"),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match",
@@ -60,7 +55,7 @@ const SignUpForm = () => {
       }),
     });
     if (response.ok) {
-      router.push("/SignIn");
+      router.push("/signin");
     } else {
       console.error("Registration failed!");
     }
@@ -87,9 +82,7 @@ const SignUpForm = () => {
 
   const unfilledFieldsCount = Object.keys(formErrors).length;
   const baseMarginTop = 29.5;
-  const socialButtonsMarginTop = `${
-    baseMarginTop + unfilledFieldsCount * 1
-  }rem`;
+  const socialButtonsMarginTop = `${baseMarginTop + unfilledFieldsCount * 1}rem`;
 
   return (
     <div className="flex justify-center items-center h-full w-1/2 relative">
@@ -100,10 +93,7 @@ const SignUpForm = () => {
       >
         {/* Username Input */}
         <div className="mb-5">
-          <label
-            htmlFor="username"
-            className="block text-black text-sm font-bold mb-2"
-          >
+          <label htmlFor="username" className="block text-black text-sm font-bold mb-2">
             Username
           </label>
           <input
@@ -114,17 +104,12 @@ const SignUpForm = () => {
             onChange={handleInputChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
-          {formErrors.username && (
-            <p className="text-red-500 text-xs italic">{formErrors.username}</p>
-          )}
+          {formErrors.username && <p className="text-red-500 text-xs italic">{formErrors.username}</p>}
         </div>
 
         {/* Email Input */}
         <div className="mb-5">
-          <label
-            htmlFor="email"
-            className="block text-black text-sm font-bold mb-2"
-          >
+          <label htmlFor="email" className="block text-black text-sm font-bold mb-2">
             Email
           </label>
           <input
@@ -135,17 +120,12 @@ const SignUpForm = () => {
             onChange={handleInputChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
-          {formErrors.email && (
-            <p className="text-red-500 text-xs italic">{formErrors.email}</p>
-          )}
+          {formErrors.email && <p className="text-red-500 text-xs italic">{formErrors.email}</p>}
         </div>
 
         {/* Password Input */}
         <div className="mb-4 relative">
-          <label
-            htmlFor="password"
-            className="block text-black text-sm font-bold mb-2"
-          >
+          <label htmlFor="password" className="block text-black text-sm font-bold mb-2">
             Password
           </label>
           <input
@@ -156,9 +136,7 @@ const SignUpForm = () => {
             onChange={handleInputChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
-          {formErrors.password && (
-            <p className="text-red-500 text-xs italic">{formErrors.password}</p>
-          )}
+          {formErrors.password && <p className="text-red-500 text-xs italic">{formErrors.password}</p>}
           <button
             type="button"
             onClick={() => setShowPassword((prev) => !prev)}
@@ -175,10 +153,7 @@ const SignUpForm = () => {
         </div>
 
         <div className="mb-4 relative">
-          <label
-            htmlFor="confirmPassword"
-            className="block text-black text-sm font-bold mb-2"
-          >
+          <label htmlFor="confirmPassword" className="block text-black text-sm font-bold mb-2">
             Confirm Password
           </label>
           <input
@@ -189,11 +164,7 @@ const SignUpForm = () => {
             onChange={handleInputChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
-          {formErrors.confirmPassword && (
-            <p className="text-red-500 text-xs italic">
-              {formErrors.confirmPassword}
-            </p>
-          )}
+          {formErrors.confirmPassword && <p className="text-red-500 text-xs italic">{formErrors.confirmPassword}</p>}
           <button
             type="button"
             onClick={() => setShowConfirmPassword((prev) => !prev)}
@@ -220,7 +191,7 @@ const SignUpForm = () => {
         <div className="flex items-center justify-center space-x-2 mt-4">
           <span className="text-black">Already have an account?</span>
           <a
-            href="/SignIn"
+            href="/signin"
             className="text-blueprimary hover:text-blue-900 font-bold focus:outline-none focus:shadow-outline"
           >
             Sign in
@@ -247,13 +218,7 @@ const SignUpForm = () => {
 };
 const SocialLoginButton = ({ service, logoPath }) => (
   <button className="flex items-center p-4 text-black bg-gray-100 ml-8bg-iron rounded-lg shadow hover:bg-blue-400 w-full">
-    <Image
-      className="ml-4"
-      src={logoPath}
-      alt={`${service} Logo`}
-      width={25}
-      height={25}
-    />
+    <Image className="ml-4" src={logoPath} alt={`${service} Logo`} width={25} height={25} />
     <span className="ml-4">Create an account with {service}</span>
   </button>
 );

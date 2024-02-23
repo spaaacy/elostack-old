@@ -4,6 +4,7 @@ import EditProfileButton from "./EditProfileButton";
 import { useStore } from './store'; // Adjust the path based on where you placed your store.js
 import { useEffect } from 'react';
 import { useSession } from 'next-auth/react';
+import { supabase } from './supabaseClient'; // Adjust the path to your Supabase client
 
 const ProfilePage = () => {
   const { data: session } = useSession();
@@ -17,17 +18,20 @@ const ProfilePage = () => {
         const { data, error } = await supabase
           .from('profiles')
           .select('*')
-          .eq('id', user.id)
+          .eq('user_id', user.id)
           .single();
 
         if (data) {
           setProfileData(data);
+        } else if (error) {
+          console.error('Error fetching profile:', error);
         }
       }
     };
 
     fetchProfileData();
   }, [session, setProfileData]);
+
   
   return (
     <>

@@ -1,61 +1,107 @@
 "use client";
 import { useStore } from "./store";
 import { useRouter } from "next/navigation";
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState, useEffect, ChangeEvent, FormEvent } from "react";
+import { supabase } from "./supabaseClient";
+import { useSession } from "next-auth/react";
 
 interface FormData {
   firstName: string;
   lastName: string;
   pronouns: string;
-  countryRegion: string;
-  postalCode: string;
-  city: string;
-  number: string;
+  customPronouns?: string; // Optional, shown if pronouns is 'custom'
+  birthday: string;
+  phoneNumber: string; // Renamed from 'number' for clarity
   phoneType: string;
   address: string;
-  birthday: string;
-  url: string;
-  websiteType: string;
-  linkedIn: string;
+  country: string; // Renamed from 'countryRegion' for consistency with your form
+  postalCode: string;
+  city: string;
+  resume: File | null; // Assuming you're handling file uploads for resume
+  coverLetter: File | null; // Assuming you're handling file uploads for cover letters
+  portfolio: string; // Assuming this is a URL for the user's portfolio
+  linkedin: string; // Renamed from 'linkedIn' for consistency with your form
   github: string;
-
 }
 
 const initialFormData: FormData = {
   firstName: "",
   lastName: "",
   pronouns: "",
-  countryRegion: "",
-  postalCode: "",
-  city: "",
-  number: "",
+  customPronouns: "", // Initialize as empty string
+  birthday: "",
+  phoneNumber: "",
   phoneType: "",
   address: "",
-  birthday: "",
-  url: "",
-  websiteType: "",
-  linkedIn: "",
+  country: "",
+  postalCode: "",
+  city: "",
+  resume: null, // Initialize as null, assuming file has not been uploaded yet
+  coverLetter: null, // Initialize as null, assuming file has not been uploaded yet
+  portfolio: "",
+  linkedin: "",
   github: "",
-
 };
 
 const AccountPage = () => {
-  const { updateProfile } = useStore();
+  const { data: session } = useSession();
   const router = useRouter();
   const [formData, setFormData] = useState<FormData>(initialFormData);
 
-  // Define the handleChange function here
+  // Load user profile data when the session is available
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      // Ensure session and session.user are defined
+      if (session && session.user && session.user.id) {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('user_id', session.user.id)
+          .single();
+  
+        if (error) {
+          console.error('Error fetching profile:', error);
+        } else {
+          // Assuming setFormData updates your component's state with fetched data
+          setFormData(data);
+        }
+      }
+    };
+  
+    fetchProfileData();
+  }, [session]); // Dependency array includes session to re-run useEffect when session changes
+  
+
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    const { name, value, type, files } = e.target;
+    if (type === "file" && files) {
+      // Handle file inputs, if you have file inputs like profile image
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    updateProfile(formData); // Update the global state with the new form data
-    router.push("/profile"); // Adjust the path as needed to navigate back to the Profile page
+  
+    // Ensure session and session.user are defined
+    if (session && session.user && session.user.id) {
+      const { error } = await supabase
+        .from('profiles')
+        .update({ ...formData })
+        .eq('user_id', session.user.id);
+  
+      if (error) {
+        console.error('Error updating profile:', error.message);
+      } else {
+        // Optionally, redirect the user to the profile page or show a success message
+        router.push('/profile');
+      }
+    } else {
+      console.error('User must be logged in to update the profile');
+    }
   };
 
   return (
@@ -357,21 +403,19 @@ const AccountPage = () => {
 
             {/* Add additional form fields here */}
             <div>
-    <button
-      type="submit"
-      className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-    >
-      Save Changes
-    </button>
-    </div>
+              <button
+                type="submit"
+                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                Save Changes
+              </button>
+            </div>
           </form>
           {/* Add more input fields here following the pattern above */}
           {/* Submit button */}
-          </div>
-          
         </div>
       </div>
-    
+    </div>
   );
 };
 

@@ -1,13 +1,8 @@
-import type { Config } from "tailwindcss"
+import type { Config } from "tailwindcss";
 
 const config = {
   darkMode: ["class"],
-  content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
-	],
+  content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
   prefix: "",
   theme: {
     container: {
@@ -19,13 +14,13 @@ const config = {
     },
     extend: {
       colors: {
-        iron: '#2F3136',
-            darkgrey: '#22222',
-            lightblack:'#202225',
-            darkerblack:'#13181C',
-            darkgreen: '#194844',
-            culturegreen:'#01DF67',
-            blueprimary: "#318CE7",
+        iron: "#2F3136",
+        darkgrey: "#22222",
+        lightblack: "#202225",
+        darkerblack: "#13181C",
+        darkgreen: "#194844",
+        culturegreen: "#01DF67",
+        blueprimary: "#318CE7",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -35,26 +30,25 @@ const config = {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
         },
-        
+
         backgroundImage: {
           "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-          "gradient-conic":
-            "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+          "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
         },
         minHeight: {
-          '13': '3.25rem', 
+          "13": "3.25rem",
         },
-        spacing:{
-          '46':'11.5rem',
-          '58': '14.5rem',
-          '41':'10.10rem',
-          '51':'12.75rem',
-          '34':'8.5rem',
-          '76':'19rem',
-          '55':'13.75rem',
-          '92':'22rem',
-          '100':'25rem',
-          '104':'26rem',
+        spacing: {
+          "46": "11.5rem",
+          "58": "14.5rem",
+          "41": "10.10rem",
+          "51": "12.75rem",
+          "34": "8.5rem",
+          "76": "19rem",
+          "55": "13.75rem",
+          "92": "22rem",
+          "100": "25rem",
+          "104": "26rem",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -81,6 +75,9 @@ const config = {
           foreground: "hsl(var(--card-foreground))",
         },
       },
+      fontFamily: {
+        roboto: ["Roboto", "sans-serif"],
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
@@ -103,6 +100,6 @@ const config = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-} satisfies Config
+} satisfies Config;
 
-export default config
+export default config;

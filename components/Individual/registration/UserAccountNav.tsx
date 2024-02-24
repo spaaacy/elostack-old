@@ -1,16 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import { signOut, useSession } from "next-auth/react";
 
 const UserAccountNav = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const { data: session } = useSession();
+
+  // TODO: Change later
+  const session = {
+    user: {
+      image: "asodjhfasidhbfa",
+    },
+  };
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
   const handleSignOut = async () => {
-    await signOut({ redirect: false });
     window.location.reload(); // Refresh the page to update the session state
   };
 

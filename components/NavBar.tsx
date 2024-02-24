@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import UserAccountNav from "./Individual/registration/UserAccountNav";
-import { useSession } from "next-auth/react";
 
 const NavBar = () => {
-  const { data: session } = useSession();
+  // TODO: Change later
+  const session = { user: true };
+
   return (
     <nav className="px-10 py-4 flex justify-between items-center">
       <Link href={"/"} className="text-3xl font-bold font-roboto text-blueprimary">

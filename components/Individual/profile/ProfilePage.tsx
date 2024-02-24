@@ -1,13 +1,11 @@
 "use client";
 import Head from "next/head";
 import EditProfileButton from "./EditProfileButton";
-import { useStore } from './store'; 
-import { useEffect } from 'react';
-import { useSession } from 'next-auth/react';
-import { supabase } from './supabaseClient'; 
+import { useStore } from "./store";
+import { useEffect } from "react";
+import { supabase } from "./supabaseClient";
 
 const ProfilePage = () => {
-  const { data: session } = useSession();
   const { profileData, setProfileData } = useStore();
 
   useEffect(() => {
@@ -15,16 +13,12 @@ const ProfilePage = () => {
       if (session) {
         const { user } = session;
         // Fetch profile data from Supabase using user.id
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('user_id', user.id)
-          .single();
+        const { data, error } = await supabase.from("profiles").select("*").eq("user_id", user.id).single();
 
         if (data) {
           setProfileData(data);
         } else if (error) {
-          console.error('Error fetching profile:', error);
+          console.error("Error fetching profile:", error);
         }
       }
     };
@@ -32,7 +26,6 @@ const ProfilePage = () => {
     fetchProfileData();
   }, [session, setProfileData]);
 
-  
   return (
     <>
       <Head>
@@ -56,7 +49,9 @@ const ProfilePage = () => {
             <div className="grid grid-cols-2 gap-6">
               <div>
                 <h3 className="font-semibold">Phone Number</h3>
-                <p>{profileData.number} ({profileData.phoneType})</p>
+                <p>
+                  {profileData.number} ({profileData.phoneType})
+                </p>
               </div>
               <div>
                 <h3 className="font-semibold">Email</h3>
@@ -78,15 +73,27 @@ const ProfilePage = () => {
             <div className="grid grid-cols-2 gap-6">
               <div>
                 <h3 className="font-semibold">LinkedIn</h3>
-                <p><a href={profileData.linkedIn} target="_blank" rel="noopener noreferrer">{profileData.linkedIn}</a></p>
+                <p>
+                  <a href={profileData.linkedIn} target="_blank" rel="noopener noreferrer">
+                    {profileData.linkedIn}
+                  </a>
+                </p>
               </div>
               <div>
                 <h3 className="font-semibold">GitHub</h3>
-                <p><a href={profileData.github} target="_blank" rel="noopener noreferrer">{profileData.github}</a></p>
+                <p>
+                  <a href={profileData.github} target="_blank" rel="noopener noreferrer">
+                    {profileData.github}
+                  </a>
+                </p>
               </div>
               <div>
                 <h3 className="font-semibold">Portfolio</h3>
-                <p><a href={profileData.portfolio} target="_blank" rel="noopener noreferrer">{profileData.portfolio}</a></p>
+                <p>
+                  <a href={profileData.portfolio} target="_blank" rel="noopener noreferrer">
+                    {profileData.portfolio}
+                  </a>
+                </p>
               </div>
             </div>
           </section>
@@ -96,11 +103,19 @@ const ProfilePage = () => {
             <div className="grid grid-cols-2 gap-6">
               <div>
                 <h3 className="font-semibold">Resume</h3>
-                <p><a href={profileData.resume} target="_blank" rel="noopener noreferrer">View Resume</a></p>
+                <p>
+                  <a href={profileData.resume} target="_blank" rel="noopener noreferrer">
+                    View Resume
+                  </a>
+                </p>
               </div>
               <div>
                 <h3 className="font-semibold">Cover Letter</h3>
-                <p><a href={profileData.coverLetter} target="_blank" rel="noopener noreferrer">View Cover Letter</a></p>
+                <p>
+                  <a href={profileData.coverLetter} target="_blank" rel="noopener noreferrer">
+                    View Cover Letter
+                  </a>
+                </p>
               </div>
             </div>
           </section>

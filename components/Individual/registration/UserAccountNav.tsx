@@ -8,7 +8,7 @@ const UserAccountNav = () => {
   // TODO: Change later
   const session = {
     user: {
-      image: "asodjhfasidhbfa",
+      image: "https://imgupscaler.com/images/samples/animal-before.webp",
     },
   };
 

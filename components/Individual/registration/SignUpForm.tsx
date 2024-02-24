@@ -3,6 +3,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
+import { createClient } from "@supabase/supabase-js";
 
 const FormSchema = z
   .object({
@@ -26,6 +27,8 @@ const FormSchema = z
   });
 
 const SignUpForm = () => {
+  const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
+
   const router = useRouter();
   const [formData, setFormData] = useState({
     username: "",
@@ -43,20 +46,32 @@ const SignUpForm = () => {
   };
 
   const onSubmit = async (values: z.infer<typeof FormSchema>) => {
-    const response = await fetch("/api/user", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    // const response = await fetch("/api/user", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     username: values.username,
+    //     email: values.email,
+    //     password: values.password,
+    //   }),
+    // });
+
+    const { data, error } = await supabase.auth.signUp({
+      email: values.email,
+      password: values.password,
+      options: {
+        emailRedirectTo: "https://localhost:3000/",
       },
-      body: JSON.stringify({
-        username: values.username,
-        email: values.email,
-        password: values.password,
-      }),
     });
-    if (response.ok) {
+
+    console.log({ data, error });
+
+    if (data.user) {
       router.push("/signin");
-    } else {
+    } else if (error) {
+      // TODO: Show error
       console.error("Registration failed!");
     }
   };

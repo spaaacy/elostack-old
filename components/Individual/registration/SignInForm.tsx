@@ -3,8 +3,8 @@ import { useState } from "react";
 import { z } from "zod";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
-import { sign } from "crypto";
+import { createClient } from "@supabase/supabase-js";
+
 const FormSchema = z.object({
   email: z
     .string()
@@ -16,6 +16,8 @@ const FormSchema = z.object({
     .refine((value) => value.length >= 8, "Password must be at least 8 characters"),
 });
 const SignInForm = () => {
+  const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
+
   const router = useRouter();
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
@@ -50,16 +52,15 @@ const SignInForm = () => {
   const socialButtonsMarginTop = `${baseMarginTop + unfilledFieldsCount * 1.1}rem`;
 
   const onSubmit = async (values: z.infer<typeof FormSchema>) => {
-    const signInData = await signIn("credentials", {
+    const { data, error } = await supabase.auth.signInWithPassword({
       email: values.email,
       password: values.password,
-      redirect: false,
     });
-    if (signInData?.error) {
-      console.log(signInData.error);
-    } else {
-      router.refresh();
+
+    if (data.user && data.session) {
       router.push("/admin");
+    } else {
+      console.log(error);
     }
   };
   return (

@@ -1,16 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { session } from "@/components/NavBar";
+import { FC, useState } from "react";
 
-const UserAccountNav = () => {
+interface UserAccountNavProps {
+  session: session;
+}
+
+const UserAccountNav: FC<UserAccountNavProps> = ({ session }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-
-  // TODO: Change later
-  const session = {
-    user: {
-      image: "https://imgupscaler.com/images/samples/animal-before.webp",
-    },
-  };
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
@@ -20,9 +18,10 @@ const UserAccountNav = () => {
 
   return (
     <div className="relative">
+      {/* TODO: Fetch profile first for image */}
       <img
         onClick={toggleDropdown}
-        src={session.user.image || "/Default_pfp.png"}
+        src={session.data.image || "/Default_pfp.png"}
         alt="Profile"
         className="cursor-pointer rounded-full w-10 h-10"
       />

@@ -46,18 +46,6 @@ const SignUpForm = () => {
   };
 
   const onSubmit = async (values: z.infer<typeof FormSchema>) => {
-    // const response = await fetch("/api/user", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     username: values.username,
-    //     email: values.email,
-    //     password: values.password,
-    //   }),
-    // });
-
     const { data, error } = await supabase.auth.signUp({
       email: values.email,
       password: values.password,
@@ -66,12 +54,9 @@ const SignUpForm = () => {
       },
     });
 
-    console.log({ data, error });
-
     if (data.user) {
       router.push("/signin");
     } else if (error) {
-      // TODO: Show error
       console.error("Registration failed!");
     }
   };

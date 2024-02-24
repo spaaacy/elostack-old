@@ -1,5 +1,4 @@
-// store.js
-import create from 'zustand';
+import { create } from 'zustand';
 
 export const useStore = create((set) => ({
   profileData: {
@@ -17,7 +16,6 @@ export const useStore = create((set) => ({
     websiteType: "",
     linkedIn: "",
     github: "",
-    // Add any additional fields here
   },
   updateProfile: (newData) => set(() => ({ profileData: newData })),
 }));

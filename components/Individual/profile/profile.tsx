@@ -1,10 +1,10 @@
 "use client";
 import Head from "next/head";
 import EditProfileButton from "./EditProfileButton";
-import { useStore } from './store'; // Adjust the path based on where you placed your store.js
+import { useStore } from './store'; 
 import { useEffect } from 'react';
 import { useSession } from 'next-auth/react';
-import { supabase } from './supabaseClient'; // Adjust the path to your Supabase client
+import { supabase } from './supabaseClient'; 
 
 const ProfilePage = () => {
   const { data: session } = useSession();
@@ -51,7 +51,6 @@ const ProfilePage = () => {
           </div>
           <EditProfileButton />
 
-          {/* Contact Information */}
           <section className="mt-8">
             <h2 className="text-xl font-semibold mb-4">Contact Information</h2>
             <div className="grid grid-cols-2 gap-6">
@@ -61,7 +60,7 @@ const ProfilePage = () => {
               </div>
               <div>
                 <h3 className="font-semibold">Email</h3>
-                <p>{profileData.email}</p> {/* Assuming email is part of profileData */}
+                <p>{profileData.email}</p>
               </div>
               <div>
                 <h3 className="font-semibold">Address</h3>
@@ -74,7 +73,6 @@ const ProfilePage = () => {
             </div>
           </section>
 
-          {/* Professional Information */}
           <section className="mt-8">
             <h2 className="text-xl font-semibold mb-4">Professional Information</h2>
             <div className="grid grid-cols-2 gap-6">
@@ -93,7 +91,6 @@ const ProfilePage = () => {
             </div>
           </section>
 
-          {/* Documents */}
           <section className="mt-8">
             <h2 className="text-xl font-semibold mb-4">Documents</h2>
             <div className="grid grid-cols-2 gap-6">
@@ -108,7 +105,6 @@ const ProfilePage = () => {
             </div>
           </section>
 
-          {/* Additional Information */}
           <section className="mt-8">
             <h2 className="text-xl font-semibold mb-4">Additional Information</h2>
             <div>

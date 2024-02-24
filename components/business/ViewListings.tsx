@@ -1,5 +1,201 @@
+import { JobListing } from "@/types/JobListing";
+import JobListingCard from "./JobListingCard";
+
 const ViewListings = () => {
-  return <div>ViewListings</div>;
+  const jobListings: JobListing[] = [
+    {
+      id: 1,
+      title: "Software Engineer",
+      description: "Develop and maintain software applications",
+      company: "Acme Corp",
+      location: "Seattle, WA",
+      minimumPay: "80,000",
+      maximumPay: "120,000",
+      remote: false,
+    },
+    {
+      id: 2,
+      title: "Data Scientist",
+      description: "Analyze and interpret data to solve business problems",
+      company: "Big Data Inc",
+      location: "San Francisco, CA",
+      minimumPay: "90,000",
+      maximumPay: "130,000",
+      remote: true,
+    },
+    {
+      id: 3,
+      title: "Product Manager",
+      description: "Manage the development and launch of new products",
+      company: "StartupX",
+      location: "New York City, NY",
+      minimumPay: "70,000",
+      maximumPay: "100,000",
+      remote: false,
+    },
+    {
+      id: 1,
+      title: "Software Engineer",
+      description: "Develop and maintain software applications",
+      company: "Acme Corp",
+      location: "Seattle, WA",
+      minimumPay: "80,000",
+      maximumPay: "120,000",
+      remote: false,
+    },
+    {
+      id: 2,
+      title: "Data Scientist",
+      description: "Analyze and interpret data to solve business problems",
+      company: "Big Data Inc",
+      location: "San Francisco, CA",
+      minimumPay: "90,000",
+      maximumPay: "130,000",
+      remote: true,
+    },
+    {
+      id: 3,
+      title: "Product Manager",
+      description: "Manage the development and launch of new products",
+      company: "StartupX",
+      location: "New York City, NY",
+      minimumPay: "70,000",
+      maximumPay: "100,000",
+      remote: false,
+    },
+    {
+      id: 1,
+      title: "Software Engineer",
+      description: "Develop and maintain software applications",
+      company: "Acme Corp",
+      location: "Seattle, WA",
+      minimumPay: "80,000",
+      maximumPay: "120,000",
+      remote: false,
+    },
+    {
+      id: 2,
+      title: "Data Scientist",
+      description: "Analyze and interpret data to solve business problems",
+      company: "Big Data Inc",
+      location: "San Francisco, CA",
+      minimumPay: "90,000",
+      maximumPay: "130,000",
+      remote: true,
+    },
+    {
+      id: 3,
+      title: "Product Manager",
+      description: "Manage the development and launch of new products",
+      company: "StartupX",
+      location: "New York City, NY",
+      minimumPay: "70,000",
+      maximumPay: "100,000",
+      remote: false,
+    },
+    {
+      id: 1,
+      title: "Software Engineer",
+      description: "Develop and maintain software applications",
+      company: "Acme Corp",
+      location: "Seattle, WA",
+      minimumPay: "80,000",
+      maximumPay: "120,000",
+      remote: false,
+    },
+    {
+      id: 2,
+      title: "Data Scientist",
+      description: "Analyze and interpret data to solve business problems",
+      company: "Big Data Inc",
+      location: "San Francisco, CA",
+      minimumPay: "90,000",
+      maximumPay: "130,000",
+      remote: true,
+    },
+    {
+      id: 3,
+      title: "Product Manager",
+      description: "Manage the development and launch of new products",
+      company: "StartupX",
+      location: "New York City, NY",
+      minimumPay: "70,000",
+      maximumPay: "100,000",
+      remote: false,
+    },
+    {
+      id: 1,
+      title: "Software Engineer",
+      description: "Develop and maintain software applications",
+      company: "Acme Corp",
+      location: "Seattle, WA",
+      minimumPay: "80,000",
+      maximumPay: "120,000",
+      remote: false,
+    },
+    {
+      id: 2,
+      title: "Data Scientist",
+      description: "Analyze and interpret data to solve business problems",
+      company: "Big Data Inc",
+      location: "San Francisco, CA",
+      minimumPay: "90,000",
+      maximumPay: "130,000",
+      remote: true,
+    },
+    {
+      id: 3,
+      title: "Product Manager",
+      description: "Manage the development and launch of new products",
+      company: "StartupX",
+      location: "New York City, NY",
+      minimumPay: "70,000",
+      maximumPay: "100,000",
+      remote: false,
+    },
+    {
+      id: 1,
+      title: "Software Engineer",
+      description: "Develop and maintain software applications",
+      company: "Acme Corp",
+      location: "Seattle, WA",
+      minimumPay: "80,000",
+      maximumPay: "120,000",
+      remote: false,
+    },
+    {
+      id: 2,
+      title: "Data Scientist",
+      description: "Analyze and interpret data to solve business problems",
+      company: "Big Data Inc",
+      location: "San Francisco, CA",
+      minimumPay: "90,000",
+      maximumPay: "130,000",
+      remote: true,
+    },
+    {
+      id: 3,
+      title: "Product Manager",
+      description: "Manage the development and launch of new products",
+      company: "StartupX",
+      location: "New York City, NY",
+      minimumPay: "70,000",
+      maximumPay: "100,000",
+      remote: false,
+    },
+  ];
+
+  return (
+    <ul className="flex flex-col gap-4 w-full">
+      {jobListings.map((listing, i) => {
+        return (
+          <li key={listing.id}>
+            <JobListingCard listing={listing} />
+          </li>
+        );
+      })}
+    </ul>
+  );
 };
 
 export default ViewListings;

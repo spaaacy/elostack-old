@@ -3,6 +3,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* In your global.css or component-specific CSS file */
+@import "~slick-carousel/slick/slick.css";
+@import "~slick-carousel/slick/slick-theme.css";
 
 @layer base {
   :root {
@@ -140,4 +143,45 @@
   height: auto; /* Maintain aspect ratio */
   margin-left: auto; /* Centering the video */
   margin-right: auto;
+}
+body, html {
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+.scale-up-center {
+  animation: scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+}
+
+@keyframes scale-up-center {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.control-btn {
+  position: absolute;
+  top: 50%; 
+  transform: translateY(-50%);
+  background-color: transparent;
+  border: none;
+  font-size: 24px; 
+  cursor: pointer;
+  z-index: 2;
+}
+
+.control-btn.left-0 {
+  left: 25px; 
+}
+
+.control-btn.right-0 {
+  right: 25px; 
+}
+
+/* Adjust the AOS animation effect as needed for better visibility */
+[data-aos="zoom-in"] {
+  transition-duration: 1.2s; 
 }

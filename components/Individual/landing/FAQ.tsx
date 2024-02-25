@@ -1,44 +1,120 @@
-import React from 'react';
-import { FaRegQuestionCircle } from 'react-icons/fa'; // Icon for FAQs
+"use client";
+// components/FAQ.tsx
+import React, { useState, useRef, useEffect } from "react";
 
-const FAQSection: React.FC = () => {
+interface FAQItemProps {
+  question: string;
+  answer: string;
+}
+
+const FAQItem: React.FC<FAQItemProps> = ({ question, answer }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const contentRef = useRef<HTMLDivElement | null>(null);
+  const [maxHeight, setMaxHeight] = useState<string>("0px");
+
+  useEffect(() => {
+    if (contentRef.current) {
+      setMaxHeight(isOpen ? `${contentRef.current.scrollHeight}px` : "0px");
+    }
+  }, [isOpen, contentRef]);
+
+  return (
+    <div
+      data-aos="fade-up"
+      className="mb-2 overflow-hidden transition-shadow duration-300 bg-white shadow-md rounded-lg"
+    >
+      <button
+        className="flex items-center justify-between w-full p-5 font-medium text-left text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:outline-none focus-visible:ring focus-visible:ring-opacity-75"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <span>{question}</span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className={`w-6 h-6 transition-transform ${
+            isOpen ? "transform rotate-180" : ""
+          }`}
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M19 9l-7 7-7-7"
+          />
+        </svg>
+      </button>
+      <div
+        ref={contentRef}
+        style={{ maxHeight: `${maxHeight}` }}
+        className="transition-max-height duration-500 ease-in-out"
+      >
+        <div className="px-5 pt-0 pb-5 text-gray-700">{answer}</div>
+      </div>
+    </div>
+  );
+};
+
+const FAQ: React.FC = () => {
   const faqs = [
     {
-      question: 'How do I get started?',
-      answer: 'Getting started is simple. Just contact us through our website, and we’ll guide you through the process.',
-      icon: <FaRegQuestionCircle className="text-blue-500" size={20} />,
+      question: "How does EloStack simplify the hiring process?",
+      answer:
+        "EloStack conducts and manages technical interviews, allowing companies to browse through a pool of pre-evaluated candidates and select those who meet their specific requirements. This makes the hiring process more efficient and cost-effective.",
     },
     {
-      question: 'What is the typical turnaround time?',
-      answer: 'Turnaround times vary by project, but we always aim to deliver with efficiency and high quality.',
-      icon: <FaRegQuestionCircle className="text-blue-500" size={20} />,
+      question: "What makes EloStack different from other job platforms?",
+      answer:
+        "Unlike traditional job platforms, EloStack focuses specifically on software engineering jobs and addresses the inefficiencies in the hiring process by managing the technical interviews ourselves.",
     },
     {
-      question: 'Do you offer ongoing support?',
-      answer: 'Absolutely! We’re here to support you long-term, ensuring your continued success.',
-      icon: <FaRegQuestionCircle className="text-blue-500" size={20} />,
+      question:
+        "How can candidates prepare for technical interviews on EloStack?",
+      answer:
+        "Candidates can prepare for technical interviews on EloStack by practicing coding problems, reviewing computer science fundamentals, and familiarizing themselves with common interview questions in software engineering.",
+    },
+    {
+      question: "What types of companies use EloStack for hiring?",
+      answer:
+        "A wide range of companies, from startups to large enterprises, use EloStack to streamline their hiring process for software engineering roles. Our platform caters to industries across the technology sector.",
+    },
+    {
+      question: "How does EloStack simplify the hiring process?",
+      answer:
+        "EloStack conducts and manages technical interviews, allowing companies to browse through a pool of pre-evaluated candidates and select those who meet their specific requirements. This makes the hiring process more efficient and cost-effective.",
+    },
+    {
+      question: "What makes EloStack different from other job platforms?",
+      answer:
+        "Unlike traditional job platforms, EloStack focuses specifically on software engineering jobs and addresses the inefficiencies in the hiring process by managing the technical interviews ourselves.",
+    },
+    {
+      question:
+        "How can candidates prepare for technical interviews on EloStack?",
+      answer:
+        "Candidates can prepare for technical interviews on EloStack by practicing coding problems, reviewing computer science fundamentals, and familiarizing themselves with common interview questions in software engineering.",
+    },
+    {
+      question: "What types of companies use EloStack for hiring?",
+      answer:
+        "A wide range of companies, from startups to large enterprises, use EloStack to streamline their hiring process for software engineering roles. Our platform caters to industries across the technology sector.",
     },
     // Add more FAQs as needed
   ];
 
   return (
-    <div className="mt-20">
-      <h2 className="text-center text-2xl font-medium title-font mb-4 text-gray-900">Frequently Asked Questions</h2>
-      <div className="flex flex-wrap">
+    <div className="w-full px-4 py-12 mt-[11rem] mx-auto max-w-7xl">
+      <h2 className="mb-8 text-5xl font-extrabold text-center text-blueprimary">
+        Frequently Asked Questions
+      </h2>
+      <div className="space-y-4 mb-[7rem]">
         {faqs.map((faq, index) => (
-          <div className="w-full md:w-1/2 px-4 py-2" key={index}>
-            <div className="h-full bg-gray-100 bg-opacity-75 p-6 rounded-lg">
-              <div className="flex items-center mb-4">
-                {faq.icon}
-                <h3 className="ml-2 text-lg font-semibold text-gray-900">{faq.question}</h3>
-              </div>
-              <p className="leading-relaxed">{faq.answer}</p>
-            </div>
-          </div>
+          <FAQItem key={index} question={faq.question} answer={faq.answer} />
         ))}
       </div>
     </div>
   );
 };
 
-export default FAQSection;
+export default FAQ;

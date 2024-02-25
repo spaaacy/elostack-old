@@ -4,14 +4,19 @@ import { UserContext, UserContextType } from "@/context/UserContext";
 import React, { FC, useState } from "react";
 
 const UserAccountNav = () => {
-  const { session } = React.useContext(UserContext) as UserContextType;
+  const { session, supabase } = React.useContext(UserContext) as UserContextType;
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
   const handleSignOut = async () => {
-    window.location.reload(); // Refresh the page to update the session state
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error(error);
+    } else {
+      window.location.reload(); // Refresh the page to update the session state
+    }
   };
 
   return (

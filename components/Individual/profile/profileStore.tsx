@@ -1,6 +1,6 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
-export const useStore = create((set) => ({
+export const profileStore = create((set) => ({
   profileData: {
     firstName: "",
     lastName: "",
@@ -17,5 +17,5 @@ export const useStore = create((set) => ({
     linkedIn: "",
     github: "",
   },
-  updateProfile: (newData) => set(() => ({ profileData: newData })),
+  setProfileData: (newData) => set(() => ({ profileData: newData })),
 }));

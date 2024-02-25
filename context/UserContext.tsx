@@ -26,6 +26,7 @@ export type session =
 export interface UserContextType {
   session: session;
   supabase: any;
+  fetchProfileData: Function;
 }
 
 export const UserContext = React.createContext<UserContextType | null>(null);
@@ -40,10 +41,25 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     fetchSession(supabase);
   }, []);
 
+  const fetchProfileData = async () => {
+    const userId = session?.data.session?.user.id;
+    if (userId) {
+      try {
+        const { data, error } = await supabase?.from("profiles").select("*").eq("user_id", userId).single();
+        if (error) throw error;
+        return data;
+      } catch (error) {
+        console.error("Error fetching profile:", error.message);
+      }
+    } else {
+      console.log("Session not loaded or user ID undefined");
+    }
+  };
+
   const fetchSession = async (supabase) => {
     const session = await supabase.auth.getSession();
     setSession(session);
   };
 
-  return <UserContext.Provider value={{ session, supabase }}>{children}</UserContext.Provider>;
+  return <UserContext.Provider value={{ session, supabase, fetchProfileData }}>{children}</UserContext.Provider>;
 };

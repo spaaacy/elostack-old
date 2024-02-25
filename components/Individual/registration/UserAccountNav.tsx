@@ -33,7 +33,7 @@ const UserAccountNav = () => {
           <a href="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
             Account
           </a>
-          <a href="/settings" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+          <a href="/editprofile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
             Settings
           </a>
           <button

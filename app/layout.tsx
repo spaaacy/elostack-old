@@ -1,4 +1,6 @@
 "use client";
+
+import { UserProvider } from "@/context/UserContext";
 import "@/styles/globals.css";
 
 // Removed the export statement for metadata
@@ -15,7 +17,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <title>{metadata.title}</title>
         <meta name="description" content={metadata.description} />
       </head>
-      <body className="flex flex-col min-h-screen">{children}</body>
+      <body className="flex flex-col min-h-screen">
+        <UserProvider>{children}</UserProvider>
+      </body>
     </html>
   );
 }

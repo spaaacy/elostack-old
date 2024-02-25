@@ -1,13 +1,11 @@
 "use client";
 
-import { session } from "@/components/NavBar";
-import { FC, useState } from "react";
+import { UserContext, UserContextType } from "@/context/UserContext";
+import React, { FC, useState } from "react";
 
-interface UserAccountNavProps {
-  session: session;
-}
+const UserAccountNav = () => {
+  const { session } = React.useContext(UserContext) as UserContextType;
 
-const UserAccountNav: FC<UserAccountNavProps> = ({ session }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);

@@ -1,63 +1,135 @@
-// pages/profile.tsx
+"use client";
 import Head from "next/head";
+import EditProfileButton from "./EditProfileButton";
+import { useStore } from "./store";
+import React, { useEffect } from "react";
+import { UserContext, UserContextType } from "@/context/UserContext";
 
 const ProfilePage = () => {
+  const { session, supabase } = React.useContext(UserContext) as UserContextType;
+
+  const { profileData, setProfileData } = useStore();
+
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      if (session) {
+        const { user } = session;
+        // Fetch profile data from Supabase using user.id
+        // TODO: Fix this
+        const { data, error } = await supabase.from("profiles").select("*").eq("user_id", user.id).single();
+
+        if (data) {
+          setProfileData(data);
+        } else if (error) {
+          console.error("Error fetching profile:", error);
+        }
+      }
+    };
+
+    fetchProfileData();
+  }, [session, setProfileData]);
+
   return (
     <>
       <Head>
-        <title>User's Profile | LinkedIn</title>
+        <title>{`${profileData.firstName}'s Profile | LinkedIn`}</title>
       </Head>
       <div className="bg-gray-100 min-h-screen p-8">
-        <div className="bg-white p-6 rounded-lg shadow max-w-2xl mx-auto">
+        <div className="bg-white p-6 rounded-lg shadow max-w-4xl mx-auto">
           {/* Profile Header */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-4 mb-6">
             <div className="h-24 w-24 bg-gray-300 rounded-full flex-shrink-0"></div>
             <div>
-              <h2 className="text-xl font-bold">John Doe</h2>
-              <p className="text-gray-600">Software Engineer at Tech Company</p>
-              <p className="text-gray-600">City, Country</p>
+              <h1 className="text-2xl font-bold">{`${profileData.firstName} ${profileData.lastName}`}</h1>
+              <p className="text-gray-600">{profileData.pronouns}</p>
+              <p className="text-gray-600">{`${profileData.city}, ${profileData.countryRegion}`}</p>
             </div>
           </div>
+          <EditProfileButton />
 
-          {/* About Section */}
-          <div className="mt-6">
-            <h3 className="font-bold text-lg">About</h3>
-            <p className="text-gray-600 mt-2">
-              Experienced Software Engineer with a demonstrated history of
-              working in the industry. Skilled in Full Stack Development,
-              DevOps, and Cloud Technologies.
-            </p>
-          </div>
-
-          {/* Experience Section */}
-          <div className="mt-6">
-            <h3 className="font-bold text-lg">Experience</h3>
-            <div className="mt-4">
-              <h4 className="text-md font-bold">Software Engineer</h4>
-              <p className="text-gray-600">Tech Company - City, Country</p>
-              <p className="text-gray-600">June 2018 - Present</p>
-              <ul className="list-disc list-inside text-gray-600 mt-2">
-                <li>
-                  Developed and maintained web applications using React and
-                  Node.js.
-                </li>
-                <li>Implemented CI/CD pipelines for automated deployments.</li>
-                {/* Add more experience points as needed */}
-              </ul>
+          <section className="mt-8">
+            <h2 className="text-xl font-semibold mb-4">Contact Information</h2>
+            <div className="grid grid-cols-2 gap-6">
+              <div>
+                <h3 className="font-semibold">Phone Number</h3>
+                <p>
+                  {profileData.number} ({profileData.phoneType})
+                </p>
+              </div>
+              <div>
+                <h3 className="font-semibold">Email</h3>
+                <p>{profileData.email}</p>
+              </div>
+              <div>
+                <h3 className="font-semibold">Address</h3>
+                <p>{profileData.address}</p>
+              </div>
+              <div>
+                <h3 className="font-semibold">City / Postal Code</h3>
+                <p>{`${profileData.city}, ${profileData.postalCode}`}</p>
+              </div>
             </div>
-          </div>
+          </section>
 
-          {/* Education Section */}
-          <div className="mt-6">
-            <h3 className="font-bold text-lg">Education</h3>
-            <div className="mt-4">
-              <h4 className="text-md font-bold">
-                Bachelor of Science in Computer Science
-              </h4>
-              <p className="text-gray-600">University Name - City, Country</p>
-              <p className="text-gray-600">2014 - 2018</p>
+          <section className="mt-8">
+            <h2 className="text-xl font-semibold mb-4">Professional Information</h2>
+            <div className="grid grid-cols-2 gap-6">
+              <div>
+                <h3 className="font-semibold">LinkedIn</h3>
+                <p>
+                  <a href={profileData.linkedIn} target="_blank" rel="noopener noreferrer">
+                    {profileData.linkedIn}
+                  </a>
+                </p>
+              </div>
+              <div>
+                <h3 className="font-semibold">GitHub</h3>
+                <p>
+                  <a href={profileData.github} target="_blank" rel="noopener noreferrer">
+                    {profileData.github}
+                  </a>
+                </p>
+              </div>
+              <div>
+                <h3 className="font-semibold">Portfolio</h3>
+                <p>
+                  <a href={profileData.portfolio} target="_blank" rel="noopener noreferrer">
+                    {profileData.portfolio}
+                  </a>
+                </p>
+              </div>
             </div>
-          </div>
+          </section>
+
+          <section className="mt-8">
+            <h2 className="text-xl font-semibold mb-4">Documents</h2>
+            <div className="grid grid-cols-2 gap-6">
+              <div>
+                <h3 className="font-semibold">Resume</h3>
+                <p>
+                  <a href={profileData.resume} target="_blank" rel="noopener noreferrer">
+                    View Resume
+                  </a>
+                </p>
+              </div>
+              <div>
+                <h3 className="font-semibold">Cover Letter</h3>
+                <p>
+                  <a href={profileData.coverLetter} target="_blank" rel="noopener noreferrer">
+                    View Cover Letter
+                  </a>
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <section className="mt-8">
+            <h2 className="text-xl font-semibold mb-4">Additional Information</h2>
+            <div>
+              <h3 className="font-semibold">Birthday</h3>
+              <p>{profileData.birthday}</p>
+            </div>
+          </section>
         </div>
       </div>
     </>

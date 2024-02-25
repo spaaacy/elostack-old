@@ -51,9 +51,10 @@ const EditProfile = () => {
 
   useEffect(() => {
     const fetchProfileData = async () => {
-      if (session?.user?.id) {
+      const userId = session?.data.session?.user.id;
+      if (userId) {
         try {
-          const { data, error } = await supabase.from("profiles").select("*").eq("user_id", session.user.id).single();
+          const { data, error } = await supabase.from("profiles").select("*").eq("user_id", userId).single();
 
           if (error) throw error;
 
@@ -87,20 +88,22 @@ const EditProfile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const userId = session?.data.session?.user.id;
 
     // Check for a valid session and user ID before proceeding
-    if (session?.user?.id) {
+    if (userId) {
       try {
-        const { error } = await supabase
-          .from("profiles")
-          .update({ ...formData })
-          .eq("user_id", session.user.id);
-
-        if (error) throw error;
-
+        const response = await fetch("/api/user/edit-profile", {
+          method: "POST",
+          body: JSON.stringify({
+            ...formData,
+            user_id: userId,
+          }),
+        });
+        console.log(response);
         // Handle successful profile update, e.g., redirecting the user or showing a success message
         console.log("Profile updated successfully");
-        router.push("/profile");
+        // router.push("/profile");
       } catch (error) {
         console.error("Error updating profile:", error.message);
       }

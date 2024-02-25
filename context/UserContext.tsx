@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { AuthError, Session, createClient } from "@supabase/supabase-js";
 
 export type session =
@@ -25,13 +25,25 @@ export type session =
 
 export interface UserContextType {
   session: session;
+  supabase: any;
 }
 
 export const UserContext = React.createContext<UserContextType | null>(null);
 
-export const UserProvider: React.FC<{ children: React.ReactNode }> = async ({ children }) => {
-  const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
-  const session = await supabase.auth.getSession();
+export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [session, setSession] = useState();
+  const [supabase, setSupabase] = useState();
 
-  return <UserContext.Provider value={{ session }}>{children}</UserContext.Provider>;
+  useEffect(() => {
+    const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
+    setSupabase(supabase);
+    fetchSession(supabase);
+  }, []);
+
+  const fetchSession = async (supabase) => {
+    const session = await supabase.auth.getSession();
+    setSession(session);
+  };
+
+  return <UserContext.Provider value={{ session, supabase }}>{children}</UserContext.Provider>;
 };

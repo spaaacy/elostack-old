@@ -4,7 +4,7 @@ import { UserContext, UserContextType } from "@/context/UserContext";
 import React, { FC, useState } from "react";
 
 const UserAccountNav = () => {
-  // const { session } = React.useContext(UserContext) as UserContextType;
+  const { session } = React.useContext(UserContext) as UserContextType;
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
 

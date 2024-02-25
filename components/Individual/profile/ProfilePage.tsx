@@ -2,10 +2,12 @@
 import Head from "next/head";
 import EditProfileButton from "./EditProfileButton";
 import { useStore } from "./store";
-import { useEffect } from "react";
-import { supabase } from "./supabaseClient";
+import React, { useEffect } from "react";
+import { UserContext, UserContextType } from "@/context/UserContext";
 
 const ProfilePage = () => {
+  const { session, supabase } = React.useContext(UserContext) as UserContextType;
+
   const { profileData, setProfileData } = useStore();
 
   useEffect(() => {
@@ -13,6 +15,7 @@ const ProfilePage = () => {
       if (session) {
         const { user } = session;
         // Fetch profile data from Supabase using user.id
+        // TODO: Fix this
         const { data, error } = await supabase.from("profiles").select("*").eq("user_id", user.id).single();
 
         if (data) {

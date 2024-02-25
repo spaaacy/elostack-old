@@ -2,10 +2,10 @@ import SignUpForm from "../../../components/Individual/registration/SignUpForm";
 import Title from "../../../components/Individual/registration/Title";
 
 const SignUpPage = () => (
-  <div className="flex h-screen">
+  <main className="flex h-screen">
     <Title />
     <SignUpForm />
-  </div>
+  </main>
 );
 
 export default SignUpPage;

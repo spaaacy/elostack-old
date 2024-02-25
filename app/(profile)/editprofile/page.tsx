@@ -1,12 +1,12 @@
-import AccountPage from "@/components/Individual/profile/EditProfile";
+import EditProfile from "@/components/Individual/profile/EditProfile";
 import NavBar from "@/components/NavBar";
 const Accounts = () => (
-  <>
+  <main>
     <NavBar />
     <div className="flex h-screen">
-      <AccountPage />
+      <EditProfile />
     </div>
-  </>
+  <main/>
 );
 
 export default Accounts;

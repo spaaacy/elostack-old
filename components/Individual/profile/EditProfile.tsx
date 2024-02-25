@@ -1,7 +1,7 @@
 "use client";
-import { useState, useEffect, ChangeEvent, FormEvent } from "react";
+import React, { useState, useEffect, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "./supabaseClient";
+import { UserContext, UserContextType } from "@/context/UserContext";
 
 interface FormData {
   firstName: string;
@@ -41,7 +41,9 @@ const initialFormData: FormData = {
   github: "",
 };
 
-const AccountPage = () => {
+const EditProfile = () => {
+  const { session, supabase } = React.useContext(UserContext) as UserContextType;
+
   const isLoadingSession = status === "loading";
   const router = useRouter();
   const [formData, setFormData] = useState<FormData>(initialFormData);
@@ -368,4 +370,4 @@ const AccountPage = () => {
   );
 };
 
-export default AccountPage;
+export default EditProfile;

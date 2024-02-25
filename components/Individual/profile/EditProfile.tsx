@@ -2,6 +2,7 @@
 import React, { useState, useEffect, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
 import { UserContext, UserContextType } from "@/context/UserContext";
+import Loader from "@/components/ui/Loader";
 
 interface FormData {
   firstName: string;
@@ -42,48 +43,33 @@ const initialFormData: FormData = {
 };
 
 const EditProfile = () => {
-  const { session, supabase } = React.useContext(UserContext) as UserContextType;
+  const { session, fetchProfileData } = React.useContext(UserContext) as UserContextType;
 
-  const isLoadingSession = status === "loading";
   const router = useRouter();
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [loadingData, setLoadingData] = useState(true);
 
-  useEffect(() => {
-    const fetchProfileData = async () => {
-      const userId = session?.data.session?.user.id;
-      if (userId) {
-        try {
-          const { data, error } = await supabase.from("profiles").select("*").eq("user_id", userId).single();
-
-          if (error) throw error;
-
-          // Update form data with the fetched profile data
-          setFormData(data);
-        } catch (error) {
-          console.error("Error fetching profile:", error.message);
-        } finally {
-          setLoadingData(false); // Data is loaded, regardless of the outcome
-        }
-      } else {
-        console.log("Session not loaded or user ID undefined");
-        setLoadingData(false);
-      }
-    };
-
-    // Fetch profile data only if the session is not in a loading state
-    if (!isLoadingSession) {
-      fetchProfileData();
-    }
-  }, [session, isLoadingSession]);
-
-  if (isLoadingSession || loadingData) {
-    return <div>Loading...</div>;
-  }
-
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  useEffect(() => {
+    // Fetch profile data only if the session is not in a loading state
+    if (session) {
+      fetchUser();
+    }
+  }, [session]);
+
+  const fetchUser = async () => {
+    const userId = session?.data.session?.user.id;
+    const data = await fetchProfileData(userId);
+    if (data) {
+      setFormData(data);
+      setLoadingData(false);
+    } else {
+      router.push("/signin");
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -93,27 +79,31 @@ const EditProfile = () => {
     // Check for a valid session and user ID before proceeding
     if (userId) {
       try {
-        const response = await fetch("/api/user/edit-profile", {
+        await fetch("/api/user/edit-profile", {
           method: "POST",
           body: JSON.stringify({
             ...formData,
             user_id: userId,
           }),
         });
-        console.log(response);
+
         // Handle successful profile update, e.g., redirecting the user or showing a success message
         console.log("Profile updated successfully");
-        // router.push("/profile");
+        router.push(`/profile/${userId}`);
       } catch (error) {
         console.error("Error updating profile:", error.message);
       }
     } else {
-      console.error("Session not loaded or user ID undefined");
+      if (session) {
+        // Check first if session is undefined
+        console.log("Session not loaded or user ID undefined");
+        router.push("/signin");
+      }
     }
   };
 
-  if (isLoadingSession || loadingData) {
-    return <div>Loading...</div>;
+  if (loadingData) {
+    return <Loader />;
   }
 
   return (

@@ -1,46 +1,50 @@
 "use client";
+
 import Head from "next/head";
 import EditProfileButton from "./EditProfileButton";
-import { useStore } from "./store";
-import React, { useEffect } from "react";
+import { profileStore } from "../profileStore";
+import React, { FC, useEffect, useState } from "react";
 import { UserContext, UserContextType } from "@/context/UserContext";
+import { useRouter } from "next/navigation";
+import Loader from "@/components/ui/Loader";
 
-const ProfilePage = () => {
-  const { session, supabase } = React.useContext(
-    UserContext
-  ) as UserContextType;
+interface ProfilePageProps {
+  id: string;
+}
 
-  const { profileData, setProfileData } = useStore();
+const ProfilePage: FC<ProfilePageProps> = ({ id }) => {
+  const { session, fetchProfileData } = React.useContext(UserContext) as UserContextType;
+  const router = useRouter();
+
+  const { profileData, setProfileData } = profileStore();
+  const [loadingData, setLoadingData] = useState(true);
 
   useEffect(() => {
-    const fetchProfileData = async () => {
-      if (session) {
-        const { user } = session;
-        // Fetch profile data from Supabase using user.id
-        // TODO: Fix this
-        const { data, error } = await supabase
-          .from("profiles")
-          .select("*")
-          .eq("user_id", user.id)
-          .single();
+    if (session) {
+      fetchUser();
+    }
+  }, [session]);
 
-        if (data) {
-          setProfileData(data);
-        } else if (error) {
-          console.error("Error fetching profile:", error);
-        }
-      }
-    };
+  const fetchUser = async () => {
+    const data = await fetchProfileData(id);
+    if (data) {
+      setProfileData(data);
+      setLoadingData(false);
+    } else {
+      router.push("/signin");
+    }
+  };
 
-    fetchProfileData();
-  }, [session, setProfileData]);
+  if (loadingData) {
+    return <Loader />;
+  }
 
   return (
-    <>
+    <main className="flex-1 bg-gray-100">
       <Head>
         <title>{`${profileData.firstName}'s Profile`}</title>
       </Head>
-      <div className="bg-gray-100 min-h-screen w-[120rem]">
+      <div className="">
         <div className="container mx-auto p-5">
           <div className="bg-white shadow rounded-lg mb-6">
             {/* Header Section */}
@@ -61,9 +65,7 @@ const ProfilePage = () => {
                     <div className="mt-2 flex items-center text-sm text-gray-500">
                       {profileData.city}, {profileData.countryRegion}
                     </div>
-                    <div className="mt-2 flex items-center text-sm text-gray-500">
-                      {profileData.pronouns}
-                    </div>
+                    <div className="mt-2 flex items-center text-sm text-gray-500">{profileData.pronouns}</div>
                   </div>
                 </div>
 
@@ -73,15 +75,11 @@ const ProfilePage = () => {
 
             {/* Contact Information Section */}
             <div className="px-4 py-5 sm:p-6">
-              <h3 className="text-lg leading-6 font-medium text-gray-900">
-                Contact Information
-              </h3>
+              <h3 className="text-lg leading-6 font-medium text-gray-900">Contact Information</h3>
               <dl className="mt-2 grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
                 <div className="sm:col-span-1">
                   <dt className="text-sm font-medium text-gray-500">Email</dt>
-                  <dd className="mt-1 text-sm text-gray-900">
-                    {profileData.email}
-                  </dd>
+                  <dd className="mt-1 text-sm text-gray-900">{profileData.email}</dd>
                 </div>
                 <div className="sm:col-span-1">
                   <dt className="text-sm font-medium text-gray-500">Phone</dt>
@@ -91,23 +89,17 @@ const ProfilePage = () => {
                 </div>
                 <div className="sm:col-span-2">
                   <dt className="text-sm font-medium text-gray-500">Address</dt>
-                  <dd className="mt-1 text-sm text-gray-900">
-                    {profileData.address}
-                  </dd>
+                  <dd className="mt-1 text-sm text-gray-900">{profileData.address}</dd>
                 </div>
               </dl>
             </div>
 
             {/* Professional Information Section */}
             <div className="border-t border-gray-200 px-4 py-5 sm:p-6">
-              <h3 className="text-lg leading-6 font-medium text-gray-900">
-                Professional Information
-              </h3>
+              <h3 className="text-lg leading-6 font-medium text-gray-900">Professional Information</h3>
               <dl className="mt-2 grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
                 <div className="sm:col-span-1">
-                  <dt className="text-sm font-medium text-gray-500">
-                    LinkedIn
-                  </dt>
+                  <dt className="text-sm font-medium text-gray-500">LinkedIn</dt>
                   <dd className="mt-1 text-sm text-gray-900">
                     <a
                       href={profileData.linkedIn}
@@ -133,9 +125,7 @@ const ProfilePage = () => {
                   </dd>
                 </div>
                 <div className="sm:col-span-2">
-                  <dt className="text-sm font-medium text-gray-500">
-                    Portfolio
-                  </dt>
+                  <dt className="text-sm font-medium text-gray-500">Portfolio</dt>
                   <dd className="mt-1 text-sm text-gray-900">
                     <a
                       href={profileData.portfolio}
@@ -152,9 +142,7 @@ const ProfilePage = () => {
 
             {/* Documents Section */}
             <div className="border-t border-gray-200 px-4 py-5 sm:p-6">
-              <h3 className="text-lg leading-6 font-medium text-gray-900">
-                Documents
-              </h3>
+              <h3 className="text-lg leading-6 font-medium text-gray-900">Documents</h3>
               <dl className="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {/* Resume Section */}
                 <div>
@@ -172,9 +160,7 @@ const ProfilePage = () => {
                 </div>
                 {/* Cover Letter Section */}
                 <div>
-                  <dt className="text-sm font-medium text-gray-500">
-                    Cover Letter
-                  </dt>
+                  <dt className="text-sm font-medium text-gray-500">Cover Letter</dt>
                   <dd className="mt-1 text-sm text-gray-900">
                     <a
                       href={profileData.coverLetter}
@@ -191,24 +177,18 @@ const ProfilePage = () => {
 
             {/* Additional Information Section */}
             <div className="border-t border-gray-200 px-4 py-5 sm:p-6">
-              <h3 className="text-lg leading-6 font-medium text-gray-900">
-                Additional Information
-              </h3>
+              <h3 className="text-lg leading-6 font-medium text-gray-900">Additional Information</h3>
               <dl className="mt-2">
                 <div>
-                  <dt className="text-sm font-medium text-gray-500">
-                    Birthday
-                  </dt>
-                  <dd className="mt-1 text-sm text-gray-900">
-                    {profileData.birthday}
-                  </dd>
+                  <dt className="text-sm font-medium text-gray-500">Birthday</dt>
+                  <dd className="mt-1 text-sm text-gray-900">{profileData.birthday}</dd>
                 </div>
               </dl>
             </div>
           </div>
         </div>
       </div>
-    </>
+    </main>
   );
 };
 

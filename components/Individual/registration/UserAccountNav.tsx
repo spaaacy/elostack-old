@@ -4,15 +4,22 @@ import { UserContext, UserContextType } from "@/context/UserContext";
 import React, { FC, useState } from "react";
 
 const UserAccountNav = () => {
-  const { session } = React.useContext(UserContext) as UserContextType;
+  const { session, supabase } = React.useContext(UserContext) as UserContextType;
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
   const handleSignOut = async () => {
-    window.location.reload(); // Refresh the page to update the session state
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error(error);
+    } else {
+      window.location.reload(); // Refresh the page to update the session state
+    }
   };
+
+  console.log(session);
 
   return (
     <div className="relative">
@@ -25,11 +32,14 @@ const UserAccountNav = () => {
       />
       {dropdownOpen && (
         <div className="absolute right-0 mt-2 py-2 w-48 bg-white rounded-md shadow-xl z-20">
-          <a href="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-            Account
+          <a
+            href={`/profile/${session?.data.session?.user.id}`}
+            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+          >
+            Profile
           </a>
-          <a href="/settings" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-            Settings
+          <a href="/dashboard" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+            Dashboard
           </a>
           <button
             onClick={handleSignOut}

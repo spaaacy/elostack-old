@@ -1,5 +1,5 @@
 import NavBar from "@/components/NavBar";
-import Feedback from "@/components/Individual/feedback/feedback";
+import Feedback from "@/components/individual/feedback/Feedback";
 
 const Page = async () => {
   return (

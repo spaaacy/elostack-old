@@ -1,5 +1,6 @@
 import NavBar from "@/components/NavBar";
 import JobListing from "@/components/Individual/joblisting/JobListing";
+import Footer from "@/components/Footer";
 
 const Page = async () => {
   return (
@@ -8,6 +9,7 @@ const Page = async () => {
       <div>
         <JobListing />
       </div>
+      <Footer />
     </>
   );
 };

@@ -1,5 +1,5 @@
 import NavBar from "@/components/NavBar";
-import Applications from "@/components/Individual/applications/track-applications";
+import Applications from "@/components/individual/applications/TrackApplications";
 
 const Page = async () => {
   return (

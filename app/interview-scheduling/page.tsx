@@ -1,5 +1,6 @@
+import Footer from "@/components/Footer";
 import NavBar from "@/components/NavBar";
-import Scheduling from "@/components/Individual/interview-scheduling/interview-scheduling";
+import Scheduling from "@/components/individual/interview-scheduling/InterviewScheduling";
 
 const Page = async () => {
   return (

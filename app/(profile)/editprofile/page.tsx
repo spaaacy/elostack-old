@@ -6,7 +6,7 @@ const Accounts = () => (
     <div className="flex h-screen">
       <EditProfile />
     </div>
-  <main/>
+  </main>
 );
 
 export default Accounts;

@@ -5,7 +5,7 @@ const Page = async () => {
     <main>
       <NavBar />
       <div>Welcome to admin</div>
-    <main/>
+    </main>
   );
 };
 

@@ -1,89 +1,107 @@
 "use client";
+import React, { useEffect } from "react";
 import AOS from "aos";
-import "aos/dist/aos.css"; // Import AOS styles
-import { useEffect } from "react";
+import "aos/dist/aos.css";
+import { FaLightbulb, FaRocket, FaHandsHelping } from "react-icons/fa"; // Icons for steps
 
-const HowItWorksSection = () => {
+const HowItWorksPage: React.FC = () => {
   useEffect(() => {
     AOS.init({
-      duration: 1000, // Animation duration
-      once: true, // Run animations only once
+      duration: 1000,
+      easing: "ease-in-out",
+      once: true,
+      mirror: false,
     });
   }, []);
 
-  return (
-    <div className="py-16 bg-white">
-      <div className="max-w-7xl mx-auto px-4">
-        <h2
-          className="text-4xl font-bold text-center text-black mb-12"
-          data-aos="fade-up"
-        >
-          How It Works
-        </h2>
-        <div className="grid md:grid-cols-2 gap-12">
-          {/* For Companies */}
-          <div className="space-y-6" data-aos="fade-right">
-            <h3 className="text-2xl font-semibold text-center text-white mb-6">
-              For Companies
-            </h3>
-            <div className="space-y-4">
-              {[
-                "Post Job Openings",
-                "Browse Candidates",
-                "Connect Directly",
-              ].map((step, index) => (
-                <div
-                  key={index}
-                  className="bg-white p-6 rounded-lg border border-gray-300 shadow-sm hover:scale-105 transform transition-transform duration-300 ease-in-out"
-                >
-                  <h4 className="font-semibold text-lg mb-2">
-                    {index + 1}. {step}
-                  </h4>
-                  <p>
-                    {step === "Post Job Openings" &&
-                      "Post your job openings on EloStack and specify your requirements."}
-                    {step === "Browse Candidates" &&
-                      "Browse through our pool of pre-evaluated candidates."}
-                    {step === "Connect Directly" &&
-                      "Select the candidates who meet your criteria and connect with them directly."}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
+  const steps = [
+    {
+      icon: <FaLightbulb className="text-yellow-500" size={30} />,
+      title: "Discover & Plan",
+      description:
+        "Embark on a journey of discovery to tailor a strategy that aligns with your vision and objectives.",
+      highlights: [
+        "- Comprehensive Needs Analysis",
+        "- Custom Strategy Development",
+        "- Setting Measurable Goals",
+      ],
+      aos: "fade-up-right",
+    },
+    {
+      icon: <FaRocket className="text-red-500" size={30} />,
+      title: "Launch & Execute",
+      description:
+        "With precision and agility, we deploy your bespoke strategy, harnessing cutting-edge tools for peak performance.",
+      highlights: [
+        "- Precision Execution",
+        "- State-of-the-Art Tools",
+        "- Continuous Monitoring & Updates",
+      ],
+      aos: "fade-up",
+      delay: 100,
+    },
+    {
+      icon: <FaHandsHelping className="text-green-500" size={30} />,
+      title: "Support & Grow",
+      description:
+        "Our commitment to your growth is unwavering, with adaptive support and optimization to propel you forward.",
+      highlights: [
+        "- Dedicated Ongoing Support",
+        "- Performance Optimization",
+        "- Growth and Scaling Strategies",
+      ],
+      aos: "fade-up-left",
+      delay: 200,
+    },
+    // Add more steps as needed
+  ];
 
-          {/* For Candidates */}
-          <div className="space-y-6" data-aos="fade-left">
-            <h3 className="text-2xl font-semibold text-center text-white mb-6">
-              For Candidates
-            </h3>
-            <div className="space-y-4">
-              {["Sign Up", "Receive Scores", "Get Discovered"].map(
-                (step, index) => (
-                  <div
-                    key={index}
-                    className="bg-white p-6 rounded-lg border border-gray-300 shadow-sm hover:scale-105 transform transition-transform duration-300 ease-in-out"
-                  >
-                    <h4 className="font-semibold text-lg mb-2">
-                      {index + 1}. {step}
-                    </h4>
-                    <p>
-                      {step === "Sign Up" &&
-                        "Sign up and complete your technical interviews with EloStack."}
-                      {step === "Receive Scores" &&
-                        "Receive your scores and become part of our candidate pool."}
-                      {step === "Get Discovered" &&
-                        "Get discovered by top companies looking for your skills."}
-                    </p>
+  return (
+    <section className="text-gray-600 body-font">
+      <div className="container px-5 py-24 mx-auto">
+        <div className="text-center mb-20">
+          <h1
+            className=" text-5xl font-bold title-font mb-4 text-blueprimary"
+            data-aos="zoom-in"
+            style={{ textShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)" }}
+          >
+            How EloStack Works
+          </h1>
+          <p className=" leading-relaxed xl:w-2/4  text-black text-xl lg:w-3/4 mx-auto">
+            A step-by-step guide to our process, designed to ensure your
+            success.
+          </p>
+        </div>
+        <div className="flex flex-wrap -m-4">
+          {steps.map((step, index) => (
+            <div
+              className="p-4 md:w-1/3"
+              key={index}
+              data-aos={step.aos}
+              data-aos-delay={step.delay}
+            >
+              <div className="h-full bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 ease-in-out transform hover:-translate-y-2 hover:scale-105">
+                <div className="p-6">
+                  <div className="flex items-center space-x-3 mb-4">
+                    {step.icon}
+                    <h2 className="text-xl font-semibold text-gray-900">
+                      {step.title}
+                    </h2>
                   </div>
-                )
-              )}
+                  <p className="leading-relaxed mb-3">{step.description}</p>
+                  {step.highlights.map((highlight, i) => (
+                    <p key={i} className="text-gray-700 mb-2">
+                      {highlight}
+                    </p>
+                  ))}
+                </div>
+              </div>
             </div>
-          </div>
+          ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
-export default HowItWorksSection;
+export default HowItWorksPage;

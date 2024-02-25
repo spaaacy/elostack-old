@@ -3,9 +3,9 @@ import React from "react";
 
 const HeroSection = () => {
   return (
-    <section className="flex flex-col items-center justify-center px-6 text-center mt-[2rem] bg-white text-blue-600">
+    <section className="flex flex-col items-center justify-center px-6 text-center bg-white text-blueprimary">
       <div className="space-y-6">
-        <h1 className="text-5xl  w-[70rem] font-bold md:text-6xl">
+        <h1 className="text-5xl  w-[70rem] font-bold md:text-6xl mt-[2rem]">
           Revolutionize Your Hiring Process with EloStack
         </h1>
         <p className="text-lg font-bold text-black mx-auto">

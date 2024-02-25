@@ -9,7 +9,7 @@ const NavBar = () => {
   const { session } = React.useContext(UserContext) as UserContextType;
 
   return (
-    <nav className="px-10 py-4 flex justify-between items-center">
+    <nav className="px-10 py-4 flex justify-between items-center bg-white">
       <Link
         href={"/"}
         className="text-3xl font-bold font-roboto text-blueprimary"

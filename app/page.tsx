@@ -7,7 +7,7 @@ import HowItWorks from "@/components/Individual/landing/HowItWorks";
 import BenefitsSection from "@/components/Individual/landing/BenefitsSection";
 import TestimonialsSection from "@/components/Individual/landing/TestimonialsSection";
 import CallToActionSection from "@/components/Individual/landing/CallToActionSection";
-
+import FAQ from "@/components/Individual/landing/FAQ";
 const Home: NextPage = () => {
   return (
     <>
@@ -27,6 +27,7 @@ const Home: NextPage = () => {
         <HowItWorks />
         <BenefitsSection />
         <TestimonialsSection />
+        <FAQ />
         <CallToActionSection />
       </main>
       <Footer />

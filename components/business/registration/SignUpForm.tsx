@@ -63,7 +63,7 @@ const SignUpForm = () => {
     });
 
     if (data.user) {
-      router.push("/indvidual-signin");
+      router.push("/business-signin");
     } else if (error) {
       console.error("Registration failed!");
     }
@@ -223,7 +223,7 @@ const SignUpForm = () => {
         <div className="flex items-center justify-center space-x-2 mt-4">
           <span className="text-black">Already have an account?</span>
           <a
-            href="/indvidual-signin"
+            href="/business-signin"
             className="text-blueprimary hover:text-blue-900 font-bold focus:outline-none focus:shadow-outline"
           >
             Sign in

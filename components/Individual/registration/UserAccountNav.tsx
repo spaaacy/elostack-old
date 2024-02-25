@@ -19,6 +19,8 @@ const UserAccountNav = () => {
     }
   };
 
+  console.log(session);
+
   return (
     <div className="relative">
       {/* TODO: Fetch profile first for image */}
@@ -30,11 +32,14 @@ const UserAccountNav = () => {
       />
       {dropdownOpen && (
         <div className="absolute right-0 mt-2 py-2 w-48 bg-white rounded-md shadow-xl z-20">
-          <a href="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-            Account
+          <a
+            href={`/profile/${session?.data.session?.user.id}`}
+            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+          >
+            Profile
           </a>
-          <a href="/settings" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-            Settings
+          <a href="/dashboard" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+            Dashboard
           </a>
           <button
             onClick={handleSignOut}

@@ -1,11 +1,16 @@
+"use client";
+
 import ProfilePage from "@/components/Individual/profile/ProfilePage";
 import NavBar from "@/components/NavBar";
+import { useParams } from "next/navigation";
 const Profiles = () => {
+  const { id } = useParams();
+
   return (
-    <main>
+    <main className="flex flex-col flex-1">
       <NavBar />
-      <div className="flex h-screen">
-        <ProfilePage />
+      <div className="flex flex-1">
+        <ProfilePage id={id} />
       </div>
     </main>
   );

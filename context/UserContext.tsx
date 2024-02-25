@@ -41,8 +41,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     fetchSession(supabase);
   }, []);
 
-  const fetchProfileData = async () => {
-    const userId = session?.data.session?.user.id;
+  const fetchProfileData = async (userId) => {
     if (userId) {
       try {
         const { data, error } = await supabase?.from("profiles").select("*").eq("user_id", userId).single();

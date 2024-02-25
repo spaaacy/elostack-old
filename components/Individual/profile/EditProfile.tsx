@@ -62,7 +62,8 @@ const EditProfile = () => {
   }, [session]);
 
   const fetchUser = async () => {
-    const data = await fetchProfileData();
+    const userId = session?.data.session?.user.id;
+    const data = await fetchProfileData(userId);
     if (data) {
       setFormData(data);
       setLoadingData(false);

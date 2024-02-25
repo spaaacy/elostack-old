@@ -1,13 +1,18 @@
 "use client";
+
 import Head from "next/head";
 import EditProfileButton from "./EditProfileButton";
 import { profileStore } from "./profileStore";
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { UserContext, UserContextType } from "@/context/UserContext";
 import { useRouter } from "next/navigation";
 import Loader from "@/components/ui/Loader";
 
-const ProfilePage = () => {
+interface ProfilePageProps {
+  id: string;
+}
+
+const ProfilePage: FC<ProfilePageProps> = ({ id }) => {
   const { session, fetchProfileData } = React.useContext(UserContext) as UserContextType;
   const router = useRouter();
 
@@ -21,7 +26,7 @@ const ProfilePage = () => {
   }, [session]);
 
   const fetchUser = async () => {
-    const data = await fetchProfileData();
+    const data = await fetchProfileData(id);
     if (data) {
       setProfileData(data);
       setLoadingData(false);

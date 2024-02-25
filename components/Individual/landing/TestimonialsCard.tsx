@@ -6,7 +6,6 @@ import "slick-carousel/slick/slick-theme.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
-
 // Define the Testimonial type
 type Testimonial = {
   id: number;
@@ -106,7 +105,7 @@ const TestimonialCard: React.FC = () => {
 
   return (
     <div className="testimonial-slider-container" data-aos="zoom-in">
-      <h2 className="text-center text-5xl mt-[5rem] mb-16 font-semibold">
+      <h2 className="text-center text-5xl mt-[5rem] mb-16 font-semibold text-blueprimary">
         What our clients say
       </h2>
       <Slider ref={sliderRef} {...settings}>

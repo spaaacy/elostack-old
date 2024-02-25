@@ -43,7 +43,7 @@ const initialFormData: FormData = {
 };
 
 const EditProfile = () => {
-  const { session, supabase, fetchProfileData } = React.useContext(UserContext) as UserContextType;
+  const { session, fetchProfileData } = React.useContext(UserContext) as UserContextType;
 
   const router = useRouter();
   const [formData, setFormData] = useState<FormData>(initialFormData);
@@ -89,7 +89,7 @@ const EditProfile = () => {
 
         // Handle successful profile update, e.g., redirecting the user or showing a success message
         console.log("Profile updated successfully");
-        router.push("/profile");
+        router.push(`/profile/${userId}`);
       } catch (error) {
         console.error("Error updating profile:", error.message);
       }

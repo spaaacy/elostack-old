@@ -36,10 +36,10 @@ const UserAccountNav = () => {
             href={`/profile/${session?.data.session?.user.id}`}
             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
           >
-            Account
+            Profile
           </a>
-          <a href="/editprofile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-            Settings
+          <a href="/dashboard" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+            Dashboard
           </a>
           <button
             onClick={handleSignOut}

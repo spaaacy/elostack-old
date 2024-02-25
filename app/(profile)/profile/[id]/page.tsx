@@ -7,9 +7,9 @@ const Profiles = () => {
   const { id } = useParams();
 
   return (
-    <main>
+    <main className="flex flex-col flex-1">
       <NavBar />
-      <div className="flex h-screen">
+      <div className="flex flex-1">
         <ProfilePage id={id} />
       </div>
     </main>

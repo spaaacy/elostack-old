@@ -2,7 +2,7 @@
 
 import Head from "next/head";
 import EditProfileButton from "./EditProfileButton";
-import { profileStore } from "./profileStore";
+import { profileStore } from "../profileStore";
 import React, { FC, useEffect, useState } from "react";
 import { UserContext, UserContextType } from "@/context/UserContext";
 import { useRouter } from "next/navigation";
@@ -40,11 +40,11 @@ const ProfilePage: FC<ProfilePageProps> = ({ id }) => {
   }
 
   return (
-    <>
+    <main className="flex-1 bg-gray-100">
       <Head>
         <title>{`${profileData.firstName}'s Profile`}</title>
       </Head>
-      <div className="bg-gray-100 min-h-screen w-[120rem]">
+      <div className="">
         <div className="container mx-auto p-5">
           <div className="bg-white shadow rounded-lg mb-6">
             {/* Header Section */}
@@ -188,7 +188,7 @@ const ProfilePage: FC<ProfilePageProps> = ({ id }) => {
           </div>
         </div>
       </div>
-    </>
+    </main>
   );
 };
 

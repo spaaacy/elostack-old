@@ -5,11 +5,12 @@ const HeroSection = () => {
   return (
     <section className="flex flex-col items-center justify-center px-6 text-center bg-white text-blueprimary">
       <div className="space-y-6">
-        <h1 className="text-5xl  w-[70rem] font-bold md:text-6xl mt-[2rem]">
+        <h1 className="text-5xl  w-[70rem] font-bold md:text-6xl mt-[3rem]">
           Revolutionize Your Hiring Process with EloStack
         </h1>
         <p className="text-lg font-bold text-black mx-auto">
-          Discover a new era of technical hiring - streamlined, efficient, and transparent.
+          Discover a new era of technical hiring - streamlined, efficient, and
+          transparent.
         </p>
         {/* <div className="flex flex-wrap justify-center gap-4 mt-8">
           <a
@@ -30,7 +31,7 @@ const HeroSection = () => {
           <Image
             src="/hero.png"
             alt="EloStack Platform"
-            width={1000} // Adjusted for better fit
+            width={1050} // Adjusted for better fit
             height={400} // Maintained aspect ratio
             priority
           />

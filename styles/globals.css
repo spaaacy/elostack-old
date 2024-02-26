@@ -185,3 +185,6 @@ body, html {
 [data-aos="zoom-in"] {
   transition-duration: 1.2s; 
 }
+body, .main-content {
+  padding-top: 64px; /* Adjust based on actual NavBar height */
+}

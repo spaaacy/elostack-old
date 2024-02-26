@@ -7,10 +7,10 @@ import { createClient } from "@supabase/supabase-js";
 
 const FormSchema = z
   .object({
-    username: z
+    fullName: z
       .string()
-      .max(100, "Username too long")
-      .refine((value) => value !== "", "Please enter a username"),
+      .max(100, "Name is too long")
+      .refine((value) => value !== "", "Please enter a Full Name"),
     email: z
       .string()
       .email("Please enter a valid email")
@@ -31,7 +31,7 @@ const SignUpForm = () => {
 
   const router = useRouter();
   const [formData, setFormData] = useState({
-    username: "",
+    fullName: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -106,20 +106,20 @@ const SignUpForm = () => {
         className="p-8  bg-gray-100  rounded-lg shadow max-w-md w-full xl:w-1/2 xl:-mt-40 relative"
         onSubmit={handleSubmit}
       >
-        {/* Username Input */}
+        {/* fullName Input */}
         <div className="mb-5">
-          <label htmlFor="username" className="block text-black text-sm font-bold mb-2">
-            Username
+          <label htmlFor="fullName" className="block text-black text-sm font-bold mb-2">
+            Full Name
           </label>
           <input
             type="text"
-            name="username"
-            id="username"
-            value={formData.username}
+            name="fullName"
+            id="fullName"
+            value={formData.fullName}
             onChange={handleInputChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
-          {formErrors.username && <p className="text-red-500 text-xs italic">{formErrors.username}</p>}
+          {formErrors.fullName && <p className="text-red-500 text-xs italic">{formErrors.fullName}</p>}
         </div>
 
         {/* Email Input */}

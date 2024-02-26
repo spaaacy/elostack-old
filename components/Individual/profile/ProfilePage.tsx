@@ -31,7 +31,7 @@ const ProfilePage: FC<ProfilePageProps> = ({ id }) => {
       setProfileData(data);
       setLoadingData(false);
     } else {
-      router.push("/signin");
+      // router.push("/");
     }
   };
 

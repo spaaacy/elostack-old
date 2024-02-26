@@ -89,7 +89,7 @@ const EditProfile = () => {
 
         // Handle successful profile update, e.g., redirecting the user or showing a success message
         console.log("Profile updated successfully");
-        router.push(`/profile/${userId}`);
+        router.push(`/individual/${userId}`);
       } catch (error) {
         console.error("Error updating profile:", error.message);
       }

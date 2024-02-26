@@ -48,7 +48,7 @@ const page = ({}) => {
             <div className="flex justify-between">
               <h1 className="text-3xl font-bold">{listing.title}</h1>
               {/* TODO: only show if same business is logged in */}
-              <Link href={`/business/search-candidates/${listing.id}`} className="outline-button">
+              <Link href={``} className="outline-button">
                 Find candidates
               </Link>
             </div>

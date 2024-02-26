@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import UserAccountNav from "./Individual/registration/UserAccountNav";
-import React from "react";
+import { useContext } from "react";
 import { UserContext, UserContextType } from "@/context/UserContext";
 
 const NavBar = () => {
-  const { session } = React.useContext(UserContext) as UserContextType;
+  const { session } = useContext(UserContext) as UserContextType;
 
   return (
     <nav className="px-10 py-4 flex justify-between items-center bg-white">

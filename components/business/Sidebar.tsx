@@ -2,6 +2,7 @@ import React, { FC } from "react";
 
 export enum SidebarButtonState {
   SearchCandidates,
+  RequestInterview,
   ViewListings,
   Create,
 }
@@ -18,13 +19,18 @@ const Sidebar: FC<SidebarProps> = ({ selectedButton, setSelectedButton }) => {
     <div className="fixed left-4 flex flex-col items-start gap-4">
       <SidebarButton
         sidebarState={{ selectedButton, setSelectedButton }}
+        buttonTitle="View listings"
+        buttonState={SidebarButtonState.ViewListings}
+      />
+      <SidebarButton
+        sidebarState={{ selectedButton, setSelectedButton }}
         buttonTitle="Search for candidates"
         buttonState={SidebarButtonState.SearchCandidates}
       />
       <SidebarButton
         sidebarState={{ selectedButton, setSelectedButton }}
-        buttonTitle="View listings"
-        buttonState={SidebarButtonState.ViewListings}
+        buttonTitle="Request an interview"
+        buttonState={SidebarButtonState.RequestInterview}
       />
       <SidebarButton
         sidebarState={{ selectedButton, setSelectedButton }}

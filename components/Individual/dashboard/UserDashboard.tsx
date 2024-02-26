@@ -9,7 +9,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { profileStore } from "../profileStore";
 import Loader from "@/components/ui/Loader";
 
-const Dashboard: React.FC = () => {
+const UserDashboard: React.FC = () => {
   // Dummy data for demonstration
   const interviewScore = 85;
 
@@ -127,4 +127,4 @@ const Dashboard: React.FC = () => {
   );
 };
 
-export default Dashboard;
+export default UserDashboard;

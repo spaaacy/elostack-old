@@ -13,10 +13,16 @@ const FormSchema = z.object({
   password: z
     .string()
     .refine((value) => value !== "", "Password required")
-    .refine((value) => value.length >= 8, "Password must be at least 8 characters"),
+    .refine(
+      (value) => value.length >= 8,
+      "Password must be at least 8 characters"
+    ),
 });
 const SignInForm = () => {
-  const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
 
   const router = useRouter();
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -49,7 +55,9 @@ const SignInForm = () => {
 
   const unfilledFieldsCount = Object.keys(formErrors).length;
   const baseMarginTop = 19;
-  const socialButtonsMarginTop = `${baseMarginTop + unfilledFieldsCount * 1.1}rem`;
+  const socialButtonsMarginTop = `${
+    baseMarginTop + unfilledFieldsCount * 1.1
+  }rem`;
 
   const onSubmit = async (values: z.infer<typeof FormSchema>) => {
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -70,7 +78,10 @@ const SignInForm = () => {
         onSubmit={handleSubmit}
       >
         <div className="mb-5">
-          <label htmlFor="email" className="block text-black text-sm font-bold mb-2">
+          <label
+            htmlFor="email"
+            className="block text-black text-sm font-bold mb-2"
+          >
             Email
           </label>
           <input
@@ -81,11 +92,16 @@ const SignInForm = () => {
             onChange={handleInputChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
-          {formErrors.email && <p className="text-red-500 text-xs italic">{formErrors.email}</p>}
+          {formErrors.email && (
+            <p className="text-red-500 text-xs italic">{formErrors.email}</p>
+          )}
         </div>
 
         <div className="mb-4 relative">
-          <label htmlFor="password" className="block text-black text-sm font-bold mb-2">
+          <label
+            htmlFor="password"
+            className="block text-black text-sm font-bold mb-2"
+          >
             Password
           </label>
           <input
@@ -96,7 +112,9 @@ const SignInForm = () => {
             onChange={handleInputChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
-          {formErrors.password && <p className="text-red-500 text-xs italic">{formErrors.password}</p>}
+          {formErrors.password && (
+            <p className="text-red-500 text-xs italic">{formErrors.password}</p>
+          )}
           <button
             type="button"
             onClick={togglePasswordVisibility}
@@ -104,9 +122,19 @@ const SignInForm = () => {
             style={{ top: formErrors.password ? "0.9rem" : "1.9rem" }}
           >
             {showPassword ? (
-              <Image src="/Hide.svg" alt="Hide password" width={25} height={25} />
+              <Image
+                src="/Hide.svg"
+                alt="Hide password"
+                width={25}
+                height={25}
+              />
             ) : (
-              <Image src="/Unhide.png" alt="Show password" width={25} height={25} />
+              <Image
+                src="/Unhide.png"
+                alt="Show password"
+                width={25}
+                height={25}
+              />
             )}
           </button>
         </div>
@@ -120,7 +148,7 @@ const SignInForm = () => {
         <div className="flex items-center justify-center space-x-2 mt-4">
           <span className="text-black">Don&apos;t have an account?</span>
           <a
-            href="/signup"
+            href="/individual-signup"
             className="text-blue-500 hover:text-blue-900 font-bold focus:outline-none focus:shadow-outline"
           >
             Sign Up

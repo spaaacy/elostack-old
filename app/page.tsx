@@ -1,25 +1,38 @@
+import type { NextPage } from "next";
+import Head from "next/head";
 import Footer from "@/components/Footer";
 import NavBar from "@/components/NavBar";
-import Link from "next/link";
+import HeroSection from "@/components/Individual/landing/HeroSection";
+import HowItWorks from "@/components/Individual/landing/HowItWorks";
+import BenefitsSection from "@/components/Individual/landing/BenefitsSection";
+import  TestimonialsSection  from "@/components/Individual/landing/TestimonialsCard";
 
-export default function Home() {
+import FAQ from "@/components/Individual/landing/FAQ";
+const Home: NextPage = () => {
   return (
-    <main className="flex flex-col flex-1">
+    <>
       <NavBar />
-      <div className="flex flex-col flex-1 justify-center px-4">
-        <h1 className="mx-auto text-6xl font-bold mt-8 text-center">
-          Connecting developers with employers.
-        </h1>
-        <div className="flex justify-center items-center gap-4 mt-6">
-          <Link href={"/business"} className="outline-button">
-            Businesses
-          </Link>
-          <Link href={"/individual"} className="outline-button">
-            Individuals
-          </Link>
-        </div>
-      </div>
+      <Head>
+        <title>EloStack - Elevate Your Hiring Process</title>
+        <meta
+          name="description"
+          content="EloStack is a job listing and connection platform for software engineering jobs, streamlining the hiring process."
+        />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <main className="flex flex-col">
+        <HeroSection />
+
+        <HowItWorks />
+        <BenefitsSection />
+        <TestimonialsSection />
+        <FAQ />
+
+      </main>
       <Footer />
-    </main>
+    </>
   );
-}
+};
+
+export default Home;

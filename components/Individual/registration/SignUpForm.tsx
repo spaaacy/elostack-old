@@ -46,18 +46,33 @@ const SignUpForm = () => {
   };
 
   const onSubmit = async (values: z.infer<typeof FormSchema>) => {
-    const { data, error } = await supabase.auth.signUp({
-      email: values.email,
-      password: values.password,
-      options: {
-        emailRedirectTo: "https://localhost:3000/",
-      },
-    });
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email: values.email,
+        password: values.password,
+        options: {
+          emailRedirectTo: "https://localhost:3000/",
+        },
+      });
 
-    if (data.user) {
-      router.push("/signin");
-    } else if (error) {
-      console.error("Registration failed!");
+      if (error) throw error;
+
+      const response = await fetch("api/user/create", {
+        method: "POST",
+        body: JSON.stringify({
+          user_id: data.user.id,
+          business: false, // TODO: Change this later to use state of toggle
+        }),
+      });
+
+      if (response.status === 500) {
+        const { error } = await response.json();
+        throw error;
+      }
+
+      router.push("/");
+    } catch (error) {
+      console.error(error);
     }
   };
 

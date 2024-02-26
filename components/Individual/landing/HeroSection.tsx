@@ -9,10 +9,9 @@ const HeroSection = () => {
           Revolutionize Your Hiring Process with EloStack
         </h1>
         <p className="text-lg font-bold text-black mx-auto">
-          Discover a new era of technical hiring - streamlined, efficient, and
-          transparent.
+          Discover a new era of technical hiring - streamlined, efficient, and transparent.
         </p>
-        <div className="flex flex-wrap justify-center gap-4 mt-8">
+        {/* <div className="flex flex-wrap justify-center gap-4 mt-8">
           <a
             href="#discover"
             className="px-6 py-3 text-sm font-semibold text-blue-600 bg-white border border-blue-600 rounded-md shadow hover:bg-gray-50"
@@ -25,7 +24,7 @@ const HeroSection = () => {
           >
             Get In Touch
           </a>
-        </div>
+        </div> */}
         {/* Inline Image Below Buttons */}
         <div className="ml-[4rem]">
           <Image

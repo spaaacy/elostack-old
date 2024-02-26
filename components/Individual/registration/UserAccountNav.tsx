@@ -1,10 +1,10 @@
 "use client";
 
 import { UserContext, UserContextType } from "@/context/UserContext";
-import React, { FC, useState } from "react";
+import { FC, useContext, useState } from "react";
 
 const UserAccountNav = () => {
-  const { session, supabase } = React.useContext(UserContext) as UserContextType;
+  const { session, supabase } = useContext(UserContext) as UserContextType;
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -19,17 +19,18 @@ const UserAccountNav = () => {
     }
   };
 
-  console.log(session);
-
   return (
     <div className="relative">
-      {/* TODO: Fetch profile first for image */}
-      <img
-        onClick={toggleDropdown}
-        src={session.data.image || "/Default_pfp.png"}
-        alt="Profile"
-        className="cursor-pointer rounded-full w-10 h-10"
-      />
+      <div className="flex items-center gap-4">
+        <p className="font-light text-gray-500">{session.data.session.user.email}</p>
+        {/* TODO: Fetch profile first for image */}
+        <img
+          onClick={toggleDropdown}
+          src={session.data.image || "/Default_pfp.png"}
+          alt="Profile"
+          className="cursor-pointer rounded-full w-10 h-10"
+        />
+      </div>
       {dropdownOpen && (
         <div className="absolute right-0 mt-2 py-2 w-48 bg-white rounded-md shadow-xl z-20">
           <a

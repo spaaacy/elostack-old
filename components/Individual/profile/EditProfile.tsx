@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, ChangeEvent } from "react";
+import { useContext, useState, useEffect, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
 import { UserContext, UserContextType } from "@/context/UserContext";
 import Loader from "@/components/ui/Loader";
@@ -43,7 +43,7 @@ const initialFormData: FormData = {
 };
 
 const EditProfile = () => {
-  const { session, fetchProfileData } = React.useContext(UserContext) as UserContextType;
+  const { session, fetchProfileData } = useContext(UserContext) as UserContextType;
 
   const router = useRouter();
   const [formData, setFormData] = useState<FormData>(initialFormData);

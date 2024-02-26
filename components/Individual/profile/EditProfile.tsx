@@ -79,7 +79,7 @@ const EditProfile = () => {
     // Check for a valid session and user ID before proceeding
     if (userId) {
       try {
-        await fetch("/api/user/edit-profile", {
+        await fetch("/api/individual/edit-profile", {
           method: "POST",
           body: JSON.stringify({
             ...formData,

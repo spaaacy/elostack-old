@@ -11,15 +11,20 @@ const Page = () => {
   const { session, user } = useContext(UserContext) as UserContextType;
   const router = useRouter();
 
+  // TODO: Fix this flow
   useEffect(() => {
-    if (session && user) {
+    if (session) {
       if (id !== session.data.session?.user.id) {
-        console.log(user);
-        if (user.business) {
-          // TODO: Check if business is authorized
-          console.log("Business view");
-        } else {
-          router.push("/");
+        // Check if user logged in and interview individual are same
+        if (user) {
+          if (user.business) {
+            // Check if business is logged in
+            // TODO: Check if business is authorized
+            console.log("Business view");
+          } else {
+            console.log("No authorization");
+            // router.push("/");
+          }
         }
       }
     }

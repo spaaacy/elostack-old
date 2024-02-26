@@ -79,7 +79,7 @@ const EditProfile = () => {
     // Check for a valid session and user ID before proceeding
     if (userId) {
       try {
-        await fetch("/api/user/edit-profile", {
+        await fetch("/api/individual/edit-profile", {
           method: "POST",
           body: JSON.stringify({
             ...formData,
@@ -89,7 +89,7 @@ const EditProfile = () => {
 
         // Handle successful profile update, e.g., redirecting the user or showing a success message
         console.log("Profile updated successfully");
-        router.push(`/profile/${userId}`);
+        router.push(`/individual/${userId}`);
       } catch (error) {
         console.error("Error updating profile:", error.message);
       }

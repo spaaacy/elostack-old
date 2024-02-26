@@ -109,7 +109,7 @@ const UserDashboard: React.FC = () => {
           </section>
 
           {/* Recommended Jobs */}
-          <section>
+          {/* <section>
             <h2 className="text-2xl font-semibold text-gray-800 mb-4">Recommended for You</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {recommendedJobs.map((job) => (
@@ -120,7 +120,7 @@ const UserDashboard: React.FC = () => {
                 </div>
               ))}
             </div>
-          </section>
+          </section> */}
         </div>
       </div>
     </main>

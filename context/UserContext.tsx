@@ -50,7 +50,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const fetchUser = async () => {
     const userId = session?.data?.session?.user.id;
     if (userId) {
-      const { data, error } = await supabase.from("users").select("*").eq("user_id", userId).single();
+      const { data, error } = await supabase.from("user").select("*").eq("user_id", userId).single();
       setUser(data);
     }
   };

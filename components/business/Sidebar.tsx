@@ -12,8 +12,6 @@ interface SidebarProps {
   setSelectedButton: React.Dispatch<React.SetStateAction<SidebarButtonState>>;
 }
 
-// TODO: Add icons
-
 const Sidebar: FC<SidebarProps> = ({ selectedButton, setSelectedButton }) => {
   return (
     <div className="fixed left-4 flex flex-col items-start gap-4">

@@ -1,5 +1,6 @@
 "use client";
 import Head from "next/head";
+import Link from "next/link";
 import React, { useState } from "react";
 
 interface Job {
@@ -92,15 +93,11 @@ const JobListings: React.FC = () => {
 
   const filteredJobs = jobs.filter(
     (job) =>
-      (filters.title
-        ? job.title.toLowerCase().includes(filters.title.toLowerCase())
-        : true) &&
+      (filters.title ? job.title.toLowerCase().includes(filters.title.toLowerCase()) : true) &&
       (filters.position ? job.position === filters.position : true) &&
       (!filters.payMin || job.pay.min >= Number(filters.payMin)) &&
       (!filters.payMax || job.pay.max <= Number(filters.payMax)) &&
-      (filters.location
-        ? job.location.toLowerCase().includes(filters.location.toLowerCase())
-        : true)
+      (filters.location ? job.location.toLowerCase().includes(filters.location.toLowerCase()) : true)
   );
 
   return (
@@ -109,13 +106,9 @@ const JobListings: React.FC = () => {
         <title>Job Listings | Your Company</title>
       </Head>
       <div className="container mx-auto p-6">
-        <h1
-          className="text-3xl font-semibold mb-6"
-          style={{ color: "#2B6CB0" }}
-        >
+        <h1 className="text-3xl font-semibold mb-6" style={{ color: "#2B6CB0" }}>
           Job Listings
         </h1>
-
         <div className="flex flex-wrap gap-4 mb-6 items-center">
           {/* Role Filter Dropdown */}
           <select
@@ -177,7 +170,6 @@ const JobListings: React.FC = () => {
             {/* Additional locations */}
           </select>
         </div>
-
         {/* Job Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredJobs.map((job) => (
@@ -185,25 +177,20 @@ const JobListings: React.FC = () => {
               key={job.id}
               className="bg-white rounded-lg border border-gray-300 shadow p-4 hover:shadow-2xl transition duration-300 ease-in-out"
             >
-              <h2
-                className="text-xl font-semibold mb-2"
-                style={{ color: "#2B6CB0" }}
-              >
+              <h2 className="text-xl font-semibold mb-2" style={{ color: "#2B6CB0" }}>
                 {job.title}
               </h2>
               <p className="text-sm text-gray-500 mb-4">{`${job.company} - ${job.position} - ${job.location}`}</p>
               <p className="mb-4">
-                Pay Range: ${job.pay.min.toLocaleString()} - $
-                {job.pay.max.toLocaleString()}
+                Pay Range: ${job.pay.min.toLocaleString()} - ${job.pay.max.toLocaleString()}
               </p>
               <p className="text-sm mb-4">{job.description}</p>
               <div className="flex justify-end space-x-2">
-                <button className="text-blueprimary hover:underline mr-4">
-                  Bookmark
-                </button>
-                <button className="bg-blueprimary text-white px-4 py-2 rounded hover:bg-blue-600">
+                <button className="text-blueprimary hover:underline mr-4">Bookmark</button>
+                {/* TODO: Add actual id later */}
+                <Link href={`listings/${1}`} className="bg-blueprimary text-white px-4 py-2 rounded hover:bg-blue-600">
                   Apply
-                </button>
+                </Link>
               </div>
             </div>
           ))}

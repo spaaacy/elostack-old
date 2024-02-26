@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import { useRef, useEffect } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -63,7 +63,7 @@ const fillerTestimonials: Testimonial[] = [
 ];
 
 const TestimonialCard: React.FC = () => {
-  const sliderRef = React.useRef<Slider | null>(null);
+  const sliderRef = useRef<Slider | null>(null);
 
   useEffect(() => {
     AOS.init({
@@ -89,25 +89,14 @@ const TestimonialCard: React.FC = () => {
   const renderStars = (rating: number) => {
     let stars = [];
     for (let i = 0; i < 5; i++) {
-      stars.push(
-        <i
-          key={i}
-          className={
-            i < rating
-              ? "fas fa-star text-yellow-500"
-              : "far fa-star text-gray-300"
-          }
-        ></i>
-      );
+      stars.push(<i key={i} className={i < rating ? "fas fa-star text-yellow-500" : "far fa-star text-gray-300"}></i>);
     }
     return <div className="flex">{stars}</div>;
   };
 
   return (
     <div className="testimonial-slider-container" data-aos="zoom-in">
-      <h2 className="text-center text-5xl mt-[5rem] mb-16 font-semibold text-blueprimary">
-        What our clients say
-      </h2>
+      <h2 className="text-center text-5xl mt-[5rem] mb-16 font-semibold text-blueprimary">What our clients say</h2>
       <Slider ref={sliderRef} {...settings}>
         {fillerTestimonials.map((testimonial) => (
           <div key={testimonial.id} className="p-4">
@@ -120,33 +109,21 @@ const TestimonialCard: React.FC = () => {
                     alt={`${testimonial.name}'s profile`}
                   />
                   <div className="text-sm">
-                    <p className="text-gray-900 leading-none">
-                      {testimonial.name}
-                    </p>
+                    <p className="text-gray-900 leading-none">{testimonial.name}</p>
                     <p className="text-gray-600">{testimonial.title}</p>
                   </div>
                 </div>
-                <div className="mt-4 mb-2">
-                  {renderStars(testimonial.rating)}
-                </div>
+                <div className="mt-4 mb-2">{renderStars(testimonial.rating)}</div>
                 <p className="text-gray-700 text-base">{testimonial.review}</p>
               </div>
             </div>
           </div>
         ))}
       </Slider>
-      <button
-        onClick={goToPrevious}
-        aria-label="Previous"
-        className="control-btn left-0"
-      >
+      <button onClick={goToPrevious} aria-label="Previous" className="control-btn left-0">
         <i className="fas fa-chevron-left"></i>
       </button>
-      <button
-        onClick={goToNext}
-        aria-label="Next"
-        className="control-btn right-0"
-      >
+      <button onClick={goToNext} aria-label="Next" className="control-btn right-0">
         <i className="fas fa-chevron-right"></i>
       </button>
     </div>

@@ -3,7 +3,7 @@
 import Head from "next/head";
 import EditProfileButton from "./EditProfileButton";
 import { profileStore } from "../profileStore";
-import React, { FC, useEffect, useState } from "react";
+import { useContext, FC, useEffect, useState } from "react";
 import { UserContext, UserContextType } from "@/context/UserContext";
 import { useRouter } from "next/navigation";
 import Loader from "@/components/ui/Loader";
@@ -13,7 +13,7 @@ interface ProfilePageProps {
 }
 
 const ProfilePage: FC<ProfilePageProps> = ({ id }) => {
-  const { session, fetchProfileData } = React.useContext(UserContext) as UserContextType;
+  const { session, fetchProfileData } = useContext(UserContext) as UserContextType;
   const router = useRouter();
 
   const { profileData, setProfileData } = profileStore();
@@ -53,7 +53,7 @@ const ProfilePage: FC<ProfilePageProps> = ({ id }) => {
                 <div className="flex-shrink-0">
                   <div className="h-20 w-20 rounded-full bg-blue-100 flex items-center justify-center">
                     <span className="text-xl font-medium uppercase">
-                      {profileData.firstName[0] + profileData.lastName[0]}
+                      {profileData.firstName + profileData.lastName}
                     </span>
                   </div>
                 </div>

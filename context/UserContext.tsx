@@ -27,6 +27,7 @@ export interface UserContextType {
   session: session;
   supabase: any;
   fetchProfileData: Function;
+  user: any;
 }
 
 export const UserContext = React.createContext<UserContextType | null>(null);
@@ -34,12 +35,25 @@ export const UserContext = React.createContext<UserContextType | null>(null);
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [session, setSession] = useState();
   const [supabase, setSupabase] = useState();
+  const [user, setUser] = useState();
 
   useEffect(() => {
-    const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
-    setSupabase(supabase);
-    fetchSession(supabase);
-  }, []);
+    if (!session) {
+      const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
+      setSupabase(supabase);
+      fetchSession(supabase);
+    } else {
+      fetchUser();
+    }
+  }, [session]);
+
+  const fetchUser = async () => {
+    const userId = session?.data?.session?.user.id;
+    if (userId) {
+      const { data, error } = await supabase.from("users").select("*").eq("user_id", userId).single();
+      setUser(data);
+    }
+  };
 
   const fetchProfileData = async (userId) => {
     if (userId) {
@@ -60,5 +74,5 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setSession(session);
   };
 
-  return <UserContext.Provider value={{ session, supabase, fetchProfileData }}>{children}</UserContext.Provider>;
+  return <UserContext.Provider value={{ session, supabase, fetchProfileData, user }}>{children}</UserContext.Provider>;
 };

@@ -2,23 +2,29 @@
 
 import NavBar from "@/components/NavBar";
 import Loader from "@/components/ui/Loader";
+import { UserContext, UserContextType } from "@/context/UserContext";
 import { JobListing } from "@/types/JobListing";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 const page = ({}) => {
-  const { id } = useParams();
+  const { id: jobListingId } = useParams();
+  const { session, user } = useContext(UserContext) as UserContextType;
   const [jobListing, setJobListing] = useState();
   const [loading, setLoading] = useState(true);
+  const [applied, setApplied] = useState(true);
 
   useEffect(() => {
-    fetchListing();
-  }, []);
+    if (session) {
+      fetchListing();
+      fetchApplication();
+    }
+  }, [session]);
 
   const fetchListing = async () => {
-    const response = await fetch(`/api/job-listing/${id}`, {
+    const response = await fetch(`/api/job-listing/${jobListingId}`, {
       method: "GET",
     });
     const results = await response.json();
@@ -30,6 +36,36 @@ const page = ({}) => {
     }
   };
 
+  const fetchApplication = async () => {
+    const response = await fetch("/api/application/", {
+      method: "POST",
+      body: JSON.stringify({
+        user_id: session.data.session?.user.id,
+        job_listing_id: jobListingId,
+      }),
+    });
+    const result = await response.json();
+    if (response.status !== 200) {
+      setApplied(false);
+    }
+  };
+
+  const handleApply = async () => {
+    const response = await fetch("/api/application/create", {
+      method: "POST",
+      body: JSON.stringify({
+        user_id: session.data.session?.user.id,
+        job_listing_id: jobListingId,
+      }),
+    });
+    if (response.status === 201) {
+      console.log("Application made successfully!");
+    } else {
+      console.error("Application unsuccessful!");
+    }
+    window.location.reload();
+  };
+
   return (
     <main className="flex flex-col flex-1">
       <NavBar />
@@ -38,7 +74,7 @@ const page = ({}) => {
           <Loader />
         </div>
       ) : (
-        <div className="flex flex-col max-width w-full">
+        <div className="flex flex-col max-width w-full py-6">
           <div className="flex">
             {/* <Image
             alt="company-logo"
@@ -54,9 +90,19 @@ const page = ({}) => {
               <div className="flex justify-between">
                 <h1 className="text-3xl font-bold">{jobListing.title}</h1>
                 {/* TODO: only show if same business is logged in */}
-                <Link href={``} className="outline-button">
+                {/* <Link href={``} className="outline-button">
                   Find candidates
-                </Link>
+                </Link> */}
+                {!applied && session?.data?.session?.user && !user?.business ? (
+                  <button onClick={handleApply} className="outline-button">
+                    Apply
+                  </button>
+                ) : (
+                  <div className="flex gap-2 items-center justify-center">
+                    <p className="font-medium">Applied</p>
+                    <Image src={"/done.svg"} alt="done" width={25} height={25} />
+                  </div>
+                )}
               </div>
               <p>{`${jobListing.location}, (${jobListing.remote ? "Remote" : "On-site"})`}</p>
               <p>{`$${jobListing.startingPay}-$${jobListing.endingPay}`}</p>

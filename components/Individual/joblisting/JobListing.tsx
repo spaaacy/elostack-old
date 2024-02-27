@@ -133,7 +133,7 @@ const JobListings: React.FC = () => {
               </p>
               <p className="text-sm mb-4">{job.description}</p>
               <div className="flex justify-end space-x-2">
-                <button className="text-blueprimary hover:underline mr-4">Bookmark</button>
+                {/* <button className="text-blueprimary hover:underline mr-4">Bookmark</button> */}
                 {/* TODO: Add actual id later */}
                 <Link
                   href={`/job-listing/${job.id}`}

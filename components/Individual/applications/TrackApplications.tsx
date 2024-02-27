@@ -2,18 +2,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import Head from "next/head";
 import { UserContext, UserContextType } from "@/context/UserContext";
-
-interface Application {
-  id: number;
-  jobTitle: string;
-  company: string;
-  appliedOn: string; // Date in ISO format for simplicity
-  status: "Applied" | "Interviewing" | "Offered" | "Rejected";
-}
+import Link from "next/link";
 
 const TrackApplications: React.FC = () => {
   const { session } = useContext(UserContext) as UserContextType;
-  const [applications, setApplications] = useState<Application[]>();
+  const [applications, setApplications] = useState();
 
   // Convert ISO date string to a more readable format
   const formatDate = (dateString: string) => {
@@ -39,6 +32,7 @@ const TrackApplications: React.FC = () => {
       });
       if (response.status === 200) {
         const results = await response.json();
+        console.log(results.data);
         setApplications(results.data);
       }
     }
@@ -59,19 +53,19 @@ const TrackApplications: React.FC = () => {
                 <th className="text-left p-4 text-blue-600">Job Title</th>
                 <th className="text-left p-4 text-blue-600">Company</th>
                 <th className="text-left p-4 text-blue-600">Applied On</th>
-                <th className="text-left p-4 text-blue-600">Status</th>
-                <th className="text-left p-4 text-blue-600">Actions</th>
+                {/* <th className="text-left p-4 text-blue-600">Status</th> */}
+                <th className="text-right p-4 text-blue-600">Actions</th>
               </tr>
             </thead>
             <tbody>
-              {console.log(applications)}
+              {/* {console.log(applications)} */}
               {applications &&
                 applications.map((application) => (
                   <tr key={application.id} className="border-b">
-                    <td className="p-4">{application.jobTitle}</td>
-                    <td className="p-4">{application.company}</td>
+                    <td className="p-4">{application.job_listing.title}</td>
+                    <td className="p-4">{application.job_listing.company}</td>
                     <td className="p-4">{formatDate(application.created_at)}</td>
-                    <td
+                    {/* <td
                       className={`p-4 font-semibold ${
                         application.status === "Offered"
                           ? "text-green-600"
@@ -81,11 +75,14 @@ const TrackApplications: React.FC = () => {
                       }`}
                     >
                       {application.status}
-                    </td>
-                    <td className="p-4">
-                      <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded mr-2">
+                    </td> */}
+                    <td className="p-4 flex justify-end">
+                      <Link
+                        href={`/job-listing/${application.job_listing.id}`}
+                        className="text-blueprimary px-4 py-2 rounded mr-2"
+                      >
                         Details
-                      </button>
+                      </Link>
                       <button className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Cancel</button>
                     </td>
                   </tr>

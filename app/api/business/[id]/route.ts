@@ -3,10 +3,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest, res: NextResponse) {
   try {
-    const { userId } = res.params;
-    const { data, error } = await supabase.from("application").select(`* , job_listing("*")`).eq("user_id", userId);
+    const { id } = res.params;
+    const { data: business, error } = await supabase.from("business").select().eq("user_id", id);
     if (error) throw error;
-    return NextResponse.json({ data }, { status: 200 });
+    return NextResponse.json({ business }, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error }, { status: 500 });

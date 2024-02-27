@@ -127,7 +127,7 @@ const FeedbackPage: React.FC = () => {
                   </video>
                 </div>
                 <div className="flex justify-center">
-                  <h2 className="text-3xl font-semibold mb-4 text-blueprimary mt-[2.5rem] text-center mr-[2rem]">
+                  <h2 className="text-4xl font-semibold mb-4 text-blueprimary mt-[2.5rem] text-center mr-[3rem]">
                     Score Card
                   </h2>
                 </div>

@@ -127,7 +127,7 @@ const FeedbackPage: React.FC = () => {
                   </video>
                 </div>
                 <div className="flex justify-center">
-                  <h2 className="text-4xl font-semibold mb-4 text-blueprimary mt-[2.5rem] text-center mr-[3rem]">
+                  <h2 className="text-4xl font-semibold mb-4 text-blueprimary mt-[2.5rem] text-center mr-[3.5rem]">
                     Score Card
                   </h2>
                 </div>
@@ -136,7 +136,7 @@ const FeedbackPage: React.FC = () => {
                     <div
                       key={idx}
                       data-aos="fade-up"
-                      data-aos-delay={`${idx * 100}`}
+                      data-aos-delay={`${idx * 10}`}
                       className="bg-gray-50 hover:shadow-xl rounded-lg p-4 shadow-inner mb-4"
                     >
                       <h3 className="text-xl font-semibold">{detail.area}</h3>

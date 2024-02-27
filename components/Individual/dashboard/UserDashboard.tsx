@@ -60,15 +60,12 @@ const UserDashboard: React.FC = () => {
     {
       id: 3,
       title: "The Complete JavaScript Course 2024",
-      description:
-        "Understand JavaScript deeply for a better development career.",
+      description: "Understand JavaScript deeply for a better development career.",
       link: "https://www.udemy.com/course/the-complete-javascript-course/",
     },
   ];
 
-  const { session, fetchProfileData } = useContext(
-    UserContext
-  ) as UserContextType;
+  const { session, fetchProfileData } = useContext(UserContext) as UserContextType;
   const [loadingData, setLoadingData] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { profileData, setProfileData } = profileStore();
@@ -119,14 +116,9 @@ const UserDashboard: React.FC = () => {
         </section>
 
         {/* Job Application Status with AOS animation */}
-        <section
-          data-aos="fade-right"
-          className="bg-center p-8 rounded-lg shadow-lg"
-        >
+        <section data-aos="fade-right" className="bg-center p-8 rounded-lg shadow-lg">
           <div className="flex justify-between items-center -mt-[2rem] ">
-            <h2 className="text-3xl font-bold text-blueprimary">
-              Your Applications
-            </h2>
+            <h2 className="text-3xl font-bold text-blueprimary">Your Applications</h2>
             <div className="mt-[2rem]">
               <Link href="/dashboard/applications">
                 <button className="inline-block bg-blue-600 text-white px-6 py-3 mb-6 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
@@ -148,9 +140,7 @@ const UserDashboard: React.FC = () => {
                   </h3>
                   <p className="text-sm text-gray-600">{app.status}</p>
                 </div>
-                <button className="text-blue-600 hover:underline">
-                  View Details
-                </button>
+                <button className="text-blue-600 hover:underline">View Details</button>
               </div>
             ))}
           </div>
@@ -161,9 +151,7 @@ const UserDashboard: React.FC = () => {
           data-aos="fade-left"
           className=" bg-cover bg-white mt-[1rem] bg-center p-8 rounded-lg shadow-2xl space-y-6"
         >
-          <h2 className="text-3xl font-bold text-blueprimary mb-6">
-            Skill Improvement
-          </h2>
+          <h2 className="text-3xl font-bold text-blueprimary mb-6">Skill Improvement</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 ">
             {skillResources.map((resource) => (
               <a

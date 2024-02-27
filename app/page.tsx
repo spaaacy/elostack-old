@@ -25,7 +25,6 @@ const Home: NextPage = () => {
 
         <HowItWorks />
         <BenefitsSection />
-
         <FAQ />
       </main>
       <Footer />

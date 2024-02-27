@@ -24,30 +24,22 @@ const SignUp = () => {
       <div className="mb-5 flex justify-center items-center">
         <div className="-mt-[92rem]">
           <button
-            onClick={() => setIsBusiness(true)}
-            className={`px-4 py-2 mx-2 rounded ml-[4rem] ${
-              isBusiness
-                ? "bg-blue-500 text-white"
-                : "bg-gray-200 text-gray-800"
-            }`}
-          >
-            Business
-          </button>
-          <button
             onClick={() => setIsBusiness(false)}
-            className={`px-4 py-2 mx-2 rounded ${
-              !isBusiness
-                ? "bg-blue-500 text-white"
-                : "bg-gray-200 text-gray-800"
+            className={`px-4 py-2 mx-2 rounded ml-[4rem] ${
+              !isBusiness ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-800"
             }`}
           >
             Individual
           </button>
+          <button
+            onClick={() => setIsBusiness(true)}
+            className={`px-4 py-2 mx-2 rounded ${isBusiness ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-800"}`}
+          >
+            Business
+          </button>
         </div>
       </div>
-      <div style={formContainerStyle}>
-        {isBusiness ? <BusinessSignUpForm /> : <IndividualSignUpForm />}
-      </div>
+      <div style={formContainerStyle}>{isBusiness ? <BusinessSignUpForm /> : <IndividualSignUpForm />}</div>
     </div>
   );
 };

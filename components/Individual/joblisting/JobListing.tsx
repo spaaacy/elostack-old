@@ -1,88 +1,47 @@
 "use client";
+import Loader from "@/components/ui/Loader";
 import Head from "next/head";
+import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface Job {
   id: number;
   title: string;
   company: string;
   location: string;
-  pay: {
-    min: number;
-    max: number;
-  };
+  startingPay: number;
+  endingPay: number;
   position: string;
   description: string;
 }
 
-const initialJobs: Job[] = [
-  {
-    id: 1,
-    title: "Frontend Developer",
-    company: "Tech Solutions",
-    location: "Remote",
-    pay: { min: 80000, max: 100000 },
-    position: "Intern",
-    description: "We are looking for a skilled Frontend Developer...",
-  },
-  {
-    id: 2,
-    title: "Backend Developer",
-    company: "Tech Solutions",
-    location: "San Francisco, CA",
-    pay: { min: 10000, max: 600000 },
-    position: "Junior",
-    description: "We are looking for a skilled Frontend Developer...",
-  },
-  {
-    id: 3,
-    title: "Frontedn Developer",
-    company: "Tech Solutions",
-    location: "New York, NY",
-    pay: { min: 40000, max: 80000 },
-    position: "Mid Level",
-    description: "We are looking for a skilled Frontend Developer...",
-  },
-  {
-    id: 4,
-    title: "Backend Developer",
-    company: "Tech Solutions",
-    location: "Remote",
-    pay: { min: 80000, max: 100000 },
-    position: "Senior",
-    description: "We are looking for a skilled Frontend Developer...",
-  },
-  {
-    id: 5,
-    title: "Frontend Developer",
-    company: "Tech Solutions",
-    location: "Remote",
-    pay: { min: 80000, max: 100000 },
-    position: "Mid Level",
-    description: "We are looking for a skilled Frontend Developer...",
-  },
-  {
-    id: 6,
-    title: "Frontend Developer",
-    company: "Tech Solutions",
-    location: "Remote",
-    pay: { min: 80000, max: 100000 },
-    position: "Mid Level",
-    description: "We are looking for a skilled Frontend Developer...",
-  },
-  // Add more detailed job listings
-];
-
 const JobListings: React.FC = () => {
-  const [jobs, setJobs] = useState<Job[]>(initialJobs);
+  // TODO: Use interface later
+  // const [jobs, setJobs] = useState<Job[]>();
+  const [loading, setLoading] = useState(true);
+  const [jobs, setJobs] = useState();
   const [filters, setFilters] = useState({
     title: "",
     position: "",
-    payMin: "",
-    payMax: "",
+    startingPay: "",
+    endingPay: "",
     location: "",
   });
+
+  useEffect(() => {
+    fetchListings();
+  }, []);
+
+  const fetchListings = async () => {
+    const response = await fetch("/api/job-listing", {
+      method: "POST",
+      body: JSON.stringify(filters),
+    });
+    const results = await response.json();
+    setJobs(results.data);
+    setLoading(false);
+  };
 
   const handleFilterChange = (
     e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>,
@@ -91,14 +50,13 @@ const JobListings: React.FC = () => {
     setFilters({ ...filters, [filterName]: e.target.value });
   };
 
-  const filteredJobs = jobs.filter(
-    (job) =>
-      (filters.title ? job.title.toLowerCase().includes(filters.title.toLowerCase()) : true) &&
-      (filters.position ? job.position === filters.position : true) &&
-      (!filters.payMin || job.pay.min >= Number(filters.payMin)) &&
-      (!filters.payMax || job.pay.max <= Number(filters.payMax)) &&
-      (filters.location ? job.location.toLowerCase().includes(filters.location.toLowerCase()) : true)
-  );
+  if (loading) {
+    return (
+      <div className="flex m-auto">
+        <Loader />;
+      </div>
+    );
+  }
 
   return (
     <>
@@ -111,40 +69,29 @@ const JobListings: React.FC = () => {
         </h1>
         <div className="flex flex-wrap gap-4 mb-6 items-center">
           {/* Role Filter Dropdown */}
-          <select
+          <input
             value={filters.title}
             onChange={(e) => handleFilterChange(e, "title")}
             className="p-4 border rounded-lg"
-          >
-            <option value="">Filter by Role...</option>
-            {/* Update with more specific roles */}
-            <option value="Frontend Developer">Frontend Developer</option>
-            <option value="Backend Developer">Backend Developer</option>
-            <option value="Full Stack Developer">Full Stack Developer</option>
-            <option value="UI/UX Designer">UI/UX Designer</option>
-            <option value="Data Scientist">Data Scientist</option>
-            {/* More roles */}
-          </select>
+            placeholder="Job title"
+            type="text"
+          />
 
           {/* Position Filter */}
-          <select
+          <input
             value={filters.position}
             onChange={(e) => handleFilterChange(e, "position")}
             className="p-4 border rounded-lg"
-          >
-            <option value="">Position Level</option>
-            <option value="Intern">Intern</option>
-            <option value="Junior">Junior</option>
-            <option value="Mid Level">Mid Level</option>
-            <option value="Senior">Senior</option>
-          </select>
+            placeholder="Position"
+            type="text"
+          />
 
           {/* Pay Min Input */}
           <input
             type="number"
             placeholder="Min Pay"
-            value={filters.payMin}
-            onChange={(e) => handleFilterChange(e, "payMin")}
+            value={filters.startingPay}
+            onChange={(e) => handleFilterChange(e, "startingPay")}
             className="p-4 border rounded-lg"
           />
 
@@ -152,27 +99,27 @@ const JobListings: React.FC = () => {
           <input
             type="number"
             placeholder="Max Pay"
-            value={filters.payMax}
-            onChange={(e) => handleFilterChange(e, "payMax")}
+            value={filters.endingPay}
+            onChange={(e) => handleFilterChange(e, "endingPay")}
             className="p-4 border rounded-lg"
           />
 
           {/* Location Filter */}
-          <select
+          <input
             value={filters.location}
             onChange={(e) => handleFilterChange(e, "location")}
             className="p-4 border rounded-lg"
-          >
-            <option value="">Location</option>
-            <option value="Remote">Remote</option>
-            <option value="New York, NY">New York, NY</option>
-            <option value="San Francisco, CA">San Francisco, CA</option>
-            {/* Additional locations */}
-          </select>
+            placeholder="Location"
+            type="text"
+          />
+
+          <button onClick={fetchListings}>
+            <Image width={30} height={30} src="/search.svg" alt="search" />
+          </button>
         </div>
         {/* Job Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filteredJobs.map((job) => (
+          {jobs.map((job) => (
             <div
               key={job.id}
               className="bg-white rounded-lg border border-gray-300 shadow p-4 hover:shadow-2xl transition duration-300 ease-in-out"
@@ -182,13 +129,16 @@ const JobListings: React.FC = () => {
               </h2>
               <p className="text-sm text-gray-500 mb-4">{`${job.company} - ${job.position} - ${job.location}`}</p>
               <p className="mb-4">
-                Pay Range: ${job.pay.min.toLocaleString()} - ${job.pay.max.toLocaleString()}
+                Pay Range: ${job.startingPay} - ${job.endingPay}
               </p>
               <p className="text-sm mb-4">{job.description}</p>
               <div className="flex justify-end space-x-2">
                 <button className="text-blueprimary hover:underline mr-4">Bookmark</button>
                 {/* TODO: Add actual id later */}
-                <Link href={`listings/${1}`} className="bg-blueprimary text-white px-4 py-2 rounded hover:bg-blue-600">
+                <Link
+                  href={`/job-listing/${job.id}`}
+                  className="bg-blueprimary text-white px-4 py-2 rounded hover:bg-blue-600"
+                >
                   Apply
                 </Link>
               </div>

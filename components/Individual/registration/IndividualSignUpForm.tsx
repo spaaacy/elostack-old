@@ -8,10 +8,14 @@ import { createClient } from "@supabase/supabase-js";
 
 const FormSchema = z
   .object({
-    fullName: z
+    firstName: z
       .string()
-      .max(100, "Full Name too long")
-      .refine((value) => value !== "", "Please enter a Full Name"),
+      .max(100, "First Name too long")
+      .refine((value) => value !== "", "Please enter a first name"),
+    lastName: z
+      .string()
+      .max(100, "Last Name too long")
+      .refine((value) => value !== "", "Please enter a last name"),
     email: z
       .string()
       .email("Please enter a valid email")
@@ -32,7 +36,8 @@ const SignUpForm = () => {
 
   const router = useRouter();
   const [formData, setFormData] = useState({
-    fullName: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -61,8 +66,10 @@ const SignUpForm = () => {
       const response = await fetch("api/user/create", {
         method: "POST",
         body: JSON.stringify({
-          user_id: data.user.id,
-          business: false, // TODO: Change this later to use state of toggle
+          firstName: values.firstName,
+          lastName: values.lastName,
+          userId: data.user.id,
+          business: false,
         }),
       });
 
@@ -107,20 +114,36 @@ const SignUpForm = () => {
         className="p-8  bg-gray-100  rounded-lg shadow max-w-md w-full xl:w-1/2 xl:-mt-40 relative"
         onSubmit={handleSubmit}
       >
-        {/* fullName Input */}
+        {/* firstName Input */}
         <div className="mb-5">
-          <label htmlFor="fullName" className="block text-black text-sm font-bold mb-2">
-            Full Name
+          <label htmlFor="firstName" className="block text-black text-sm font-bold mb-2">
+            First Name
           </label>
           <input
             type="text"
-            name="fullName"
-            id="fullName"
-            value={formData.fullName}
+            name="firstName"
+            id="firstName"
+            value={formData.firstName}
             onChange={handleInputChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
-          {formErrors.fullName && <p className="text-red-500 text-xs italic">{formErrors.fullName}</p>}
+          {formErrors.firstName && <p className="text-red-500 text-xs italic">{formErrors.firstName}</p>}
+        </div>
+
+        {/* lastName Input */}
+        <div className="mb-5">
+          <label htmlFor="lastName" className="block text-black text-sm font-bold mb-2">
+            Last Name
+          </label>
+          <input
+            type="text"
+            name="lastName"
+            id="lastName"
+            value={formData.lastName}
+            onChange={handleInputChange}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+          {formErrors.lastName && <p className="text-red-500 text-xs italic">{formErrors.lastName}</p>}
         </div>
 
         {/* Email Input */}

@@ -1,6 +1,6 @@
 "use client";
 
-import { CreateJob } from "@/components/business/CreateJob";
+import { ListJob } from "@/components/business/ListJob";
 import SearchCandidates from "@/components/business/SearchCandidates";
 import Sidebar, { SidebarButtonState } from "@/components/business/Sidebar";
 import ViewListings from "@/components/business/ViewListings";
@@ -20,7 +20,7 @@ const BusinessDashboard = () => {
       ) : selectedButton === SidebarButtonState.RequestInterview ? (
         <RequestInterview />
       ) : (
-        <CreateJob />
+        <ListJob />
       )}
     </div>
   );

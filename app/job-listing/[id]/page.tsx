@@ -105,7 +105,7 @@ const page = ({}) => {
                 )}
               </div>
               <p>{`${jobListing.location}, (${jobListing.remote ? "Remote" : "On-site"})`}</p>
-              <p>{`$${jobListing.startingPay}-$${jobListing.endingPay}`}</p>
+              <p>{`$${jobListing.starting_pay} - $${jobListing.ending_pay}`}</p>
             </div>
           </div>
           <h2 className="font-bold mt-8">Description:</h2>

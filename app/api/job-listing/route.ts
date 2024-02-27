@@ -14,7 +14,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
     }
     const { data, error } = await supabase
       .from("job_listing")
-      .select()
+      .select("*, business(*)")
       .match({
         active: true,
         ...nonEmptyParams,

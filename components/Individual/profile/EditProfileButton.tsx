@@ -5,7 +5,7 @@ const EditProfileButton = () => {
   const router = useRouter();
 
   const handleClick = () => {
-    router.push("/editprofile"); // replace '/EditProfile' with the actual path to your EditProfile page
+    router.push("/dashboard/edit-profile"); // replace '/EditProfile' with the actual path to your EditProfile page
   };
 
   return (

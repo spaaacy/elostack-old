@@ -8,10 +8,19 @@ import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 import { profileStore } from "../profileStore";
 import Loader from "@/components/ui/Loader";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import Images from "next/image";
 import Link from "next/link";
 
 const UserDashboard: React.FC = () => {
-  // Dummy data for demonstration
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      once: true,
+    });
+  }, []);
+
   const interviewScore = 85;
 
   const applications = [
@@ -29,21 +38,36 @@ const UserDashboard: React.FC = () => {
     },
     {
       id: 3,
-      role: "Full Stack Developer",
-      company: "Startup XYZ",
-      status: "Offer Extended",
+      role: "Full Stack",
+      company: "Innovate LLC",
+      status: "Application Under Review",
     },
   ];
 
-  const recommendedJobs = [
-    { id: 1, role: "React Developer", company: "Creative Solutions" },
-    { id: 2, role: "Node.js Developer", company: "NextGen Tech" },
-    { id: 3, role: "UI/UX Designer", company: "Design Studio" },
-    { id: 4, role: "DevOps Engineer", company: "Cloud Services Inc." },
+  const skillResources = [
+    {
+      id: 1,
+      title: "Modern React with Redux",
+      description: "Master React and Redux with this tutorial.",
+      link: "https://www.udemy.com/course/react-redux/",
+    },
+    {
+      id: 2,
+      title: "Advanced CSS and Sass",
+      description: "Take your CSS to the next level with Sass.",
+      link: "https://www.udemy.com/course/advanced-css-and-sass/",
+    },
+    {
+      id: 3,
+      title: "The Complete JavaScript Course 2024",
+      description: "Understand JavaScript deeply for a better development career.",
+      link: "https://www.udemy.com/course/the-complete-javascript-course/",
+    },
   ];
 
   const { session, fetchProfileData } = useContext(UserContext) as UserContextType;
   const [loadingData, setLoadingData] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const { profileData, setProfileData } = profileStore();
   const router = useRouter();
 
@@ -68,72 +92,88 @@ const UserDashboard: React.FC = () => {
     return <Loader />;
   }
 
-  // TODO: Add request interview button
+  if (error) {
+    return <ErrorComponent message={error} />;
+  }
 
   return (
-    <main className="flex flex-1">
+    <main className="flex flex-col flex-1 bg-gray-100 min-h-screen animate-fadeIn bg-no-repeat bg-fixed bg-bottom bg-[url('/waves.svg')]">
       <Head>
         <title>Job Seeker Dashboard | EloStack</title>
       </Head>
 
-      <div className="bg-gray-100 p-8 flex flex-1">
-        <div className="container mx-auto bg-white rounded-lg shadow p-6 space-y-8">
-          {/* Profile Summary Card */}
-          <div className="bg-blue-50 p-6 rounded-lg shadow-sm flex justify-between items-center">
-            <div>
-              <h2 className="text-xl font-semibold text-gray-800">{`Welcome Back, ${profileData.firstName}`}</h2>
-              <p className="text-gray-600">
-                Your Interview Score: <span className="font-semibold">{interviewScore}%</span>
-              </p>
+      <main className="container mx-auto p-4 bg-white rounded-lg shadow mt-8 animate-slideUp">
+        {/* Profile Summary with AOS animation */}
+        <section data-aos="fade-up">
+          <div className="p-5 text-center border-b border-gray-200">
+            <h2 className="text-2xl font-bold ">{`Welcome back, ${profileData.firstName}`}</h2>
+            <p className="text-md text-gray-500">Software Dev</p>
+            <div className="mt-0">
+              <span className="text-lg font-semibold">Interview Score: </span>
+              <span className="text-lg text-blue-600">88%</span>
             </div>
-            <div className="flex items-center gap-2">
-              <Link
-                href={`/individual/${session?.data?.session?.user.id}/interview`}
-                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
-              >
-                View Interview
+          </div>
+        </section>
+
+        {/* Job Application Status with AOS animation */}
+        <section data-aos="fade-right" className="bg-center p-8 rounded-lg shadow-lg">
+          <div className="flex justify-between items-center -mt-[2rem] ">
+            <h2 className="text-3xl font-bold text-blueprimary">Your Applications</h2>
+            <div className="mt-[2rem]">
+              <Link href="/dashboard/applications">
+                <button className="inline-block bg-blue-600 text-white px-6 py-3 mb-6 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
+                  View More Applications
+                </button>
               </Link>
-              <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
-                Edit Profile
-              </button>
             </div>
           </div>
 
-          {/* Job Application Status */}
-          <section>
-            <h2 className="text-2xl font-semibold text-gray-800 mb-4">Your Applications</h2>
-            <div className="space-y-4">
-              {applications.map((app) => (
-                <div key={app.id} className="bg-gray-50 p-4 rounded-lg flex justify-between items-center">
-                  <div>
-                    <h3 className="font-semibold">
-                      {app.role} at {app.company}
-                    </h3>
-                    <p className="text-sm text-gray-600">{app.status}</p>
-                  </div>
-                  <button className="text-blue-600 hover:underline">View Details</button>
+          <div className="space-y-6">
+            {applications.map((app) => (
+              <div
+                key={app.id}
+                className="bg-gray-50 p-6 rounded-lg flex justify-between items-center hover:shadow-xl transition-shadow duration-300"
+              >
+                <div>
+                  <h3 className="font-semibold text-lg">
+                    {app.role} at {app.company}
+                  </h3>
+                  <p className="text-sm text-gray-600">{app.status}</p>
                 </div>
-              ))}
-            </div>
-          </section>
+                <button className="text-blue-600 hover:underline">View Details</button>
+              </div>
+            ))}
+          </div>
+        </section>
 
-          {/* Recommended Jobs */}
-          {/* <section>
-            <h2 className="text-2xl font-semibold text-gray-800 mb-4">Recommended for You</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {recommendedJobs.map((job) => (
-                <div key={job.id} className="bg-white p-4 rounded-lg shadow">
-                  <h3 className="font-semibold">{job.role}</h3>
-                  <p className="text-sm text-gray-600">{job.company}</p>
-                  <button className="mt-2 text-blue-600 hover:underline">Apply Now</button>
-                </div>
-              ))}
-            </div>
-          </section> */}
-        </div>
-      </div>
+        {/* Skill Improvement with AOS animation */}
+        <section
+          data-aos="fade-left"
+          className=" bg-cover bg-white mt-[1rem] bg-center p-8 rounded-lg shadow-2xl space-y-6"
+        >
+          <h2 className="text-3xl font-bold text-blueprimary mb-6">Skill Improvement</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 ">
+            {skillResources.map((resource) => (
+              <a
+                key={resource.id}
+                href={resource.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-gray-50 p-6 rounded-lg shadow hover:shadow-xl transition-shadow duration-300"
+              >
+                <h3 className="font-semibold text-lg">{resource.title}</h3>
+                <p className="text-sm text-gray-600">{resource.description}</p>
+                <span className="mt-6 inline-block bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
+                  Learn More
+                </span>
+              </a>
+            ))}
+          </div>
+        </section>
+      </main>
     </main>
   );
 };
 
 export default UserDashboard;
+//animate-fadeIn bg-no-repeat bg-fixed bg-bottom bg-[url('/waves.svg')]

@@ -1,11 +1,15 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Head from "next/head";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
+// Define your interfaces for TypeScript
 interface FeedbackDetail {
   area: string;
   score: number;
   comments: string;
+  critiques: string[]; // Include critique points
 }
 
 interface InterviewFeedback {
@@ -13,9 +17,16 @@ interface InterviewFeedback {
   jobTitle: string;
   overallScore: number;
   feedbackDetails: FeedbackDetail[];
+  videoUrl: string; // Ensure you have a videoUrl property
 }
 
+// Your main React component
 const FeedbackPage: React.FC = () => {
+  useEffect(() => {
+    AOS.init({ duration: 1000, once: true });
+  }, []);
+
+  // Mock feedback data
   const feedbackData: InterviewFeedback[] = [
     {
       candidateName: "Jordan Doe",
@@ -26,87 +37,122 @@ const FeedbackPage: React.FC = () => {
           area: "System Design",
           score: 95,
           comments: "Shows excellent understanding of system architecture.",
+          critiques: [
+            "Needs to consider scalability more deeply.",
+            "Review newer database technologies.",
+          ],
         },
         {
-          area: "Coding",
-          score: 90,
-          comments:
-            "Strong coding skills, with minor areas for improvement in optimization.",
+          area: "System Design",
+          score: 95,
+          comments: "Shows excellent understanding of system architecture.",
+          critiques: [
+            "Needs to consider scalability more deeply.",
+            "Review newer database technologies.",
+          ],
         },
         {
-          area: "Communication",
-          score: 88,
-          comments:
-            "Very clear communicator, though sometimes overlooks technical details.",
+          area: "System Design",
+          score: 95,
+          comments: "Shows excellent understanding of system architecture.",
+          critiques: [
+            "Needs to consider scalability more deeply.",
+            "Review newer database technologies.",
+          ],
         },
         {
-          area: "Problem-solving",
-          score: 94,
-          comments: "Outstanding problem-solving abilities.",
+          area: "System Design",
+          score: 95,
+          comments: "Shows excellent understanding of system architecture.",
+          critiques: [
+            "Needs to consider scalability more deeply.",
+            "Review newer database technologies.",
+          ],
         },
+        {
+          area: "System Design",
+          score: 95,
+          comments: "Shows excellent understanding of system architecture.",
+          critiques: [
+            "Needs to consider scalability more deeply.",
+            "Review newer database technologies.",
+          ],
+        },
+        // Repeat the structure for additional feedback details as needed
       ],
+      videoUrl: "path_to_video.mp4", // Example video URL
     },
-
-    // Additional feedback entries can be added here
+    // Add more feedback entries if needed
   ];
 
   return (
     <>
       <Head>
         <title>Feedback | EloStack</title>
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"
+        />
       </Head>
-      <div className="bg-gradient-to-r from-blue-500 to-teal-500 min-h-screen pt-10 pb-20 px-4 md:px-0">
-        <div className="max-w-6xl mx-auto">
-          <h1 className="text-4xl font-extrabold text-center mb-12 text-white">
+      <div className="min-h-screen bg-gray-100 pt-10 pb-20 px-4 md:px-0 animate-fadeIn bg-no-repeat bg-fixed bg-bottom bg-[url('/waves.svg')]">
+        <div className="max-w-7xl mx-auto">
+          <h1
+            data-aos="fade-down"
+            className="text-5xl font-bold text-center mb-12 text-blueprimary"
+          >
             Interview Feedback
           </h1>
           {feedbackData.map((feedback, index) => (
             <div
               key={index}
-              className="bg-white rounded-xl shadow-xl overflow-hidden mb-10"
+              data-aos="fade-up"
+              data-aos-delay="5"
+              className="bg-white rounded-xl shadow-lg overflow-hidden mb-10"
             >
               <div className="p-6">
-                <h2 className="text-3xl font-semibold mb-3">
+                <h2 className="text-3xl font-semibold mb-4">
                   {feedback.candidateName} - {feedback.jobTitle}
                 </h2>
-                <p className="text-xl text-blue-700 mb-5">
+                <p className="text-xl font-semibold text-blueprimary mb-6">
                   Overall Score: {feedback.overallScore}%
                 </p>
-                {/* Feedback Details Table */}
-                <div className="overflow-x-auto mb-6">
-                  <table className="min-w-full">
-                    <thead className="bg-gray-200">
-                      <tr>
-                        <th className="text-left font-medium text-gray-500 uppercase tracking-wider py-3 px-6">
-                          Area
-                        </th>
-                        <th className="text-left font-medium text-gray-500 uppercase tracking-wider py-3 px-6">
-                          Score
-                        </th>
-                        <th className="text-left font-medium text-gray-500 uppercase tracking-wider py-3 px-6">
-                          Comments
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white">
-                      {feedback.feedbackDetails.map((detail, idx) => (
-                        <tr key={idx} className="border-b">
-                          <td className="py-4 px-6">{detail.area}</td>
-                          <td className="py-4 px-6">{detail.score}%</td>
-                          <td className="py-4 px-6 italic">
-                            {detail.comments}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                {/* Video Playback Section */}
-                <div className="px-6 pb-6 mt-10">
-                  <video controls className="custom-video-size">
+                <div className="flex justify-center">
+                  <video
+                    controls
+                    className="max-w-full h-auto rounded-lg shadow-md"
+                    style={{ maxWidth: "1250px", width: "100%" }}
+                  >
                     <source src={feedback.videoUrl} type="video/mp4" />
                     Your browser does not support the video tag.
                   </video>
+                </div>
+                <div className="flex justify-center">
+                  <h2 className="text-4xl font-semibold mb-4 text-blueprimary mt-[2.5rem] text-center mr-[3.5rem]">
+                    Score Card
+                  </h2>
+                </div>
+                <div className="mb-8 mt-[2rem]">
+                  {feedback.feedbackDetails.map((detail, idx) => (
+                    <div
+                      key={idx}
+                      data-aos="fade-up"
+                      data-aos-delay={`${idx * 1}`}
+                      className="bg-gray-50 hover:shadow-xl rounded-lg p-4 shadow-inner mb-4"
+                    >
+                      <h3 className="text-xl font-semibold">{detail.area}</h3>
+                      <p className="text-md text-blueprimary font-semibold">
+                        Score: {detail.score}%
+                      </p>
+                      <p className="italic">{detail.comments}</p>
+                      <ul className="list-disc pl-5 mt-2">
+                        {detail.critiques.map((critique, critiqueIndex) => (
+                          <li key={critiqueIndex} className="text-sm">
+                            {critique}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>

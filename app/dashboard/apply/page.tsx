@@ -4,13 +4,13 @@ import Footer from "@/components/Footer";
 
 const Page = async () => {
   return (
-    <>
+    <main className="flex flex-1 flex-col">
       <NavBar />
-      <div>
+      <div className="flex flex-1">
         <JobListing />
       </div>
       <Footer />
-    </>
+    </main>
   );
 };
 

@@ -104,11 +104,11 @@ const FAQ: React.FC = () => {
   ];
 
   return (
-    <div className="w-full px-4 py-12 mt-[11rem] mx-auto max-w-7xl">
+    <div className="w-full px-4 py-12 mt-[1rem] mx-auto max-w-7xl">
       <h2 className="mb-8 text-5xl font-extrabold text-center text-blueprimary">
         Frequently Asked Questions
       </h2>
-      <div className="space-y-4 mb-[7rem]">
+      <div className="space-y-4 mb-[9rem]">
         {faqs.map((faq, index) => (
           <FAQItem key={index} question={faq.question} answer={faq.answer} />
         ))}

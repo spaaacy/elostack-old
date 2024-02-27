@@ -185,3 +185,38 @@ body, html {
 [data-aos="zoom-in"] {
   transition-duration: 1.2s; 
 }
+body, .main-content {
+  padding-top: 64px; /* Adjust based on actual NavBar height */
+}/* In your CSS file */
+.wave-background {
+  background-image: url('/path/to/wave.svg');
+  background-size: cover;
+  background-position: center;
+}
+.animate-fadeIn {
+  animation: fadeIn 1s ease-in-out;
+}
+
+.animate-slideUp {
+  animation: slideUp 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

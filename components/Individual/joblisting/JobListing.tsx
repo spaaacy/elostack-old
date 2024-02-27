@@ -51,7 +51,11 @@ const JobListings: React.FC = () => {
   };
 
   if (loading) {
-    return <Loader />;
+    return (
+      <div className="flex m-auto">
+        <Loader />;
+      </div>
+    );
   }
 
   return (

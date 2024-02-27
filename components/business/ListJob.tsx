@@ -23,8 +23,8 @@ export const ListJob = () => {
         }),
       });
       if (response.status === 201) {
-        console.log("Job listed successfully");
         window.location.reload();
+        console.log("Job listed successfully");
       }
     }
   };

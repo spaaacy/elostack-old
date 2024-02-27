@@ -2,25 +2,17 @@ import { supabase } from "@/lib/supabase";
 import { useSearchParams } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
 
-// TODO: Redo this to fetch all and then filter on frontend
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function GET(req: NextRequest, res: NextResponse) {
   try {
-    const params = await req.json();
-    const nonEmptyParams = {};
-    for (const key in params) {
-      if (params[key] !== "") {
-        nonEmptyParams[key] = params[key];
-      }
+    const business_id = req.nextUrl.searchParams.get("business_id");
+    let results;
+    if (business_id) {
+      results = await supabase.from("job_listing").select("*, business(*)").eq("business_id", business_id);
+    } else {
+      results = await supabase.from("job_listing").select("*, business(*)").eq("active", true);
     }
-    const { data, error } = await supabase
-      .from("job_listing")
-      .select("*, business(*)")
-      .match({
-        active: true,
-        ...nonEmptyParams,
-      });
-    if (error) throw error;
-    return NextResponse.json({ data }, { status: 200 });
+    if (results.error) throw results.error;
+    return NextResponse.json({ data: results.data }, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error }, { status: 500 });

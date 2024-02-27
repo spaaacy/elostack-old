@@ -17,7 +17,6 @@ interface Job {
 }
 
 const JobListings: React.FC = () => {
-  // TODO: Use interface later
   // const [jobs, setJobs] = useState<Job[]>();
   const [loading, setLoading] = useState(true);
   const [jobs, setJobs] = useState();
@@ -35,8 +34,7 @@ const JobListings: React.FC = () => {
 
   const fetchListings = async () => {
     const response = await fetch("/api/job-listing", {
-      method: "POST",
-      body: JSON.stringify(filters),
+      method: "GET",
     });
     const results = await response.json();
     console.log(results);
@@ -44,6 +42,7 @@ const JobListings: React.FC = () => {
     setLoading(false);
   };
 
+  // TODO: Add filter here for search
   const handleFilterChange = (
     e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>,
     filterName: keyof typeof filters

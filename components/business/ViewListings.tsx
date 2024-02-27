@@ -1,199 +1,40 @@
 import { JobListing } from "@/types/JobListing";
 import JobListingCard from "./JobListingCard";
+import { useContext, useEffect, useState } from "react";
+import { UserContext, UserContextType } from "@/context/UserContext";
 
 const ViewListings = () => {
-  const jobListings: JobListing[] = [
-    {
-      id: 1,
-      title: "Software Engineer",
-      description: "Develop and maintain software applications",
-      company: "Acme Corp",
-      location: "Seattle, WA",
-      minimumPay: "80,000",
-      maximumPay: "120,000",
-      remote: false,
-    },
-    {
-      id: 2,
-      title: "Data Scientist",
-      description: "Analyze and interpret data to solve business problems",
-      company: "Big Data Inc",
-      location: "San Francisco, CA",
-      minimumPay: "90,000",
-      maximumPay: "130,000",
-      remote: true,
-    },
-    {
-      id: 3,
-      title: "Product Manager",
-      description: "Manage the development and launch of new products",
-      company: "StartupX",
-      location: "New York City, NY",
-      minimumPay: "70,000",
-      maximumPay: "100,000",
-      remote: false,
-    },
-    {
-      id: 1,
-      title: "Software Engineer",
-      description: "Develop and maintain software applications",
-      company: "Acme Corp",
-      location: "Seattle, WA",
-      minimumPay: "80,000",
-      maximumPay: "120,000",
-      remote: false,
-    },
-    {
-      id: 2,
-      title: "Data Scientist",
-      description: "Analyze and interpret data to solve business problems",
-      company: "Big Data Inc",
-      location: "San Francisco, CA",
-      minimumPay: "90,000",
-      maximumPay: "130,000",
-      remote: true,
-    },
-    {
-      id: 3,
-      title: "Product Manager",
-      description: "Manage the development and launch of new products",
-      company: "StartupX",
-      location: "New York City, NY",
-      minimumPay: "70,000",
-      maximumPay: "100,000",
-      remote: false,
-    },
-    {
-      id: 1,
-      title: "Software Engineer",
-      description: "Develop and maintain software applications",
-      company: "Acme Corp",
-      location: "Seattle, WA",
-      minimumPay: "80,000",
-      maximumPay: "120,000",
-      remote: false,
-    },
-    {
-      id: 2,
-      title: "Data Scientist",
-      description: "Analyze and interpret data to solve business problems",
-      company: "Big Data Inc",
-      location: "San Francisco, CA",
-      minimumPay: "90,000",
-      maximumPay: "130,000",
-      remote: true,
-    },
-    {
-      id: 3,
-      title: "Product Manager",
-      description: "Manage the development and launch of new products",
-      company: "StartupX",
-      location: "New York City, NY",
-      minimumPay: "70,000",
-      maximumPay: "100,000",
-      remote: false,
-    },
-    {
-      id: 1,
-      title: "Software Engineer",
-      description: "Develop and maintain software applications",
-      company: "Acme Corp",
-      location: "Seattle, WA",
-      minimumPay: "80,000",
-      maximumPay: "120,000",
-      remote: false,
-    },
-    {
-      id: 2,
-      title: "Data Scientist",
-      description: "Analyze and interpret data to solve business problems",
-      company: "Big Data Inc",
-      location: "San Francisco, CA",
-      minimumPay: "90,000",
-      maximumPay: "130,000",
-      remote: true,
-    },
-    {
-      id: 3,
-      title: "Product Manager",
-      description: "Manage the development and launch of new products",
-      company: "StartupX",
-      location: "New York City, NY",
-      minimumPay: "70,000",
-      maximumPay: "100,000",
-      remote: false,
-    },
-    {
-      id: 1,
-      title: "Software Engineer",
-      description: "Develop and maintain software applications",
-      company: "Acme Corp",
-      location: "Seattle, WA",
-      minimumPay: "80,000",
-      maximumPay: "120,000",
-      remote: false,
-    },
-    {
-      id: 2,
-      title: "Data Scientist",
-      description: "Analyze and interpret data to solve business problems",
-      company: "Big Data Inc",
-      location: "San Francisco, CA",
-      minimumPay: "90,000",
-      maximumPay: "130,000",
-      remote: true,
-    },
-    {
-      id: 3,
-      title: "Product Manager",
-      description: "Manage the development and launch of new products",
-      company: "StartupX",
-      location: "New York City, NY",
-      minimumPay: "70,000",
-      maximumPay: "100,000",
-      remote: false,
-    },
-    {
-      id: 1,
-      title: "Software Engineer",
-      description: "Develop and maintain software applications",
-      company: "Acme Corp",
-      location: "Seattle, WA",
-      minimumPay: "80,000",
-      maximumPay: "120,000",
-      remote: false,
-    },
-    {
-      id: 2,
-      title: "Data Scientist",
-      description: "Analyze and interpret data to solve business problems",
-      company: "Big Data Inc",
-      location: "San Francisco, CA",
-      minimumPay: "90,000",
-      maximumPay: "130,000",
-      remote: true,
-    },
-    {
-      id: 3,
-      title: "Product Manager",
-      description: "Manage the development and launch of new products",
-      company: "StartupX",
-      location: "New York City, NY",
-      minimumPay: "70,000",
-      maximumPay: "100,000",
-      remote: false,
-    },
-  ];
+  const [jobListings, setJobListings] = useState();
+  const { user } = useContext(UserContext) as UserContextType;
+
+  useEffect(() => {
+    if (user) {
+      fetchListings();
+    }
+  }, [user]);
+
+  const fetchListings = async () => {
+    console.log(user.user_id);
+    const response = await fetch(`/api/job-listing?business_id=${user.user_id}`, {
+      method: "GET",
+    });
+    if (response.status === 200) {
+      const results = await response.json();
+      setJobListings(results.data);
+      console.log(results);
+    }
+  };
 
   return (
     <ul className="flex flex-col gap-4 w-full">
-      {jobListings.map((listing, i) => {
-        return (
-          <li key={listing.id}>
-            <JobListingCard listing={listing} />
-          </li>
-        );
-      })}
+      {jobListings &&
+        jobListings.map((listing, i) => {
+          return (
+            <li key={listing.id}>
+              <JobListingCard listing={listing} />
+            </li>
+          );
+        })}
     </ul>
   );
 };

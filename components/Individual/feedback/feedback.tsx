@@ -136,7 +136,7 @@ const FeedbackPage: React.FC = () => {
                     <div
                       key={idx}
                       data-aos="fade-up"
-                      data-aos-delay={`${idx * 10}`}
+                      data-aos-delay={`${idx * 1}`}
                       className="bg-gray-50 hover:shadow-xl rounded-lg p-4 shadow-inner mb-4"
                     >
                       <h3 className="text-xl font-semibold">{detail.area}</h3>

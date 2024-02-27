@@ -28,6 +28,8 @@ const BusinessDashboard: React.FC = () => {
 
   const applications = [
     { id: 1, role: "Software Engineer", company: "Company A", status: "Open" },
+    { id: 1, role: "Software Engineer", company: "Company A", status: "Open" },
+    { id: 1, role: "Software Engineer", company: "Company A", status: "Open" },
     // Add more applications here
   ];
 
@@ -36,6 +38,66 @@ const BusinessDashboard: React.FC = () => {
     location: "New York, NY",
     industry: "Technology",
   };
+  const potentialHires = [
+    {
+      id: 1,
+      name: "John Doe",
+      skills: "React, TypeScript",
+      jobTitle: "Software Engineer",
+      company: "Company A",
+      profilePicture: "https://via.placeholder.com/150",
+      link: "#",
+    },
+    {
+      id: 2,
+      name: "Jane Doe",
+      skills: "Vue, JavaScript",
+      jobTitle: "Frontend Developer",
+      company: "Company B",
+      profilePicture: "https://via.placeholder.com/150",
+      link: "#",
+    },
+
+    {
+      id: 1,
+      name: "John Doe",
+      skills: "React, TypeScript",
+      jobTitle: "Software Engineer",
+      company: "Company A",
+      profilePicture: "https://via.placeholder.com/150",
+      link: "#",
+    },
+    {
+      id: 2,
+      name: "Jane Doe",
+      skills: "Vue, JavaScript",
+      jobTitle: "Frontend Developer",
+      company: "Company B",
+      profilePicture: "https://via.placeholder.com/150",
+      link: "#",
+    },
+    {
+      id: 1,
+      name: "John Doe",
+      skills: "React, TypeScript",
+      jobTitle: "Software Engineer",
+      company: "Company A",
+      profilePicture: "https://via.placeholder.com/150",
+      link: "#",
+    },
+    {
+      id: 2,
+      name: "Jane Doe",
+      skills: "Vue, JavaScript",
+      jobTitle: "Frontend Developer",
+      company: "Company B",
+      profilePicture: "https://via.placeholder.com/150",
+      link: "#",
+    },
+
+    // Add more potential hires here
+  ];
+
   return (
     <main className="flex flex-col flex-1 bg-gray-100 min-h-screen animate-fadeIn bg-no-repeat bg-fixed bg-bottom bg-[url('/waves.svg')]">
       <Head>
@@ -49,10 +111,6 @@ const BusinessDashboard: React.FC = () => {
           <div className="p-5 text-center border-b border-gray-200">
             <h2 className="text-2xl font-bold ">{`Welcome back, ${companyDetails.name}`}</h2>
             <p className="text-md text-gray-500">Software Dev</p>
-            <div className="mt-0">
-              <span className="text-lg font-semibold">Interview Score: </span>
-              <span className="text-lg text-blue-600">88%</span>
-            </div>
           </div>
         </section>
 
@@ -68,7 +126,13 @@ const BusinessDashboard: React.FC = () => {
             </h2>
             <div className="mt-[2rem]">
               <Link href="/dashboard/applications">
-                <button className="inline-block bg-blue-600 text-white px-6 py-3 mb-6 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
+                <button className="inline-block bg-green-500 text-white px-6 py-3 mb-6 rounded hover:bg-green-600 transition duration-150 ease-in-out">
+                  Post Job
+                </button>
+              </Link>
+
+              <Link href="/dashboard/applications">
+                <button className="inline-block bg-blue-600 ml-10 text-white px-6 py-3 mb-6 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
                   View More Applications
                 </button>
               </Link>
@@ -79,7 +143,7 @@ const BusinessDashboard: React.FC = () => {
             {applications.map((app) => (
               <div
                 key={app.id}
-                className="bg-gray-50 p-6 rounded-lg flex justify-between items-center hover:shadow-xl transition-shadow duration-300"
+                className="bg-gray-50 p-6 rounded-lg flex justify-between items-center hover:shadow-xl transition-shadow duration-300 relative"
               >
                 <div>
                   <h3 className="font-semibold text-lg">
@@ -88,21 +152,56 @@ const BusinessDashboard: React.FC = () => {
                   <p className="text-sm text-gray-600">{app.status}</p>
                 </div>
                 <button className="text-blue-600 hover:underline">
-                  View Details
+                  Edit Job Listing
+                </button>
+                <button
+                  className="absolute top-0 right-0 m-2 text-red-600 hover:text-red-800 transition duration-150 ease-in-out hidden group-hover:block"
+                  onClick={() => closeJob(app.id)}
+                >
+                  Close Job
                 </button>
               </div>
             ))}
           </div>
         </section>
 
+        <section
+          data-aos="fade-left"
+          className="bg-cover bg-white mt-4 bg-center p-8 rounded-lg shadow-2xl space-y-6"
+        >
+          <h2 className="text-3xl font-bold text-blueprimary mb-6">
+            Potential Hires
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {potentialHires.map((hire) => (
+              <a
+                key={hire.id}
+                href={hire.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-gray-50 p-6 rounded-lg shadow hover:shadow-xl transition-shadow duration-300 flex items-center"
+              >
+                <img
+                  src={hire.profilePicture}
+                  alt={hire.name}
+                  className="w-24 h-24 rounded-full mr-4"
+                />
+                <div>
+                  <h3 className="font-semibold text-lg">{hire.name}</h3>
+                  <p className="text-sm text-gray-600">
+                    {hire.jobTitle} at {hire.company}
+                  </p>
+                  <p className="text-sm text-gray-600">{hire.skills}</p>
+                  <span className="mt-6 inline-block bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-600 transition duration-150 ease-in-out">
+                    View Profile
+                  </span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
 
         {/* Post a Job */}
-        <section data-aos="fade-up" className="border-b pb-4 mb-4">
-          <h2 className="text-3xl font-bold mt-4 mb-4">Post a Job</h2>
-          <button className="mt-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-            Post a Job
-          </button>
-        </section>
       </main>
     </main>
   );

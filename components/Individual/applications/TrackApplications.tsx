@@ -32,8 +32,24 @@ const TrackApplications: React.FC = () => {
       });
       if (response.status === 200) {
         const results = await response.json();
-        console.log(results.data);
         setApplications(results.data);
+      }
+    }
+  };
+
+  const cancelApplication = async (jobListingId) => {
+    const userId = session.data.session?.user.id;
+    if (userId && jobListingId) {
+      const response = await fetch(`/api/application/cancel`, {
+        method: "DELETE",
+        body: JSON.stringify({
+          user_id: userId,
+          job_listing_id: jobListingId,
+        }),
+      });
+      if (response.status === 200) {
+        console.log("Application cancelled successfully!");
+        window.location.reload();
       }
     }
   };
@@ -58,10 +74,9 @@ const TrackApplications: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {/* {console.log(applications)} */}
               {applications &&
                 applications.map((application) => (
-                  <tr key={application.id} className="border-b">
+                  <tr key={application.job_listing_id} className="border-b">
                     <td className="p-4">{application.job_listing.title}</td>
                     <td className="p-4">{application.job_listing.company}</td>
                     <td className="p-4">{formatDate(application.created_at)}</td>
@@ -83,7 +98,12 @@ const TrackApplications: React.FC = () => {
                       >
                         Details
                       </Link>
-                      <button className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Cancel</button>
+                      <button
+                        onClick={() => cancelApplication(application.job_listing.id)}
+                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+                      >
+                        Cancel
+                      </button>
                     </td>
                   </tr>
                 ))}

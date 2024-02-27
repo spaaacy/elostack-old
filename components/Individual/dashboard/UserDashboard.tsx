@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 import { profileStore } from "../profileStore";
 import Loader from "@/components/ui/Loader";
+import Link from "next/link";
 
 const UserDashboard: React.FC = () => {
   // Dummy data for demonstration
@@ -85,9 +86,17 @@ const UserDashboard: React.FC = () => {
                 Your Interview Score: <span className="font-semibold">{interviewScore}%</span>
               </p>
             </div>
-            <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
-              Edit Profile
-            </button>
+            <div className="flex items-center gap-2">
+              <Link
+                href={`/individual/${session?.data?.session?.user.id}/interview`}
+                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+              >
+                View Interview
+              </Link>
+              <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+                Edit Profile
+              </button>
+            </div>
           </div>
 
           {/* Job Application Status */}

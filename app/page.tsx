@@ -5,7 +5,7 @@ import NavBar from "@/components/NavBar";
 import HeroSection from "@/components/Individual/landing/HeroSection";
 import HowItWorks from "@/components/Individual/landing/HowItWorks";
 import BenefitsSection from "@/components/Individual/landing/BenefitsSection";
-import  TestimonialsSection  from "@/components/Individual/landing/TestimonialsCard";
+import TestimonialsSection from "@/components/Individual/landing/TestimonialsCard";
 
 import FAQ from "@/components/Individual/landing/FAQ";
 const Home: NextPage = () => {
@@ -26,9 +26,8 @@ const Home: NextPage = () => {
 
         <HowItWorks />
         <BenefitsSection />
-        <TestimonialsSection />
+        {/* <TestimonialsSection /> */}
         <FAQ />
-
       </main>
       <Footer />
     </>

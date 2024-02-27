@@ -11,7 +11,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
         nonEmptyParams[key] = params[key];
       }
     }
-    console.log(nonEmptyParams);
     const { data, error } = await supabase
       .from("job_listing")
       .select()

@@ -7,13 +7,16 @@ import { useContext, FC, useEffect, useState } from "react";
 import { UserContext, UserContextType } from "@/context/UserContext";
 import { useRouter } from "next/navigation";
 import Loader from "@/components/ui/Loader";
-
+import UploadBox from "./UploadBox";
+import Featured from "./FeaturedCard";
 interface ProfilePageProps {
   id: string;
 }
 
 const ProfilePage: FC<ProfilePageProps> = ({ id }) => {
-  const { session, fetchProfileData } = useContext(UserContext) as UserContextType;
+  const { session, fetchProfileData } = useContext(
+    UserContext
+  ) as UserContextType;
   const router = useRouter();
 
   const { profileData, setProfileData } = profileStore();
@@ -65,7 +68,9 @@ const ProfilePage: FC<ProfilePageProps> = ({ id }) => {
                     <div className="mt-2 flex items-center text-sm text-gray-500">
                       {profileData.city}, {profileData.countryRegion}
                     </div>
-                    <div className="mt-2 flex items-center text-sm text-gray-500">{profileData.pronouns}</div>
+                    <div className="mt-2 flex items-center text-sm text-gray-500">
+                      {profileData.pronouns}
+                    </div>
                   </div>
                 </div>
 
@@ -75,11 +80,15 @@ const ProfilePage: FC<ProfilePageProps> = ({ id }) => {
 
             {/* Contact Information Section */}
             <div className="px-4 py-5 sm:p-6">
-              <h3 className="text-lg leading-6 font-medium text-gray-900">Contact Information</h3>
+              <h3 className="text-lg leading-6 font-medium text-gray-900">
+                Contact Information
+              </h3>
               <dl className="mt-2 grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
                 <div className="sm:col-span-1">
                   <dt className="text-sm font-medium text-gray-500">Email</dt>
-                  <dd className="mt-1 text-sm text-gray-900">{profileData.email}</dd>
+                  <dd className="mt-1 text-sm text-gray-900">
+                    {profileData.email}
+                  </dd>
                 </div>
                 <div className="sm:col-span-1">
                   <dt className="text-sm font-medium text-gray-500">Phone</dt>
@@ -89,17 +98,23 @@ const ProfilePage: FC<ProfilePageProps> = ({ id }) => {
                 </div>
                 <div className="sm:col-span-2">
                   <dt className="text-sm font-medium text-gray-500">Address</dt>
-                  <dd className="mt-1 text-sm text-gray-900">{profileData.address}</dd>
+                  <dd className="mt-1 text-sm text-gray-900">
+                    {profileData.address}
+                  </dd>
                 </div>
               </dl>
             </div>
 
             {/* Professional Information Section */}
             <div className="border-t border-gray-200 px-4 py-5 sm:p-6">
-              <h3 className="text-lg leading-6 font-medium text-gray-900">Professional Information</h3>
+              <h3 className="text-lg leading-6 font-medium text-gray-900">
+                Professional Information
+              </h3>
               <dl className="mt-2 grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
                 <div className="sm:col-span-1">
-                  <dt className="text-sm font-medium text-gray-500">LinkedIn</dt>
+                  <dt className="text-sm font-medium text-gray-500">
+                    LinkedIn
+                  </dt>
                   <dd className="mt-1 text-sm text-gray-900">
                     <a
                       href={profileData.linkedIn}
@@ -125,7 +140,9 @@ const ProfilePage: FC<ProfilePageProps> = ({ id }) => {
                   </dd>
                 </div>
                 <div className="sm:col-span-2">
-                  <dt className="text-sm font-medium text-gray-500">Portfolio</dt>
+                  <dt className="text-sm font-medium text-gray-500">
+                    Portfolio
+                  </dt>
                   <dd className="mt-1 text-sm text-gray-900">
                     <a
                       href={profileData.portfolio}
@@ -140,50 +157,28 @@ const ProfilePage: FC<ProfilePageProps> = ({ id }) => {
               </dl>
             </div>
 
-            {/* Documents Section */}
             <div className="border-t border-gray-200 px-4 py-5 sm:p-6">
-              <h3 className="text-lg leading-6 font-medium text-gray-900">Documents</h3>
-              <dl className="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {/* Resume Section */}
-                <div>
-                  <dt className="text-sm font-medium text-gray-500">Resume</dt>
-                  <dd className="mt-1 text-sm text-gray-900">
-                    <a
-                      href={profileData.resume}
-                      className="text-blue-600 hover:text-blue-700"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      View Resume
-                    </a>
-                  </dd>
-                </div>
-                {/* Cover Letter Section */}
-                <div>
-                  <dt className="text-sm font-medium text-gray-500">Cover Letter</dt>
-                  <dd className="mt-1 text-sm text-gray-900">
-                    <a
-                      href={profileData.coverLetter}
-                      className="text-blue-600 hover:text-blue-700"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      View Cover Letter
-                    </a>
-                  </dd>
-                </div>
-              </dl>
-            </div>
+              <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
+                Documents ( Resume, Cover Letter, etc. )
+              </h3>
+              <Featured />
 
-            {/* Additional Information Section */}
-            <div className="border-t border-gray-200 px-4 py-5 sm:p-6">
-              <h3 className="text-lg leading-6 font-medium text-gray-900">Additional Information</h3>
-              <dl className="mt-2">
-                <div>
-                  <dt className="text-sm font-medium text-gray-500">Birthday</dt>
-                  <dd className="mt-1 text-sm text-gray-900">{profileData.birthday}</dd>
-                </div>
-              </dl>
+              {/* Additional Information Section */}
+              <div className="border-t border-gray-200 px-4 py-5 sm:p-6">
+                <h3 className="text-lg leading-6 font-medium text-gray-900">
+                  Additional Information
+                </h3>
+                <dl className="mt-2">
+                  <div>
+                    <dt className="text-sm font-medium text-gray-500">
+                      Birthday
+                    </dt>
+                    <dd className="mt-1 text-sm text-gray-900">
+                      {profileData.birthday}
+                    </dd>
+                  </div>
+                </dl>
+              </div>
             </div>
           </div>
         </div>

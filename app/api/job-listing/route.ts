@@ -2,6 +2,7 @@ import { supabase } from "@/lib/supabase";
 import { useSearchParams } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
 
+// TODO: Redo this to fetch all and then filter on frontend
 export async function POST(req: NextRequest, res: NextResponse) {
   try {
     const params = await req.json();

@@ -106,7 +106,7 @@ const UserDashboard: React.FC = () => {
         {/* Profile Summary with AOS animation */}
         <section data-aos="fade-up">
           <div className="p-5 text-center border-b border-gray-200">
-            <h2 className="text-2xl font-bold ">{`Welcome back, ${profileData.firstName}`}</h2>
+            <h2 className="text-2xl font-bold ">{`Welcome back, ${profileData.first_name}`}</h2>
             <p className="text-md text-gray-500">Software Dev</p>
             <div className="mt-0">
               <span className="text-lg font-semibold">Interview Score: </span>
@@ -147,7 +147,7 @@ const UserDashboard: React.FC = () => {
         </section>
 
         {/* Skill Improvement with AOS animation */}
-        <section
+        {/* <section
           data-aos="fade-left"
           className=" bg-cover bg-white mt-[1rem] bg-center p-8 rounded-lg shadow-2xl space-y-6"
         >
@@ -169,7 +169,7 @@ const UserDashboard: React.FC = () => {
               </a>
             ))}
           </div>
-        </section>
+        </section> */}
       </main>
     </main>
   );

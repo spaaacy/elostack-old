@@ -1,44 +1,12 @@
 "use client";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Head from "next/head";
-
-interface Application {
-  id: number;
-  jobTitle: string;
-  company: string;
-  appliedOn: string; // Date in ISO format for simplicity
-  status: "Applied" | "Interviewing" | "Offered" | "Rejected";
-}
-
-// Mock application data
-const initialApplications: Application[] = [
-  {
-    id: 1,
-    jobTitle: "Frontend Developer",
-    company: "Tech Solutions",
-    appliedOn: "2024-02-20",
-    status: "Interviewing",
-  },
-  {
-    id: 2,
-    jobTitle: "Backend Developer",
-    company: "Innovatech",
-    appliedOn: "2024-02-18",
-    status: "Applied",
-  },
-  {
-    id: 3,
-    jobTitle: "Data Scientist",
-    company: "DataWiz",
-    appliedOn: "2024-02-15",
-    status: "Offered",
-  },
-  // Add more applications as needed
-];
+import { UserContext, UserContextType } from "@/context/UserContext";
+import Link from "next/link";
 
 const TrackApplications: React.FC = () => {
-  const [applications, setApplications] =
-    useState<Application[]>(initialApplications);
+  const { session } = useContext(UserContext) as UserContextType;
+  const [applications, setApplications] = useState();
 
   // Convert ISO date string to a more readable format
   const formatDate = (dateString: string) => {
@@ -50,15 +18,49 @@ const TrackApplications: React.FC = () => {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
+  useEffect(() => {
+    if (session) {
+      fetchApplications();
+    }
+  }, [session]);
+
+  const fetchApplications = async () => {
+    const userId = session.data.session?.user.id;
+    if (userId) {
+      const response = await fetch(`/api/application/${userId}`, {
+        method: "GET",
+      });
+      if (response.status === 200) {
+        const results = await response.json();
+        setApplications(results.data);
+      }
+    }
+  };
+
+  const cancelApplication = async (jobListingId) => {
+    const userId = session.data.session?.user.id;
+    if (userId && jobListingId) {
+      const response = await fetch(`/api/application/cancel`, {
+        method: "DELETE",
+        body: JSON.stringify({
+          user_id: userId,
+          job_listing_id: jobListingId,
+        }),
+      });
+      if (response.status === 200) {
+        console.log("Application cancelled successfully!");
+        window.location.reload();
+      }
+    }
+  };
+
   return (
     <>
       <Head>
         <title>Track Applications | Your Company</title>
       </Head>
       <div className="container mx-auto p-6">
-        <h1 className="text-3xl font-semibold mb-6 text-blue-600">
-          Track Your Applications
-        </h1>
+        <h1 className="text-3xl font-semibold mb-6 text-blue-600">Track Your Applications</h1>
 
         <div className="overflow-x-auto">
           <table className="min-w-full table-auto">
@@ -67,37 +69,44 @@ const TrackApplications: React.FC = () => {
                 <th className="text-left p-4 text-blue-600">Job Title</th>
                 <th className="text-left p-4 text-blue-600">Company</th>
                 <th className="text-left p-4 text-blue-600">Applied On</th>
-                <th className="text-left p-4 text-blue-600">Status</th>
-                <th className="text-left p-4 text-blue-600">Actions</th>
+                {/* <th className="text-left p-4 text-blue-600">Status</th> */}
+                <th className="text-right p-4 text-blue-600">Actions</th>
               </tr>
             </thead>
             <tbody>
-              {applications.map((application) => (
-                <tr key={application.id} className="border-b">
-                  <td className="p-4">{application.jobTitle}</td>
-                  <td className="p-4">{application.company}</td>
-                  <td className="p-4">{formatDate(application.appliedOn)}</td>
-                  <td
-                    className={`p-4 font-semibold ${
-                      application.status === "Offered"
-                        ? "text-green-600"
-                        : application.status === "Rejected"
-                        ? "text-red-600"
-                        : "text-blue-600"
-                    }`}
-                  >
-                    {application.status}
-                  </td>
-                  <td className="p-4">
-                    <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded mr-2">
-                      Details
-                    </button>
-                    <button className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">
-                      Cancel
-                    </button>
-                  </td>
-                </tr>
-              ))}
+              {applications &&
+                applications.map((application) => (
+                  <tr key={application.job_listing_id} className="border-b">
+                    <td className="p-4">{application.job_listing.title}</td>
+                    <td className="p-4">{application.job_listing.company}</td>
+                    <td className="p-4">{formatDate(application.created_at)}</td>
+                    {/* <td
+                      className={`p-4 font-semibold ${
+                        application.status === "Offered"
+                          ? "text-green-600"
+                          : application.status === "Rejected"
+                          ? "text-red-600"
+                          : "text-blue-600"
+                      }`}
+                    >
+                      {application.status}
+                    </td> */}
+                    <td className="p-4 flex justify-end">
+                      <Link
+                        href={`/job-listing/${application.job_listing.id}`}
+                        className="text-blueprimary px-4 py-2 rounded mr-2"
+                      >
+                        Details
+                      </Link>
+                      <button
+                        onClick={() => cancelApplication(application.job_listing.id)}
+                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+                      >
+                        Cancel
+                      </button>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>

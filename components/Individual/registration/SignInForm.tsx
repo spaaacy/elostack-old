@@ -72,7 +72,7 @@ const SignInForm = () => {
     }
   };
   return (
-    <div className="flex justify-center items-center h-full w-1/2 relative">
+    <div className="flex justify-center items-center h-full w-full md:w-1/2 relative">
       <form
         className="p-8 bg-gray-100 rounded-lg shadow max-w-md w-full xl:w-1/2 xl:-mt-40 relative"
         onSubmit={handleSubmit}
@@ -173,7 +173,7 @@ const SignInForm = () => {
 };
 
 const SocialLoginButton = ({ service, logoPath }) => (
-  <button className="flex items-center p-4 text-black bg-gray-100 ml-8bg-iron rounded-lg shadow hover:bg-blue-400 w-full">
+  <button className="flex items-center p-4 text-black bg-gray-100 rounded-lg shadow hover:bg-blue-400 w-full">
     <img
       className="ml-4"
       src={logoPath}

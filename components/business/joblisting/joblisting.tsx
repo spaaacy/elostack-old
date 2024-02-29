@@ -10,7 +10,7 @@ const CreateJobListing = () => {
       <main className="flex flex-col flex-1 bg-white min-h-screen animate-fadeIn bg-no-repeat bg-fixed bg-bottom bg-[url('/waves.svg')]">
         <section
           data-aos="fade-up"
-          className="container mx-auto p-4 bg-white rounded-lg shadow mt-8 animate-slideUp"
+          className="container mx-auto p-4 bg-white rounded-lg shadow-2xl mt-8 animate-slideUp"
         >
           <div className="p-5 text-center border-b border-blue-200">
             <h2 className="text-2xl font-bold mb-8 text-blueprimary">

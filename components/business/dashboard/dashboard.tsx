@@ -125,7 +125,7 @@ const BusinessDashboard: React.FC = () => {
               Your Job Listings
             </h2>
             <div className="mt-[2rem]">
-              <Link href="/dashboard/applications">
+              <Link href="/business/job-listing">
                 <button className="inline-block bg-green-500 text-white px-6 py-3 mb-6 rounded hover:bg-green-600 transition duration-150 ease-in-out">
                   Post Job
                 </button>

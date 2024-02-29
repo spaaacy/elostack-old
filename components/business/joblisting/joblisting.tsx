@@ -10,15 +10,14 @@ const CreateJobListing = () => {
       <main className="flex flex-col flex-1 bg-white min-h-screen animate-fadeIn bg-no-repeat bg-fixed bg-bottom bg-[url('/waves.svg')]">
         <section
           data-aos="fade-up"
-          className="container mx-auto p-4 bg-white rounded-lg shadow-2xl mt-8 animate-slideUp"
+          className="container w-3/5 mx-auto p-4 bg-white rounded-lg shadow-2xl mt-8 animate-slideUp"
         >
           <div className="p-5 text-center border-b border-blue-200">
             <h2 className="text-2xl font-bold mb-8 text-blueprimary">
               Create a New Job Listing
             </h2>
-            <form className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
-              {/* Company Name and Job Title */}
-              <div className="mb-6">
+            <form className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
+              <div className="mb-3">
                 <label
                   htmlFor="company-name"
                   className="block text-blueprimary text-sm font-semibold mb-2"

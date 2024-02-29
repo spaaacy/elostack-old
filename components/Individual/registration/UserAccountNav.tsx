@@ -52,10 +52,16 @@ const UserAccountNav = () => {
         >
           Profile
         </a>
-        <a href="/dashboard" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+        <a
+          href="/business/dashboard"
+          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+        >
           Dashboard
         </a>
-        <a href="/individual/[id]/interview" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+        <a
+          href="/individual/[id]/interview"
+          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+        >
           Feedback
         </a>
         <hr className="my-1 border-gray-200" />

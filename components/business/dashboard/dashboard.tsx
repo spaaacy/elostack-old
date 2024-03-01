@@ -109,18 +109,16 @@ const BusinessDashboard: React.FC = () => {
           {/* Your Applications */}
           <section className="bg-center p-8 rounded-lg shadow-lg">
             <div className="flex justify-between items-center -mt-[2rem] ">
-              <h2 className="text-3xl font-bold text-blueprimary">
-                Your Job Listings
-              </h2>
+              <h2 className="text-3xl font-bold text-blueprimary">Your Job Listings</h2>
               <div className="mt-[2rem]">
-                <Link href="/business/job-listing">
+                <Link href="/dashboard/job-listing">
                   <button className="inline-block bg-green-500 text-white px-6 py-3 mb-6 rounded hover:bg-green-600 transition duration-150 ease-in-out">
                     Post Job
                   </button>
                 </Link>
 
-                <Link href="/business/view-listings">
-                  <button className="inline-block bg-blueprimary ml-10 text-white px-6 py-3 mb-6 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
+                <Link href="/dashboard/view-listings">
+                  <button className="inline-block bg-blueprimary ml-4 text-white px-6 py-3 mb-6 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
                     View More Applications
                   </button>
                 </Link>
@@ -139,9 +137,7 @@ const BusinessDashboard: React.FC = () => {
                     </h3>
                     <p className="text-sm text-gray-600">{app.status}</p>
                   </div>
-                  <button className="text-blueprimary hover:underline">
-                    Edit Job Listing
-                  </button>
+                  <button className="text-blueprimary hover:underline">Edit Job Listing</button>
                   <button
                     className="absolute top-0 right-0 m-2 text-red-600 hover:text-red-800 transition duration-150 ease-in-out hidden group-hover:block"
                     onClick={() => closeJob(app.id)}
@@ -155,10 +151,8 @@ const BusinessDashboard: React.FC = () => {
 
           <section className="bg-cover bg-white mt-4 bg-center p-8 rounded-lg shadow-2xl space-y-6 ">
             <div className="flex justify-between items-center ">
-              <h2 className="text-3xl font-bold text-blueprimary mb-6">
-                Potential Hires
-              </h2>
-              <Link href="/business/search">
+              <h2 className="text-3xl font-bold text-blueprimary mb-6">Potential Hires</h2>
+              <Link href="/dashboard/search-individuals">
                 <button className="inline-block bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
                   Search for Candidates
                 </button>
@@ -173,11 +167,7 @@ const BusinessDashboard: React.FC = () => {
                   rel="noopener noreferrer"
                   className="bg-gray-50 p-6 rounded-lg shadow hover:shadow-xl transition-shadow duration-300 flex items-center"
                 >
-                  <img
-                    src={hire.profilePicture}
-                    alt={hire.name}
-                    className="w-24 h-24 rounded-full mr-4"
-                  />
+                  <img src={hire.profilePicture} alt={hire.name} className="w-24 h-24 rounded-full mr-4" />
                   <div>
                     <h3 className="font-semibold text-lg">{hire.name}</h3>
                     <p className="text-sm text-gray-600">

@@ -10,10 +10,6 @@ import RequestInterview from "./RequestInterview";
 const BusinessDashboard = () => {
   const [selectedButton, setSelectedButton] = useState(SidebarButtonState.ViewListings);
 
-  const fetchIndividuals = async () => {
-    const response = await fetch("/api/individual", { method: "GET" });
-  };
-
   return (
     <div className="px-4 mt-6 flex justify-center max-width w-full">
       <Sidebar selectedButton={selectedButton} setSelectedButton={setSelectedButton} />

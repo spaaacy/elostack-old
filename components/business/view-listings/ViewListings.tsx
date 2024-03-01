@@ -21,7 +21,6 @@ const BusinessDashboard: React.FC = () => {
     if (response.status === 200) {
       const results = await response.json();
       setJobListings(results.data);
-      console.log(results);
     }
   };
 

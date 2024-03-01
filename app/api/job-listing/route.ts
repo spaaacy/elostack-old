@@ -5,9 +5,23 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest, res: NextResponse) {
   try {
     const business_id = req.nextUrl.searchParams.get("business_id");
+    const latest = req.nextUrl.searchParams.get("latest");
     let results;
     if (business_id) {
-      results = await supabase.from("job_listing").select("*, business(*)").eq("business_id", business_id);
+      if (latest) {
+        results = await supabase
+          .from("job_listing")
+          .select("*, business(*)")
+          .match({ business_id, active: true })
+          .order("created_at", { ascending: false })
+          .range(0, 5);
+      } else {
+        results = await supabase
+          .from("job_listing")
+          .select("*, business(*)")
+          .eq("business_id", business_id)
+          .order("created_at", { ascending: false });
+      }
     } else {
       results = await supabase.from("job_listing").select("*, business(*)").eq("active", true);
     }

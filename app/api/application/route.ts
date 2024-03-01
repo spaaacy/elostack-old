@@ -1,9 +1,10 @@
 import { supabase } from "@/lib/supabase";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function GET(req: NextRequest, res: NextResponse) {
   try {
-    const { user_id, job_listing_id } = await req.json();
+    const user_id = req.nextUrl.searchParams.get("user_id");
+    const job_listing_id = req.nextUrl.searchParams.get("job_listing_id");
     if (!user_id || !job_listing_id) throw Error("No job listing id and/or user id provided!");
     const { data: application, error } = await supabase
       .from("application")

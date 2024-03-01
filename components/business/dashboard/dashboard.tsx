@@ -1,34 +1,43 @@
 "use client";
 
 import Head from "next/head";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Link from "next/link";
+import { UserContext, UserContextType } from "@/context/UserContext";
 
 const BusinessDashboard: React.FC = () => {
-  // Sample data
-  const jobListings = [
-    { id: 1, title: "Software Engineer", company: "Company A", status: "Open" },
-    {
-      id: 2,
-      title: "Frontend Developer",
-      company: "Company B",
-      status: "Closed",
-    },
-    // Add more job listings here
-  ];
+  const { user } = useContext(UserContext) as UserContextType;
+  const [jobListings, setJobListings] = useState();
+  const [businessDetails, setBusinessDetails] = useState();
 
-  const applications = [
-    { id: 1, role: "Software Engineer", company: "Company A", status: "Open" },
-    { id: 1, role: "Software Engineer", company: "Company A", status: "Open" },
-    { id: 1, role: "Software Engineer", company: "Company A", status: "Open" },
-    // Add more applications here
-  ];
+  useEffect(() => {
+    if (user) {
+      fetchListings();
+      fetchBusinessDetails();
+    }
+  }, [user]);
 
-  const companyDetails = {
-    name: "Company A",
-    location: "New York, NY",
-    industry: "Technology",
+  const fetchListings = async () => {
+    const response = await fetch(`/api/job-listing?business_id=${user.user_id}&latest=true`, {
+      method: "GET",
+    });
+    if (response.status === 200) {
+      const results = await response.json();
+      setJobListings(results.data);
+    }
   };
+
+  const fetchBusinessDetails = async () => {
+    const response = await fetch(`/api/business/${user.user_id}`);
+    const result = await response.json();
+    console.log(result);
+    if (response.status === 200) {
+      setBusinessDetails(result.business);
+    } else {
+      console.error("Fetching business details failed!");
+    }
+  };
+
   const potentialHires = [
     {
       id: 1,
@@ -100,25 +109,29 @@ const BusinessDashboard: React.FC = () => {
 
           <section>
             <div className="p-5 text-center border-b border-gray-200">
-              <h2 className="text-2xl font-bold ">{`Welcome back, ${companyDetails.name}`}</h2>
-              <p className="text-md text-gray-500">Software Dev</p>
+              {businessDetails && <h1 className="text-4xl font-bold ">{`${businessDetails?.name} Dashboard`}</h1>}
             </div>
           </section>
 
           {/* Job Listings */}
           {/* Your Applications */}
-          <section className="bg-center p-8 rounded-lg shadow-lg">
-            <div className="flex justify-between items-center -mt-[2rem] ">
-              <h2 className="text-3xl font-bold text-blueprimary">Your Job Listings</h2>
-              <div className="mt-[2rem]">
+          <section className="bg-center mt-4 p-8 rounded-lg shadow-lg">
+            <div className="flex justify-between mb-4 items-center -mt-[2rem] ">
+              <h2 className="text-3xl font-bold text-blueprimary">Latest Job Listings</h2>
+              <div className="flex items-center justify-center gap-4">
+                <Link href="/dashboard/search-individuals">
+                  <button className="inline-block bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
+                    Search for Candidates
+                  </button>
+                </Link>
                 <Link href="/dashboard/job-listing">
-                  <button className="inline-block bg-green-500 text-white px-6 py-3 mb-6 rounded hover:bg-green-600 transition duration-150 ease-in-out">
+                  <button className="inline-block bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
                     Post Job
                   </button>
                 </Link>
 
                 <Link href="/dashboard/view-listings">
-                  <button className="inline-block bg-blueprimary ml-4 text-white px-6 py-3 mb-6 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
+                  <button className="inline-block bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
                     View More Applications
                   </button>
                 </Link>
@@ -126,37 +139,29 @@ const BusinessDashboard: React.FC = () => {
             </div>
 
             <div className="space-y-6">
-              {applications.map((app) => (
-                <div
-                  key={app.id}
-                  className="bg-gray-50 p-6 rounded-lg flex justify-between items-center hover:shadow-xl transition-shadow duration-300 relative"
-                >
-                  <div>
-                    <h3 className="font-semibold text-lg">
-                      {app.role} at {app.company}
-                    </h3>
-                    <p className="text-sm text-gray-600">{app.status}</p>
-                  </div>
-                  <button className="text-blueprimary hover:underline">Edit Job Listing</button>
-                  <button
-                    className="absolute top-0 right-0 m-2 text-red-600 hover:text-red-800 transition duration-150 ease-in-out hidden group-hover:block"
-                    onClick={() => closeJob(app.id)}
+              {jobListings &&
+                jobListings.map((jobListing) => (
+                  <div
+                    key={jobListing.id}
+                    className="bg-gray-50 p-6 rounded-lg flex justify-between items-center hover:shadow-xl transition-shadow duration-300 relative"
                   >
-                    Close Job
-                  </button>
-                </div>
-              ))}
+                    <div>
+                      <h3 className="font-semibold text-lg">{jobListing.title}</h3>
+                      <p className="text-sm text-gray-600">{jobListing.location}</p>
+                      <p className="text-sm text-gray-600">{`$${jobListing.starting_pay} - $${jobListing.ending_pay}`}</p>
+                    </div>
+                    <Link href={`/job-listing/${jobListing.id}`} className="text-blueprimary hover:underline">
+                      Details
+                    </Link>
+                  </div>
+                ))}
             </div>
           </section>
 
           <section className="bg-cover bg-white mt-4 bg-center p-8 rounded-lg shadow-2xl space-y-6 ">
             <div className="flex justify-between items-center ">
-              <h2 className="text-3xl font-bold text-blueprimary mb-6">Potential Hires</h2>
-              <Link href="/dashboard/search-individuals">
-                <button className="inline-block bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
-                  Search for Candidates
-                </button>
-              </Link>
+              {/* TODO: Show purchased candidates here */}
+              <h2 className="text-3xl font-bold text-blueprimary mb-6">Your candidates</h2>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {potentialHires.map((hire) => (

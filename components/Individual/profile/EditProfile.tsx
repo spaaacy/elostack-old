@@ -4,39 +4,18 @@ import { useRouter } from "next/navigation";
 import { UserContext, UserContextType } from "@/context/UserContext";
 import Loader from "@/components/ui/Loader";
 
-interface FormData {
-  firstName: string;
-  lastName: string;
-  pronouns: string;
-  customPronouns?: string;
-  birthday: string;
-  phoneNumber: string;
-  phoneType: string;
-  address: string;
-  country: string;
-  postalCode: string;
-  city: string;
-  resume: File | null;
-  coverLetter: File | null;
-  portfolio: string;
-  linkedin: string;
-  github: string;
-}
-
-const initialFormData: FormData = {
-  firstName: "",
-  lastName: "",
-  pronouns: "",
-  customPronouns: "",
+const initialFormData = {
+  first_name: "",
+  last_name: "",
   birthday: "",
-  phoneNumber: "",
-  phoneType: "",
+  phone_number: "",
+  phone_type: "",
   address: "",
   country: "",
-  postalCode: "",
+  postal_code: "",
   city: "",
   resume: null,
-  coverLetter: null,
+  cover_letter: null,
   portfolio: "",
   linkedin: "",
   github: "",
@@ -46,7 +25,7 @@ const EditProfile = () => {
   const { session, fetchProfileData } = useContext(UserContext) as UserContextType;
 
   const router = useRouter();
-  const [formData, setFormData] = useState<FormData>(initialFormData);
+  const [formData, setFormData] = useState(initialFormData);
   const [loadingData, setLoadingData] = useState(true);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -64,6 +43,7 @@ const EditProfile = () => {
   const fetchUser = async () => {
     const userId = session?.data.session?.user.id;
     const data = await fetchProfileData(userId);
+    console.log(data);
     if (data) {
       setFormData(data);
       setLoadingData(false);
@@ -113,65 +93,50 @@ const EditProfile = () => {
           <h1 className="text-2xl font-semibold mb-6">Edit Your Profile</h1>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="mb-4">
-              <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="first_name" className="block text-sm font-medium text-gray-700">
                 First Name<span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
-                name="firstName"
-                id="firstName"
-                value={formData.firstName}
+                name="first_name"
+                id="first_name"
+                value={formData.first_name}
                 onChange={handleChange}
                 placeholder="Enter your first name"
                 className="mt-1 block w-full rounded border border-gray-300 bg-white px-5 py-2 shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="last_name" className="block text-sm font-medium text-gray-700">
                 Last Name<span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
-                name="lastName"
-                id="lastName"
-                value={formData.lastName}
+                name="last_name"
+                id="last_name"
+                value={formData.last_name}
                 onChange={handleChange}
                 placeholder="Enter your last name"
                 className="mt-1 block w-full rounded border border-gray-300 bg-white px-5 py-2 shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="pronouns" className="block text-sm font-medium text-gray-700">
-                Pronouns
+              <label htmlFor="gender" className="block text-sm font-medium text-gray-700">
+                Gender
               </label>
               <select
-                name="pronouns"
-                id="pronouns"
-                value={formData.pronouns}
+                name="gender"
+                id="gender"
+                defaultValue="male"
+                value={formData.gender}
                 onChange={handleChange}
                 className="mt-1 block w-full rounded border border-gray-300 bg-white px-5 py-2 shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               >
                 <option value="Please select">Please select</option>
-                <option value="he/him">he/him</option>
-                <option value="she/her">she/her</option>
-                <option value="custom">custom</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
               </select>
-              {formData.pronouns === "custom" && (
-                <div className="mt-4">
-                  <label htmlFor="customPronouns" className="block text-sm font-medium text-gray-700">
-                    Enter custom pronouns
-                  </label>
-                  <input
-                    type="text"
-                    name="customPronouns"
-                    id="customPronouns"
-                    value={formData.customPronouns}
-                    onChange={handleChange}
-                    placeholder="Enter custom pronouns"
-                    className="mt-1 block w-full rounded border border-gray-300 bg-white px-5 py-2 shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                  />
-                </div>
-              )}
             </div>
 
             <div className="mb-4">
@@ -190,25 +155,25 @@ const EditProfile = () => {
             <div className="text-xl font-semibold mb-6">Contact Information</div>
 
             <div className="mb-4">
-              <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="phone_number" className="block text-sm font-medium text-gray-700">
                 Phone Number
               </label>
               <input
                 type="text"
-                name="phoneNumber"
-                id="phoneNumber"
-                value={formData.phoneNumber}
+                name="phone_number"
+                id="phone_number"
+                value={formData.phone_number}
                 onChange={handleChange}
                 placeholder="Enter your phone number"
                 className="mt-1 block w-full rounded border border-gray-300 bg-white px-5 py-2 shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               />
-              <label htmlFor="phoneType" className="block text-sm font-medium text-gray-700 mt-4">
+              <label htmlFor="phone_type" className="block text-sm font-medium text-gray-700 mt-4">
                 Phone Type
               </label>
               <select
-                name="phoneType"
-                id="phoneType"
-                value={formData.phoneType}
+                name="phone_type"
+                id="phone_type"
+                value={formData.phone_type}
                 onChange={handleChange}
                 className="mt-1 block w-full rounded border border-gray-300 bg-white px-5 py-2 shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               >
@@ -248,14 +213,14 @@ const EditProfile = () => {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="postalCode" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="postal_code" className="block text-sm font-medium text-gray-700">
                 Postal Code
               </label>
               <input
                 type="text"
-                name="postalCode"
-                id="postalCode"
-                value={formData.postalCode}
+                name="postal_code"
+                id="postal_code"
+                value={formData.postal_code}
                 onChange={handleChange}
                 placeholder="Enter your postal code"
                 className="mt-1 block w-full rounded border border-gray-300 bg-white px-5 py-2 shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
@@ -292,13 +257,13 @@ const EditProfile = () => {
             </div>
 
             <div className="mb-4">
-              <label htmlFor="coverLetter" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="cover_letter" className="block text-sm font-medium text-gray-700">
                 Upload Cover Letter<span className="text-red-500">*</span>
               </label>
               <input
                 type="file"
-                name="coverLetter"
-                id="coverLetter"
+                name="cover_letter"
+                id="cover_letter"
                 onChange={handleChange}
                 accept=".pdf"
                 className="mt-1 block w-full rounded border border-gray-300 bg-white px-5 py-2 shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"

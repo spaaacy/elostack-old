@@ -5,23 +5,12 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-interface Job {
-  id: number;
-  title: string;
-  company: string;
-  location: string;
-  starting_pay: number;
-  ending_pay: number;
-  position: string;
-  description: string;
-}
-
 const JobListings: React.FC = () => {
-  // const [jobs, setJobs] = useState<Job[]>();
   const [loading, setLoading] = useState(true);
-  const [jobs, setJobs] = useState();
+  const [jobListings, setJobListings] = useState();
   const [filters, setFilters] = useState({
     title: "",
+    company: "",
     position: "",
     starting_pay: "",
     ending_pay: "",
@@ -37,18 +26,30 @@ const JobListings: React.FC = () => {
       method: "GET",
     });
     const results = await response.json();
-    console.log(results);
-    setJobs(results.data);
+    setJobListings(results.data);
     setLoading(false);
   };
 
-  // TODO: Add filter here for search
   const handleFilterChange = (
     e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>,
     filterName: keyof typeof filters
   ) => {
     setFilters({ ...filters, [filterName]: e.target.value });
   };
+
+  let filteredJobs = [];
+  if (jobListings) {
+    console.log(jobListings);
+    filteredJobs = jobListings.filter(
+      (job) =>
+        (filters.title ? job.title.toLowerCase().includes(filters.title.toLowerCase()) : true) &&
+        (filters.position ? job.position === filters.position : true) &&
+        (filters.company ? job.business.name.toLowerCase().includes(filters.company.toLowerCase()) : true) &&
+        (!filters.starting_pay || job.starting_pay >= Number(filters.starting_pay)) &&
+        (!filters.ending_pay || job.ending_pay <= Number(filters.ending_pay)) &&
+        (filters.location ? job.location.toLowerCase().includes(filters.location.toLowerCase()) : true)
+    );
+  }
 
   if (loading) {
     return (
@@ -77,14 +78,26 @@ const JobListings: React.FC = () => {
             type="text"
           />
 
-          {/* Position Filter */}
+          {/* Role Filter Dropdown */}
           <input
+            value={filters.company}
+            onChange={(e) => handleFilterChange(e, "company")}
+            className="p-4 border rounded-lg"
+            placeholder="Company"
+            type="text"
+          />
+
+          {/* Position Filter */}
+          <select
             value={filters.position}
             onChange={(e) => handleFilterChange(e, "position")}
             className="p-4 border rounded-lg"
-            placeholder="Position"
-            type="text"
-          />
+          >
+            <option value="">Position Level</option>
+            <option value="Intern">Intern</option>
+            <option value="Junior">Junior</option>
+            <option value="Senior">Senior</option>
+          </select>
 
           {/* Pay Min Input */}
           <input
@@ -112,14 +125,10 @@ const JobListings: React.FC = () => {
             placeholder="Location"
             type="text"
           />
-
-          <button onClick={fetchListings}>
-            <Image width={30} height={30} src="/search.svg" alt="search" />
-          </button>
         </div>
         {/* Job Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {jobs.map((job) => (
+          {filteredJobs.map((job) => (
             <div
               key={job.id}
               className="bg-white rounded-lg border border-gray-300 shadow p-4 hover:shadow-2xl transition duration-300 ease-in-out"

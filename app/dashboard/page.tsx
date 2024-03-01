@@ -1,7 +1,7 @@
 "use client";
 
 import NavBar from "@/components/NavBar";
-import BusinessDashboard from "@/components/business/BusinessDashboard";
+import BusinessDashboard from "@/components/business/dashboard/dashboard";
 import UserDashboard from "@/components/individual/dashboard/UserDashboard";
 import Loader from "@/components/ui/Loader";
 import { UserContext, UserContextType } from "@/context/UserContext";

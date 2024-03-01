@@ -10,22 +10,21 @@ interface Job {
   title: string;
   company: string;
   location: string;
-  startingPay: number;
-  endingPay: number;
+  starting_pay: number;
+  ending_pay: number;
   position: string;
   description: string;
 }
 
 const JobListings: React.FC = () => {
-  // TODO: Use interface later
   // const [jobs, setJobs] = useState<Job[]>();
   const [loading, setLoading] = useState(true);
   const [jobs, setJobs] = useState();
   const [filters, setFilters] = useState({
     title: "",
     position: "",
-    startingPay: "",
-    endingPay: "",
+    starting_pay: "",
+    ending_pay: "",
     location: "",
   });
 
@@ -35,14 +34,15 @@ const JobListings: React.FC = () => {
 
   const fetchListings = async () => {
     const response = await fetch("/api/job-listing", {
-      method: "POST",
-      body: JSON.stringify(filters),
+      method: "GET",
     });
     const results = await response.json();
+    console.log(results);
     setJobs(results.data);
     setLoading(false);
   };
 
+  // TODO: Add filter here for search
   const handleFilterChange = (
     e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>,
     filterName: keyof typeof filters
@@ -53,7 +53,7 @@ const JobListings: React.FC = () => {
   if (loading) {
     return (
       <div className="flex m-auto">
-        <Loader />;
+        <Loader />
       </div>
     );
   }
@@ -90,8 +90,8 @@ const JobListings: React.FC = () => {
           <input
             type="number"
             placeholder="Min Pay"
-            value={filters.startingPay}
-            onChange={(e) => handleFilterChange(e, "startingPay")}
+            value={filters.starting_pay}
+            onChange={(e) => handleFilterChange(e, "starting_pay")}
             className="p-4 border rounded-lg"
           />
 
@@ -99,8 +99,8 @@ const JobListings: React.FC = () => {
           <input
             type="number"
             placeholder="Max Pay"
-            value={filters.endingPay}
-            onChange={(e) => handleFilterChange(e, "endingPay")}
+            value={filters.ending_pay}
+            onChange={(e) => handleFilterChange(e, "ending_pay")}
             className="p-4 border rounded-lg"
           />
 
@@ -127,13 +127,13 @@ const JobListings: React.FC = () => {
               <h2 className="text-xl font-semibold mb-2" style={{ color: "#2B6CB0" }}>
                 {job.title}
               </h2>
-              <p className="text-sm text-gray-500 mb-4">{`${job.company} - ${job.position} - ${job.location}`}</p>
+              <p className="text-sm text-gray-500 mb-4">{`${job.business.name} - ${job.position} - ${job.location}`}</p>
               <p className="mb-4">
-                Pay Range: ${job.startingPay} - ${job.endingPay}
+                Pay Range: ${job.starting_pay} - ${job.ending_pay}
               </p>
               <p className="text-sm mb-4">{job.description}</p>
               <div className="flex justify-end space-x-2">
-                <button className="text-blueprimary hover:underline mr-4">Bookmark</button>
+                {/* <button className="text-blueprimary hover:underline mr-4">Bookmark</button> */}
                 {/* TODO: Add actual id later */}
                 <Link
                   href={`/job-listing/${job.id}`}

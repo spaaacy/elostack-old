@@ -293,9 +293,9 @@ const RequestInterview: React.FC = () => {
           <button
             type="button"
             onClick={addPerson}
-            className="mt-2 mb-2 text-gray-500 px-6 py-3 rounded transition duration-150 ease-in-out"
+            className="mt-0 mb-2 text-gray-500 px-6 py-3 rounded transition duration-150 ease-in-out"
           >
-            <FontAwesomeIcon icon={faPlus} /> Add another candidate
+            <span style={{ fontSize: "20px" }}>+</span> Add another candidate
           </button>
           <button
             type="submit"

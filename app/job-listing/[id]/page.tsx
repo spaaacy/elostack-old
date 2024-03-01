@@ -2,7 +2,7 @@
 
 import NavBar from "@/components/NavBar";
 import Loader from "@/components/ui/Loader";
-import { JobListing } from "@/types/JobListing";
+import { JobListing } from "@/components/Individual/joblisting/JobListing";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";

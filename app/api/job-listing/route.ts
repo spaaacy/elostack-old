@@ -14,7 +14,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
           .select("*, business(*)")
           .match({ business_id, active: true })
           .order("created_at", { ascending: false })
-          .range(0, 5);
+          .range(0, 4);
       } else {
         results = await supabase
           .from("job_listing")

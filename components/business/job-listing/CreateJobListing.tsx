@@ -3,9 +3,11 @@
 import React, { useContext, useState } from "react";
 import Head from "next/head";
 import { UserContext } from "@/context/UserContext";
+import { useRouter } from "next/navigation";
 
 const CreateJobListing = () => {
   const { user } = useContext(UserContext);
+  const router = useRouter();
 
   const [formData, setFormData] = useState({
     title: "",
@@ -43,7 +45,7 @@ const CreateJobListing = () => {
         }),
       });
       if (response.status === 201) {
-        window.location.reload();
+        router.push("/dashboard");
         console.log("Job listed successfully");
       }
     }

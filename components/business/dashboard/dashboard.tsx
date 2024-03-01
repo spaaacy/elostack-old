@@ -115,18 +115,23 @@ const BusinessDashboard: React.FC = () => {
 
           {/* Job Listings */}
           {/* Your Applications */}
-          <section className="bg-center p-8 rounded-lg shadow-lg">
-            <div className="flex justify-between items-center -mt-[2rem] ">
+          <section className="bg-center mt-4 p-8 rounded-lg shadow-lg">
+            <div className="flex justify-between mb-4 items-center -mt-[2rem] ">
               <h2 className="text-3xl font-bold text-blueprimary">Latest Job Listings</h2>
-              <div className="mt-[2rem]">
+              <div className="flex items-center justify-center gap-4">
+                <Link href="/dashboard/search-individuals">
+                  <button className="inline-block bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
+                    Search for Candidates
+                  </button>
+                </Link>
                 <Link href="/dashboard/job-listing">
-                  <button className="inline-block bg-green-500 text-white px-6 py-3 mb-6 rounded hover:bg-green-600 transition duration-150 ease-in-out">
+                  <button className="inline-block bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
                     Post Job
                   </button>
                 </Link>
 
                 <Link href="/dashboard/view-listings">
-                  <button className="inline-block bg-blueprimary ml-4 text-white px-6 py-3 mb-6 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
+                  <button className="inline-block bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
                     View More Applications
                   </button>
                 </Link>
@@ -155,12 +160,8 @@ const BusinessDashboard: React.FC = () => {
 
           <section className="bg-cover bg-white mt-4 bg-center p-8 rounded-lg shadow-2xl space-y-6 ">
             <div className="flex justify-between items-center ">
-              <h2 className="text-3xl font-bold text-blueprimary mb-6">Potential Hires</h2>
-              <Link href="/dashboard/search-individuals">
-                <button className="inline-block bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
-                  Search for Candidates
-                </button>
-              </Link>
+              {/* TODO: Show purchased candidates here */}
+              <h2 className="text-3xl font-bold text-blueprimary mb-6">Your candidates</h2>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {potentialHires.map((hire) => (

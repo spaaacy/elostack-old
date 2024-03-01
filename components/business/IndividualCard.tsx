@@ -10,7 +10,7 @@ const IndividualCard: FC<IndividualCardProps> = ({ individual }) => {
   return (
     <Link href={""}>
       <div>
-        <h3>{individual.firstName}</h3>
+        <h3>{individual.first_name}</h3>
       </div>
     </Link>
   );

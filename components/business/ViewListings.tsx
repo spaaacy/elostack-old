@@ -14,14 +14,12 @@ const ViewListings = () => {
   }, [user]);
 
   const fetchListings = async () => {
-    console.log(user.user_id);
     const response = await fetch(`/api/job-listing?business_id=${user.user_id}`, {
       method: "GET",
     });
     if (response.status === 200) {
       const results = await response.json();
       setJobListings(results.data);
-      console.log(results);
     }
   };
 

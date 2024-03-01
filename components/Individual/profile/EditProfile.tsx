@@ -43,17 +43,13 @@ const initialFormData: FormData = {
 };
 
 const EditProfile = () => {
-  const { session, fetchProfileData } = useContext(
-    UserContext
-  ) as UserContextType;
+  const { session, fetchProfileData } = useContext(UserContext) as UserContextType;
 
   const router = useRouter();
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [loadingData, setLoadingData] = useState(true);
 
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-  ) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
@@ -117,10 +113,7 @@ const EditProfile = () => {
           <h1 className="text-2xl font-semibold mb-6">Edit Your Profile</h1>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="mb-4">
-              <label
-                htmlFor="firstName"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
                 First Name<span className="text-red-500">*</span>
               </label>
               <input
@@ -134,10 +127,7 @@ const EditProfile = () => {
               />
             </div>
             <div className="mb-4">
-              <label
-                htmlFor="lastName"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
                 Last Name<span className="text-red-500">*</span>
               </label>
               <input
@@ -151,10 +141,7 @@ const EditProfile = () => {
               />
             </div>
             <div className="mb-4">
-              <label
-                htmlFor="pronouns"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="pronouns" className="block text-sm font-medium text-gray-700">
                 Pronouns
               </label>
               <select
@@ -171,10 +158,7 @@ const EditProfile = () => {
               </select>
               {formData.pronouns === "custom" && (
                 <div className="mt-4">
-                  <label
-                    htmlFor="customPronouns"
-                    className="block text-sm font-medium text-gray-700"
-                  >
+                  <label htmlFor="customPronouns" className="block text-sm font-medium text-gray-700">
                     Enter custom pronouns
                   </label>
                   <input
@@ -191,10 +175,7 @@ const EditProfile = () => {
             </div>
 
             <div className="mb-4">
-              <label
-                htmlFor="birthday"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="birthday" className="block text-sm font-medium text-gray-700">
                 Birthday
               </label>
               <input
@@ -206,15 +187,10 @@ const EditProfile = () => {
                 className="mt-1 block w-full rounded border border-gray-300 bg-white px-5 py-2 shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               />
             </div>
-            <div className="text-xl font-semibold mb-6">
-              Contact Information
-            </div>
+            <div className="text-xl font-semibold mb-6">Contact Information</div>
 
             <div className="mb-4">
-              <label
-                htmlFor="phoneNumber"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700">
                 Phone Number
               </label>
               <input
@@ -226,10 +202,7 @@ const EditProfile = () => {
                 placeholder="Enter your phone number"
                 className="mt-1 block w-full rounded border border-gray-300 bg-white px-5 py-2 shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               />
-              <label
-                htmlFor="phoneType"
-                className="block text-sm font-medium text-gray-700 mt-4"
-              >
+              <label htmlFor="phoneType" className="block text-sm font-medium text-gray-700 mt-4">
                 Phone Type
               </label>
               <select
@@ -246,10 +219,7 @@ const EditProfile = () => {
               </select>
             </div>
             <div className="mb-4">
-              <label
-                htmlFor="address"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="address" className="block text-sm font-medium text-gray-700">
                 Address
               </label>
               <input
@@ -264,10 +234,7 @@ const EditProfile = () => {
             </div>
             <div className="text-xl font-semibold mb-6">Location</div>
             <div className="mb-4">
-              <label
-                htmlFor="country"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="country" className="block text-sm font-medium text-gray-700">
                 Country/Region<span className="text-red-500">*</span>
               </label>
               <input
@@ -281,10 +248,7 @@ const EditProfile = () => {
               />
             </div>
             <div className="mb-4">
-              <label
-                htmlFor="postalCode"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="postalCode" className="block text-sm font-medium text-gray-700">
                 Postal Code
               </label>
               <input
@@ -298,10 +262,7 @@ const EditProfile = () => {
               />
             </div>
             <div className="mb-4">
-              <label
-                htmlFor="city"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="city" className="block text-sm font-medium text-gray-700">
                 City
               </label>
               <input
@@ -315,14 +276,9 @@ const EditProfile = () => {
               />
             </div>
 
-            <div className="text-xl font-semibold mb-6">
-              Professional Information
-            </div>
+            <div className="text-xl font-semibold mb-6">Professional Information</div>
             <div className="mb-4">
-              <label
-                htmlFor="resume"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="resume" className="block text-sm font-medium text-gray-700">
                 Upload Resume<span className="text-red-500">*</span>
               </label>
               <input
@@ -336,10 +292,7 @@ const EditProfile = () => {
             </div>
 
             <div className="mb-4">
-              <label
-                htmlFor="coverLetter"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="coverLetter" className="block text-sm font-medium text-gray-700">
                 Upload Cover Letter<span className="text-red-500">*</span>
               </label>
               <input
@@ -354,10 +307,7 @@ const EditProfile = () => {
 
             <div className="text-xl font-semibold mb-6">Online Presence</div>
             <div className="mb-4">
-              <label
-                htmlFor="portfolio"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="portfolio" className="block text-sm font-medium text-gray-700">
                 Portfolio URL
               </label>
               <input
@@ -371,10 +321,7 @@ const EditProfile = () => {
               />
             </div>
             <div className="mb-4">
-              <label
-                htmlFor="linkedin"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="linkedin" className="block text-sm font-medium text-gray-700">
                 LinkedIn URL
               </label>
               <input
@@ -388,10 +335,7 @@ const EditProfile = () => {
               />
             </div>
             <div className="mb-4">
-              <label
-                htmlFor="github"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="github" className="block text-sm font-medium text-gray-700">
                 GitHub URL
               </label>
               <input

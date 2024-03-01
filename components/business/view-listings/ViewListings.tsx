@@ -1,18 +1,9 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import AOS from "aos";
-import "aos/dist/aos.css";
 
 const BusinessDashboard: React.FC = () => {
-  useEffect(() => {
-    AOS.init({
-      duration: 1000,
-      once: true,
-    });
-  }, []);
-
   const [jobListings, setJobListings] = useState([
     {
       id: 1,
@@ -51,9 +42,9 @@ const BusinessDashboard: React.FC = () => {
   };
 
   return (
-    <main className="flex flex-col flex-1 bg-gray-100 min-h-screen animate-fadeIn bg-no-repeat bg-fixed bg-bottom bg-[url('/waves.svg')]">
-      <main className="container mx-auto p-4 bg-white rounded-lg shadow mt-8 animate-slideUp">
-        <section data-aos="fade-up">
+    <main className="flex flex-col flex-1 bg-gray-100 min-h-screen bg-no-repeat bg-fixed bg-bottom bg-[url('/waves.svg')]">
+      <main className="container mx-auto p-4 bg-white rounded-lg shadow mt-8">
+        <section>
           <div className="p-5 text-center border-b border-gray-200">
             <h2 className="text-4xl font-bold text-blueprimary ">
               Your Job Listings
@@ -61,15 +52,12 @@ const BusinessDashboard: React.FC = () => {
           </div>
         </section>
 
-        <section
-          data-aos="fade-right"
-          className="bg-center p-8 rounded-lg shadow-lg"
-        >
+        <section className="bg-center p-8 rounded-lg shadow-lg">
           <div className="flex justify-between items-center -mt-[2rem] ">
             <h2 className="text-3xl font-bold text-blueprimary">Listings</h2>
             <div className="mt-[2rem]">
               <Link href="/business/job-listing">
-                <button className="inline-block bg-blueprimary text-white px-6 py-3 mb-6 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
+                <button className="inline-block bg-blueprimary text-white px-6 py-3 mb-6 rounded">
                   Create New Listing
                 </button>
               </Link>
@@ -80,7 +68,7 @@ const BusinessDashboard: React.FC = () => {
             {jobListings.map((listing) => (
               <div
                 key={listing.id}
-                className="bg-gray-50 p-6 rounded-lg flex justify-between items-center hover:shadow-xl transition-shadow duration-300"
+                className="bg-gray-50 p-6 rounded-lg flex justify-between items-center"
               >
                 <div>
                   <h3 className="font-semibold text-lg">{listing.role}</h3>
@@ -92,12 +80,12 @@ const BusinessDashboard: React.FC = () => {
                 </div>
                 <div className="space-x-4">
                   <button
-                    className="text-white bg-blueprimary px-4 py-2 rounded hover:bg-blue-700 transition duration-150 ease-in-out"
+                    className="text-white bg-blueprimary px-4 py-2 rounded"
                     onClick={() => toggleJobListing(listing.id)}
                   >
                     {listing.status === "Open" ? "Close" : "Open"} Listing
                   </button>
-                  <button className="text-white bg-gray-600 px-4 py-2 rounded hover:bg-gray-700 transition duration-150 ease-in-out">
+                  <button className="text-white bg-gray-600 px-4 py-2 rounded">
                     More Details
                   </button>
                 </div>

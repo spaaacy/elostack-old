@@ -54,7 +54,7 @@ const RequestInterview: React.FC = () => {
 
   return (
     <>
-      <section className="container mx-auto  bg-white  mt-6 animate-slideUp bg-center p-8 rounded-lg shadow-lg">
+      <section className="container mx-auto bg-white mt-6 bg-center p-8 rounded-lg shadow-lg">
         <h2 className="text-3xl font-bold text-blueprimary">
           Request Interview
         </h2>

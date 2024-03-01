@@ -2,18 +2,9 @@
 
 import Head from "next/head";
 import React, { useEffect } from "react";
-import AOS from "aos";
-import "aos/dist/aos.css";
 import Link from "next/link";
 
 const BusinessDashboard: React.FC = () => {
-  useEffect(() => {
-    AOS.init({
-      duration: 1000,
-      once: true,
-    });
-  }, []);
-
   // Sample data
   const jobListings = [
     { id: 1, title: "Software Engineer", company: "Company A", status: "Open" },
@@ -100,14 +91,14 @@ const BusinessDashboard: React.FC = () => {
 
   return (
     <>
-      <main className="flex flex-col flex-1 bg-gray-100 min-h-screen animate-fadeIn bg-no-repeat bg-fixed bg-bottom bg-[url('/waves.svg')]">
+      <main className="flex flex-col flex-1 bg-gray-100 min-h-screen bg-no-repeat bg-fixed bg-bottom bg-[url('/waves.svg')]">
         <Head>
           <title>Job Seeker Dashboard | EloStack</title>
         </Head>
-        <main className="container mx-auto p-4 bg-white rounded-lg shadow mt-8 animate-slideUp">
-          {/* Profile Summary with AOS animation */}
+        <main className="container mx-auto p-4 bg-white rounded-lg shadow mt-8">
+          {/* Profile Summary */}
 
-          <section data-aos="fade-up">
+          <section>
             <div className="p-5 text-center border-b border-gray-200">
               <h2 className="text-2xl font-bold ">{`Welcome back, ${companyDetails.name}`}</h2>
               <p className="text-md text-gray-500">Software Dev</p>
@@ -116,10 +107,7 @@ const BusinessDashboard: React.FC = () => {
 
           {/* Job Listings */}
           {/* Your Applications */}
-          <section
-            data-aos="fade-right"
-            className="bg-center p-8 rounded-lg shadow-lg"
-          >
+          <section className="bg-center p-8 rounded-lg shadow-lg">
             <div className="flex justify-between items-center -mt-[2rem] ">
               <h2 className="text-3xl font-bold text-blueprimary">
                 Your Job Listings
@@ -132,7 +120,7 @@ const BusinessDashboard: React.FC = () => {
                 </Link>
 
                 <Link href="/business/view-listings">
-                  <button className="inline-block bg-blue-600 ml-10 text-white px-6 py-3 mb-6 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
+                  <button className="inline-block bg-blueprimary ml-10 text-white px-6 py-3 mb-6 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
                     View More Applications
                   </button>
                 </Link>
@@ -151,7 +139,7 @@ const BusinessDashboard: React.FC = () => {
                     </h3>
                     <p className="text-sm text-gray-600">{app.status}</p>
                   </div>
-                  <button className="text-blue-600 hover:underline">
+                  <button className="text-blueprimary hover:underline">
                     Edit Job Listing
                   </button>
                   <button
@@ -165,16 +153,13 @@ const BusinessDashboard: React.FC = () => {
             </div>
           </section>
 
-          <section
-            data-aos="fade-left"
-            className="bg-cover bg-white mt-4 bg-center p-8 rounded-lg shadow-2xl space-y-6 "
-          >
+          <section className="bg-cover bg-white mt-4 bg-center p-8 rounded-lg shadow-2xl space-y-6 ">
             <div className="flex justify-between items-center ">
               <h2 className="text-3xl font-bold text-blueprimary mb-6">
                 Potential Hires
               </h2>
               <Link href="/business/search">
-                <button className="inline-block bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
+                <button className="inline-block bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
                   Search for Candidates
                 </button>
               </Link>

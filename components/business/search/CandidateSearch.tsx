@@ -85,7 +85,6 @@ const CandidateSearch: React.FC = () => {
       grade: "C",
       description: "A versatile full stack developer...",
     },
-    
   ];
 
   const filteredCandidates = candidates.filter(
@@ -95,26 +94,19 @@ const CandidateSearch: React.FC = () => {
       candidate.level.toLowerCase().includes(level.toLowerCase()) &&
       candidate.grade.toLowerCase().includes(grade.toLowerCase())
   );
-  useEffect(() => {
-    AOS.init({
-      duration: 1000, // You can also add other settings. Check documentation for more options.
-    });
-  }, []);
+
   return (
-    <main className="flex flex-col flex-1 bg-gray-100 min-h-screen animate-fadeIn bg-no-repeat bg-fixed bg-bottom bg-[url('/waves.svg')]">
+    <main className="flex flex-col flex-1 bg-gray-100 min-h-screen bg-no-repeat bg-fixed bg-bottom bg-[url('/waves.svg')]">
       <Head>
         <title>Candidate Search | EloStack</title>
       </Head>
 
-      <main className="container mx-auto p-4 bg-white rounded-lg shadow mt-8 animate-slideUp">
+      <main className="container mx-auto p-4 bg-white rounded-lg shadow mt-8">
         <section className="p-8">
-          <h2
-            className="text-3xl font-bold text-blueprimary"
-            data-aos="fade-up"
-          >
+          <h2 className="text-3xl font-bold text-blueprimary">
             Candidate Search
           </h2>
-          <div className="flex flex-wrap gap-6 mt-6" data-aos="fade-up">
+          <div className="flex flex-wrap gap-6 mt-6">
             <input
               type="text"
               className="w-full md:w-auto flex-grow p-2 border border-gray-300 rounded"
@@ -161,8 +153,6 @@ const CandidateSearch: React.FC = () => {
               <div
                 key={candidate.id}
                 className="bg-gray-50 p-6 rounded-lg flex hover:shadow-xl transition-shadow duration-300"
-                data-aos="fade-up"
-                data-aos-delay={index * 100} // Delay increases for each candidate
               >
                 <Avatar
                   name={candidate.name}

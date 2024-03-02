@@ -3,11 +3,11 @@ import { useContext, useState, useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import Avatar from "react-avatar";
-import { UserContext, UserContextType } from "@/context/UserContext";
+import { UserContext } from "@/context/UserContext";
 import "aos/dist/aos.css";
 
 const CandidateSearch: React.FC = () => {
-  const { session } = useContext(UserContext) as UserContextType;
+  const { session } = useContext(UserContext);
   const [candidates, setCandidates] = useState();
 
   useEffect(() => {

@@ -3,10 +3,10 @@
 import Head from "next/head";
 import React, { useContext, useEffect, useState } from "react";
 import Link from "next/link";
-import { UserContext, UserContextType } from "@/context/UserContext";
+import { UserContext } from "@/context/UserContext";
 
 const BusinessDashboard: React.FC = () => {
-  const { user } = useContext(UserContext) as UserContextType;
+  const { user } = useContext(UserContext);
   const [jobListings, setJobListings] = useState();
   const [businessDetails, setBusinessDetails] = useState();
 
@@ -124,7 +124,7 @@ const BusinessDashboard: React.FC = () => {
                     Search for Candidates
                   </button>
                 </Link>
-                <Link href="/dashboard/job-listing">
+                <Link href="/dashboard/create-listing">
                   <button className="inline-block bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
                     Create Listing
                   </button>

@@ -1,10 +1,10 @@
 "use client";
 
-import { UserContext, UserContextType } from "@/context/UserContext";
+import { UserContext } from "@/context/UserContext";
 import { FC, useContext, useState, useEffect, useRef } from "react";
 
 const UserAccountNav = () => {
-  const { session, supabase } = useContext(UserContext) as UserContextType;
+  const { session, supabase } = useContext(UserContext);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 

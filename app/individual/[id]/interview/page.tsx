@@ -2,13 +2,13 @@
 
 import NavBar from "@/components/NavBar";
 import Feedback from "@/components/individual/feedback/Feedback";
-import { UserContext, UserContextType } from "@/context/UserContext";
+import { UserContext } from "@/context/UserContext";
 import { useParams, useRouter } from "next/navigation";
 import { useContext, useEffect } from "react";
 
 const Page = () => {
   const { id } = useParams();
-  const { session, user } = useContext(UserContext) as UserContextType;
+  const { session, user } = useContext(UserContext);
   const router = useRouter();
 
   // TODO: Fix this flow

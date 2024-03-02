@@ -1,10 +1,10 @@
 "use client";
 
-import { UserContext, UserContextType } from "@/context/UserContext";
+import { UserContext } from "@/context/UserContext";
 import { useContext, useState } from "react";
 
 export const ListJob = () => {
-  const { user } = useContext(UserContext) as UserContextType;
+  const { user } = useContext(UserContext);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

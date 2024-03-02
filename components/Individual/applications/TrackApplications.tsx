@@ -1,11 +1,11 @@
 "use client";
 import React, { useContext, useEffect, useState } from "react";
 import Head from "next/head";
-import { UserContext, UserContextType } from "@/context/UserContext";
+import { UserContext } from "@/context/UserContext";
 import Link from "next/link";
 
 const TrackApplications: React.FC = () => {
-  const { session } = useContext(UserContext) as UserContextType;
+  const { session } = useContext(UserContext);
   const [applications, setApplications] = useState();
 
   // Convert ISO date string to a more readable format
@@ -69,7 +69,6 @@ const TrackApplications: React.FC = () => {
                 <th className="text-left p-4 text-blue-600">Job Title</th>
                 <th className="text-left p-4 text-blue-600">Company</th>
                 <th className="text-left p-4 text-blue-600">Applied On</th>
-                {/* <th className="text-left p-4 text-blue-600">Status</th> */}
                 <th className="text-right p-4 text-blue-600">Actions</th>
               </tr>
             </thead>
@@ -77,20 +76,9 @@ const TrackApplications: React.FC = () => {
               {applications &&
                 applications.map((application) => (
                   <tr key={application.job_listing_id} className="border-b">
-                    <td className="p-4">{application.job_listing.title}</td>
-                    <td className="p-4">{application.job_listing.company}</td>
+                    <td className="p-4 font-semibold">{application.job_listing.title}</td>
+                    <td className="p-4 font-semibold">{application.job_listing.business.name}</td>
                     <td className="p-4">{formatDate(application.created_at)}</td>
-                    {/* <td
-                      className={`p-4 font-semibold ${
-                        application.status === "Offered"
-                          ? "text-green-600"
-                          : application.status === "Rejected"
-                          ? "text-red-600"
-                          : "text-blue-600"
-                      }`}
-                    >
-                      {application.status}
-                    </td> */}
                     <td className="p-4 flex justify-end">
                       <Link
                         href={`/job-listing/${application.job_listing.id}`}

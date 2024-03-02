@@ -23,14 +23,7 @@ export type session =
       error: null;
     };
 
-export interface UserContextType {
-  session: session;
-  supabase: any;
-  fetchProfileData: Function;
-  user: any;
-}
-
-export const UserContext = React.createContext<UserContextType | null>(null);
+export const UserContext = React.createContext();
 
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [session, setSession] = useState();
@@ -50,22 +43,13 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const fetchUser = async () => {
     const userId = session?.data?.session?.user.id;
     if (userId) {
-      const { data, error } = await supabase.from("user").select("*").eq("user_id", userId).single();
-      setUser(data);
-    }
-  };
-
-  const fetchProfileData = async (userId) => {
-    if (userId) {
-      try {
-        const { data, error } = await supabase?.from("individual").select("*").eq("user_id", userId).single();
-        if (error) throw error;
-        return data;
-      } catch (error) {
-        console.error("Error fetching profile:", error.message);
+      const response = await fetch(`/api/user/${userId}`, {
+        method: "GET",
+      });
+      if (response.status === 200) {
+        const { user } = await response.json();
+        setUser(user);
       }
-    } else {
-      console.log("Session not loaded or user ID undefined");
     }
   };
 
@@ -74,5 +58,5 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setSession(session);
   };
 
-  return <UserContext.Provider value={{ session, supabase, fetchProfileData, user }}>{children}</UserContext.Provider>;
+  return <UserContext.Provider value={{ session, supabase, user }}>{children}</UserContext.Provider>;
 };

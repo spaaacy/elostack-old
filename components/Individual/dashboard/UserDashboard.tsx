@@ -1,5 +1,3 @@
-// pages/dashboard.tsx
-
 "use client";
 
 import { UserContext, UserContextType } from "@/context/UserContext";
@@ -8,19 +6,9 @@ import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 import { profileStore } from "../profileStore";
 import Loader from "@/components/ui/Loader";
-import AOS from "aos";
-import "aos/dist/aos.css";
-import Images from "next/image";
 import Link from "next/link";
 
 const UserDashboard: React.FC = () => {
-  useEffect(() => {
-    AOS.init({
-      duration: 1000,
-      once: true,
-    });
-  }, []);
-
   const interviewScore = 85;
 
   const applications = [
@@ -60,12 +48,14 @@ const UserDashboard: React.FC = () => {
     {
       id: 3,
       title: "The Complete JavaScript Course 2024",
-      description: "Understand JavaScript deeply for a better development career.",
+      description:
+        "Understand JavaScript deeply for a better development career.",
       link: "https://www.udemy.com/course/the-complete-javascript-course/",
     },
   ];
-
-  const { session, fetchProfileData } = useContext(UserContext) as UserContextType;
+  const { session, fetchProfileData } = useContext(
+    UserContext
+  ) as UserContextType;
   const [loadingData, setLoadingData] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { profileData, setProfileData } = profileStore();
@@ -76,7 +66,6 @@ const UserDashboard: React.FC = () => {
       fetchUser();
     }
   }, [session]);
-
   const fetchUser = async () => {
     const userId = session?.data.session?.user.id;
     const data = await fetchProfileData(userId);
@@ -97,12 +86,12 @@ const UserDashboard: React.FC = () => {
   }
 
   return (
-    <main className="flex flex-col flex-1 bg-gray-100 min-h-screen animate-fadeIn bg-no-repeat bg-fixed bg-bottom bg-[url('/waves.svg')]">
+    <main className="flex flex-col flex-1 bg-gray-100 min-h-screen bg-no-repeat bg-fixed bg-bottom bg-[url('/waves.svg')]">
       <Head>
         <title>Job Seeker Dashboard | EloStack</title>
       </Head>
 
-      <main className="container mx-auto p-4 bg-white rounded-lg shadow mt-8 animate-slideUp">
+      <main className="container mx-auto p-4 bg-white rounded-lg shadow mt-8">
         {/* Profile Summary with AOS animation */}
         <section data-aos="fade-up">
           <div className="p-5 text-center border-b border-gray-200">
@@ -116,9 +105,14 @@ const UserDashboard: React.FC = () => {
         </section>
 
         {/* Job Application Status with AOS animation */}
-        <section data-aos="fade-right" className="bg-center p-8 rounded-lg shadow-lg">
+        <section
+          data-aos="fade-right"
+          className="bg-center p-8 rounded-lg shadow-lg"
+        >
           <div className="flex justify-between items-center -mt-[2rem] ">
-            <h2 className="text-3xl font-bold text-blueprimary">Your Applications</h2>
+            <h2 className="text-3xl font-bold text-blueprimary">
+              Your Applications
+            </h2>
             <div className="mt-[2rem]">
               <Link href="/dashboard/applications">
                 <button className="inline-block bg-blue-600 text-white px-6 py-3 mb-6 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
@@ -140,18 +134,21 @@ const UserDashboard: React.FC = () => {
                   </h3>
                   <p className="text-sm text-gray-600">{app.status}</p>
                 </div>
-                <button className="text-blue-600 hover:underline">View Details</button>
+                <button className="text-blue-600 hover:underline">
+                  View Details
+                </button>
               </div>
             ))}
           </div>
         </section>
 
         {/* Skill Improvement with AOS animation */}
-        {/* <section
-          data-aos="fade-left"
+        <section
           className=" bg-cover bg-white mt-[1rem] bg-center p-8 rounded-lg shadow-2xl space-y-6"
         >
-          <h2 className="text-3xl font-bold text-blueprimary mb-6">Skill Improvement</h2>
+          <h2 className="text-3xl font-bold text-blueprimary mb-6">
+            Skill Improvement
+          </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 ">
             {skillResources.map((resource) => (
               <a

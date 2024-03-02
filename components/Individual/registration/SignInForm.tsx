@@ -1,8 +1,9 @@
 "use client";
-import { useState } from "react";
-import { z } from "zod";
-import Image from "next/image";
+import React, { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Head from "next/head";
+import { z } from "zod";
 import { createClient } from "@supabase/supabase-js";
 
 const FormSchema = z.object({
@@ -18,7 +19,8 @@ const FormSchema = z.object({
       "Password must be at least 8 characters"
     ),
 });
-const SignInForm = () => {
+
+const Signup: React.FC = () => {
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -28,17 +30,17 @@ const SignInForm = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [formErrors, setFormErrors] = useState({});
-
+  const [isBusiness, setIsBusiness] = useState(false);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-  const handleSubmit = (event) => {
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const result = FormSchema.safeParse(formData);
     if (!result.success) {
       const errors = result.error.flatten().fieldErrors;
-      // Only take the first error message for each field
       for (let field in errors) {
         errors[field] = errors[field][0];
       }
@@ -46,18 +48,13 @@ const SignInForm = () => {
     } else {
       console.log("Form submission successful", formData);
       setFormErrors({});
-      onSubmit(result.data); // Call onSubmit with the valid form data
+      onSubmit(result.data);
     }
   };
+
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-
-  const unfilledFieldsCount = Object.keys(formErrors).length;
-  const baseMarginTop = 19;
-  const socialButtonsMarginTop = `${
-    baseMarginTop + unfilledFieldsCount * 1.1
-  }rem`;
 
   const onSubmit = async (values: z.infer<typeof FormSchema>) => {
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -71,118 +68,93 @@ const SignInForm = () => {
       console.log(error);
     }
   };
+
   return (
-    <div className="flex justify-center items-center h-full w-full md:w-1/2 relative">
-      <form
-        className="p-8 bg-gray-100 rounded-lg shadow max-w-md w-full xl:w-1/2 xl:-mt-40 relative"
-        onSubmit={handleSubmit}
-      >
-        <div className="mb-5">
-          <label
-            htmlFor="email"
-            className="block text-black text-sm font-bold mb-2"
-          >
-            Email
-          </label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            value={formData.email}
-            onChange={handleInputChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-          {formErrors.email && (
-            <p className="text-red-500 text-xs italic">{formErrors.email}</p>
-          )}
-        </div>
+    <main className="flex flex-col flex-1 bg-gray-100 min-h-screen bg-no-repeat bg-fixed bg-bottom bg-[url('/waves.svg')]">
+      <Head>
+        <title>
+          {isBusiness ? "Business Signup" : "Individual Signup"} | EloStack
+        </title>
+      </Head>
 
-        <div className="mb-4 relative">
-          <label
-            htmlFor="password"
-            className="block text-black text-sm font-bold mb-2"
-          >
-            Password
-          </label>
-          <input
-            type={showPassword ? "text" : "password"}
-            name="password"
-            id="password"
-            value={formData.password}
-            onChange={handleInputChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-          {formErrors.password && (
-            <p className="text-red-500 text-xs italic">{formErrors.password}</p>
-          )}
-          <button
-            type="button"
-            onClick={togglePasswordVisibility}
-            className="absolute inset-y-0 right-0 pr-3 flex items-center text-black"
-            style={{ top: formErrors.password ? "0.9rem" : "1.9rem" }}
-          >
-            {showPassword ? (
-              <Image
-                src="/Hide.svg"
-                alt="Hide password"
-                width={25}
-                height={25}
-              />
-            ) : (
-              <Image
-                src="/Unhide.png"
-                alt="Show password"
-                width={25}
-                height={25}
-              />
-            )}
-          </button>
-        </div>
+      <main className="container mx-auto p-8 bg-white rounded-lg shadow-md mt-20 flex justify-center items-center">
+        <section className="grid md:grid-cols-2 gap-4">
+          <div className="p-8 text-center md:text-left border-r border-gray-200 flex flex-col items-center">
+            <h2 className="text-4xl font-bold mb-4 text-blueprimary">
+              EloStack
+            </h2>
+            <p className="text-md text-gray-500 text-center">
+              {isBusiness
+                ? "Join EloStack and streamline your hiring process. Find top talent, conduct efficient technical interviews, and hire with confidence."
+                : "Join EloStack and find your next job. Get matched with top companies, showcase your skills, and ace your interviews."}
+            </p>
+          </div>
 
-        <button
-          type="submit"
-          className="bg-blueprimary hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
-        >
-          Sign In
-        </button>
-        <div className="flex items-center justify-center space-x-2 mt-4">
-          <span className="text-black">Don&apos;t have an account?</span>
-          <a
-            href="/signup"
-            className="text-blue-500 hover:text-blue-900 font-bold focus:outline-none focus:shadow-outline"
-          >
-            Sign Up
-          </a>
-        </div>
-      </form>
-      <div
-        className="absolute"
-        style={{
-          marginTop: socialButtonsMarginTop,
-          marginRight: "0rem",
-          width: "28rem",
-        }}
-      >
-        <div className="flex flex-col items-center gap-3">
-          <SocialLoginButton service="Google" logoPath="/google.svg" />
-          <SocialLoginButton service="GitHub" logoPath="/github.svg" />
-        </div>
-      </div>
-    </div>
+          <div className="p-8">
+            <form onSubmit={handleSubmit}>
+              <div className="mb-4">
+                <label
+                  htmlFor="email"
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                >
+                  Email:
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                />
+              </div>
+              <div className="mb-6">
+                <div className="flex justify-between items-center">
+                  <label
+                    htmlFor="password"
+                    className="text-gray-700 text-sm font-bold mb-2"
+                  >
+                    Password:
+                  </label>
+                  <Link
+                    href="/forgot-password"
+                    className="text-blue-500 hover:text-blue-800 text-sm"
+                  >
+                    Forgot Password?
+                  </Link>
+                </div>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                />
+              </div>
+              <div className="flex items-center justify-between">
+                <Link
+                  href="/business/sign-up"
+                  className="inline-block align-baseline font-bold text-sm "
+                >
+                  Don't Have an Account?
+                  <span className="ml-2 text-blue-500 hover:text-blue-800">
+                    Sign Up
+                  </span>
+                </Link>
+                <button
+                  type="submit"
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                >
+                  Sign In
+                </button>
+              </div>
+            </form>
+          </div>
+        </section>
+      </main>
+    </main>
   );
 };
 
-const SocialLoginButton = ({ service, logoPath }) => (
-  <button className="flex items-center p-4 text-black bg-gray-100 rounded-lg shadow hover:bg-blue-400 w-full">
-    <img
-      className="ml-4"
-      src={logoPath}
-      alt={`${service} Logo`}
-      width={25}
-      height={25}
-    />
-    <span className="ml-4">Sign in with {service}</span>
-  </button>
-);
-
-export default SignInForm;
+export default Signup;

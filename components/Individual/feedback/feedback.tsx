@@ -1,8 +1,6 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import Head from "next/head";
-import AOS from "aos";
-import "aos/dist/aos.css";
 
 // Define your interfaces for TypeScript
 interface FeedbackDetail {
@@ -22,10 +20,6 @@ interface InterviewFeedback {
 
 // Your main React component
 const FeedbackPage: React.FC = () => {
-  useEffect(() => {
-    AOS.init({ duration: 1000, once: true });
-  }, []);
-
   // Mock feedback data
   const feedbackData: InterviewFeedback[] = [
     {
@@ -94,19 +88,14 @@ const FeedbackPage: React.FC = () => {
           href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"
         />
       </Head>
-      <div className="min-h-screen bg-gray-100 pt-10 pb-20 px-4 md:px-0 animate-fadeIn bg-no-repeat bg-fixed bg-bottom bg-[url('/waves.svg')]">
+      <div className="min-h-screen bg-gray-100 pt-10 pb-20 px-4 md:px-0 bg-no-repeat bg-fixed bg-bottom bg-[url('/waves.svg')]">
         <div className="max-w-7xl mx-auto">
-          <h1
-            data-aos="fade-down"
-            className="text-5xl font-bold text-center mb-12 text-blueprimary"
-          >
+          <h1 className="text-5xl font-bold text-center mb-12 text-blueprimary">
             Interview Feedback
           </h1>
           {feedbackData.map((feedback, index) => (
             <div
               key={index}
-              data-aos="fade-up"
-              data-aos-delay="5"
               className="bg-white rounded-xl shadow-lg overflow-hidden mb-10"
             >
               <div className="p-6">
@@ -135,8 +124,6 @@ const FeedbackPage: React.FC = () => {
                   {feedback.feedbackDetails.map((detail, idx) => (
                     <div
                       key={idx}
-                      data-aos="fade-up"
-                      data-aos-delay={`${idx * 1}`}
                       className="bg-gray-50 hover:shadow-xl rounded-lg p-4 shadow-inner mb-4"
                     >
                       <h3 className="text-xl font-semibold">{detail.area}</h3>

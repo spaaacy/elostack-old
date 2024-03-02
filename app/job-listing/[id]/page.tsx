@@ -3,7 +3,6 @@
 import NavBar from "@/components/NavBar";
 import Loader from "@/components/ui/Loader";
 import { UserContext, UserContextType } from "@/context/UserContext";
-import { JobListing } from "@/types/JobListing";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";

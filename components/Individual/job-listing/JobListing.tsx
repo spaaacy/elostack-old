@@ -42,12 +42,21 @@ const JobListings: React.FC = () => {
     console.log(jobListings);
     filteredJobs = jobListings.filter(
       (job) =>
-        (filters.title ? job.title.toLowerCase().includes(filters.title.toLowerCase()) : true) &&
+        (filters.title
+          ? job.title.toLowerCase().includes(filters.title.toLowerCase())
+          : true) &&
         (filters.position ? job.position === filters.position : true) &&
-        (filters.company ? job.business.name.toLowerCase().includes(filters.company.toLowerCase()) : true) &&
-        (!filters.starting_pay || job.starting_pay >= Number(filters.starting_pay)) &&
+        (filters.company
+          ? job.business.name
+              .toLowerCase()
+              .includes(filters.company.toLowerCase())
+          : true) &&
+        (!filters.starting_pay ||
+          job.starting_pay >= Number(filters.starting_pay)) &&
         (!filters.ending_pay || job.ending_pay <= Number(filters.ending_pay)) &&
-        (filters.location ? job.location.toLowerCase().includes(filters.location.toLowerCase()) : true)
+        (filters.location
+          ? job.location.toLowerCase().includes(filters.location.toLowerCase())
+          : true)
     );
   }
 
@@ -60,14 +69,18 @@ const JobListings: React.FC = () => {
   }
 
   return (
-    <>
+    <main className="flex flex-col flex-1 bg-gray-100 min-h-screen bg-no-repeat bg-fixed bg-bottom bg-[url('/waves.svg')]">
       <Head>
         <title>Job Listings | Your Company</title>
       </Head>
-      <div className="container mx-auto p-6">
-        <h1 className="text-3xl font-semibold mb-6" style={{ color: "#2B6CB0" }}>
-          Job Listings
-        </h1>
+      <main className="container mx-auto p-4 bg-white rounded-lg shadow mt-8">
+        <section data-aos="fade-up">
+          <div className="p-5 text-center">
+            <h2 className="text-2xl font-bold text-blueprimary">
+              Job Listings
+            </h2>
+          </div>
+        </section>
         <div className="flex flex-wrap gap-4 mb-6 items-center">
           {/* Role Filter Dropdown */}
           <input
@@ -126,36 +139,32 @@ const JobListings: React.FC = () => {
             type="text"
           />
         </div>
-        {/* Job Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-6">
           {filteredJobs.map((job) => (
             <div
               key={job.id}
-              className="bg-white rounded-lg border border-gray-300 shadow p-4 hover:shadow-2xl transition duration-300 ease-in-out"
+              className="bg-gray-50 p-6 rounded-lg flex flex-col justify-between hover:shadow-xl transition-shadow duration-300"
             >
-              <h2 className="text-xl font-semibold mb-2" style={{ color: "#2B6CB0" }}>
-                {job.title}
-              </h2>
-              <p className="text-sm text-gray-500 mb-4">{`${job.business.name} - ${job.position} - ${job.location}`}</p>
-              <p className="mb-4">
-                Pay Range: ${job.starting_pay} - ${job.ending_pay}
-              </p>
-              <p className="text-sm mb-4">{job.description}</p>
-              <div className="flex justify-end space-x-2">
-                {/* <button className="text-blueprimary hover:underline mr-4">Bookmark</button> */}
-                {/* TODO: Add actual id later */}
-                <Link
-                  href={`/job-listing/${job.id}`}
-                  className="bg-blueprimary text-white px-4 py-2 rounded hover:bg-blue-600"
-                >
-                  Apply
-                </Link>
+              <div>
+                <h3 className="font-semibold text-lg">
+                  {job.title} at {job.business.name}
+                </h3>
+                <p className="text-sm text-gray-600">{`${job.position} - ${job.location}`}</p>
+                <p>
+                  Pay Range: ${job.starting_pay} - ${job.ending_pay}
+                </p>
+                <p className="text-sm">{job.description}</p>
               </div>
+              <Link href={`/job-listing/${job.id}`}>
+                <button className="inline-block bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-150 ease-in-out mt-4">
+                  Apply
+                </button>
+              </Link>
             </div>
           ))}
         </div>
-      </div>
-    </>
+      </main>
+    </main>
   );
 };
 

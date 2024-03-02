@@ -50,17 +50,20 @@ const UserAccountNav = () => {
         }`}
         style={{ display: dropdownOpen ? "block" : "none" }}
       >
+        <a href="/dashboard" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+          Dashboard
+        </a>
         <a
           href={`/individual/${session?.data.session?.user.id}`}
           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
         >
           Profile
         </a>
-        <a href="/dashboard" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-          Dashboard
-        </a>
-        <a href="/individual/[id]/interview" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-          Feedback
+        <a
+          href={`/individual/${session?.data.session?.user.id}/interview`}
+          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+        >
+          My Interview
         </a>
         <hr className="my-1 border-gray-200" />
         <button

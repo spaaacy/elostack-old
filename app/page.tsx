@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Footer from "@/components/Footer";
-import NavBar from "@/components/NavBar";
+import Footer from "@/components/common/Footer";
+import NavBar from "@/components/common/NavBar";
 import HeroSection from "@/components/Individual/landing/HeroSection";
 import HowItWorks from "@/components/Individual/landing/HowItWorks";
 import BenefitsSection from "@/components/Individual/landing/BenefitsSection";

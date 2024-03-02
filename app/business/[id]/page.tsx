@@ -1,5 +1,5 @@
-import Footer from "@/components/Footer";
-import NavBar from "@/components/NavBar";
+import Footer from "@/components/common/Footer";
+import NavBar from "@/components/common/NavBar";
 import Profile from "@/components/business/profile/profile";
 
 const Page = async () => {

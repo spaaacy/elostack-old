@@ -1,8 +1,8 @@
 "use client";
 
 import EditProfile from "@/components/Individual/profile/EditProfile";
-import NavBar from "@/components/NavBar";
-import Loader from "@/components/ui/Loader";
+import NavBar from "@/components/common/NavBar";
+import Loader from "@/components/common/Loader";
 import { UserContext } from "@/context/UserContext";
 import { useContext, useEffect, useState } from "react";
 const Accounts = () => {

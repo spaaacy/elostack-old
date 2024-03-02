@@ -1,5 +1,5 @@
 import SignInForm from "../../../components/Individual/registration/SignInForm";
-import NavBar from "@/components/NavBar";
+import NavBar from "@/components/common/NavBar";
 const SignInPage = () => (
   <>
     <NavBar />

@@ -15,7 +15,11 @@ const InterviewScheduling: React.FC = () => {
       description:
         "Understand the basics of system design, including common architectures, scalability, and reliability principles.",
     },
-
+    {
+      title: "System Design Fundamentals",
+      description:
+        "Understand the basics of system design, including common architectures, scalability, and reliability principles.",
+    },
     {
       title: "Coding Challenges",
       description:

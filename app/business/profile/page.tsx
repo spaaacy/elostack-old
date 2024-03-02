@@ -1,14 +1,18 @@
+"use client";
+import React from "react";
 import Footer from "@/components/Footer";
 import NavBar from "@/components/NavBar";
 import Profile from "@/components/business/profile/profile";
-
-const Page = async () => {
+import { BrowserRouter as Router, Link } from "react-router-dom";
+const Page = () => {
   return (
     <>
-      <NavBar />
-      <div>
-        <Profile />
-      </div>
+      <Router>
+        <NavBar />
+        <div>
+          <Profile />
+        </div>
+      </Router>
     </>
   );
 };

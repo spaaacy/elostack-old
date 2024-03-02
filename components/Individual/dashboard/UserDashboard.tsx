@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 import { profileStore } from "../profileStore";
 import Loader from "@/components/ui/Loader";
-import Images from "next/image";
 import Link from "next/link";
 
 const UserDashboard: React.FC = () => {
@@ -96,7 +95,7 @@ const UserDashboard: React.FC = () => {
         {/* Profile Summary with AOS animation */}
         <section data-aos="fade-up">
           <div className="p-5 text-center border-b border-gray-200">
-            <h2 className="text-2xl font-bold ">{`Welcome back, ${profileData.firstName}`}</h2>
+            <h2 className="text-2xl font-bold ">{`Welcome back, ${profileData.first_name}`}</h2>
             <p className="text-md text-gray-500">Software Dev</p>
             <div className="mt-0">
               <span className="text-lg font-semibold">Interview Score: </span>
@@ -145,7 +144,6 @@ const UserDashboard: React.FC = () => {
 
         {/* Skill Improvement with AOS animation */}
         <section
-          
           className=" bg-cover bg-white mt-[1rem] bg-center p-8 rounded-lg shadow-2xl space-y-6"
         >
           <h2 className="text-3xl font-bold text-blueprimary mb-6">
@@ -168,7 +166,7 @@ const UserDashboard: React.FC = () => {
               </a>
             ))}
           </div>
-        </section>
+        </section> */}
       </main>
     </main>
   );

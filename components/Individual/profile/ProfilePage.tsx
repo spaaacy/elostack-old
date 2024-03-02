@@ -14,8 +14,7 @@ interface ProfilePageProps {
 }
 
 const ProfilePage: FC<ProfilePageProps> = ({ id }) => {
-  const { session, fetchProfileData } = useContext(UserContext) as UserContextType;
-  const router = useRouter();
+  const { session, fetchProfileData, user } = useContext(UserContext) as UserContextType;
 
   const { profileData, setProfileData } = profileStore();
   const [loadingData, setLoadingData] = useState(true);
@@ -70,7 +69,7 @@ const ProfilePage: FC<ProfilePageProps> = ({ id }) => {
                   </div>
                 </div>
 
-                <EditProfileButton />
+                {user && user.user_id === id && <EditProfileButton />}
               </div>
             </div>
 

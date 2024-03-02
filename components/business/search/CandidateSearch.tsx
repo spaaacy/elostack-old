@@ -1,99 +1,46 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useContext, useState, useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import Avatar from "react-avatar";
-import AOS from "aos";
+import { UserContext, UserContextType } from "@/context/UserContext";
 import "aos/dist/aos.css";
 
 const CandidateSearch: React.FC = () => {
+  const { session } = useContext(UserContext) as UserContextType;
+  const [candidates, setCandidates] = useState();
+
+  useEffect(() => {
+    if (session) {
+      fetchIndividuals();
+    }
+  }, [session]);
+
+  const fetchIndividuals = async () => {
+    const response = await fetch("/api/individual", { method: "GET" });
+    const results = await response.json();
+    if (response.status === 200) {
+      setCandidates(results.data);
+    } else {
+      console.error(results.error);
+    }
+  };
+
   const [searchTerm, setSearchTerm] = useState("");
   const [position, setPosition] = useState("");
   const [level, setLevel] = useState("");
   const [grade, setGrade] = useState("");
 
-  const candidates = [
-    {
-      id: 1,
-      name: "John Doe",
-      role: "Frontend Developer",
-      level: "Senior",
-      grade: "A",
-      description: "A highly skilled frontend developer...",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      role: "Backend Developer",
-      level: "Junior",
-      grade: "B",
-      description: "A dedicated backend developer...",
-    },
-    {
-      id: 3,
-      name: "Bob Johnson",
-      role: "Full Stack Developer",
-      level: "Mid",
-      grade: "C",
-      description: "A versatile full stack developer...",
-    },
-    {
-      id: 1,
-      name: "John Doe",
-      role: "Frontend Developer",
-      level: "Senior",
-      grade: "A",
-      description: "A highly skilled frontend developer...",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      role: "Backend Developer",
-      level: "Junior",
-      grade: "B",
-      description: "A dedicated backend developer...",
-    },
-    {
-      id: 3,
-      name: "Bob Johnson",
-      role: "Full Stack Developer",
-      level: "Mid",
-      grade: "C",
-      description: "A versatile full stack developer...",
-    },
-    {
-      id: 1,
-      name: "John Doe",
-      role: "Frontend Developer",
-      level: "Senior",
-      grade: "A",
-      description: "A highly skilled frontend developer...",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      role: "Backend Developer",
-      level: "Junior",
-      grade: "B",
-      description: "A dedicated backend developer...",
-    },
-    {
-      id: 3,
-      name: "Bob Johnson",
-      role: "Full Stack Developer",
-      level: "Mid",
-      grade: "C",
-      description: "A versatile full stack developer...",
-    },
-  ];
-
-  const filteredCandidates = candidates.filter(
-    (candidate) =>
-      candidate.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      candidate.role.toLowerCase().includes(position.toLowerCase()) &&
-      candidate.level.toLowerCase().includes(level.toLowerCase()) &&
-      candidate.grade.toLowerCase().includes(grade.toLowerCase())
-  );
+  let filteredCandidates = [];
+  if (candidates) {
+    filteredCandidates = candidates.filter(
+      (candidate) =>
+        (candidate.first_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          candidate.last_name?.toLowerCase().includes(searchTerm.toLowerCase())) &&
+        candidate.position?.toLowerCase().includes(position.toLowerCase()) &&
+        candidate.grade?.toLowerCase().includes(grade.toLowerCase())
+    );
+  }
 
   return (
     <main className="flex flex-col flex-1 bg-gray-100 min-h-screen bg-no-repeat bg-fixed bg-bottom bg-[url('/waves.svg')]">
@@ -103,9 +50,7 @@ const CandidateSearch: React.FC = () => {
 
       <main className="container mx-auto p-4 bg-white rounded-lg shadow mt-8">
         <section className="p-8">
-          <h2 className="text-3xl font-bold text-blueprimary">
-            Candidate Search
-          </h2>
+          <h2 className="text-3xl font-bold text-blueprimary">Candidate Search</h2>
           <div className="flex flex-wrap gap-6 mt-6">
             <input
               type="text"
@@ -124,7 +69,7 @@ const CandidateSearch: React.FC = () => {
               <option value="Backend Developer">Backend Developer</option>
               <option value="Full Stack Developer">Full Stack Developer</option>
             </select>
-            <select
+            {/* <select
               className="w-full md:w-auto flex-grow p-2 border border-gray-300 rounded"
               value={level}
               onChange={(e) => setLevel(e.target.value)}
@@ -133,7 +78,7 @@ const CandidateSearch: React.FC = () => {
               <option value="Junior">Junior</option>
               <option value="Mid">Mid</option>
               <option value="Senior">Senior</option>
-            </select>
+            </select> */}
             <select
               className="w-full md:w-auto flex-grow p-2 border border-gray-300 rounded"
               value={grade}
@@ -155,21 +100,17 @@ const CandidateSearch: React.FC = () => {
                 className="bg-gray-50 p-6 rounded-lg flex hover:shadow-xl transition-shadow duration-300"
               >
                 <Avatar
-                  name={candidate.name}
+                  name={`${candidate.first_name} ${candidate.last_name}`}
                   size="100"
                   round={true}
                   className="mr-4"
                 />
                 <div className="flex-grow">
-                  <h3 className="font-semibold text-lg">{candidate.name}</h3>
+                  <h3 className="font-semibold text-lg">{`${candidate.first_name} ${candidate.last_name}`}</h3>
                   <p className="text-sm text-gray-600">{candidate.role}</p>
-                  <p className="text-sm text-gray-600">
-                    Level: {candidate.level}
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    Grade: {candidate.grade}
-                  </p>
-                  <Link href={`/candidates/${candidate.id}`}>
+                  <p className="text-sm text-gray-600">Level: {candidate.position}</p>
+                  <p className="text-sm text-gray-600">Grade: {candidate.grade}</p>
+                  <Link href={`/individual/${candidate.user_id}`}>
                     <button className="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-300">
                       View Profile
                     </button>

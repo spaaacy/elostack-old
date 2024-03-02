@@ -1,19 +1,32 @@
 "use client";
 
-import { useState } from "react";
+import { UserContext, UserContextType } from "@/context/UserContext";
+import { useContext, useState } from "react";
 
-export const CreateJob = () => {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+export const ListJob = () => {
+  const { user } = useContext(UserContext) as UserContextType;
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log({
-      title,
-      description,
-      minimumPay,
-      maximumPay,
-      position,
-      remote,
-      location,
-    });
+    if (user) {
+      const response = await fetch("/api/job-listing/create", {
+        method: "POST",
+        body: JSON.stringify({
+          business_id: user.user_id,
+          title,
+          description,
+          starting_pay: startingPay,
+          ending_pay: endingPay,
+          position,
+          remote: remote === "remote",
+          location,
+        }),
+      });
+      if (response.status === 201) {
+        window.location.reload();
+        console.log("Job listed successfully");
+      }
+    }
   };
 
   const handlePosition = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -26,8 +39,8 @@ export const CreateJob = () => {
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [minimumPay, setMinimumPay] = useState("");
-  const [maximumPay, setMaximumPay] = useState("");
+  const [startingPay, setStartingPay] = useState("");
+  const [endingPay, setEndingPay] = useState("");
   const [position, setPosition] = useState("junior");
   const [remote, setRemote] = useState("onsite");
   const [location, setLocation] = useState("");
@@ -67,7 +80,7 @@ export const CreateJob = () => {
       <div className="flex items-center w-full gap-2">
         <p className="font-bold">$</p>
         <input
-          onChange={(e) => setMinimumPay(e.target.value)}
+          onChange={(e) => setStartingPay(e.target.value)}
           className="input-box w-full"
           placeholder="Minimum Pay"
           type="text"
@@ -75,7 +88,7 @@ export const CreateJob = () => {
         <p className="font-bold  mx-2">-</p>
         <p className="font-bold">$</p>
         <input
-          onChange={(e) => setMaximumPay(e.target.value)}
+          onChange={(e) => setEndingPay(e.target.value)}
           className="input-box w-full"
           placeholder="Maximum Pay"
           type="text"

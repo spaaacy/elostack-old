@@ -1,5 +1,5 @@
 // UploadBox.js
-import React from 'react';
+import React from "react";
 
 const UploadBox = ({ onUpload }) => {
   const handleFileChange = (event) => {

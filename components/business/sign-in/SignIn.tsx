@@ -1,22 +1,72 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import Head from "next/head";
+import { z } from "zod";
+import { createClient } from "@supabase/supabase-js";
+
+const FormSchema = z.object({
+  email: z
+    .string()
+    .email("Please enter a valid email")
+    .refine((value) => value !== "", "Email required"),
+  password: z
+    .string()
+    .refine((value) => value !== "", "Password required")
+    .refine(
+      (value) => value.length >= 8,
+      "Password must be at least 8 characters"
+    ),
+});
 
 const Signup: React.FC = () => {
-  const [businessName, setBusinessName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isBusiness, setIsBusiness] = useState(false);
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
 
-  const handleSignup = async (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log(isBusiness ? "Business signed up:" : "Individual signed up:", {
-      businessName,
-      email,
-      password,
+  const router = useRouter();
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [showPassword, setShowPassword] = useState(false);
+  const [formErrors, setFormErrors] = useState({});
+  const [isBusiness, setIsBusiness] = useState(false);
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const result = FormSchema.safeParse(formData);
+    if (!result.success) {
+      const errors = result.error.flatten().fieldErrors;
+      for (let field in errors) {
+        errors[field] = errors[field][0];
+      }
+      setFormErrors(errors);
+    } else {
+      console.log("Form submission successful", formData);
+      setFormErrors({});
+      onSubmit(result.data);
+    }
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const onSubmit = async (values: z.infer<typeof FormSchema>) => {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: values.email,
+      password: values.password,
     });
+
+    if (data.user && data.session) {
+      router.push("/");
+    } else {
+      console.log(error);
+    }
   };
 
   return (

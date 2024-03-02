@@ -13,7 +13,7 @@ const AdminDashboard: React.FC = () => {
   } = useForm();
 
   const [interviewRequests, setInterviewRequests] = useState();
-  const [uploadData, setUploadData] = useState(null);
+  const [uploadInterview, setUploadInterview] = useState();
 
   useEffect(() => {
     fetchRequests();
@@ -31,8 +31,13 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
-  const onSubmit = (data) => {
-    setUploadData(data);
+  const onSubmit = async (data) => {
+    console.log(data);
+    setUploadInterview(data);
+    const response = await fetch("/api/interview/create", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
   };
 
   return (
@@ -70,7 +75,7 @@ const AdminDashboard: React.FC = () => {
                       <td className="border px-4 py-2">{request.behavioral_length}</td>
                     </tr>
                     <tr>
-                      <td className="border px-4 py-2">Description</td>
+                      <td className="border px-4 py-2 font-extrabold">Description</td>
                       <td colspan="4" className="border px-4 py-2">
                         {request.description}
                       </td>
@@ -83,21 +88,30 @@ const AdminDashboard: React.FC = () => {
 
         <section className="bg-center p-8 rounded-lg shadow-lg">
           <h2 className="text-3xl font-bold text-blueprimary">Upload New Interview</h2>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
             <div>
-              <label className="block">Candidate ID</label>
-              <input type="text" {...register("candidateId", { required: true })} className="mt-1 p-2 border rounded" />
-              {errors.candidateId && <p>This field is required</p>}
+              <label className="block">Individual ID</label>
+              <input
+                type="text"
+                {...register("individual_id", { required: true })}
+                className="mt-1 p-2 border rounded"
+              />
+              {errors.individual_id && <p>This field is required</p>}
+            </div>
+            <div>
+              <label className="block">Grade</label>
+              <input type="text" {...register("grade", { required: true })} className="mt-1 p-2 border rounded" />
+              {errors.grade && <p>This field is required</p>}
+            </div>
+            <div>
+              <label className="block">Feedback</label>
+              <textarea {...register("feedback", { required: true })} className="mt-1 p-2 border rounded" />
+              {errors.feedback && <p>This field is required</p>}
             </div>
             <div>
               <label className="block">Video</label>
-              <input type="file" {...register("video", { required: true })} className="mt-1 p-2 border rounded" />
-              {errors.video && <p>This field is required</p>}
-            </div>
-            <div>
-              <label className="block">Score Sheet</label>
-              <input type="file" {...register("scoreSheet", { required: true })} className="mt-1 p-2 border rounded" />
-              {errors.scoreSheet && <p>This field is required</p>}
+              <input type="file" {...register("video_url", { required: true })} className="mt-1 p-2 border rounded" />
+              {errors.video_url && <p>This field is required</p>}
             </div>
 
             <button type="submit" className="mt-2 px-4 py-2 bg-blue-500 text-white rounded">

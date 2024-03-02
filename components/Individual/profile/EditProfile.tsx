@@ -1,7 +1,7 @@
 "use client";
 import { useContext, useState, useEffect, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
-import { UserContext, UserContextType } from "@/context/UserContext";
+import { UserContext } from "@/context/UserContext";
 import Loader from "@/components/ui/Loader";
 
 const initialFormData = {
@@ -22,7 +22,7 @@ const initialFormData = {
 };
 
 const EditProfile = () => {
-  const { session, fetchProfileData } = useContext(UserContext) as UserContextType;
+  const { session } = useContext(UserContext);
 
   const router = useRouter();
   const [formData, setFormData] = useState(initialFormData);
@@ -36,19 +36,24 @@ const EditProfile = () => {
   useEffect(() => {
     // Fetch profile data only if the session is not in a loading state
     if (session) {
-      fetchUser();
+      fetchIndividual();
     }
   }, [session]);
 
-  const fetchUser = async () => {
+  const fetchIndividual = async () => {
     const userId = session?.data.session?.user.id;
-    const data = await fetchProfileData(userId);
-    console.log(data);
-    if (data) {
-      setFormData(data);
-      setLoadingData(false);
+    if (userId) {
+      const response = await fetch(`/api/individual/${userId}`);
+      const result = await response.json();
+      if (response.status === 200) {
+        setFormData(result.individual);
+        setLoadingData(false);
+      } else {
+        router.push("/signin");
+        console.error("Error fetching profile:", result.error);
+      }
     } else {
-      router.push("/signin");
+      console.log("Session not loaded or user ID undefined");
     }
   };
 
@@ -183,20 +188,6 @@ const EditProfile = () => {
                 <option value="home">Home</option>
               </select>
             </div>
-            <div className="mb-4">
-              <label htmlFor="address" className="block text-sm font-medium text-gray-700">
-                Address
-              </label>
-              <input
-                type="text"
-                name="address"
-                id="address"
-                value={formData.address}
-                onChange={handleChange}
-                placeholder="Enter your Address"
-                className="mt-1 block w-full rounded border border-gray-300 bg-white px-5 py-2 shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-              />
-            </div>
             <div className="text-xl font-semibold mb-6">Location</div>
             <div className="mb-4">
               <label htmlFor="country" className="block text-sm font-medium text-gray-700">
@@ -213,16 +204,16 @@ const EditProfile = () => {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="postal_code" className="block text-sm font-medium text-gray-700">
-                Postal Code
+              <label htmlFor="state" className="block text-sm font-medium text-gray-700">
+                State
               </label>
               <input
                 type="text"
-                name="postal_code"
-                id="postal_code"
-                value={formData.postal_code}
+                name="state"
+                id="state"
+                value={formData.state}
                 onChange={handleChange}
-                placeholder="Enter your postal code"
+                placeholder="Ex: FL"
                 className="mt-1 block w-full rounded border border-gray-300 bg-white px-5 py-2 shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               />
             </div>
@@ -237,6 +228,34 @@ const EditProfile = () => {
                 value={formData.city}
                 onChange={handleChange}
                 placeholder="Enter your City"
+                className="mt-1 block w-full rounded border border-gray-300 bg-white px-5 py-2 shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="address" className="block text-sm font-medium text-gray-700">
+                Address
+              </label>
+              <input
+                type="text"
+                name="address"
+                id="address"
+                value={formData.address}
+                onChange={handleChange}
+                placeholder="Enter your Address"
+                className="mt-1 block w-full rounded border border-gray-300 bg-white px-5 py-2 shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="postal_code" className="block text-sm font-medium text-gray-700">
+                Postal Code
+              </label>
+              <input
+                type="text"
+                name="postal_code"
+                id="postal_code"
+                value={formData.postal_code}
+                onChange={handleChange}
+                placeholder="Enter your postal code"
                 className="mt-1 block w-full rounded border border-gray-300 bg-white px-5 py-2 shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               />
             </div>

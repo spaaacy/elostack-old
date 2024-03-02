@@ -28,8 +28,6 @@ const FormSchema = z
   });
 
 const SignUpForm = () => {
-  const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
-
   const router = useRouter();
   const [formData, setFormData] = useState({
     businessName: "",
@@ -48,6 +46,7 @@ const SignUpForm = () => {
 
   const onSubmit = async (values: z.infer<typeof FormSchema>) => {
     try {
+      const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
       const { data, error } = await supabase.auth.signUp({
         email: values.email,
         password: values.password,

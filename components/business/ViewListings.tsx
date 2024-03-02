@@ -1,11 +1,11 @@
 import { JobListing } from "@/types/JobListing";
 import JobListingCard from "./JobListingCard";
 import { useContext, useEffect, useState } from "react";
-import { UserContext, UserContextType } from "@/context/UserContext";
+import { UserContext } from "@/context/UserContext";
 
 const ViewListings = () => {
   const [jobListings, setJobListings] = useState();
-  const { user } = useContext(UserContext) as UserContextType;
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     if (user) {

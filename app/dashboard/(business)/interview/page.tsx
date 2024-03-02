@@ -1,17 +1,17 @@
 "use client";
 
-import EditProfile from "@/components/Individual/profile/EditProfile";
 import NavBar from "@/components/NavBar";
+import RequestInterview from "@/components/business/request-interview/RequestInterview";
 import Loader from "@/components/ui/Loader";
 import { UserContext } from "@/context/UserContext";
-import { useContext, useEffect, useState } from "react";
-const Accounts = () => {
-  const { session, verifyLogin } = useContext(UserContext);
+import { useEffect, useContext, useState } from "react";
+const Page = () => {
   const [loading, setLoading] = useState(true);
+  const { session, verifyLogin } = useContext(UserContext);
 
   useEffect(() => {
     if (session) {
-      verifyLogin();
+      verifyLogin("business");
       setLoading(false);
     }
   }, [session]);
@@ -23,15 +23,14 @@ const Accounts = () => {
         <Loader />
       </>
     );
-
   return (
-    <main>
+    <>
       <NavBar />
-      <div className="flex h-screen">
-        <EditProfile />
+      <div>
+        <RequestInterview />
       </div>
-    </main>
+    </>
   );
 };
 
-export default Accounts;
+export default Page;

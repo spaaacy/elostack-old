@@ -4,21 +4,32 @@ import NavBar from "@/components/NavBar";
 import BusinessDashboard from "@/components/business/dashboard/dashboard";
 import UserDashboard from "@/components/individual/dashboard/UserDashboard";
 import Loader from "@/components/ui/Loader";
-import { UserContext, UserContextType } from "@/context/UserContext";
-import { useRouter } from "next/navigation";
-import { useEffect, useContext } from "react";
+import { UserContext } from "@/context/UserContext";
+import { useEffect, useContext, useState } from "react";
 
 const Page = () => {
-  const { session, user } = useContext(UserContext) as UserContextType;
-  const router = useRouter();
+  const { session, verifyLogin } = useContext(UserContext);
+  const [user, setUser] = useState();
 
   useEffect(() => {
     if (session) {
-      if (!session?.data?.session?.user) {
-        router.push("/signin");
-      }
+      verifyLogin();
+      fetchUser();
     }
   }, [session]);
+
+  const fetchUser = async () => {
+    const userId = session?.data?.session?.user.id;
+    if (userId) {
+      const response = await fetch(`/api/user/${userId}`, {
+        method: "GET",
+      });
+      if (response.status === 200) {
+        const { user } = await response.json();
+        setUser(user);
+      }
+    }
+  };
 
   return (
     <main className="flex flex-1 flex-col">

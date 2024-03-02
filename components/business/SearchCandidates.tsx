@@ -1,11 +1,11 @@
 import { Individual } from "@/types/Individual";
 import React, { useContext, useEffect, useState } from "react";
 import IndividualCard from "./IndividualCard";
-import { UserContext, UserContextType } from "@/context/UserContext";
+import { UserContext } from "@/context/UserContext";
 
 const SearchCandidates = () => {
   const [individuals, setIndividuals] = useState();
-  const { session } = useContext(UserContext) as UserContextType;
+  const { session } = useContext(UserContext);
 
   useEffect(() => {
     if (session) {

@@ -1,8 +1,29 @@
-import Footer from "@/components/Footer";
+"use client";
+
 import NavBar from "@/components/NavBar";
 import Search from "@/components/business/search/CandidateSearch";
+import { UserContext } from "@/context/UserContext";
+import { useEffect, useContext, useState } from "react";
+import Loader from "@/components/ui/Loader";
 
-const Page = async () => {
+const Page = () => {
+  const { session, verifyLogin } = useContext(UserContext);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (session) {
+      verifyLogin("business");
+      setLoading(false);
+    }
+  }, [session]);
+  if (loading)
+    return (
+      <>
+        <NavBar />
+        <Loader />
+      </>
+    );
+
   return (
     <>
       <NavBar />

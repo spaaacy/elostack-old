@@ -1,17 +1,18 @@
 "use client";
 
-import EditProfile from "@/components/Individual/profile/EditProfile";
 import NavBar from "@/components/NavBar";
+import Scheduling from "@/components/individual/interview-scheduling/InterviewScheduling";
 import Loader from "@/components/ui/Loader";
 import { UserContext } from "@/context/UserContext";
-import { useContext, useEffect, useState } from "react";
-const Accounts = () => {
+import { useEffect, useContext, useState } from "react";
+
+const Page = () => {
   const { session, verifyLogin } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (session) {
-      verifyLogin();
+      verifyLogin("individual");
       setLoading(false);
     }
   }, [session]);
@@ -25,13 +26,13 @@ const Accounts = () => {
     );
 
   return (
-    <main>
+    <>
       <NavBar />
-      <div className="flex h-screen">
-        <EditProfile />
+      <div>
+        <Scheduling />
       </div>
-    </main>
+    </>
   );
 };
 
-export default Accounts;
+export default Page;

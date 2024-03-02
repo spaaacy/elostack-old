@@ -1,21 +1,25 @@
 "use client";
 
-import { UserContext, UserContextType } from "@/context/UserContext";
+import { UserContext } from "@/context/UserContext";
+import { createClient } from "@supabase/supabase-js";
+import { useRouter } from "next/navigation";
 import { FC, useContext, useState, useEffect, useRef } from "react";
 
 const UserAccountNav = () => {
-  const { session, supabase } = useContext(UserContext) as UserContextType;
+  const { session } = useContext(UserContext);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const router = useRouter();
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
   const handleSignOut = async () => {
+    const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
     const { error } = await supabase.auth.signOut();
     if (error) {
       console.error(error);
     } else {
-      window.location.reload(); // Refresh the page to update the session state
+      router.push("/"); // Refresh the page to update the session state
     }
   };
 

@@ -4,7 +4,7 @@ import Head from "next/head";
 import EditProfileButton from "./EditProfileButton";
 import { profileStore } from "../profileStore";
 import { useContext, FC, useEffect, useState } from "react";
-import { UserContext, UserContextType } from "@/context/UserContext";
+import { UserContext } from "@/context/UserContext";
 import { useRouter } from "next/navigation";
 import Loader from "@/components/ui/Loader";
 import UploadBox from "./UploadBox";
@@ -14,24 +14,31 @@ interface ProfilePageProps {
 }
 
 const ProfilePage: FC<ProfilePageProps> = ({ id }) => {
-  const { session, fetchProfileData, user } = useContext(UserContext) as UserContextType;
+  const { session, user } = useContext(UserContext);
 
   const { profileData, setProfileData } = profileStore();
   const [loadingData, setLoadingData] = useState(true);
 
   useEffect(() => {
     if (session) {
-      fetchUser();
+      fetchIndividual();
     }
   }, [session]);
 
-  const fetchUser = async () => {
-    const data = await fetchProfileData(id);
-    if (data) {
-      setProfileData(data);
-      setLoadingData(false);
+  const fetchIndividual = async () => {
+    const userId = session?.data.session?.user.id;
+    if (userId) {
+      const response = await fetch(`/api/individual/${userId}`);
+      const result = await response.json();
+      if (response.status === 200) {
+        setProfileData(result.individual);
+        setLoadingData(false);
+      } else {
+        router.push("/signin");
+        console.error("Error fetching profile:", result.error);
+      }
     } else {
-      // router.push("/");
+      console.log("Session not loaded or user ID undefined");
     }
   };
 
@@ -63,7 +70,7 @@ const ProfilePage: FC<ProfilePageProps> = ({ id }) => {
                   </h2>
                   <div className="mt-1 flex flex-col sm:flex-row sm:flex-wrap sm:mt-0 sm:space-x-6">
                     <div className="mt-2 flex items-center text-sm text-gray-500">
-                      {profileData.city}, {profileData.country}
+                      {profileData.city}, {profileData.state}
                     </div>
                     <div className="mt-2 flex items-center text-sm text-gray-500">{profileData.pronouns}</div>
                   </div>

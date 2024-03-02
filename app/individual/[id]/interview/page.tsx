@@ -2,33 +2,21 @@
 
 import NavBar from "@/components/NavBar";
 import Feedback from "@/components/individual/feedback/Feedback";
-import { UserContext, UserContextType } from "@/context/UserContext";
+import { UserContext } from "@/context/UserContext";
 import { useParams, useRouter } from "next/navigation";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 
 const Page = () => {
   const { id } = useParams();
-  const { session, user } = useContext(UserContext) as UserContextType;
+  const { session, verifyLogin } = useContext(UserContext);
+  const [user, setUser] = useState();
   const router = useRouter();
 
-  // TODO: Fix this flow
   useEffect(() => {
     if (session) {
-      if (id !== session.data.session?.user.id) {
-        // Check if user logged in and interview individual are same
-        if (user) {
-          if (user.business) {
-            // Check if business is logged in
-            // TODO: Check if business is authorized
-            console.log("Business view");
-          } else {
-            console.log("No authorization");
-            // router.push("/");
-          }
-        }
-      }
+      verifyLogin();
     }
-  }, [session, user]);
+  }, [session]);
 
   return (
     <>

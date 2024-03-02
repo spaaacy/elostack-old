@@ -2,10 +2,10 @@
 import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { UserContext, UserContextType } from "@/context/UserContext";
+import { UserContext } from "@/context/UserContext";
 
 const BusinessDashboard: React.FC = () => {
-  const { user } = useContext(UserContext) as UserContextType;
+  const { user } = useContext(UserContext);
   const [jobListings, setJobListings] = useState();
 
   useEffect(() => {
@@ -78,7 +78,7 @@ const BusinessDashboard: React.FC = () => {
                       Details
                     </Link>
                     <Link
-                      href={`/dashboard/job-listing?id=${listing.id}`}
+                      href={`/dashboard/create-listing?id=${listing.id}`}
                       className="text-white bg-blueprimary px-4 py-2 rounded hover:bg-blue-700 transition duration-150 ease-in-out"
                     >
                       Edit

@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { AuthError, Session, createClient } from "@supabase/supabase-js";
+import { useRouter } from "next/navigation";
 
 export type session =
   | {
@@ -23,56 +24,54 @@ export type session =
       error: null;
     };
 
-export interface UserContextType {
-  session: session;
-  supabase: any;
-  fetchProfileData: Function;
-  user: any;
-}
-
-export const UserContext = React.createContext<UserContextType | null>(null);
+export const UserContext = React.createContext();
 
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [session, setSession] = useState();
-  const [supabase, setSupabase] = useState();
-  const [user, setUser] = useState();
+  const router = useRouter();
 
   useEffect(() => {
     if (!session) {
-      const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
-      setSupabase(supabase);
-      fetchSession(supabase);
-    } else {
-      fetchUser();
+      fetchSession();
     }
   }, [session]);
 
-  const fetchUser = async () => {
-    const userId = session?.data?.session?.user.id;
-    if (userId) {
-      const { data, error } = await supabase.from("user").select("*").eq("user_id", userId).single();
-      setUser(data);
-    }
-  };
-
-  const fetchProfileData = async (userId) => {
-    if (userId) {
-      try {
-        const { data, error } = await supabase?.from("individual").select("*").eq("user_id", userId).single();
-        if (error) throw error;
-        return data;
-      } catch (error) {
-        console.error("Error fetching profile:", error.message);
-      }
-    } else {
-      console.log("Session not loaded or user ID undefined");
-    }
-  };
-
-  const fetchSession = async (supabase) => {
+  const fetchSession = async () => {
+    const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
     const session = await supabase.auth.getSession();
     setSession(session);
   };
 
-  return <UserContext.Provider value={{ session, supabase, fetchProfileData, user }}>{children}</UserContext.Provider>;
+  const fetchUser = async () => {
+    const userId = session?.data?.session?.user.id;
+    if (userId) {
+      const response = await fetch(`/api/user/${userId}`, {
+        method: "GET",
+      });
+      if (response.status === 200) {
+        const { user } = await response.json();
+        return user;
+      }
+    }
+  };
+
+  const verifyLogin = async (userType) => {
+    if (session) {
+      const user = await fetchUser();
+      if (session?.data?.session) {
+        if (userType === "business" && !user?.business) {
+          router.push("/dashboard");
+          console.error("You must be an business to access this page!");
+        } else if (userType === "individual" && user?.business) {
+          router.push("/dashboard");
+          console.error("You must be an individual to access this page!");
+        }
+      } else {
+        router.push("/signin");
+        console.error("Please sign in access this page!");
+      }
+    }
+  };
+
+  return <UserContext.Provider value={{ session, verifyLogin }}>{children}</UserContext.Provider>;
 };

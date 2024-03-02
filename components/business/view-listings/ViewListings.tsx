@@ -70,15 +70,26 @@ const BusinessDashboard: React.FC = () => {
                       <p>{`$${listing.ending_pay}`}</p>
                     </div>
                   </div>
-                  <div className="space-x-4">
-                    <Link href={`/job-listing/${listing.id}`} className="text-blue-600 px-4 py-2 rounded">
+                  <div className="flex justify-center items-center gap-4">
+                    <Link
+                      href={`/job-listing/${listing.id}`}
+                      className="text-white bg-blueprimary px-4 py-2 rounded hover:bg-blue-700 transition duration-150 ease-in-out"
+                    >
                       Details
                     </Link>
+                    <Link
+                      href={`/dashboard/job-listing?id=${listing.id}`}
+                      className="text-white bg-blueprimary px-4 py-2 rounded hover:bg-blue-700 transition duration-150 ease-in-out"
+                    >
+                      Edit
+                    </Link>
                     <button
-                      className={`text-white ${listing.active ? "bg-red-500" : "bg-blueprimary"} px-4 py-2 rounded`}
+                      className={`text-white ${
+                        listing.active ? "bg-red-500 hover:bg-red-700" : "bg-blueprimary hover:bg-blue-700"
+                      } px-4 py-2 rounded transition duration-150 ease-in-out`}
                       onClick={() => closeJobListing(listing.id, !listing.active)}
                     >
-                      {listing.active ? "Close" : "Open"} Listing
+                      {listing.active ? "Close" : "Re-Open"} Listing
                     </button>
                   </div>
                 </div>

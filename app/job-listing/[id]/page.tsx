@@ -24,7 +24,6 @@ const page = ({}) => {
   }, [session]);
 
   const fetchListing = async () => {
-    const userId = session.data.session?.user.id;
     const response = await fetch(`/api/job-listing/${jobListingId}`, {
       method: "GET",
     });

@@ -4,7 +4,8 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest, res: NextResponse) {
   try {
     const listing = await req.json();
-    const { error } = await supabase.from("job_listing").insert(listing);
+    console.log(listing);
+    const { error } = await supabase.from("job_listing").upsert(listing);
     if (error) throw error;
     return NextResponse.json({ message: "Job listed successfully!" }, { status: 201 });
   } catch (error) {

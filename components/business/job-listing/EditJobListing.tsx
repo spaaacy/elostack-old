@@ -1,11 +1,13 @@
 "use client";
 
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Head from "next/head";
 import { UserContext } from "@/context/UserContext";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
-const CreateJobListing = () => {
+const EditJobListing = () => {
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
   const { user } = useContext(UserContext);
   const router = useRouter();
 
@@ -15,34 +17,53 @@ const CreateJobListing = () => {
     remote: "false",
     position: "intern",
     description: "",
-    startingPay: 0,
-    endingPay: 0,
+    starting_pay: 0,
+    ending_pay: 0,
     deadline: "",
   });
 
+  useEffect(() => {
+    if (id) {
+      fetchListing();
+    }
+  }, []);
+
+  const fetchListing = async () => {
+    const response = await fetch(`/api/job-listing/${id}`, {
+      method: "GET",
+    });
+    const results = await response.json();
+    if (response.status === 200) {
+      setFormData(results.jobListing);
+    } else {
+      console.error(results.error);
+    }
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const newFormData = { ...formData, [name]: value };
-    console.log(newFormData);
     setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (user) {
-      const response = await fetch("/api/job-listing/create", {
+      const newListing = {
+        business_id: user.user_id,
+        title: formData.title,
+        description: formData.description,
+        starting_pay: formData.starting_pay,
+        ending_pay: formData.ending_pay,
+        position: formData.position,
+        remote: formData.remote,
+        location: formData.location,
+        deadline: formData.deadline,
+      };
+      if (id) newListing["id"] = id;
+      console.log(newListing);
+      const response = await fetch("/api/job-listing/edit", {
         method: "POST",
-        body: JSON.stringify({
-          business_id: user.user_id,
-          title: formData.title,
-          description: formData.description,
-          starting_pay: formData.startingPay,
-          ending_pay: formData.endingPay,
-          position: formData.position,
-          remote: formData.remote,
-          location: formData.location,
-          deadline: formData.deadline,
-        }),
+        body: JSON.stringify(newListing),
       });
       if (response.status === 201) {
         router.push("/dashboard");
@@ -54,12 +75,14 @@ const CreateJobListing = () => {
   return (
     <>
       <Head>
-        <title>Create Job Listing | YourCompany</title>
+        <title>{id ? "Update Job Listing" : "Create Job Listing"}</title>
       </Head>
       <main className="flex flex-col flex-1 bg-white min-h-screen bg-no-repeat bg-fixed bg-bottom bg-[url('/waves.svg')]">
         <section className="container w-3/5 mx-auto p-4 bg-white rounded-lg shadow-2xl mt-8">
           <div className="p-5 text-center border-b border-blue-200">
-            <h2 className="text-2xl font-bold mb-8 text-blueprimary">Create a New Job Listing</h2>
+            <h2 className="text-2xl font-bold mb-8 text-blueprimary">
+              {id ? "Update Existing Job Listing" : "Create New Job Listing"}
+            </h2>
             <form className="mt-8 gap-x-8 gap-y-3" onSubmit={handleSubmit}>
               <div className="mb-6">
                 <label htmlFor="title" className="block   font-semibold mb-2">
@@ -68,6 +91,7 @@ const CreateJobListing = () => {
                 <input
                   type="text"
                   name="title"
+                  value={formData.title}
                   id="title"
                   onChange={handleChange}
                   className="form-input mt-1 block py-2 w-full rounded-md border border-gray-300 shadow-md focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 transition duration-150 ease-in-out pl-4"
@@ -80,6 +104,7 @@ const CreateJobListing = () => {
                 </label>
                 <input
                   onChange={handleChange}
+                  value={formData.location}
                   type="text"
                   id="location"
                   name="location"
@@ -93,6 +118,7 @@ const CreateJobListing = () => {
                 </label>
                 <select
                   defaultValue="false"
+                  value={formData.remote}
                   id="remote"
                   name="remote"
                   onChange={handleChange}
@@ -107,6 +133,7 @@ const CreateJobListing = () => {
                   Position
                 </label>
                 <select
+                  value={formData.position}
                   defaultValue="intern"
                   id="position"
                   name="position"
@@ -127,8 +154,9 @@ const CreateJobListing = () => {
                   <input
                     type="number"
                     onChange={handleChange}
-                    id="startingPay"
-                    name="startingPay"
+                    value={formData.starting_pay}
+                    id="starting_pay"
+                    name="starting_pay"
                     className="p-2 form-input mt-1 block w-full rounded-md border border-gray-300 shadow-md focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 transition duration-150 ease-in-out pl-4"
                     placeholder="Minimum Pay"
                   />
@@ -137,8 +165,9 @@ const CreateJobListing = () => {
                   <input
                     onChange={handleChange}
                     type="number"
-                    id="endingPay"
-                    name="endingPay"
+                    value={formData.ending_pay}
+                    id="ending_pay"
+                    name="ending_pay"
                     className=" p-2 form-input mt-1 block w-full rounded-md border border-gray-300 shadow-md focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 transition duration-150 ease-in-out pl-4"
                     placeholder="Maximum Pay"
                   />
@@ -149,6 +178,7 @@ const CreateJobListing = () => {
                   Application Deadline
                 </label>
                 <input
+                  value={formData.deadline}
                   type="date"
                   id="deadline"
                   name="deadline"
@@ -164,6 +194,7 @@ const CreateJobListing = () => {
                 </label>
                 <textarea
                   id="description"
+                  value={formData.description}
                   name="description"
                   onChange={handleChange}
                   className="py-2 form-textarea mt-1 block w-full rounded-md border border-gray-300 shadow-md focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 transition duration-150 ease-in-out pl-4"
@@ -178,7 +209,7 @@ const CreateJobListing = () => {
                   type="submit"
                   className="inline-block bg-blueprimary text-white px-6 py-3 mb-4 rounded hover:bg-blue-700 transition duration-150 ease-in-out"
                 >
-                  Create Job Listing
+                  {id ? "Update Job Listing" : "Create Job Listing"}
                 </button>
               </div>
             </form>
@@ -189,4 +220,4 @@ const CreateJobListing = () => {
   );
 };
 
-export default CreateJobListing;
+export default EditJobListing;

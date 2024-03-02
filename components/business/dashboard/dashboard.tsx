@@ -126,13 +126,13 @@ const BusinessDashboard: React.FC = () => {
                 </Link>
                 <Link href="/dashboard/job-listing">
                   <button className="inline-block bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
-                    Post Job
+                    Create Listing
                   </button>
                 </Link>
 
                 <Link href="/dashboard/view-listings">
                   <button className="inline-block bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
-                    View More Applications
+                    View All Listings
                   </button>
                 </Link>
               </div>

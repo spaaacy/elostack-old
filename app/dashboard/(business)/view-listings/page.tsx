@@ -7,7 +7,7 @@ import { useEffect, useContext, useState } from "react";
 import Loader from "@/components/ui/Loader";
 
 const Page = () => {
-  const { session, verifyLogin, user } = useContext(UserContext);
+  const { session, verifyLogin } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -15,7 +15,7 @@ const Page = () => {
       verifyLogin("business");
       setLoading(false);
     }
-  }, [session, user]);
+  }, [session]);
 
   if (loading) return <Loader />;
 

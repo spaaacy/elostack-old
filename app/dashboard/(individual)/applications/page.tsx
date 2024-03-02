@@ -7,7 +7,7 @@ import { UserContext } from "@/context/UserContext";
 import { useEffect, useContext, useState } from "react";
 
 const Page = () => {
-  const { session, verifyLogin, user } = useContext(UserContext);
+  const { session, verifyLogin } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -15,7 +15,7 @@ const Page = () => {
       verifyLogin("individual");
       setLoading(false);
     }
-  }, [session, user]);
+  }, [session]);
 
   if (loading) return <Loader />;
 

@@ -28,19 +28,19 @@ export const UserContext = React.createContext();
 
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [session, setSession] = useState();
-  const [supabase, setSupabase] = useState();
-  const [user, setUser] = useState();
   const router = useRouter();
 
   useEffect(() => {
     if (!session) {
-      const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
-      setSupabase(supabase);
-      fetchSession(supabase);
-    } else {
-      fetchUser();
+      fetchSession();
     }
   }, [session]);
+
+  const fetchSession = async () => {
+    const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
+    const session = await supabase.auth.getSession();
+    setSession(session);
+  };
 
   const fetchUser = async () => {
     const userId = session?.data?.session?.user.id;
@@ -50,30 +50,28 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
       if (response.status === 200) {
         const { user } = await response.json();
-        setUser(user);
+        return user;
       }
     }
   };
 
   const verifyLogin = async (userType) => {
-    if (session?.data?.session?.user) {
-      if (userType === "business" && !user?.business) {
-        // router.push("/dashboard");
-        console.error("You must be an business to access this page!");
-      } else if (userType === "individual" && user?.business) {
-        // router.push("/dashboard");
-        console.error("You must be an individual to access this page!");
+    if (session) {
+      const user = await fetchUser();
+      if (session?.data?.session) {
+        if (userType === "business" && !user?.business) {
+          router.push("/dashboard");
+          console.error("You must be an business to access this page!");
+        } else if (userType === "individual" && user?.business) {
+          router.push("/dashboard");
+          console.error("You must be an individual to access this page!");
+        }
+      } else {
+        router.push("/signin");
+        console.error("Please sign in access this page!");
       }
-    } else if (!userType) {
-      // router.push("/signin");
-      console.error("Please sign in access this page!");
     }
   };
 
-  const fetchSession = async (supabase) => {
-    const session = await supabase.auth.getSession();
-    setSession(session);
-  };
-
-  return <UserContext.Provider value={{ session, supabase, user, verifyLogin }}>{children}</UserContext.Provider>;
+  return <UserContext.Provider value={{ session, verifyLogin }}>{children}</UserContext.Provider>;
 };

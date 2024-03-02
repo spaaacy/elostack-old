@@ -1,12 +1,14 @@
 "use client";
 
 import { UserContext } from "@/context/UserContext";
+import { useRouter } from "next/navigation";
 import { FC, useContext, useState, useEffect, useRef } from "react";
 
 const UserAccountNav = () => {
   const { session, supabase } = useContext(UserContext);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const router = useRouter();
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
@@ -15,7 +17,7 @@ const UserAccountNav = () => {
     if (error) {
       console.error(error);
     } else {
-      window.location.reload(); // Refresh the page to update the session state
+      router.push("/"); // Refresh the page to update the session state
     }
   };
 

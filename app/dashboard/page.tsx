@@ -9,14 +9,11 @@ import { useRouter } from "next/navigation";
 import { useEffect, useContext } from "react";
 
 const Page = () => {
-  const { session, user } = useContext(UserContext);
-  const router = useRouter();
+  const { session, user, verifyLogin } = useContext(UserContext);
 
   useEffect(() => {
     if (session) {
-      if (!session?.data?.session?.user) {
-        router.push("/signin");
-      }
+      verifyLogin();
     }
   }, [session]);
 

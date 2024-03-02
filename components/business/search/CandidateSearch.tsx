@@ -5,6 +5,7 @@ import Link from "next/link";
 import Avatar from "react-avatar";
 import { UserContext } from "@/context/UserContext";
 import "aos/dist/aos.css";
+import capitalizeFirstLetter from "@/utils/capitalizeFirstLetter";
 
 const CandidateSearch: React.FC = () => {
   const { session } = useContext(UserContext);
@@ -32,13 +33,14 @@ const CandidateSearch: React.FC = () => {
   const [grade, setGrade] = useState("");
 
   let filteredCandidates = [];
+  console.log(candidates);
   if (candidates) {
     filteredCandidates = candidates.filter(
       (candidate) =>
         (candidate.first_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
           candidate.last_name?.toLowerCase().includes(searchTerm.toLowerCase())) &&
         candidate.position?.toLowerCase().includes(position.toLowerCase()) &&
-        candidate.grade?.toLowerCase().includes(grade.toLowerCase())
+        (grade !== "" ? candidate.interview?.grade?.toLowerCase().includes(grade.toLowerCase()) : true)
     );
   }
 
@@ -65,9 +67,9 @@ const CandidateSearch: React.FC = () => {
               onChange={(e) => setPosition(e.target.value)}
             >
               <option value="">All Positions</option>
-              <option value="Frontend Developer">Frontend Developer</option>
-              <option value="Backend Developer">Backend Developer</option>
-              <option value="Full Stack Developer">Full Stack Developer</option>
+              <option value="intern">Intern</option>
+              <option value="junior">Junior Developer</option>
+              <option value="senior">Senior Developer</option>
             </select>
             {/* <select
               className="w-full md:w-auto flex-grow p-2 border border-gray-300 rounded"
@@ -88,8 +90,8 @@ const CandidateSearch: React.FC = () => {
               <option value="A">A (90-100%)</option>
               <option value="B">B (80-89%)</option>
               <option value="C">C (70-79%)</option>
-              <option value="C">D (60-69%)</option>
-              <option value="C">F (0-59%)</option>
+              <option value="D">D (60-69%)</option>
+              <option value="F">F (0-59%)</option>
             </select>
           </div>
 
@@ -108,8 +110,10 @@ const CandidateSearch: React.FC = () => {
                 <div className="flex-grow">
                   <h3 className="font-semibold text-lg">{`${candidate.first_name} ${candidate.last_name}`}</h3>
                   <p className="text-sm text-gray-600">{candidate.role}</p>
-                  <p className="text-sm text-gray-600">Level: {candidate.position}</p>
-                  <p className="text-sm text-gray-600">Grade: {candidate.grade}</p>
+                  <p className="text-sm text-gray-600">Level: {capitalizeFirstLetter(candidate.position)}</p>
+                  <p className="text-sm text-gray-600">
+                    Grade: {candidate.interview?.grade ? candidate.interview?.grade : "-"}
+                  </p>
                   <Link href={`/individual/${candidate.user_id}`}>
                     <button className="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-300">
                       View Profile

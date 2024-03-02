@@ -1,8 +1,8 @@
 "use client";
 
-import NavBar from "@/components/NavBar";
+import NavBar from "@/components/common/NavBar";
 import JobListing from "@/components/business/job-listing/EditJobListing";
-import Loader from "@/components/ui/Loader";
+import Loader from "@/components/common/Loader";
 import { UserContext } from "@/context/UserContext";
 import { useEffect, useContext, useState } from "react";
 

@@ -6,7 +6,7 @@ import { profileStore } from "../profileStore";
 import { useContext, FC, useEffect, useState } from "react";
 import { UserContext } from "@/context/UserContext";
 import { useRouter } from "next/navigation";
-import Loader from "@/components/ui/Loader";
+import Loader from "@/components/common/Loader";
 import UploadBox from "./UploadBox";
 import Featured from "./FeaturedCard";
 interface ProfilePageProps {

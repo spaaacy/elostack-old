@@ -65,6 +65,9 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         } else if (userType === "individual" && user?.business) {
           router.push("/dashboard");
           console.error("You must be an individual to access this page!");
+        } else if (userType === "admin" && !user?.admin) {
+          router.push("/dashboard");
+          console.error("You must be an admin to access this page!");
         }
       } else {
         router.push("/signin");

@@ -1,6 +1,6 @@
 "use client";
 
-import NavBar from "@/components/NavBar";
+import NavBar from "@/components/common/NavBar";
 import Feedback from "@/components/individual/feedback/Feedback";
 import { UserContext } from "@/context/UserContext";
 import { useParams, useRouter } from "next/navigation";

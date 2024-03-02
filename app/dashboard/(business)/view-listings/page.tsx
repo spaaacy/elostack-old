@@ -1,10 +1,10 @@
 "use client";
 
-import NavBar from "@/components/NavBar";
+import NavBar from "@/components/common/NavBar";
 import Listings from "@/components/business/view-listings/ViewListings";
 import { UserContext } from "@/context/UserContext";
 import { useEffect, useContext, useState } from "react";
-import Loader from "@/components/ui/Loader";
+import Loader from "@/components/common/Loader";
 
 const Page = () => {
   const { session, verifyLogin } = useContext(UserContext);

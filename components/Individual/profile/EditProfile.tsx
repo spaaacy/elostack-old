@@ -2,7 +2,7 @@
 import { useContext, useState, useEffect, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
 import { UserContext } from "@/context/UserContext";
-import Loader from "@/components/ui/Loader";
+import Loader from "@/components/common/Loader";
 
 const initialFormData = {
   first_name: "",

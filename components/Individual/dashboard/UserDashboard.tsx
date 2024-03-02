@@ -5,7 +5,7 @@ import Head from "next/head";
 import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 import { profileStore } from "../profileStore";
-import Loader from "@/components/ui/Loader";
+import Loader from "@/components/common/Loader";
 import Link from "next/link";
 import capitalizeFirstLetter from "@/utils/capitalizeFirstLetter";
 

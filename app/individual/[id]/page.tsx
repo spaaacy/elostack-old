@@ -1,7 +1,7 @@
 "use client";
 
 import ProfilePage from "@/components/Individual/profile/ProfilePage";
-import NavBar from "@/components/NavBar";
+import NavBar from "@/components/common/NavBar";
 import { useParams } from "next/navigation";
 const Profiles = () => {
   const { id } = useParams();

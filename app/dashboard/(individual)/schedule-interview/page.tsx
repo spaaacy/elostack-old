@@ -17,7 +17,13 @@ const Page = () => {
     }
   }, [session]);
 
-  if (loading) return <Loader />;
+  if (loading)
+    return (
+      <>
+        <NavBar />
+        <Loader />
+      </>
+    );
 
   return (
     <>

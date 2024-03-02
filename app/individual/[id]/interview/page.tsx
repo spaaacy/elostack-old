@@ -3,8 +3,8 @@
 import NavBar from "@/components/NavBar";
 import Feedback from "@/components/individual/feedback/Feedback";
 import { UserContext } from "@/context/UserContext";
-import { useParams, useRouter, useState } from "next/navigation";
-import { useContext, useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { useContext, useEffect, useState } from "react";
 
 const Page = () => {
   const { id } = useParams();

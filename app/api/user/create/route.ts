@@ -4,7 +4,9 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest, res: NextResponse) {
   try {
     const user = await req.json();
-    const { error: errorUsers } = await supabase.from("user").insert({ user_id: user.userId, business: user.business });
+    const { error: errorUsers } = await supabase
+      .from("user")
+      .insert({ user_id: user.userId, business: user.business, email: user.email });
     if (errorUsers) throw errorUsers;
     if (!user.business) {
       const { error: errorProfile } = await supabase

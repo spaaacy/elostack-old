@@ -116,7 +116,7 @@ const AdminDashboard: React.FC = () => {
             <div>
               <label className="block font-semibold">Video</label>
               <input
-                type="url"
+                type="text"
                 {...register("video_url", { required: true })}
                 className="w-full mt-1 p-2 border rounded"
               />

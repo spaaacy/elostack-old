@@ -1,13 +1,11 @@
 "use client";
 
 import Head from "next/head";
-import EditProfileButton from "./EditProfileButton";
+import EditProfileButton from "../../common/EditProfileButton";
 import { profileStore } from "../profileStore";
 import { useContext, FC, useEffect, useState } from "react";
 import { UserContext } from "@/context/UserContext";
-import { useRouter } from "next/navigation";
 import Loader from "@/components/common/Loader";
-import UploadBox from "./UploadBox";
 import Featured from "./FeaturedCard";
 interface ProfilePageProps {
   id: string;
@@ -76,7 +74,7 @@ const ProfilePage: FC<ProfilePageProps> = ({ id }) => {
                   </div>
                 </div>
 
-                {user && user.user_id === id && <EditProfileButton />}
+                {session?.data?.session?.user.id === id && <EditProfileButton />}
               </div>
             </div>
 

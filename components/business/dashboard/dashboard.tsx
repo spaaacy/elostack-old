@@ -6,35 +6,41 @@ import Link from "next/link";
 import { UserContext } from "@/context/UserContext";
 
 const BusinessDashboard: React.FC = () => {
-  const { user } = useContext(UserContext);
+  const { session } = useContext(UserContext);
   const [jobListings, setJobListings] = useState();
   const [businessDetails, setBusinessDetails] = useState();
 
   useEffect(() => {
-    if (user) {
+    if (session) {
       fetchListings();
       fetchBusinessDetails();
     }
-  }, [user]);
+  }, [session]);
 
   const fetchListings = async () => {
-    const response = await fetch(`/api/job-listing?business_id=${user.user_id}&latest=true`, {
-      method: "GET",
-    });
-    if (response.status === 200) {
-      const results = await response.json();
-      setJobListings(results.data);
+    const userId = session?.data?.session?.user.id;
+    if (userId) {
+      const response = await fetch(`/api/job-listing?business_id=${userId}&latest=true`, {
+        method: "GET",
+      });
+      if (response.status === 200) {
+        const results = await response.json();
+        setJobListings(results.data);
+      }
     }
   };
 
   const fetchBusinessDetails = async () => {
-    const response = await fetch(`/api/business/${user.user_id}`);
-    const result = await response.json();
-    console.log(result);
-    if (response.status === 200) {
-      setBusinessDetails(result.business);
-    } else {
-      console.error("Fetching business details failed!");
+    const userId = session?.data?.session?.user.id;
+    if (userId) {
+      const response = await fetch(`/api/business/${userId}?user=true`);
+      const result = await response.json();
+      console.log({ result, response });
+      if (response.status === 200) {
+        setBusinessDetails(result.business);
+      } else {
+        console.error("Fetching business details failed!");
+      }
     }
   };
 

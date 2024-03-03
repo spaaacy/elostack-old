@@ -113,7 +113,7 @@ const Signup: React.FC = () => {
                 />
               </div>
               <div className="flex items-center justify-between">
-                <Link href="/business/sign-up" className="inline-block align-baseline font-bold text-sm ">
+                <Link href="/signup" className="inline-block align-baseline font-bold text-sm ">
                   Don't Have an Account?
                   <span className="ml-2 text-blue-500 hover:text-blue-800">Sign Up</span>
                 </Link>

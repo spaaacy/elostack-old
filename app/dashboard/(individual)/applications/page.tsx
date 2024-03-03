@@ -11,9 +11,13 @@ const Page = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const loadData = async () => {
+      await verifyLogin("individual");
+      await setLoading(false);
+    };
+
     if (session) {
-      verifyLogin("individual");
-      setLoading(false);
+      loadData();
     }
   }, [session]);
 

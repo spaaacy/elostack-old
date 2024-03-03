@@ -1,11 +1,12 @@
+import Pricing from "@/components/business/pricing/Pricing";
 import NavBar from "@/components/common/NavBar";
+const Accounts = () => (
+  <main>
+    <NavBar />
+    <div className="flex h-screen">
+      <Pricing />
+    </div>
+  </main>
+);
 
-const page = () => {
-  return (
-    <main>
-      <NavBar />
-    </main>
-  );
-};
-
-export default page;
+export default Accounts;

@@ -4,28 +4,11 @@ import { useRouter } from "next/navigation";
 import { UserContext } from "@/context/UserContext";
 import Loader from "@/components/common/Loader";
 
-const initialFormData = {
-  first_name: "",
-  last_name: "",
-  birthday: "",
-  phone_number: "",
-  phone_type: "",
-  address: "",
-  country: "",
-  postal_code: "",
-  city: "",
-  resume: null,
-  cover_letter: null,
-  portfolio: "",
-  linkedin: "",
-  github: "",
-};
-
-const EditProfile = () => {
+const EditIndividualProfile = () => {
   const { session } = useContext(UserContext);
 
   const router = useRouter();
-  const [formData, setFormData] = useState(initialFormData);
+  const [formData, setFormData] = useState();
   const [loadingData, setLoadingData] = useState(true);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -191,7 +174,7 @@ const EditProfile = () => {
             <div className="text-xl font-semibold mb-6">Location</div>
             <div className="mb-4">
               <label htmlFor="country" className="block text-sm font-medium text-gray-700">
-                Country/Region<span className="text-red-500">*</span>
+                Country<span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -295,7 +278,7 @@ const EditProfile = () => {
                 Portfolio URL
               </label>
               <input
-                type="url"
+                type="text"
                 name="portfolio"
                 id="portfolio"
                 value={formData.portfolio}
@@ -309,7 +292,7 @@ const EditProfile = () => {
                 LinkedIn URL
               </label>
               <input
-                type="url"
+                type="text"
                 name="linkedin"
                 id="linkedin"
                 value={formData.linkedin}
@@ -323,7 +306,7 @@ const EditProfile = () => {
                 GitHub URL
               </label>
               <input
-                type="url"
+                type="text"
                 name="github"
                 id="github"
                 value={formData.github}
@@ -347,4 +330,4 @@ const EditProfile = () => {
   );
 };
 
-export default EditProfile;
+export default EditIndividualProfile;

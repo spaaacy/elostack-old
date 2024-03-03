@@ -13,8 +13,12 @@ const Page = () => {
   const router = useRouter();
 
   useEffect(() => {
+    const loadData = async () => {
+      await verifyLogin("business");
+    };
+
     if (session) {
-      verifyLogin();
+      loadData();
     }
   }, [session]);
 

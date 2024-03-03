@@ -2,12 +2,14 @@
 
 import { UserContext } from "@/context/UserContext";
 import { createClient } from "@supabase/supabase-js";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FC, useContext, useState, useEffect, useRef } from "react";
 
 const UserAccountNav = () => {
   const { session } = useContext(UserContext);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [user, setUser] = useState();
   const dropdownRef = useRef(null);
   const router = useRouter();
 
@@ -25,6 +27,10 @@ const UserAccountNav = () => {
 
   // Close dropdown when clicking outside
   useEffect(() => {
+    if (session) {
+      fetchUser();
+    }
+
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setDropdownOpen(false);
@@ -33,6 +39,19 @@ const UserAccountNav = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [dropdownRef]);
+
+  const fetchUser = async () => {
+    const userId = session?.data?.session?.user.id;
+    if (userId) {
+      const response = await fetch(`/api/user/${userId}`, {
+        method: "GET",
+      });
+      if (response.status === 200) {
+        const { user } = await response.json();
+        setUser(user);
+      }
+    }
+  };
 
   return (
     <div className="relative" ref={dropdownRef}>
@@ -50,21 +69,27 @@ const UserAccountNav = () => {
         }`}
         style={{ display: dropdownOpen ? "block" : "none" }}
       >
-        <a href="/dashboard" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+        <Link href="/dashboard" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
           Dashboard
-        </a>
-        <a
-          href={`/individual/${session?.data.session?.user.id}`}
+        </Link>
+        <Link
+          href={
+            user?.business
+              ? `/business/${session?.data.session?.user.id}`
+              : `/individual/${session?.data.session?.user.id}`
+          }
           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
         >
           Profile
-        </a>
-        <a
-          href={`/individual/${session?.data.session?.user.id}/interview`}
-          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-        >
-          My Interview
-        </a>
+        </Link>
+        {!user?.business && (
+          <Link
+            href={`/individual/${session?.data.session?.user.id}/interview`}
+            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+          >
+            My Interview
+          </Link>
+        )}
         <hr className="my-1 border-gray-200" />
         <button
           onClick={handleSignOut}

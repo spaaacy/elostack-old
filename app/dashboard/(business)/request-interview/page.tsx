@@ -10,9 +10,13 @@ const Page = () => {
   const { session, verifyLogin } = useContext(UserContext);
 
   useEffect(() => {
+    const loadData = async () => {
+      await verifyLogin("business");
+      await setLoading(false);
+    };
+
     if (session) {
-      verifyLogin("business");
-      setLoading(false);
+      loadData();
     }
   }, [session]);
 

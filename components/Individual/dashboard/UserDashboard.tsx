@@ -82,16 +82,6 @@ const UserDashboard: React.FC = () => {
           <div className="flex justify-between items-center -mt-[2rem] ">
             <h2 className="text-3xl font-bold text-blueprimary">Your Applications</h2>
             <div className="mt-[2rem] flex justify-center items-center gap-4">
-              <Link href={`/individual/${profileData.user_id}`}>
-                <button className="inline-block bg-blue-600 text-white px-6 py-3 mb-6 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
-                  View Profile
-                </button>
-              </Link>
-              <Link href="/job-listing">
-                <button className="inline-block bg-blue-600 text-white px-6 py-3 mb-6 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
-                  View Job Listing
-                </button>
-              </Link>
               <Link href="/dashboard/applications">
                 <button className="inline-block bg-blue-600 text-white px-6 py-3 mb-6 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
                   View All Applications

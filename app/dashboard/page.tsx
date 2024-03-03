@@ -12,9 +12,13 @@ const Page = () => {
   const [user, setUser] = useState();
 
   useEffect(() => {
+    const loadData = async () => {
+      await verifyLogin();
+      await fetchUser();
+    };
+
     if (session) {
-      verifyLogin();
-      fetchUser();
+      loadData();
     }
   }, [session]);
 
@@ -35,7 +39,7 @@ const Page = () => {
     <main className="flex flex-1 flex-col">
       <NavBar />
       {user ? (
-        <main className="flex flex-1">{user.business ? <BusinessDashboard /> : <UserDashboard />}</main>
+        <div className="flex flex-1">{user.business ? <BusinessDashboard /> : <UserDashboard />}</div>
       ) : (
         <Loader />
       )}

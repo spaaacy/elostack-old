@@ -1,13 +1,41 @@
-import SignUpForm from "../../../components/Individual/registration/SignUpForm";
+"use client";
 
+import { useContext, useEffect, useState } from "react";
+import SignUp from "@/components/common/SignUp";
 import NavBar from "@/components/common/NavBar";
-const SignUpPage = () => (
-  <>
-    <NavBar />
-    <main className="flex  h-[90vh]">
-      <SignUpForm />
-    </main>
-  </>
-);
+import { UserContext } from "@/context/UserContext";
+import { useRouter } from "next/navigation";
+import Loader from "@/components/common/Loader";
 
-export default SignUpPage;
+const Page = () => {
+  const { session } = useContext(UserContext);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (session?.data?.session) {
+      router.push("/dashboard");
+    } else if (session) {
+      setLoading(false);
+    }
+  }, [session]);
+
+  if (loading)
+    return (
+      <>
+        <NavBar />
+        <Loader />
+      </>
+    );
+
+  return (
+    <>
+      <NavBar />
+      <div>
+        <SignUp />
+      </div>
+    </>
+  );
+};
+
+export default Page;

@@ -3,23 +3,95 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Head from "next/head";
+import { createClient } from "@supabase/supabase-js";
 
-const Signup: React.FC = () => {
+const SignUp: React.FC = () => {
   const [businessName, setBusinessName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [isBusiness, setIsBusiness] = useState(false);
+  const router = useRouter();
+
+  const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(isBusiness ? "Business signed up:" : "Individual signed up:", {
-      businessName,
-      email,
-      password,
-    });
+    if (isBusiness) {
+      businessSignUp();
+    } else {
+      individualSignUp();
+    }
   };
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+
+  const businessSignUp = async () => {
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: "https://localhost:3000/",
+        },
+      });
+
+      if (error) throw error;
+
+      const response = await fetch("api/user/create", {
+        method: "POST",
+        body: JSON.stringify({
+          name: businessName,
+          email,
+          userId: data.user.id,
+          business: true,
+        }),
+      });
+
+      if (response.status === 500) {
+        const { error } = await response.json();
+        throw error;
+      }
+
+      router.push("/");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const individualSignUp = async () => {
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: "https://localhost:3000/",
+        },
+      });
+
+      if (error) throw error;
+
+      const response = await fetch("api/user/create", {
+        method: "POST",
+        body: JSON.stringify({
+          firstName: firstName,
+          lastName: lastName,
+          email,
+          userId: data.user.id,
+          business: false,
+        }),
+      });
+
+      if (response.status === 500) {
+        const { error } = await response.json();
+        throw error;
+      }
+
+      router.push("/");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <main className="flex flex-col flex-1 bg-gray-100 min-h-screen bg-no-repeat bg-fixed bg-bottom bg-[url('/waves.svg')]">
       <Head>
@@ -148,4 +220,4 @@ const Signup: React.FC = () => {
   );
 };
 
-export default Signup;
+export default SignUp;

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { UserContext } from "@/context/UserContext";
 import { useContext, useEffect } from "react";
-import UserAccountNav from "../individual/registration/UserAccountNav";
+import UserAccountNav from "./UserAccountNav";
 
 const NavBar = () => {
   const { session } = useContext(UserContext);

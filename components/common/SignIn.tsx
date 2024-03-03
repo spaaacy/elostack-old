@@ -17,7 +17,7 @@ const FormSchema = z.object({
     .refine((value) => value.length >= 8, "Password must be at least 8 characters"),
 });
 
-const Signup: React.FC = () => {
+const SignIn: React.FC = () => {
   const router = useRouter();
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
@@ -80,7 +80,7 @@ const Signup: React.FC = () => {
           </div>
 
           <div className="p-8">
-            <form onSubmit={() => {}}>
+            <form onSubmit={handleSubmit}>
               <div className="mb-4">
                 <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2">
                   Email:
@@ -88,7 +88,9 @@ const Signup: React.FC = () => {
                 <input
                   type="email"
                   id="email"
-                  onChange={(e) => setEmail(e.target.value)}
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 />
               </div>
@@ -104,7 +106,9 @@ const Signup: React.FC = () => {
                 <input
                   type="password"
                   id="password"
-                  onChange={(e) => setPassword(e.target.value)}
+                  name="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 />
               </div>
@@ -128,4 +132,4 @@ const Signup: React.FC = () => {
   );
 };
 
-export default Signup;
+export default SignIn;

@@ -50,7 +50,7 @@ const Pricing: React.FC = () => {
         <title>Pricing | EloStack</title>
       </Head>
       <div className="container mx-auto p-4 mt-16">
-        <div className="container mx-auto p-4 bg-white rounded-lg shadow mt-0 h-[40rem]">
+        <div className="container mx-auto p-4 bg-white rounded-lg shadow mt-0 h-[43rem]">
           <section className="text-center p-5">
             <h2 className="text-4xl font-bold text-blueprimary">
               Choose Your Plan

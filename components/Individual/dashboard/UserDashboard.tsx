@@ -7,8 +7,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { profileStore } from "../profileStore";
 import Loader from "@/components/common/Loader";
 import Link from "next/link";
-import capitalizeFirstLetter from "@/utils/capitalizeFirstLetter";
-
 const UserDashboard: React.FC = () => {
   const { session } = useContext(UserContext);
   const [loadingData, setLoadingData] = useState(true);
@@ -73,9 +71,9 @@ const UserDashboard: React.FC = () => {
         <section data-aos="fade-up">
           <div className="p-5 text-center border-b border-gray-200">
             <h2 className="text-2xl font-bold ">{`Welcome back, ${profileData.first_name}`}</h2>
-            <p className="text-md text-gray-500">{`${capitalizeFirstLetter(
-              profileData.position
-            )} | ${capitalizeFirstLetter(profileData.city)}, ${profileData.state.toUpperCase()}`}</p>
+            <p className="text-md text-gray-500 capitalize">{`${profileData.position} | ${
+              profileData.city
+            }, ${profileData.state.toUpperCase()}`}</p>
           </div>
         </section>
 

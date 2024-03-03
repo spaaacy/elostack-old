@@ -3,9 +3,11 @@ import React, { useContext, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { UserContext } from "@/context/UserContext";
+import { useRouter } from "next/navigation";
 
 const RequestInterview: React.FC = () => {
   const { session } = useContext(UserContext);
+  const router = useRouter();
 
   const [formData, setFormData] = useState({});
 
@@ -35,6 +37,9 @@ const RequestInterview: React.FC = () => {
       method: "POST",
       body: JSON.stringify(request),
     });
+    if (response.status === 201) {
+      router.push("/dashboard");
+    }
   };
 
   return (

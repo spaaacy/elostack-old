@@ -5,7 +5,6 @@ import Link from "next/link";
 import Avatar from "react-avatar";
 import { UserContext } from "@/context/UserContext";
 import "aos/dist/aos.css";
-import capitalizeFirstLetter from "@/utils/capitalizeFirstLetter";
 
 const CandidateSearch: React.FC = () => {
   const { session } = useContext(UserContext);
@@ -110,7 +109,7 @@ const CandidateSearch: React.FC = () => {
                 <div className="flex-grow">
                   <h3 className="font-semibold text-lg">{`${candidate.first_name} ${candidate.last_name}`}</h3>
                   <p className="text-sm text-gray-600">{candidate.role}</p>
-                  <p className="text-sm text-gray-600">Level: {capitalizeFirstLetter(candidate.position)}</p>
+                  <p className="text-sm text-gray-600 capitalize">Level: {candidate.position}</p>
                   <p className="text-sm text-gray-600">
                     Grade: {candidate.interview?.grade ? candidate.interview?.grade : "-"}
                   </p>

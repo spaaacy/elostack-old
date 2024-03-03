@@ -3,7 +3,6 @@
 import { useForm } from "react-hook-form";
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import capitalizeFirstLetter from "@/utils/capitalizeFirstLetter";
 
 const AdminDashboard: React.FC = () => {
   const {
@@ -38,6 +37,10 @@ const AdminDashboard: React.FC = () => {
       method: "POST",
       body: JSON.stringify(data),
     });
+    if (response.status === 201) {
+      window.location.reload();
+      console.log("Interview created successfully!");
+    }
   };
 
   return (
@@ -70,7 +73,7 @@ const AdminDashboard: React.FC = () => {
                     <tr key={request.id}>
                       <td className="border px-4 py-2">{request.created_at}</td>
                       <td className="border px-4 py-2">{request.individual_name}</td>
-                      <td className="border px-4 py-2">{capitalizeFirstLetter(request.position)}</td>
+                      <td className="border px-4 py-2 capitalize">{request.position}</td>
                       <td className="border px-4 py-2">{request.technical_length}</td>
                       <td className="border px-4 py-2">{request.behavioral_length}</td>
                     </tr>
@@ -89,34 +92,42 @@ const AdminDashboard: React.FC = () => {
         <section className="bg-center p-8 rounded-lg shadow-lg">
           <h2 className="text-3xl font-bold text-blueprimary">Upload New Interview</h2>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
-            <div>
-              <label className="block">Individual ID</label>
-              <input
-                type="text"
-                {...register("individual_id", { required: true })}
-                className="mt-1 p-2 border rounded"
-              />
-              {errors.individual_id && <p>This field is required</p>}
+            <div className="flex items-center gap-2">
+              <div className="flex-1">
+                <label className="block font-semibold">Individual ID</label>
+                <input
+                  type="text"
+                  {...register("individual_id", { required: true })}
+                  className="mt-1 p-2 border rounded w-full"
+                />
+                {errors.individual_id && <p>This field is required</p>}
+              </div>
+              <div>
+                <label className="block font-semibold">Grade</label>
+                <input type="text" {...register("grade", { required: true })} className="mt-1 p-2 border rounded" />
+                {errors.grade && <p>This field is required</p>}
+              </div>
             </div>
             <div>
-              <label className="block">Grade</label>
-              <input type="text" {...register("grade", { required: true })} className="mt-1 p-2 border rounded" />
-              {errors.grade && <p>This field is required</p>}
-            </div>
-            <div>
-              <label className="block">Feedback</label>
-              <textarea {...register("feedback", { required: true })} className="mt-1 p-2 border rounded" />
+              <label className="block font-semibold">Feedback</label>
+              <textarea {...register("feedback", { required: true })} className="w-full mt-1 p-2 border rounded" />
               {errors.feedback && <p>This field is required</p>}
             </div>
             <div>
-              <label className="block">Video</label>
-              <input type="file" {...register("video_url", { required: true })} className="mt-1 p-2 border rounded" />
+              <label className="block font-semibold">Video</label>
+              <input
+                type="url"
+                {...register("video_url", { required: true })}
+                className="w-full mt-1 p-2 border rounded"
+              />
               {errors.video_url && <p>This field is required</p>}
             </div>
 
-            <button type="submit" className="mt-2 px-4 py-2 bg-blue-500 text-white rounded">
-              Upload
-            </button>
+            <div className="flex justify-end">
+              <button type="submit" className="mt-2 px-4 py-2 bg-blue-500 text-white rounded">
+                Upload
+              </button>
+            </div>
           </form>
         </section>
       </main>

@@ -71,31 +71,7 @@
   }
 
   * {
-    @apply border-border;
-  }
-
-  body {
-    @apply bg-background text-foreground;
-  }
-
-  h2 {
-    @apply font-roboto;
-  }
-
-  h3 {
-    @apply font-roboto;
-  }
-
-  p {
-    @apply font-roboto;
-  }
-
-  a {
-    @apply font-roboto;
-  }
-
-  button {
-    @apply font-roboto;
+    @apply border-border font-roboto;
   }
 }
 
@@ -144,12 +120,13 @@
   margin-left: auto; /* Centering the video */
   margin-right: auto;
 }
-body, html {
+body,
+html {
   overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
 .scale-up-center {
-  animation: scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  animation: scale-up-center 0.4s cubic-bezier(0.39, 0.575, 0.565, 1) both;
 }
 
 @keyframes scale-up-center {
@@ -164,32 +141,33 @@ body, html {
 }
 .control-btn {
   position: absolute;
-  top: 50%; 
+  top: 50%;
   transform: translateY(-50%);
   background-color: transparent;
   border: none;
-  font-size: 24px; 
+  font-size: 24px;
   cursor: pointer;
   z-index: 2;
 }
 
 .control-btn.left-0 {
-  left: 25px; 
+  left: 25px;
 }
 
 .control-btn.right-0 {
-  right: 25px; 
+  right: 25px;
 }
 
 /* Adjust the AOS animation effect as needed for better visibility */
 [data-aos="zoom-in"] {
-  transition-duration: 1.2s; 
+  transition-duration: 1.2s;
 }
-body, .main-content {
+body,
+.main-content {
   padding-top: 64px; /* Adjust based on actual NavBar height */
-}/* In your CSS file */
+} /* In your CSS file */
 .wave-background {
-  background-image: url('/path/to/wave.svg');
+  background-image: url("/path/to/wave.svg");
   background-size: cover;
   background-position: center;
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import NavBar from "@/components/common/NavBar";
-import Applications from "@/components/individual/applications/TrackApplications";
+import JobListing from "@/components/business/job-listing/EditJobListing";
 import Loader from "@/components/common/Loader";
 import { UserContext } from "@/context/UserContext";
 import { useEffect, useContext, useState } from "react";
@@ -12,7 +12,7 @@ const Page = () => {
 
   useEffect(() => {
     if (session) {
-      verifyLogin("individual");
+      verifyLogin("business");
       setLoading(false);
     }
   }, [session]);
@@ -29,7 +29,7 @@ const Page = () => {
     <>
       <NavBar />
       <div>
-        <Applications />
+        <JobListing />
       </div>
     </>
   );

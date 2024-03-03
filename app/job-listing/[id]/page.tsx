@@ -1,8 +1,8 @@
 "use client";
 
-import NavBar from "@/components/NavBar";
-import Loader from "@/components/ui/Loader";
-import { UserContext, UserContextType } from "@/context/UserContext";
+import NavBar from "@/components/common/NavBar";
+import Loader from "@/components/common/Loader";
+import { UserContext } from "@/context/UserContext";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -10,7 +10,7 @@ import React, { useContext, useEffect, useState } from "react";
 
 const page = ({}) => {
   const { id: jobListingId } = useParams();
-  const { session } = useContext(UserContext) as UserContextType;
+  const { session } = useContext(UserContext);
   const [jobListing, setJobListing] = useState();
   const [loading, setLoading] = useState(true);
   const [applied, setApplied] = useState();
@@ -50,6 +50,7 @@ const page = ({}) => {
   };
 
   const handleApply = async () => {
+    const userId = session.data.session?.user.id;
     if (userId) {
       const response = await fetch("/api/application/create", {
         method: "POST",
@@ -91,7 +92,7 @@ const page = ({}) => {
                     Apply
                   </button>
                 ) : (
-                  <Link href={"/dashboard/edit-listing"} onClick={handleApply} className="outline-button">
+                  <Link href={"/dashboard/edit-listing"} className="outline-button">
                     Edit Listing
                   </Link>
                 )}

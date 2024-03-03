@@ -1,5 +1,5 @@
 "use client";
-import Loader from "@/components/ui/Loader";
+import Loader from "@/components/common/Loader";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";

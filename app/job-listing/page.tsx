@@ -1,6 +1,6 @@
-import NavBar from "@/components/NavBar";
+import NavBar from "@/components/common/NavBar";
 import JobListing from "@/components/individual/job-listing/JobListing";
-import Footer from "@/components/Footer";
+import Footer from "@/components/common/Footer";
 
 const Page = async () => {
   return (

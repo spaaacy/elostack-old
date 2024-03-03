@@ -1,39 +1,46 @@
 "use client";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+
 import { useForm } from "react-hook-form";
 import Head from "next/head";
-import Link from "next/link";
-
-type InterviewRequest = {
-  id: string;
-  candidateName: string;
-  date: string;
-};
-
-type InterviewUpload = {
-  video: File;
-  scoreSheet: File;
-  candidateId: string;
-};
+import { useEffect, useState } from "react";
 
 const AdminDashboard: React.FC = () => {
-  const router = useRouter();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const [interviewRequests, setInterviewRequests] = useState<
-    InterviewRequest[]
-  >([
-    { id: "1", candidateName: "John Doe", date: "2022-01-01" },
-    { id: "2", candidateName: "Jane Doe", date: "2022-01-02" },
-  ]);
-  const [uploadData, setUploadData] = useState<InterviewUpload | null>(null);
 
-  const onSubmit = (data: InterviewUpload) => {
-    setUploadData(data);
+  const [interviewRequests, setInterviewRequests] = useState();
+  const [uploadInterview, setUploadInterview] = useState();
+
+  useEffect(() => {
+    fetchRequests();
+  }, []);
+
+  const fetchRequests = async () => {
+    const response = await fetch("/api/interview-request/", {
+      method: "GET",
+    });
+    if (response.status === 200) {
+      const results = await response.json();
+      setInterviewRequests(results.requests);
+    } else {
+      console.error("Error fetching interview requests!");
+    }
+  };
+
+  const onSubmit = async (data) => {
+    console.log(data);
+    setUploadInterview(data);
+    const response = await fetch("/api/interview/create", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+    if (response.status === 201) {
+      window.location.reload();
+      console.log("Interview created successfully!");
+    }
   };
 
   return (
@@ -48,68 +55,79 @@ const AdminDashboard: React.FC = () => {
         </section>
 
         <section className="bg-center p-8 rounded-lg shadow-lg">
-          <h2 className="text-3xl font-bold text-blueprimary">
-            Interview Requests
-          </h2>
-          <table className="w-full table-auto">
+          <h2 className="text-3xl font-bold text-blueprimary">Interview Requests</h2>
+          <table className="w-full table-auto text-sm">
             <thead>
               <tr>
-                <th className="px-4 py-2">ID</th>
+                <th className="px-4 py-2">Creation Date</th>
                 <th className="px-4 py-2">Candidate Name</th>
-                <th className="px-4 py-2">Date</th>
+                <th className="px-4 py-2">Position</th>
+                <th className="px-4 py-2">Technical Length</th>
+                <th className="px-4 py-2">Behavioral Length</th>
               </tr>
             </thead>
             <tbody>
-              {interviewRequests.map((request) => (
-                <tr key={request.id}>
-                  <td className="border px-4 py-2">{request.id}</td>
-                  <td className="border px-4 py-2">{request.candidateName}</td>
-                  <td className="border px-4 py-2">{request.date}</td>
-                </tr>
-              ))}
+              {interviewRequests &&
+                interviewRequests.map((request) => (
+                  <>
+                    <tr key={request.id}>
+                      <td className="border px-4 py-2">{request.created_at}</td>
+                      <td className="border px-4 py-2">{request.individual_name}</td>
+                      <td className="border px-4 py-2 capitalize">{request.position}</td>
+                      <td className="border px-4 py-2">{request.technical_length}</td>
+                      <td className="border px-4 py-2">{request.behavioral_length}</td>
+                    </tr>
+                    <tr>
+                      <td className="border px-4 py-2 font-extrabold">Description</td>
+                      <td colspan="4" className="border px-4 py-2">
+                        {request.description}
+                      </td>
+                    </tr>
+                  </>
+                ))}
             </tbody>
           </table>
         </section>
 
         <section className="bg-center p-8 rounded-lg shadow-lg">
-          <h2 className="text-3xl font-bold text-blueprimary">
-            Upload New Interview
-          </h2>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div>
-              <label className="block">Candidate ID</label>
-              <input
-                type="text"
-                {...register("candidateId", { required: true })}
-                className="mt-1 p-2 border rounded"
-              />
-              {errors.candidateId && <p>This field is required</p>}
+          <h2 className="text-3xl font-bold text-blueprimary">Upload New Interview</h2>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
+            <div className="flex items-center gap-2">
+              <div className="flex-1">
+                <label className="block font-semibold">Individual ID</label>
+                <input
+                  type="text"
+                  {...register("individual_id", { required: true })}
+                  className="mt-1 p-2 border rounded w-full"
+                />
+                {errors.individual_id && <p>This field is required</p>}
+              </div>
+              <div>
+                <label className="block font-semibold">Grade</label>
+                <input type="text" {...register("grade", { required: true })} className="mt-1 p-2 border rounded" />
+                {errors.grade && <p>This field is required</p>}
+              </div>
             </div>
             <div>
-              <label className="block">Video</label>
-              <input
-                type="file"
-                {...register("video", { required: true })}
-                className="mt-1 p-2 border rounded"
-              />
-              {errors.video && <p>This field is required</p>}
+              <label className="block font-semibold">Feedback</label>
+              <textarea {...register("feedback", { required: true })} className="w-full mt-1 p-2 border rounded" />
+              {errors.feedback && <p>This field is required</p>}
             </div>
             <div>
-              <label className="block">Score Sheet</label>
+              <label className="block font-semibold">Video</label>
               <input
-                type="file"
-                {...register("scoreSheet", { required: true })}
-                className="mt-1 p-2 border rounded"
+                type="url"
+                {...register("video_url", { required: true })}
+                className="w-full mt-1 p-2 border rounded"
               />
-              {errors.scoreSheet && <p>This field is required</p>}
+              {errors.video_url && <p>This field is required</p>}
             </div>
 
-            <button
-              type="submit"
-              className="mt-2 px-4 py-2 bg-blue-500 text-white rounded"
-            >
-              Upload
-            </button>
+            <div className="flex justify-end">
+              <button type="submit" className="mt-2 px-4 py-2 bg-blue-500 text-white rounded">
+                Upload
+              </button>
+            </div>
           </form>
         </section>
       </main>

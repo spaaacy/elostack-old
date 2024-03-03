@@ -3,10 +3,10 @@
 import Head from "next/head";
 import React, { useContext, useEffect, useState } from "react";
 import Link from "next/link";
-import { UserContext, UserContextType } from "@/context/UserContext";
+import { UserContext } from "@/context/UserContext";
 
 const BusinessDashboard: React.FC = () => {
-  const { user } = useContext(UserContext) as UserContextType;
+  const { user } = useContext(UserContext);
   const [jobListings, setJobListings] = useState();
   const [businessDetails, setBusinessDetails] = useState();
 
@@ -119,12 +119,7 @@ const BusinessDashboard: React.FC = () => {
             <div className="flex justify-between mb-4 items-center -mt-[2rem] ">
               <h2 className="text-3xl font-bold text-blueprimary">Latest Job Listings</h2>
               <div className="flex items-center justify-center gap-4">
-                <Link href="/dashboard/search-individuals">
-                  <button className="inline-block bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
-                    Search for Candidates
-                  </button>
-                </Link>
-                <Link href="/dashboard/job-listing">
+                <Link href="/dashboard/create-listing">
                   <button className="inline-block bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
                     Create Listing
                   </button>
@@ -160,8 +155,19 @@ const BusinessDashboard: React.FC = () => {
 
           <section className="bg-cover bg-white mt-4 bg-center p-8 rounded-lg shadow-2xl space-y-6 ">
             <div className="flex justify-between items-center ">
-              {/* TODO: Show purchased candidates here */}
               <h2 className="text-3xl font-bold text-blueprimary mb-6">Your candidates</h2>
+              <div className="flex justify-center items-center gap-4">
+                <Link href="/dashboard/search-individuals">
+                  <button className="inline-block bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
+                    Search for Candidates
+                  </button>
+                </Link>
+                <Link href="/dashboard/request-interview">
+                  <button className="inline-block bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
+                    Request an Interview
+                  </button>
+                </Link>
+              </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {potentialHires.map((hire) => (

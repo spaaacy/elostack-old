@@ -1,18 +1,17 @@
 "use client";
 
 import NavBar from "@/components/common/NavBar";
-import Applications from "@/components/individual/applications/TrackApplications";
+import RequestInterview from "@/components/business/request-interview/RequestInterview";
 import Loader from "@/components/common/Loader";
 import { UserContext } from "@/context/UserContext";
 import { useEffect, useContext, useState } from "react";
-
 const Page = () => {
-  const { session, verifyLogin } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
+  const { session, verifyLogin } = useContext(UserContext);
 
   useEffect(() => {
     if (session) {
-      verifyLogin("individual");
+      verifyLogin("business");
       setLoading(false);
     }
   }, [session]);
@@ -24,12 +23,11 @@ const Page = () => {
         <Loader />
       </>
     );
-
   return (
     <>
       <NavBar />
       <div>
-        <Applications />
+        <RequestInterview />
       </div>
     </>
   );

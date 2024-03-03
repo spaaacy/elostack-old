@@ -1,21 +1,25 @@
 "use client";
 
-import { UserContext, UserContextType } from "@/context/UserContext";
+import { UserContext } from "@/context/UserContext";
+import { createClient } from "@supabase/supabase-js";
+import { useRouter } from "next/navigation";
 import { FC, useContext, useState, useEffect, useRef } from "react";
 
 const UserAccountNav = () => {
-  const { session, supabase } = useContext(UserContext) as UserContextType;
+  const { session } = useContext(UserContext);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const router = useRouter();
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
   const handleSignOut = async () => {
+    const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
     const { error } = await supabase.auth.signOut();
     if (error) {
       console.error(error);
     } else {
-      window.location.reload(); // Refresh the page to update the session state
+      router.push("/"); // Refresh the page to update the session state
     }
   };
 
@@ -46,17 +50,20 @@ const UserAccountNav = () => {
         }`}
         style={{ display: dropdownOpen ? "block" : "none" }}
       >
+        <a href="/dashboard" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+          Dashboard
+        </a>
         <a
           href={`/individual/${session?.data.session?.user.id}`}
           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
         >
           Profile
         </a>
-        <a href="/dashboard" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-          Dashboard
-        </a>
-        <a href="/individual/[id]/interview" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-          Feedback
+        <a
+          href={`/individual/${session?.data.session?.user.id}/interview`}
+          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+        >
+          My Interview
         </a>
         <hr className="my-1 border-gray-200" />
         <button

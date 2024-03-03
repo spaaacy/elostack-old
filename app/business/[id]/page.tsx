@@ -1,14 +1,18 @@
-import Footer from "@/components/common/Footer";
+"use client";
+import React from "react";
 import NavBar from "@/components/common/NavBar";
 import Profile from "@/components/business/profile/profile";
+import { BrowserRouter as Router } from "react-router-dom";
 
-const Page = async () => {
+const Page = () => {
   return (
     <>
-      <NavBar />
-      <div>
-        <Profile />
-      </div>
+      <Router>
+        <NavBar />
+        <div>
+          <Profile />
+        </div>
+      </Router>
     </>
   );
 };

@@ -61,6 +61,7 @@ const SignUpForm = () => {
         method: "POST",
         body: JSON.stringify({
           name: values.businessName,
+          email: values.email,
           userId: data.user.id,
           business: true,
         }),

@@ -49,7 +49,7 @@ const EditBusinessProfile = () => {
 
         if (response.status === 201) {
           console.log("Profile updated successfully");
-          router.push("/dashboard");
+          router.push(`/business/${session?.data?.session?.user.id}`);
         }
       } catch (error) {
         console.error("Error updating profile:", error.message);
@@ -188,7 +188,7 @@ const EditBusinessProfile = () => {
                 Website
               </label>
               <input
-                type="url"
+                type="text"
                 name="website"
                 id="website"
                 value={formData?.website}
@@ -201,7 +201,7 @@ const EditBusinessProfile = () => {
                 LinkedIn
               </label>
               <input
-                type="url"
+                type="text"
                 name="linkedin"
                 id="linkedin"
                 value={formData?.linkedin}

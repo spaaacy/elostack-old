@@ -33,7 +33,7 @@ const BusinessDashboard: React.FC = () => {
   const fetchBusinessDetails = async () => {
     const userId = session?.data?.session?.user.id;
     if (userId) {
-      const response = await fetch(`/api/business/${userId}`);
+      const response = await fetch(`/api/business/${userId}?user=true`);
       const result = await response.json();
       console.log({ result, response });
       if (response.status === 200) {

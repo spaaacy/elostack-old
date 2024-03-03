@@ -23,9 +23,7 @@ const Signup: React.FC = () => {
   return (
     <main className="flex flex-col flex-1 bg-gray-100 min-h-screen bg-no-repeat bg-fixed bg-bottom bg-[url('/waves.svg')]">
       <Head>
-        <title>
-          {isBusiness ? "Business Signup" : "Individual Signup"} | EloStack
-        </title>
+        <title>{isBusiness ? "Business Signup" : "Individual Signup"} | EloStack</title>
       </Head>
 
       <main className="container mx-auto p-8 bg-white rounded-lg shadow-md mt-20 flex justify-center items-center">
@@ -47,9 +45,7 @@ const Signup: React.FC = () => {
                 <button
                   onClick={() => setIsBusiness(false)}
                   className={`font-bold py-2 px-4 rounded-l focus:outline-none focus:shadow-outline mx-2 ${
-                    isBusiness
-                      ? "bg-gray-500 text-white"
-                      : "bg-blue-500 text-white"
+                    isBusiness ? "bg-gray-500 text-white" : "bg-blue-500 text-white"
                   }`}
                 >
                   Individual Signup
@@ -57,9 +53,7 @@ const Signup: React.FC = () => {
                 <button
                   onClick={() => setIsBusiness(true)}
                   className={`font-bold py-2 px-4 rounded-r focus:outline-none focus:shadow-outline mx-2 ${
-                    isBusiness
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-500 text-white"
+                    isBusiness ? "bg-blue-500 text-white" : "bg-gray-500 text-white"
                   }`}
                 >
                   Business Signup
@@ -68,10 +62,7 @@ const Signup: React.FC = () => {
 
               {isBusiness ? (
                 <div className="mb-4">
-                  <label
-                    htmlFor="businessName"
-                    className="block text-gray-700 text-sm font-bold mb-2"
-                  >
+                  <label htmlFor="businessName" className="block text-gray-700 text-sm font-bold mb-2">
                     Business Name:
                   </label>
                   <input
@@ -85,10 +76,7 @@ const Signup: React.FC = () => {
               ) : (
                 <>
                   <div className="mb-4">
-                    <label
-                      htmlFor="firstName"
-                      className="block text-gray-700 text-sm font-bold mb-2"
-                    >
+                    <label htmlFor="firstName" className="block text-gray-700 text-sm font-bold mb-2">
                       First Name:
                     </label>
                     <input
@@ -100,10 +88,7 @@ const Signup: React.FC = () => {
                     />
                   </div>
                   <div className="mb-4">
-                    <label
-                      htmlFor="lastName"
-                      className="block text-gray-700 text-sm font-bold mb-2"
-                    >
+                    <label htmlFor="lastName" className="block text-gray-700 text-sm font-bold mb-2">
                       Last Name:
                     </label>
                     <input
@@ -118,10 +103,7 @@ const Signup: React.FC = () => {
               )}
 
               <div className="mb-4">
-                <label
-                  htmlFor="email"
-                  className="block text-gray-700 text-sm font-bold mb-2"
-                >
+                <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2">
                   Email:
                 </label>
                 <input
@@ -133,10 +115,7 @@ const Signup: React.FC = () => {
                 />
               </div>
               <div className="mb-6">
-                <label
-                  htmlFor="password"
-                  className="block text-gray-700 text-sm font-bold mb-2"
-                >
+                <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2">
                   Password:
                 </label>
                 <input
@@ -149,7 +128,7 @@ const Signup: React.FC = () => {
               </div>
               <div className="flex items-center justify-between">
                 <Link
-                  href="/business/sign-in"
+                  href="/signin"
                   className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
                 >
                   Already have an account? Sign In

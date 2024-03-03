@@ -278,7 +278,7 @@ const EditIndividualProfile = () => {
                 Portfolio URL
               </label>
               <input
-                type="url"
+                type="text"
                 name="portfolio"
                 id="portfolio"
                 value={formData.portfolio}
@@ -292,7 +292,7 @@ const EditIndividualProfile = () => {
                 LinkedIn URL
               </label>
               <input
-                type="url"
+                type="text"
                 name="linkedin"
                 id="linkedin"
                 value={formData.linkedin}
@@ -306,7 +306,7 @@ const EditIndividualProfile = () => {
                 GitHub URL
               </label>
               <input
-                type="url"
+                type="text"
                 name="github"
                 id="github"
                 value={formData.github}

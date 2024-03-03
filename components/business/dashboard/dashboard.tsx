@@ -4,16 +4,19 @@ import Head from "next/head";
 import React, { useContext, useEffect, useState } from "react";
 import Link from "next/link";
 import { UserContext } from "@/context/UserContext";
+import Avatar from "react-avatar";
 
 const BusinessDashboard: React.FC = () => {
   const { session } = useContext(UserContext);
   const [jobListings, setJobListings] = useState();
   const [businessDetails, setBusinessDetails] = useState();
+  const [purchases, setPurchases] = useState();
 
   useEffect(() => {
     if (session) {
       fetchListings();
       fetchBusinessDetails();
+      fetchPurchases();
     }
   }, [session]);
 
@@ -30,12 +33,25 @@ const BusinessDashboard: React.FC = () => {
     }
   };
 
+  const fetchPurchases = async () => {
+    const userId = session?.data?.session?.user.id;
+    if (userId) {
+      const response = await fetch(`/api/purchase/${userId}`, {
+        method: "GET",
+      });
+      if (response.status === 200) {
+        const results = await response.json();
+        console.log(results);
+        setPurchases(results.purchases);
+      }
+    }
+  };
+
   const fetchBusinessDetails = async () => {
     const userId = session?.data?.session?.user.id;
     if (userId) {
       const response = await fetch(`/api/business/${userId}?user=true`);
       const result = await response.json();
-      console.log({ result, response });
       if (response.status === 200) {
         setBusinessDetails(result.business);
       } else {
@@ -43,66 +59,6 @@ const BusinessDashboard: React.FC = () => {
       }
     }
   };
-
-  const potentialHires = [
-    {
-      id: 1,
-      name: "John Doe",
-      skills: "React, TypeScript",
-      jobTitle: "Software Engineer",
-      company: "Company A",
-      profilePicture: "https://via.placeholder.com/150",
-      link: "#",
-    },
-    {
-      id: 2,
-      name: "Jane Doe",
-      skills: "Vue, JavaScript",
-      jobTitle: "Frontend Developer",
-      company: "Company B",
-      profilePicture: "https://via.placeholder.com/150",
-      link: "#",
-    },
-
-    {
-      id: 1,
-      name: "John Doe",
-      skills: "React, TypeScript",
-      jobTitle: "Software Engineer",
-      company: "Company A",
-      profilePicture: "https://via.placeholder.com/150",
-      link: "#",
-    },
-    {
-      id: 2,
-      name: "Jane Doe",
-      skills: "Vue, JavaScript",
-      jobTitle: "Frontend Developer",
-      company: "Company B",
-      profilePicture: "https://via.placeholder.com/150",
-      link: "#",
-    },
-    {
-      id: 1,
-      name: "John Doe",
-      skills: "React, TypeScript",
-      jobTitle: "Software Engineer",
-      company: "Company A",
-      profilePicture: "https://via.placeholder.com/150",
-      link: "#",
-    },
-    {
-      id: 2,
-      name: "Jane Doe",
-      skills: "Vue, JavaScript",
-      jobTitle: "Frontend Developer",
-      company: "Company B",
-      profilePicture: "https://via.placeholder.com/150",
-      link: "#",
-    },
-
-    // Add more potential hires here
-  ];
 
   return (
     <>
@@ -176,27 +132,32 @@ const BusinessDashboard: React.FC = () => {
               </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {potentialHires.map((hire) => (
-                <a
-                  key={hire.id}
-                  href={hire.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-gray-50 p-6 rounded-lg shadow hover:shadow-xl transition-shadow duration-300 flex items-center"
-                >
-                  <img src={hire.profilePicture} alt={hire.name} className="w-24 h-24 rounded-full mr-4" />
-                  <div>
-                    <h3 className="font-semibold text-lg">{hire.name}</h3>
-                    <p className="text-sm text-gray-600">
-                      {hire.jobTitle} at {hire.company}
-                    </p>
-                    <p className="text-sm text-gray-600">{hire.skills}</p>
-                    <span className=" mt-6 inline-block bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-600 transition duration-150 ease-in-out">
-                      View Profile
-                    </span>
+              {purchases?.length > 0 ? (
+                purchases.map((purchase) => (
+                  <div className="bg-gray-50 p-6 rounded-lg shadow hover:shadow-xl transition-shadow duration-300 flex items-center">
+                    <Avatar
+                      name={`${purchase.individual.first_name} ${purchase.individual.last_name}`}
+                      size="100"
+                      round={true}
+                      className="mr-4"
+                    />
+                    <div className="flex flex-col">
+                      <h3 className="font-semibold text-lg">{`${purchase.individual.first_name} ${purchase.individual.last_name} `}</h3>
+                      <p className="text-sm text-gray-600 capitalize">{purchase.individual.position}</p>
+                      <div>
+                        <Link
+                          href={`/individual/${purchase.individual.user_id}`}
+                          className=" mt-6 inline-block bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-600 transition duration-150 ease-in-out"
+                        >
+                          View Profile
+                        </Link>
+                      </div>
+                    </div>
                   </div>
-                </a>
-              ))}
+                ))
+              ) : (
+                <div className="font-bold">No purchases made</div>
+              )}
             </div>
           </section>
 

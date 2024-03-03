@@ -7,24 +7,37 @@ import { useContext, FC, useEffect, useState } from "react";
 import { UserContext } from "@/context/UserContext";
 import Loader from "@/components/common/Loader";
 import Featured from "./FeaturedCard";
+import Link from "next/link";
 interface ProfilePageProps {
   id: string;
 }
 
 const ProfilePage: FC<ProfilePageProps> = ({ id }) => {
-  const { session, user } = useContext(UserContext);
+  const { session } = useContext(UserContext);
 
   const { profileData, setProfileData } = profileStore();
   const [loadingData, setLoadingData] = useState(true);
+  const [user, setUser] = useState();
+  const [access, setAccess] = useState(false);
 
   useEffect(() => {
     if (session) {
       fetchIndividual();
+      fetchUser();
     }
   }, [session]);
 
+  const fetchPurchase = async (businessId) => {
+    console.log(`/api/purchase?business_id=${businessId}&individual_id=${id}`);
+    if (!businessId) return;
+    const response = await fetch(`/api/purchase?business_id=${businessId}&individual_id=${id}`);
+    if (response.status === 200) {
+      setAccess(true);
+    }
+  };
+
   const fetchIndividual = async () => {
-    const userId = session?.data.session?.user.id;
+    const userId = id;
     if (userId) {
       const response = await fetch(`/api/individual/${userId}`);
       const result = await response.json();
@@ -32,11 +45,48 @@ const ProfilePage: FC<ProfilePageProps> = ({ id }) => {
         setProfileData(result.individual);
         setLoadingData(false);
       } else {
-        router.push("/signin");
         console.error("Error fetching profile:", result.error);
       }
     } else {
       console.log("Session not loaded or user ID undefined");
+    }
+  };
+
+  const fetchUser = async () => {
+    const userId = session?.data?.session?.user.id;
+    if (userId) {
+      const response = await fetch(`/api/user/${userId}`, {
+        method: "GET",
+      });
+      if (response.status === 200) {
+        const { user } = await response.json();
+        setUser(user);
+        if (user.business) {
+          fetchPurchase(userId);
+        }
+      }
+    }
+  };
+
+  const submitAccessInterview = async () => {
+    if (user.business) {
+      const businessId = session?.data?.session?.user.id;
+      if (businessId) {
+        const response = await fetch("/api/purchase/create", {
+          method: "POST",
+          body: JSON.stringify({
+            individual_id: id,
+            business_id: businessId,
+          }),
+        });
+        if (response.status === 201) {
+          setAccess(true);
+        } else {
+          console.error("Error making purchase!");
+        }
+      }
+    } else {
+      console.error("Must be logged in as business to access interview!");
     }
   };
 
@@ -62,16 +112,36 @@ const ProfilePage: FC<ProfilePageProps> = ({ id }) => {
                     </span>
                   </div>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
-                    {`${profileData.first_name} ${profileData.last_name}`}
-                  </h2>
-                  <div className="mt-1 flex flex-col sm:flex-row sm:flex-wrap sm:mt-0 sm:space-x-6">
-                    <div className="mt-2 flex items-center text-sm text-gray-500">
-                      {profileData.city}, {profileData.state}
+                <div className="flex w-full justify-between items-center">
+                  <div className="flex-1 min-w-0">
+                    <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+                      {`${profileData.first_name} ${profileData.last_name}`}
+                    </h2>
+                    <div className="mt-1 flex flex-col sm:flex-row sm:flex-wrap sm:mt-0 sm:space-x-6">
+                      <div className="mt-2 flex items-center text-sm text-gray-500">
+                        {profileData.city}, {profileData.state}
+                      </div>
+                      <div className="mt-2 flex items-center text-sm text-gray-500">{profileData.pronouns}</div>
                     </div>
-                    <div className="mt-2 flex items-center text-sm text-gray-500">{profileData.pronouns}</div>
                   </div>
+                  {user?.business && access ? (
+                    <Link
+                      href={`${id}/interview`}
+                      onClick={submitAccessInterview}
+                      className="px-4 py-2 rounded text-white bg-blue-500 hover:bg-blue-600 focus:outline-none"
+                    >
+                      View Interview
+                    </Link>
+                  ) : (
+                    <div>
+                      <button
+                        onClick={submitAccessInterview}
+                        className="px-4 py-2 rounded text-white bg-blue-500 hover:bg-blue-600 focus:outline-none"
+                      >
+                        Access Interview
+                      </button>
+                    </div>
+                  )}
                 </div>
 
                 {session?.data?.session?.user.id === id && <EditProfileButton />}

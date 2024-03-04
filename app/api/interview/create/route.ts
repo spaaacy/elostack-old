@@ -15,16 +15,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
     if (results.error) throw results.error;
 
     // Create interview
-    results = await supabase
-      .from("interview")
-      .insert({
-        individual_id: interview.individual_id,
-        grade: interview.grade,
-        feedback: interview.feedback,
-        video_url: interview.video_url,
-      })
-      .select("id")
-      .single();
+    results = await supabase.from("interview").insert(interview).select("id").single();
     if (results.error) throw results.error;
     const interviewId = results.data.id;
 
@@ -35,6 +26,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       .update({ interview_id: interviewId })
       .eq("user_id", interview.individual_id);
     if (results.error) throw results.error;
+
     return NextResponse.json({ message: "Interview created successfully!" }, { status: 201 });
   } catch (error) {
     console.error(error);

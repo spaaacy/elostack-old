@@ -109,7 +109,7 @@ const AdminDashboard: React.FC = () => {
               <div>
                 <label className="block font-semibold">Request ID</label>
                 <input
-                  type="text"
+                  type="number"
                   {...register("request_id", { required: true })}
                   className="mt-1 p-2 border rounded"
                 />
@@ -132,7 +132,11 @@ const AdminDashboard: React.FC = () => {
             </div>
             <div>
               <label className="block font-semibold">Feedback</label>
-              <textarea {...register("feedback", { required: true })} className="w-full mt-1 p-2 border rounded" />
+              <textarea
+                rows={10}
+                {...register("feedback", { required: true })}
+                className="w-full mt-1 p-2 border rounded"
+              />
               {errors.feedback && <p>This field is required</p>}
             </div>
             <div>

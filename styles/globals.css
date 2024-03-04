@@ -185,3 +185,30 @@ body,
     opacity: 1;
   }
 }
+.theme-orange {
+  background-color: #FFA500; /* Adjust the color to match your brand's orange */
+}
+
+.theme-blue {
+  background-color: #007BFF; /* Adjust the color to match your brand's blue */
+}
+
+.theme-dark-blue {
+  background-color: #00008B; /* Adjust the color to match your brand's dark blue */
+}
+
+.icon-style {
+  /* Tailwind classes to style the icon */
+}
+
+.checklist-icon {
+  color: green;
+  /* Additional Tailwind classes for the icon */
+}
+
+.btn-buy-now {
+  @apply text-white font-bold py-2 px-4 rounded;
+  /* Additional styles if needed */
+}
+
+/* You may need to adjust the colors to exactly match your brand's palette */

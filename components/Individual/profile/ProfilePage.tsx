@@ -19,6 +19,7 @@ const ProfilePage: FC<ProfilePageProps> = ({ id }) => {
   const [loadingData, setLoadingData] = useState(true);
   const [user, setUser] = useState();
   const [access, setAccess] = useState(false);
+  const [confirmPurchase, setConfirmPurchase] = useState(false);
 
   useEffect(() => {
     if (session) {
@@ -132,10 +133,28 @@ const ProfilePage: FC<ProfilePageProps> = ({ id }) => {
                     >
                       View Interview
                     </Link>
+                  ) : confirmPurchase ? (
+                    <div className="flex flex-col justify-center items-center">
+                      <p className="text-gray-400 font-light text-sm">Confirm Purchase</p>
+                      <div className="gap-2 flex items-center mt-2">
+                        <button onClick={() => setConfirmPurchase(false)} className="text-sm">
+                          No
+                        </button>
+                        <button
+                          onClick={() => {
+                            setConfirmPurchase(false);
+                            submitAccessInterview();
+                          }}
+                          className="text-sm px-4 py-2 rounded-full ml-2 text-white bg-blue-500 hover:bg-blue-600 focus:outline-none"
+                        >
+                          Yes
+                        </button>
+                      </div>
+                    </div>
                   ) : (
                     <div>
                       <button
-                        onClick={submitAccessInterview}
+                        onClick={() => setConfirmPurchase(true)}
                         className="px-4 py-2 rounded text-white bg-blue-500 hover:bg-blue-600 focus:outline-none"
                       >
                         Access Interview

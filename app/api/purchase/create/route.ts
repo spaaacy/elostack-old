@@ -15,7 +15,10 @@ export async function POST(req: NextRequest, res: NextResponse) {
     result = await supabase.from("purchase").insert({ business_id, individual_id });
     if (result.error) {
       // Refund credit if error occurred during purchase
+      console.log("Purchase unsuccessful. Refunding credits...");
       result = await supabase.rpc("incrementcredits", { id: business_id, amount: 1 });
+      if (!result.data) throw Error("Refund unsuccessful! Something unexpected happened!");
+      console.log("Refund made successfully!");
       throw result.error;
     }
     return NextResponse.json({ message: "Purchase made successfully!" }, { status: 201 });

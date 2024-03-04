@@ -59,8 +59,8 @@ const NavBar = () => {
         }`}
       >
         <div className="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4">
-          <Link href={"/pricing"} className="px-4 py-2 rounded-sm text-gray-800 hover:bg-gray-200 transition-colors">
-            Pricing
+          <Link href={"/credits"} className="px-4 py-2 rounded-sm text-gray-800 hover:bg-gray-200 transition-colors">
+            Credits
           </Link>
           <Link
             href={"/job-listing"}

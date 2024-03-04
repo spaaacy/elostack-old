@@ -3,6 +3,7 @@
 import { useForm } from "react-hook-form";
 import Head from "next/head";
 import { useEffect, useState } from "react";
+import formatDate from "@/utils/formatDate";
 
 const AdminDashboard: React.FC = () => {
   const {
@@ -12,7 +13,6 @@ const AdminDashboard: React.FC = () => {
   } = useForm();
 
   const [interviewRequests, setInterviewRequests] = useState();
-  const [uploadInterview, setUploadInterview] = useState();
 
   useEffect(() => {
     fetchRequests();
@@ -31,8 +31,6 @@ const AdminDashboard: React.FC = () => {
   };
 
   const onSubmit = async (data) => {
-    console.log(data);
-    setUploadInterview(data);
     const response = await fetch("/api/interview/create", {
       method: "POST",
       body: JSON.stringify(data),
@@ -40,6 +38,18 @@ const AdminDashboard: React.FC = () => {
     if (response.status === 201) {
       window.location.reload();
       console.log("Interview created successfully!");
+    }
+  };
+
+  const handleComplete = async (id, complete) => {
+    if (!complete || !id) return;
+    const response = await fetch("/api/interview-request/update-complete", {
+      method: "POST",
+      body: JSON.stringify({ id, complete }),
+    });
+    if (response.status === 200) {
+      window.location.reload();
+      console.log("Interview request updated!");
     }
   };
 
@@ -59,11 +69,13 @@ const AdminDashboard: React.FC = () => {
           <table className="w-full table-auto text-sm">
             <thead>
               <tr>
+                <th className="px-4 py-2">Request ID</th>
                 <th className="px-4 py-2">Creation Date</th>
                 <th className="px-4 py-2">Candidate Name</th>
                 <th className="px-4 py-2">Position</th>
                 <th className="px-4 py-2">Technical Length</th>
                 <th className="px-4 py-2">Behavioral Length</th>
+                <th className="px-4 py-2"></th>
               </tr>
             </thead>
             <tbody>
@@ -71,7 +83,8 @@ const AdminDashboard: React.FC = () => {
                 interviewRequests.map((request) => (
                   <>
                     <tr key={request.id}>
-                      <td className="border px-4 py-2">{request.created_at}</td>
+                      <td className="border px-4 py-2">{request.id}</td>
+                      <td className="border px-4 py-2">{formatDate(request.created_at)}</td>
                       <td className="border px-4 py-2">{request.individual_name}</td>
                       <td className="border px-4 py-2 capitalize">{request.position}</td>
                       <td className="border px-4 py-2">{request.technical_length}</td>
@@ -79,7 +92,7 @@ const AdminDashboard: React.FC = () => {
                     </tr>
                     <tr>
                       <td className="border px-4 py-2 font-extrabold">Description</td>
-                      <td colspan="4" className="border px-4 py-2">
+                      <td colspan="5" className="border px-4 py-2">
                         {request.description}
                       </td>
                     </tr>
@@ -93,6 +106,15 @@ const AdminDashboard: React.FC = () => {
           <h2 className="text-3xl font-bold text-blueprimary">Upload New Interview</h2>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
             <div className="flex items-center gap-2">
+              <div>
+                <label className="block font-semibold">Request ID</label>
+                <input
+                  type="text"
+                  {...register("request_id", { required: true })}
+                  className="mt-1 p-2 border rounded"
+                />
+                {errors.request_id && <p>This field is required</p>}
+              </div>
               <div className="flex-1">
                 <label className="block font-semibold">Individual ID</label>
                 <input

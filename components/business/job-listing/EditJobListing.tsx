@@ -8,7 +8,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 const EditJobListing = () => {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
-  const { user } = useContext(UserContext);
+  const { session } = useContext(UserContext);
   const router = useRouter();
 
   const [formData, setFormData] = useState({
@@ -47,9 +47,10 @@ const EditJobListing = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (user) {
+    const userId = session?.data?.session?.user.id;
+    if (userId) {
       const newListing = {
-        business_id: user.user_id,
+        business_id: userId,
         title: formData.title,
         description: formData.description,
         starting_pay: formData.starting_pay,

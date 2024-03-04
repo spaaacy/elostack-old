@@ -56,7 +56,6 @@ const BusinessDashboard: React.FC = () => {
       });
       if (response.status === 200) {
         const results = await response.json();
-        console.log(results);
         setPurchases(results.purchases);
       }
     }
@@ -134,7 +133,9 @@ const BusinessDashboard: React.FC = () => {
             <div className="flex justify-between items-center ">
               <div className="flex flex-col justify-center items-start">
                 <h2 className="text-3xl font-bold text-blueprimary">Your candidates</h2>
-                {user?.credits && <h3 className="text-sm text-gray-500">{`Balance: ${user?.credits} interviews`}</h3>}
+                {user?.credits >= 0 && (
+                  <h3 className="text-sm text-gray-500">{`Balance: ${user?.credits} Interviews`}</h3>
+                )}
               </div>
               <div className="flex justify-center items-center gap-4">
                 <Link href="/dashboard/search-individuals">

@@ -70,9 +70,10 @@ const Pricing: React.FC = () => {
     }
   };
 
-  const handlePurchase = (amount) => {
+  const handlePurchase = async (amount) => {
     if (user?.business && amount) {
-      purchasePackage(amount);
+      await purchasePackage(amount);
+      router.push("/dashboard");
     } else if (session?.data?.session) {
       console.log("You must be a business to purchase credits");
     } else {

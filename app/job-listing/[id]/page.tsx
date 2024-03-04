@@ -76,7 +76,7 @@ const page = ({}) => {
           <Loader />
         </div>
       ) : (
-        <div className="flex flex-col max-width w-full py-6">
+        <div className="flex flex-col max-w-[1080px] mx-auto py-6">
           <div className="flex">
             <div className="flex flex-col flex-1">
               <p className="font-light">{jobListing.company}</p>
@@ -88,11 +88,17 @@ const page = ({}) => {
                     <Image src={"/done.svg"} alt="done" width={25} height={25} />
                   </div>
                 ) : session.data.session?.user.id !== jobListing?.business_id ? (
-                  <button onClick={handleApply} className="outline-button">
+                  <button
+                    onClick={handleApply}
+                    className="bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-150 ease-in-out"
+                  >
                     Apply
                   </button>
                 ) : (
-                  <Link href={"/dashboard/edit-listing"} className="outline-button">
+                  <Link
+                    href={`/dashboard/create-listing?id=${jobListing?.id}`}
+                    className="bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-150 ease-in-out"
+                  >
                     Edit Listing
                   </Link>
                 )}

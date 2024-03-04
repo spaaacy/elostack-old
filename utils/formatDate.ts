@@ -1,5 +1,5 @@
 // Convert ISO date string to a more readable format
-export default formatDate = (dateString: string) => {
+export default (dateString: string) => {
   const options: Intl.DateTimeFormatOptions = {
     year: "numeric",
     month: "long",

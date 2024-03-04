@@ -1,6 +1,6 @@
 "use client";
 
-import ProfilePage from "@/components/Individual/profile/ProfilePage";
+import ProfilePage from "@/components/individual/profile/ProfilePage";
 import NavBar from "@/components/common/NavBar";
 import { useParams } from "next/navigation";
 const Profiles = () => {

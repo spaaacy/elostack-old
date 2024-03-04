@@ -1,11 +1,11 @@
 import Head from "next/head";
 import Footer from "@/components/common/Footer";
 import NavBar from "@/components/common/NavBar";
-import HeroSection from "@/components/Individual/landing/HeroSection";
-import HowItWorks from "@/components/Individual/landing/HowItWorks";
-import BenefitsSection from "@/components/Individual/landing/BenefitsSection";
+import HeroSection from "@/components/individual/landing/HeroSection";
+import HowItWorks from "@/components/individual/landing/HowItWorks";
+import BenefitsSection from "@/components/individual/landing/BenefitsSection";
 
-import FAQ from "@/components/Individual/landing/FAQ";
+import FAQ from "@/components/individual/landing/FAQ";
 const Home = () => {
   return (
     <>

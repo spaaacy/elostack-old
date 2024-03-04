@@ -11,14 +11,29 @@ const BusinessDashboard: React.FC = () => {
   const [jobListings, setJobListings] = useState();
   const [businessDetails, setBusinessDetails] = useState();
   const [purchases, setPurchases] = useState();
+  const [user, setUser] = useState();
 
   useEffect(() => {
     if (session) {
       fetchListings();
       fetchBusinessDetails();
       fetchPurchases();
+      fetchUser();
     }
   }, [session]);
+
+  const fetchUser = async () => {
+    const userId = session?.data?.session?.user.id;
+    if (userId) {
+      const response = await fetch(`/api/user/${userId}`, {
+        method: "GET",
+      });
+      if (response.status === 200) {
+        const { user } = await response.json();
+        setUser(user);
+      }
+    }
+  };
 
   const fetchListings = async () => {
     const userId = session?.data?.session?.user.id;
@@ -117,7 +132,10 @@ const BusinessDashboard: React.FC = () => {
 
           <section className="bg-cover bg-white mt-4 bg-center p-8 rounded-lg shadow-2xl space-y-6 ">
             <div className="flex justify-between items-center ">
-              <h2 className="text-3xl font-bold text-blueprimary mb-6">Your candidates</h2>
+              <div className="flex flex-col justify-center items-start">
+                <h2 className="text-3xl font-bold text-blueprimary">Your candidates</h2>
+                {user?.credits && <h3 className="text-sm text-gray-500">{`Balance: ${user?.credits} interviews`}</h3>}
+              </div>
               <div className="flex justify-center items-center gap-4">
                 <Link href="/dashboard/search-individuals">
                   <button className="inline-block bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
@@ -131,6 +149,7 @@ const BusinessDashboard: React.FC = () => {
                 </Link>
               </div>
             </div>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {purchases?.length > 0 ? (
                 purchases.map((purchase) => (

@@ -3,37 +3,39 @@
 import React, { useContext, useEffect, useState } from "react";
 import Head from "next/head";
 import { UserContext } from "@/context/UserContext";
+import { useRouter } from "next/navigation";
 
 const pricingPlans = [
   {
     id: 1,
     name: "Tier I",
-    price: "$250",
-    features: ["5 interviews"],
+    price: 500,
+    features: ["First 5 interview on-the-house", "10 interviews"],
     recommended: false,
-    amount: 5,
+    amount: 10,
   },
   {
     id: 2,
     name: "Tier II",
-    price: "$500",
-    features: ["10 Interviews"],
+    price: 1250,
+    features: ["First 5 interview on-the-house", "25 Interviews"],
     recommended: true,
-    amount: 10,
+    amount: 25,
   },
   {
     id: 3,
     name: "Tier III",
-    price: "$1500",
-    features: ["25 Interviews"],
+    price: 2500,
+    features: ["First 5 interview on-the-house", "50 Interviews"],
     recommended: false,
-    amount: 25,
+    amount: 50,
   },
 ];
 
 const Pricing: React.FC = () => {
   const { session } = useContext(UserContext);
   const [user, setUser] = useState();
+  const router = useRouter();
 
   useEffect(() => {
     if (session) {
@@ -68,6 +70,16 @@ const Pricing: React.FC = () => {
     }
   };
 
+  const handlePurchase = (amount) => {
+    if (user?.business && amount) {
+      purchasePackage(amount);
+    } else if (session?.data?.session) {
+      console.log("You must be a business to purchase credits");
+    } else {
+      router.push("/signin");
+    }
+  };
+
   return (
     <main className="flex flex-col flex-1 bg-gray-100 min-h-screen bg-no-repeat bg-fixed bg-bottom bg-[url('/waves.svg')]">
       <Head>
@@ -92,17 +104,24 @@ const Pricing: React.FC = () => {
                     RECOMMENDED
                   </span>
                 )}
-                <h3 className="text-xl font-bold text-center text-gray-900 my-2">{plan.name}</h3>
-                <p className="text-2xl text-center font-semibold my-2">{plan.price}</p>
+                <h3 className="text-3xl font-bold text-center text-gray-900 my-2">{plan.name}</h3>
+                {/* {!user?.claimed_free_credits ? (
+                  <>
+                    <p className="text-center text-sm line-through text-gray-500">{`$${plan.price}`}</p>
+                    <p className="text-2xl text-center font-semibold my-2">{`$${plan.price - 250}`}</p>
+                  </>
+                ) : (
+                  <p className="text-2xl text-center font-semibold my-2">{plan.price}</p>
+                )} */}
                 <ul className="flex-grow">
                   {plan.features.map((feature, index) => (
-                    <li key={index} className="border-t border-gray-200 pt-2 text-gray-600">
+                    <li key={index} className="list-disc list-inside border-t border-gray-200 pt-2 text-gray-600">
                       {feature}
                     </li>
                   ))}
                 </ul>
                 <button
-                  onClick={() => purchasePackage(plan.amount)}
+                  onClick={() => handlePurchase(plan.amount)}
                   className="bg-blueprimary text-white border border-blueprimary mt-4 py-2 px-4 rounded hover:bg-blue-500 hover:text-white transition duration-150 ease-in-out"
                 >
                   Purchase

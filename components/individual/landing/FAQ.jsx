@@ -4,8 +4,8 @@ import React, { useState, useRef, useEffect } from "react";
 
 const FAQItem = ({ question, answer }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const contentRef = (useRef < HTMLDivElement) | (null > null);
-  const [maxHeight, setMaxHeight] = useState < string > "0px";
+  const contentRef = useRef(null);
+  const [maxHeight, setMaxHeight] = useState("0px");
 
   useEffect(() => {
     if (contentRef.current) {

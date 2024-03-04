@@ -11,7 +11,7 @@ const UserDashboard = () => {
   const { session } = useContext(UserContext);
   const [loadingData, setLoadingData] = useState(true);
   const [applications, setApplications] = useState();
-  const [error, setError] = (useState < string) | (null > null);
+  const [error, setError] = useState();
   const { profileData, setProfileData } = profileStore();
   const router = useRouter();
 

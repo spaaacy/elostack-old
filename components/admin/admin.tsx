@@ -62,11 +62,11 @@ const AdminDashboard: React.FC = () => {
 
       <main className="container mx-auto p-4 bg-white rounded-lg shadow mt-8">
         <section className="p-5 text-center border-b border-gray-200">
-          <h1 className="text-2xl font-bold mb-4">Admin Dashboard</h1>
+          <h1 className="text-3xl font-bold mb-4">Admin Dashboard</h1>
         </section>
 
         <section className="bg-center p-8 rounded-lg shadow-lg">
-          <h2 className="text-3xl font-bold text-blueprimary">Pending Interview Requests</h2>
+          <h2 className="text-2xl font-bold text-blueprimary">Pending Interview Requests</h2>
           <table className="w-full table-auto text-sm">
             <thead>
               <tr>
@@ -106,7 +106,7 @@ const AdminDashboard: React.FC = () => {
         </section>
 
         <section className="bg-center p-8 rounded-lg shadow-lg">
-          <h2 className="text-3xl font-bold text-blueprimary">Upload New Interview</h2>
+          <h2 className="text-2xl font-bold text-blueprimary">Upload New Interview</h2>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
             <div className="flex items-center gap-2">
               <div>

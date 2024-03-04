@@ -7,7 +7,11 @@ export async function GET(req: NextRequest, res: NextResponse) {
     const interview = req.nextUrl.searchParams.get("interview");
     let results;
     if (interview === "true") {
-      results = await supabase?.from("individual").select("*, interview(*)").eq("user_id", id).single();
+      results = await supabase
+        ?.from("individual")
+        .select("*, interview!public_individual_interview_id_fkey(*)")
+        .eq("user_id", id)
+        .single();
     } else {
       results = await supabase?.from("individual").select().eq("user_id", id).single();
     }

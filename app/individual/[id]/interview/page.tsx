@@ -25,7 +25,7 @@ const Page = () => {
   return (
     <>
       <NavBar />
-      <div>
+      <div className="flex flex-1">
         <Feedback />
       </div>
     </>

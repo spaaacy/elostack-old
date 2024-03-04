@@ -29,7 +29,6 @@ const ProfilePage: FC<ProfilePageProps> = ({ id }) => {
   }, [session]);
 
   const fetchPurchase = async (businessId) => {
-    console.log(`/api/purchase?business_id=${businessId}&individual_id=${id}`);
     if (!businessId) return;
     const response = await fetch(`/api/purchase?business_id=${businessId}&individual_id=${id}`);
     if (response.status === 200) {
@@ -234,23 +233,29 @@ const ProfilePage: FC<ProfilePageProps> = ({ id }) => {
               </dl>
             </div>
 
-            <div className="border-t border-gray-200 px-4 py-5 sm:p-6">
+            {/* <div className="border-t border-gray-200 px-4 py-5 sm:p-6">
               <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
                 Documents ( Resume, Cover Letter, etc. )
               </h3>
-              <Featured />
+              {session?.data?.session?.user.id === id ? (
+                <>
+                  <Featured />
 
-              {/* Additional Information Section */}
-              <div className="border-t border-gray-200 px-4 py-5 sm:p-6">
-                <h3 className="text-lg leading-6 font-medium text-gray-900">Additional Information</h3>
-                <dl className="mt-2">
-                  <div>
-                    <dt className="text-sm font-medium text-gray-500">Birthday</dt>
-                    <dd className="mt-1 text-sm text-gray-900">{profileData.birthday}</dd>
+                  {/* Additional Information Section *\/}
+                  <div className="border-t border-gray-200 px-4 py-5 sm:p-6">
+                    <h3 className="text-lg leading-6 font-medium text-gray-900">Additional Information</h3>
+                    <dl className="mt-2">
+                      <div>
+                        <dt className="text-sm font-medium text-gray-500">Birthday</dt>
+                        <dd className="mt-1 text-sm text-gray-900">{profileData.birthday}</dd>
+                      </div>
+                    </dl>
                   </div>
-                </dl>
+                </>
+              ) : (
+                <></>
               </div>
-            </div>
+              )} */}
           </div>
         </div>
       </div>

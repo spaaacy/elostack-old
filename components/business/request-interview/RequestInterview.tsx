@@ -17,28 +17,37 @@ const RequestInterview: React.FC = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
-    const request = {
-      individual_name: formData.candidateName,
-      individual_email: formData.candidateEmail,
-      description: formData.description,
-      position: formData.position,
-      business_id: session.data.session.user.id,
-    };
-    if (formData.interviewType === "tb") {
-      request["technical_length"] = formData.technicalLength;
-      request["behavioral_length"] = formData.behavioralLength;
-    } else if (formData.interviewType === "t") {
-      request["technical_length"] = formData.interviewLength;
-    } else if (formData.interviewType === "b") {
-      request["behavioral_length"] = formData.interviewLength;
-    }
-    const response = await fetch("/api/interview-request/create", {
-      method: "POST",
-      body: JSON.stringify(request),
-    });
-    if (response.status === 201) {
-      router.push("/dashboard");
+    try {
+      const request = {
+        individual_name: formData.candidateName,
+        individual_email: formData.candidateEmail,
+        description: formData.description,
+        position: formData.position,
+        business_id: session.data.session.user.id,
+      };
+      if (formData.interviewType === "tb") {
+        if (formData.technicalLength + formData.behavioralLength > 60)
+          throw Error("Total interview length greater exceeds limit!");
+
+        request["technical_length"] = formData.technicalLength;
+        request["behavioral_length"] = formData.behavioralLength;
+      } else if (formData.interviewType === "t") {
+        if (formData.interviewLength > 60) throw Error("Total interview length greater exceeds limit!");
+
+        request["technical_length"] = formData.interviewLength;
+      } else if (formData.interviewType === "b") {
+        if (formData.interviewLength > 60) throw Error("Total interview length greater exceeds limit!");
+        request["behavioral_length"] = formData.interviewLength;
+      }
+      const response = await fetch("/api/interview-request/create", {
+        method: "POST",
+        body: JSON.stringify(request),
+      });
+      if (response.status === 201) {
+        router.push("/dashboard");
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -46,7 +55,7 @@ const RequestInterview: React.FC = () => {
     <>
       <section className="container mx-auto bg-white mt-6 bg-center p-8 rounded-lg shadow-lg w-3/5">
         <h2 className="text-3xl font-bold text-blueprimary">Request Interview</h2>
-        <form onSubmit={handleSubmit} className="space-y-4 mt-4">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-4">
           <input
             type="text"
             name="candidateName"
@@ -87,6 +96,8 @@ const RequestInterview: React.FC = () => {
             <option value="tb">Technical & Behavioral</option>
           </select>
 
+          <label className="font-semibold text-sm text-gray-500 -my-2">* Total interview length must be 1 hour</label>
+
           {formData.interviewType === "tb" ? (
             <>
               <select
@@ -95,11 +106,10 @@ const RequestInterview: React.FC = () => {
                 className="w-full p-2 border border-gray-300 rounded"
               >
                 <option value="">Select Technical Length</option>
+                <option value="15">15 minutes</option>
                 <option value="30">30 minutes</option>
                 <option value="45">45 minutes</option>
                 <option value="60">1 hour</option>
-                <option value="75">1 hour 15 minutes</option>
-                <option value="90">1 hour 30 minutes</option>
               </select>
               <select
                 name="behavioralLength"
@@ -107,11 +117,10 @@ const RequestInterview: React.FC = () => {
                 className="w-full p-2 border border-gray-300 rounded"
               >
                 <option value="">Select Behavioral Length</option>
+                <option value="15">15 minutes</option>
                 <option value="30">30 minutes</option>
                 <option value="45">45 minutes</option>
                 <option value="60">1 hour</option>
-                <option value="75">1 hour 15 minutes</option>
-                <option value="90">1 hour 30 minutes</option>
               </select>
             </>
           ) : (
@@ -121,11 +130,10 @@ const RequestInterview: React.FC = () => {
               className="w-full p-2 border border-gray-300 rounded"
             >
               <option value="">Select Length</option>
+              <option value="15">15 minutes</option>
               <option value="30">30 minutes</option>
               <option value="45">45 minutes</option>
               <option value="60">1 hour</option>
-              <option value="75">1 hour 15 minutes</option>
-              <option value="90">1 hour 30 minutes</option>
             </select>
           )}
           <textarea

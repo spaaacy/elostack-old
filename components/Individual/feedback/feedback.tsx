@@ -2,16 +2,20 @@
 import React, { useContext, useEffect, useState } from "react";
 import Head from "next/head";
 import { UserContext } from "@/context/UserContext";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import Loader from "@/components/common/Loader";
+import NavBar from "@/components/common/NavBar";
+import Link from "next/link";
 
 const FeedbackPage: React.FC = () => {
   const [individual, setIndividual] = useState();
   const { session } = useContext(UserContext);
   const { id } = useParams();
+  const router = useRouter();
 
   useEffect(() => {
     if (session) {
-      fetchInterview();
+      fetchPurchase();
     }
   }, [session]);
 
@@ -25,21 +29,43 @@ const FeedbackPage: React.FC = () => {
     }
   };
 
+  const fetchPurchase = async () => {
+    const userId = session?.data?.session?.user.id;
+    if (!userId) return;
+    const response = await fetch(`/api/purchase?business_id=${userId}&individual_id=${id}`);
+    if (response.status !== 200) {
+      router.push(`/individual/${id}`);
+      console.error("Please purchase the interview to access this page");
+    } else {
+      fetchInterview();
+    }
+  };
+
+  if (!individual)
+    return (
+      <>
+        <NavBar />
+        <Loader />
+      </>
+    );
+
   return (
     <>
       <Head>
         <title>Feedback | EloStack</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" />
       </Head>
-      <div className="min-h-screen bg-gray-100 pt-10 pb-20 px-4 md:px-0 bg-no-repeat bg-fixed bg-bottom bg-[url('/waves.svg')]">
+      <div className="w-full min-h-screen bg-gray-100 pt-10 pb-20 px-4 md:px-0 bg-no-repeat bg-fixed bg-bottom bg-[url('/waves.svg')]">
         <div className="max-w-7xl mx-auto">
           <h1 className="text-5xl font-bold text-center mb-12 text-blueprimary">Interview Feedback</h1>
           {individual && individual.interview && (
             <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-10">
               <div className="p-6">
-                <h2 className="text-3xl font-semibold mb-4 capitalize">
-                  {individual.first_name} {individual.last_name} - {individual.position}
-                </h2>
+                <Link href={`/individual/${id}`}>
+                  <h2 className="text-3xl font-semibold mb-4 capitalize">
+                    {individual.first_name} {individual.last_name} - {individual.position}
+                  </h2>
+                </Link>
                 <p className="text-xl font-semibold text-blueprimary mb-6 capitalize">
                   Overall Grade: {individual.interview.grade}
                 </p>

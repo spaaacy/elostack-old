@@ -3,7 +3,7 @@
 import NavBar from "@/components/common/NavBar";
 import Loader from "@/components/common/Loader";
 import { UserContext } from "@/context/UserContext";
-import { useContext, useEffect, useState } from "react";
+import { Suspense, useContext, useEffect, useState } from "react";
 import Head from "next/head";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -95,7 +95,7 @@ const Page = () => {
     );
 
   return (
-    <>
+    <Suspense>
       <NavBar />
       <div>
         <>
@@ -243,7 +243,7 @@ const Page = () => {
           </main>
         </>
       </div>
-    </>
+    </Suspense>
   );
 };
 

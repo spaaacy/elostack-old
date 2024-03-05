@@ -4,11 +4,12 @@ import { UserContext } from "@/context/UserContext";
 import Head from "next/head";
 import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
-import { profileStore } from "../profileStore";
+import { profileStore } from "./profileStore";
 import Loader from "@/components/common/Loader";
 import Link from "next/link";
 import formatDate from "@/utils/formatDate";
-const UserDashboard = () => {
+
+const IndividualDashboard = () => {
   const { session } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
   const [applications, setApplications] = useState();
@@ -117,4 +118,4 @@ const UserDashboard = () => {
   );
 };
 
-export default UserDashboard;
+export default IndividualDashboard;

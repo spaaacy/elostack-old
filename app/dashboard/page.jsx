@@ -1,8 +1,8 @@
 "use client";
 
 import NavBar from "@/components/common/NavBar";
-import BusinessDashboard from "@/components/business/dashboard/BusinessDashboard";
-import UserDashboard from "@/components/individual/dashboard/UserDashboard";
+import BusinessDashboard from "@/components/business/BusinessDashboard";
+import IndividualDashboard from "@/components/individual/IndividualDashboard";
 import Loader from "@/components/common/Loader";
 import { UserContext } from "@/context/UserContext";
 import { useEffect, useContext, useState } from "react";
@@ -41,7 +41,7 @@ const Page = () => {
     <main className="flex flex-1 flex-col">
       <NavBar />
       {user ? (
-        <div className="flex flex-1">{user.business ? <BusinessDashboard /> : <UserDashboard />}</div>
+        <div className="flex flex-1">{user.business ? <BusinessDashboard /> : <IndividualDashboard />}</div>
       ) : (
         <Loader />
       )}

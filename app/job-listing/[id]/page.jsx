@@ -82,7 +82,13 @@ const Page = ({}) => {
       window.location.reload();
     }
   };
-
+  const truncateDescription = (description, maxLength) => {
+    if (description.length > maxLength) {
+      return description.substring(0, maxLength) + "...";
+    } else {
+      return description;
+    }
+  };
   return (
     <main className="flex flex-col flex-1">
       <NavBar />
@@ -101,7 +107,7 @@ const Page = ({}) => {
                 {jobListing.business?.name}
               </Link>
               <div className="flex justify-between">
-                <h1 className="text-3xl font-bold capitalize">{jobListing.title}</h1>
+                <h1 className="text-3xl font-bold capitalize ">{jobListing.title}</h1>
                 {applied ? (
                   <div className="flex gap-2 items-center justify-center">
                     <p className="font-medium">Applied</p>
@@ -132,9 +138,10 @@ const Page = ({}) => {
               <p className="text-gray-500 capitalize">{`$${jobListing.starting_pay} - $${jobListing.ending_pay}`}</p>
             </div>
           </div>
-          <h2 className="font-bold mt-8">Description:</h2>
-          <p className="whitespace-pre-line">{jobListing.description}</p>
-        </div>
+
+  <h2 className="font-bold mt-8">Description:</h2>
+  <p className="whitespace-pre-line">{truncateDescription(jobListing.description, 100)}</p>
+</div>
       )}
     </main>
   );

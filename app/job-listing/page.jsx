@@ -57,7 +57,13 @@ const Page = () => {
       </div>
     );
   }
-
+  const truncateDescription = (description, maxLength) => {
+    if (description.length > maxLength) {
+      return description.substring(0, maxLength) + "...";
+    } else {
+      return description;
+    }
+  };
   return (
     <main className="flex flex-1 flex-col">
       <NavBar />
@@ -72,12 +78,12 @@ const Page = () => {
                 <h2 className="text-2xl font-bold text-blueprimary">Job Listings</h2>
               </div>
             </section>
-            <div className="flex flex-wrap gap-4 mb-6 items-center">
+            <div className="flex flex-wrap gap-4 mb-6 items-center ">
               {/* Role Filter Dropdown */}
               <input
                 value={filters.title}
                 onChange={(e) => handleFilterChange(e, "title")}
-                className="p-4 border rounded-lg"
+                className="p-4 border rounded-lg "
                 placeholder="Job title"
                 type="text"
               />
@@ -131,25 +137,26 @@ const Page = () => {
               />
             </div>
             <div className="grid grid-cols-3 gap-6">
-              {filteredJobs.map((job) => (
-                <Link
-                  href={`/job-listing/${job.id}`}
-                  key={job.id}
-                  className="bg-gray-50 p-6 rounded-lg flex flex-col justify-between hover:shadow-xl transition-shadow duration-300"
-                >
-                  <div>
-                    <h3 className="font-semibold text-lg">
-                      {job.title} at {job.business.name}
-                    </h3>
-                    <p className="text-sm text-gray-600 capitalize">{`${job.position} - ${job.location}`}</p>
-                    <p>
-                      Pay Range: ${job.starting_pay} - ${job.ending_pay}
-                    </p>
-                    <p className="text-sm">{job.description}</p>
-                  </div>
-                </Link>
-              ))}
-            </div>
+  {filteredJobs.map((job) => (
+    <Link
+      href={`/job-listing/${job.id}`}
+      key={job.id}
+      className="bg-gray-50 p-6 rounded-lg flex flex-col justify-between hover:shadow-xl transition-shadow duration-300"
+    >
+      <div>
+        <h3 className="font-semibold text-lg text-blueprimary">
+          {job.title} at {job.business.name}
+        </h3>
+        <p className="text-sm text-gray-600 capitalize">{`${job.position} - ${job.location}`}</p>
+        <p className="my-3 ">
+          Pay Range: ${job.starting_pay} - ${job.ending_pay}
+        </p>
+        <p className="text-sm">{truncateDescription(job.description, 220)}</p>
+      </div>
+      
+    </Link>
+  ))}
+</div>
           </main>
         </main>
       </div>

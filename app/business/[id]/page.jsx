@@ -17,6 +17,7 @@ const Page = () => {
   const [business, setBusiness] = useState();
   const [loading, setLoading] = useState(true);
   const [jobListings, setJobListings] = useState();
+  const [isFullTextShown, setIsFullTextShown] = useState(false);
 
   useEffect(() => {
     fetchBusiness();
@@ -88,7 +89,15 @@ const Page = () => {
                 </div>
                 <div className="px-4 py-5 sm:p-6 border-t border-gray-200 mt-6">
                   <h3 className="text-lg leading-6 font-semibold text-blueprimary">About</h3>
-                  <p className="mt-2 text-sm text-gray-900">{business.description}</p>
+                  <p className="mt-2 text-sm text-gray-900">
+  {isFullTextShown ? business.description : `${business.description.substring(0, 770)}...`}
+  <button 
+  className="text-blue-600 hover:underline cursor-pointer ml-6"
+  onClick={() => setIsFullTextShown(!isFullTextShown)}
+>
+  {isFullTextShown ? 'Read less' : 'Read more'}
+</button>
+</p>
                 </div>
                 <div className="px-4 py-5 sm:p-6 border-t border-gray-200">
                   <h3 className="text-lg leading-6 font-semibold text-blueprimary">Company Information</h3>

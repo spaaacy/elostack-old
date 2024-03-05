@@ -5,12 +5,10 @@ import Loader from "@/components/common/Loader";
 import { UserContext } from "@/context/UserContext";
 import { useContext, useEffect, useState } from "react";
 import Head from "next/head";
-import { useRouter, useSearchParams } from "next/navigation";
 
 const Page = () => {
   const { session, verifyLogin } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
-  const searchParams = useSearchParams();
   const router = useRouter();
 
   const [formData, setFormData] = useState({

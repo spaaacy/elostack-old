@@ -9,7 +9,7 @@ import { useContext, useEffect, useState } from "react";
 import NavBar from "@/components/common/NavBar";
 import { UserContext } from "@/context/UserContext";
 import Loader from "@/components/common/Loader";
-
+import Image from "next/image";
 const Page = () => {
   const { session } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
@@ -120,23 +120,34 @@ const Page = () => {
                     />
                   </div>
                   <div className="mb-6">
-                    <div className="flex justify-between items-center">
-                      <label htmlFor="password" className="text-gray-700 text-sm font-bold mb-2">
-                        Password:
-                      </label>
-                      <Link href="/forgot-password" className="text-blue-500 hover:text-blue-800 text-sm">
-                        Forgot Password?
-                      </Link>
-                    </div>
-                    <input
-                      type="password"
-                      id="password"
-                      name="password"
-                      value={formData.password}
-                      onChange={handleInputChange}
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    />
-                  </div>
+            <div className="flex justify-between items-center">
+              <label htmlFor="password" className="text-gray-700 text-sm font-bold mb-2">
+                Password:
+              </label>
+              <Link href="/forgot-password" className="text-blue-500 hover:text-blue-800 text-sm">
+                Forgot Password?
+              </Link>
+            </div>
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                name="password"
+                value={formData.password}
+                onChange={handleInputChange}
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
+              <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
+                <button type="button" onClick={togglePasswordVisibility} className="text-gray-500">
+                  {showPassword ? (
+                    <Image src="/Hide.svg" alt="Hide password" width={25} height={25} />
+                  ) : (
+                    <Image src="/Unhide.png" alt="Show password" width={25} height={25} />
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
                   <div className="flex items-center justify-between">
                     <Link href="/signup" className="inline-block align-baseline font-bold text-sm ">
                       Don't Have an Account?

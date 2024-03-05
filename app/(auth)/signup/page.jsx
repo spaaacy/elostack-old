@@ -8,6 +8,7 @@ import Loader from "@/components/common/Loader";
 import Link from "next/link";
 import Head from "next/head";
 import { createClient } from "@supabase/supabase-js";
+import Image from "next/image";
 
 const Page = () => {
   const { session } = useContext(UserContext);
@@ -20,6 +21,7 @@ const Page = () => {
   const [lastName, setLastName] = useState("");
   const [isBusiness, setIsBusiness] = useState(false);
   const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   useEffect(() => {
     if (session?.data?.session) {
@@ -111,6 +113,9 @@ const Page = () => {
     } catch (error) {
       console.error(error);
     }
+  };
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
   };
 
   return (
@@ -210,18 +215,25 @@ const Page = () => {
                       className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     />
                   </div>
-                  <div className="mb-6">
-                    <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2">
-                      Password:
-                    </label>
-                    <input
-                      type="password"
-                      id="password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    />
-                  </div>
+                  <div className="mb-6 relative">
+          <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2">
+            Password:
+          </label>
+          <input
+            type={passwordVisible ? "text" : "password"}
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+<button onClick={togglePasswordVisibility} className="absolute right-3 top-[1.6rem] mt-2">
+  {passwordVisible ? (
+    <Image src="/Hide.svg" alt="unhide password" width={25} height={25} />
+  ) : (
+    <Image src="/Unhide.png" alt="hide password" width={25} height={25} />
+  )}
+</button>
+        </div>
                   <div className="flex items-center justify-between">
                     <Link
                       href="/signin"

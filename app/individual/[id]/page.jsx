@@ -105,7 +105,7 @@ const Page = () => {
     <main className="flex flex-col flex-1">
       <NavBar />
       <div className="flex flex-1">
-        <main className="flex-1 bg-gray-100">
+        <main className="flex-1 bg-gray-100 bg-no-repeat bg-fixed bg-bottom bg-[url('/waves.svg')]">
           <Head>
             <title>{`${profileData.first_name}'s Profile`}</title>
           </Head>
@@ -242,6 +242,7 @@ const Page = () => {
                         </dd>
                       </div>
                     )}
+                    
                   </dl>
                 </div>
 

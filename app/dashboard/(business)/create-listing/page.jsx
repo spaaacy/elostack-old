@@ -5,6 +5,7 @@ import Loader from "@/components/common/Loader";
 import { UserContext } from "@/context/UserContext";
 import { useContext, useEffect, useState } from "react";
 import Head from "next/head";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
   const { session, verifyLogin } = useContext(UserContext);

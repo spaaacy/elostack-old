@@ -104,7 +104,7 @@ const Page = () => {
                         Details
                       </Link>
                       <Link
-                        href={`/dashboard/create-listing?id=${listing.id}`}
+                        href={`/dashboard/edit-listing/${listing.id}`}
                         className="text-white bg-blueprimary px-4 py-2 rounded hover:bg-blue-700 transition duration-150 ease-in-out"
                       >
                         Edit

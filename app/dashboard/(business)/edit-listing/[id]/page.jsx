@@ -5,12 +5,12 @@ import Loader from "@/components/common/Loader";
 import { UserContext } from "@/context/UserContext";
 import { useContext, useEffect, useState } from "react";
 import Head from "next/head";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 const Page = () => {
   const { session, verifyLogin } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
-  const searchParams = useSearchParams();
+  const { id } = useParams();
   const router = useRouter();
 
   const [formData, setFormData] = useState({
@@ -29,6 +29,7 @@ const Page = () => {
       const success = await verifyLogin("business");
       if (success) {
         await setLoading(false);
+        fetchListing();
       }
     };
 
@@ -36,6 +37,18 @@ const Page = () => {
       loadData();
     }
   }, [session]);
+
+  const fetchListing = async () => {
+    const response = await fetch(`/api/job-listing/${id}`, {
+      method: "GET",
+    });
+    const results = await response.json();
+    if (response.status === 200) {
+      setFormData(results.jobListing);
+    } else {
+      console.error(results.error);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -56,6 +69,7 @@ const Page = () => {
         remote: formData.remote,
         location: formData.location,
         deadline: formData.deadline,
+        id,
       };
       const response = await fetch("/api/job-listing/edit", {
         method: "POST",
@@ -82,12 +96,12 @@ const Page = () => {
       <div>
         <>
           <Head>
-            <title>Create Job Listing</title>
+            <title>Update Job Listing</title>
           </Head>
           <main className="flex flex-col flex-1 bg-white min-h-screen bg-no-repeat bg-fixed bg-bottom bg-[url('/waves.svg')]">
             <section className="container w-3/5 mx-auto p-4 bg-white rounded-lg shadow-2xl mt-8">
               <div className="p-5 text-center border-b border-blue-200">
-                <h2 className="text-2xl font-bold mb-8 text-blueprimary">Create New Job Listing</h2>
+                <h2 className="text-2xl font-bold mb-8 text-blueprimary">Update Existing Job Listing</h2>
                 <form className="mt-8 gap-x-8 gap-y-3" onSubmit={handleSubmit}>
                   <div className="mb-6">
                     <label htmlFor="title" className="block   font-semibold mb-2">
@@ -214,7 +228,7 @@ const Page = () => {
                       type="submit"
                       className="inline-block bg-blueprimary text-white px-6 py-3 mb-4 rounded hover:bg-blue-700 transition duration-150 ease-in-out"
                     >
-                      Create Job Listing
+                      Update Job Listing
                     </button>
                   </div>
                 </form>

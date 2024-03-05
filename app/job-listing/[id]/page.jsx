@@ -109,7 +109,7 @@ const Page = ({}) => {
                   </div>
                 ) : session.data.session?.user.id === jobListing?.business_id ? (
                   <Link
-                    href={`/dashboard/create-listing?id=${jobListing?.id}`}
+                    href={`/dashboard/edit-listing/${jobListing?.id}`}
                     className="bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-150 ease-in-out"
                   >
                     Edit Listing

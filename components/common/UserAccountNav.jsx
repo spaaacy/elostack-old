@@ -4,7 +4,7 @@ import { UserContext } from "@/context/UserContext";
 import { createClient } from "@supabase/supabase-js";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FC, useContext, useState, useEffect, useRef } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 
 const UserAccountNav = () => {
   const { session } = useContext(UserContext);

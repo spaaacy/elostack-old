@@ -4,7 +4,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { FaLightbulb, FaRocket, FaHandsHelping } from "react-icons/fa"; // Icons for steps
 
-const HowItWorksPage = () => {
+const HowItWorks = () => {
   useEffect(() => {
     AOS.init({
       duration: 1000,
@@ -83,4 +83,4 @@ const HowItWorksPage = () => {
   );
 };
 
-export default HowItWorksPage;
+export default HowItWorks;

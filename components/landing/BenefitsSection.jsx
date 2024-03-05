@@ -4,7 +4,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { FaUsers, FaDollarSign, FaChartLine, FaComments, FaTools } from "react-icons/fa"; // Example icons
 
-const KeyBenefitsSection = () => {
+const BenefitsSection = () => {
   useEffect(() => {
     AOS.init({
       duration: 800,
@@ -98,4 +98,4 @@ const KeyBenefitsSection = () => {
   );
 };
 
-export default KeyBenefitsSection;
+export default BenefitsSection;

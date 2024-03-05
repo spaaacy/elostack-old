@@ -7,7 +7,7 @@ import Loader from "@/components/common/Loader";
 const EditBusinessProfile = () => {
   const { session } = useContext(UserContext);
   const [formData, setFormData] = useState();
-  const [loadingData, setLoadingData] = useState(true);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const EditBusinessProfile = () => {
       console.log({ result, response });
       if (response.status === 200) {
         setFormData(result.business);
-        setLoadingData(false);
+        setLoading(false);
       } else {
         console.error("Fetching business details failed!");
       }
@@ -57,7 +57,7 @@ const EditBusinessProfile = () => {
     }
   };
 
-  if (loadingData) {
+  if (loading) {
     return <Loader />;
   }
 

@@ -10,7 +10,7 @@ import Link from "next/link";
 import formatDate from "@/utils/formatDate";
 const UserDashboard = () => {
   const { session } = useContext(UserContext);
-  const [loadingData, setLoadingData] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [applications, setApplications] = useState();
   const [error, setError] = useState();
   const { profileData, setProfileData } = profileStore();
@@ -43,7 +43,7 @@ const UserDashboard = () => {
       const result = await response.json();
       if (response.status === 200) {
         setProfileData(result.individual);
-        setLoadingData(false);
+        setLoading(false);
       } else {
         router.push("/signin");
         console.error("Error fetching profile:", result.error);
@@ -53,7 +53,7 @@ const UserDashboard = () => {
     }
   };
 
-  if (loadingData) {
+  if (loading) {
     return <Loader />;
   }
 

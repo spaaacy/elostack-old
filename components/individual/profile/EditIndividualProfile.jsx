@@ -9,7 +9,7 @@ const EditIndividualProfile = () => {
 
   const router = useRouter();
   const [formData, setFormData] = useState();
-  const [loadingData, setLoadingData] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,7 +30,7 @@ const EditIndividualProfile = () => {
       const result = await response.json();
       if (response.status === 200) {
         setFormData(result.individual);
-        setLoadingData(false);
+        setLoading(false);
       } else {
         router.push("/signin");
         console.error("Error fetching profile:", result.error);
@@ -70,7 +70,7 @@ const EditIndividualProfile = () => {
     }
   };
 
-  if (loadingData) {
+  if (loading) {
     return <Loader />;
   }
 

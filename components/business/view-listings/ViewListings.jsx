@@ -3,23 +3,28 @@ import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { UserContext } from "@/context/UserContext";
+import formatDate from "@/utils/formatDate";
 
 const BusinessDashboard = () => {
-  const { user } = useContext(UserContext);
+  const { session } = useContext(UserContext);
   const [jobListings, setJobListings] = useState();
 
   useEffect(() => {
-    if (user) {
+    if (session) {
       fetchListings();
     }
-  }, [user]);
+  }, [session]);
 
   const fetchListings = async () => {
-    const response = await fetch(`/api/job-listing?business_id=${user.user_id}`, {
+    const userId = session?.data?.session?.user.id;
+    if (!userId) return;
+    const response = await fetch(`/api/job-listing?business_id=${userId}`, {
       method: "GET",
     });
+    console.log(response);
     if (response.status === 200) {
       const results = await response.json();
+      console.log(results);
       setJobListings(results.data);
     }
   };
@@ -63,7 +68,7 @@ const BusinessDashboard = () => {
                   <div>
                     <h3 className="font-semibold text-lg">{listing.title}</h3>
                     <p className="text-sm text-gray-600">{listing.location}</p>
-                    <p className="text-sm text-gray-600">Posted on: {listing.created_at}</p>
+                    <p className="text-sm text-gray-600">Posted on: {formatDate(listing.created_at)}</p>
                     <div className="flex text-sm text-gray-600">
                       <p>{`$${listing.starting_pay}`}</p>
                       <p>{"-"}</p>

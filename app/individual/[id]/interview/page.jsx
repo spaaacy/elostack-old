@@ -1,5 +1,6 @@
 "use client";
 
+import Loader from "@/components/common/Loader";
 import NavBar from "@/components/common/NavBar";
 import Feedback from "@/components/individual/feedback/feedback";
 import { UserContext } from "@/context/UserContext";
@@ -10,17 +11,34 @@ const Page = () => {
   const { id } = useParams();
   const { session, verifyLogin } = useContext(UserContext);
   const [user, setUser] = useState();
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
     const loadData = async () => {
-      await verifyLogin("business");
+      const success = await verifyLogin("business");
+      if (success) {
+        await setLoading(false);
+      }
     };
 
     if (session) {
-      loadData();
+      if (session?.data?.session?.user.id === id) {
+        setLoading(false);
+      } else {
+        loadData();
+      }
     }
   }, [session]);
+
+  if (loading) {
+    return (
+      <>
+        <NavBar />
+        <Loader />
+      </>
+    );
+  }
 
   return (
     <>

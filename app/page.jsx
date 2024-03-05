@@ -24,7 +24,6 @@ const Home = () => {
 
         <HowItWorks />
         <BenefitsSection />
-        <FAQ />
       </main>
       <Footer />
     </>

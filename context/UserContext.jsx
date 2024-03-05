@@ -48,6 +48,8 @@ export const UserProvider = ({ children }) => {
         } else if (userType === "admin" && !user?.admin) {
           router.push("/dashboard");
           console.error("You must be an admin to access this page!");
+        } else {
+          return true;
         }
       } else {
         router.push("/signin");

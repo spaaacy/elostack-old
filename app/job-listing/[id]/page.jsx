@@ -14,10 +14,12 @@ const page = ({}) => {
   const [jobListing, setJobListing] = useState();
   const [loading, setLoading] = useState(true);
   const [applied, setApplied] = useState();
+  const [user, setUser] = useState();
 
   useEffect(() => {
     if (session) {
       fetchListing();
+      fetchUser();
       fetchApplication();
     }
   }, [session]);
@@ -32,6 +34,19 @@ const page = ({}) => {
       setLoading(false);
     } else {
       console.error(results.error);
+    }
+  };
+
+  const fetchUser = async () => {
+    const userId = session?.data?.session?.user.id;
+    if (userId) {
+      const response = await fetch(`/api/user/${userId}`, {
+        method: "GET",
+      });
+      if (response.status === 200) {
+        const { user } = await response.json();
+        setUser(user);
+      }
     }
   };
 
@@ -76,39 +91,46 @@ const page = ({}) => {
           <Loader />
         </div>
       ) : (
-        <div className="flex flex-col max-w-[1080px] mx-auto py-6">
+        <div className="flex flex-col w-[1080px] mx-auto py-6">
           <div className="flex">
             <div className="flex flex-col flex-1">
-              <p className="font-light">{jobListing.company}</p>
+              <Link href={`/business/${jobListing.business?.user_id}`} className="font-light">
+                {jobListing.business?.name}
+              </Link>
               <div className="flex justify-between">
-                <h1 className="text-3xl font-bold">{jobListing.title}</h1>
+                <h1 className="text-3xl font-bold capitalize">{jobListing.title}</h1>
                 {applied ? (
                   <div className="flex gap-2 items-center justify-center">
                     <p className="font-medium">Applied</p>
                     <Image src={"/done.svg"} alt="done" width={25} height={25} />
                   </div>
-                ) : session.data.session?.user.id !== jobListing?.business_id ? (
-                  <button
-                    onClick={handleApply}
-                    className="bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-150 ease-in-out"
-                  >
-                    Apply
-                  </button>
-                ) : (
+                ) : session.data.session?.user.id === jobListing?.business_id ? (
                   <Link
                     href={`/dashboard/create-listing?id=${jobListing?.id}`}
                     className="bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-150 ease-in-out"
                   >
                     Edit Listing
                   </Link>
+                ) : (
+                  !user?.business && (
+                    <button
+                      onClick={handleApply}
+                      className="bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-150 ease-in-out"
+                    >
+                      Apply
+                    </button>
+                  )
                 )}
               </div>
-              <p>{`${jobListing.location}, (${jobListing.remote ? "Remote" : "On-site"})`}</p>
-              <p>{`$${jobListing.starting_pay} - $${jobListing.ending_pay}`}</p>
+              <p className="text-gray-500 capitalize">{jobListing.position}</p>
+              <p className="text-gray-500 capitalize">{`${jobListing.location}, (${
+                jobListing.remote ? "Remote" : "On-site"
+              })`}</p>
+              <p className="text-gray-500 capitalize">{`$${jobListing.starting_pay} - $${jobListing.ending_pay}`}</p>
             </div>
           </div>
           <h2 className="font-bold mt-8">Description:</h2>
-          <p className="text-lg">{jobListing.description}</p>
+          <p className="whitespace-pre-line">{jobListing.description}</p>
         </div>
       )}
     </main>

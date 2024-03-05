@@ -8,7 +8,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 
-const page = ({}) => {
+const Page = ({}) => {
   const { id: jobListingId } = useParams();
   const { session } = useContext(UserContext);
   const [jobListing, setJobListing] = useState();
@@ -94,7 +94,10 @@ const page = ({}) => {
         <div className="flex flex-col w-[1080px] mx-auto py-6">
           <div className="flex">
             <div className="flex flex-col flex-1">
-              <Link href={`/business/${jobListing.business?.user_id}`} className="font-light">
+              <Link
+                href={`/business/${jobListing.business?.user_id}`}
+                className="text-blue-600 dark:text-blue-500 hover:underline"
+              >
                 {jobListing.business?.name}
               </Link>
               <div className="flex justify-between">
@@ -137,4 +140,4 @@ const page = ({}) => {
   );
 };
 
-export default page;
+export default Page;

@@ -1,11 +1,10 @@
 import Head from "next/head";
 import Footer from "@/components/common/Footer";
 import NavBar from "@/components/common/NavBar";
-import HeroSection from "@/components/individual/landing/HeroSection";
-import HowItWorks from "@/components/individual/landing/HowItWorks";
-import BenefitsSection from "@/components/individual/landing/BenefitsSection";
+import HeroSection from "@/components/landing/HeroSection";
+import HowItWorks from "@/components/landing/HowItWorks";
+import BenefitsSection from "@/components/landing/BenefitsSection";
 
-import FAQ from "@/components/individual/landing/FAQ";
 const Home = () => {
   return (
     <>
@@ -21,7 +20,6 @@ const Home = () => {
 
       <main className="flex flex-col">
         <HeroSection />
-
         <HowItWorks />
         <BenefitsSection />
       </main>

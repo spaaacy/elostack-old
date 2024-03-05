@@ -1,12 +1,13 @@
 "use client";
 
-import EditIndividualProfile from "@/components/individual/profile/EditIndividualProfile";
+import EditIndividualProfile from "@/components/individual/EditIndividualProfile";
 import NavBar from "@/components/common/NavBar";
 import Loader from "@/components/common/Loader";
 import { UserContext } from "@/context/UserContext";
 import { useContext, useEffect, useState } from "react";
-import EditBusinessProfile from "@/components/business/profile/EditBusinessProfile";
-const Accounts = () => {
+import EditBusinessProfile from "@/components/business/EditBusinessProfile";
+
+const Page = () => {
   const { session, verifyLogin } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState();
@@ -56,4 +57,4 @@ const Accounts = () => {
   );
 };
 
-export default Accounts;
+export default Page;

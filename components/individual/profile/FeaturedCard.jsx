@@ -1,7 +1,7 @@
 // components/Featured.tsx
 import React, { useState } from "react";
 
-const Featured = () => {
+const FeaturedCard = () => {
   const [items, setItems] = useState([
     { type: "", isLink: false },
     { type: "", isLink: false },
@@ -93,4 +93,4 @@ const Featured = () => {
   );
 };
 
-export default Featured;
+export default FeaturedCard;

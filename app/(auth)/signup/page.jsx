@@ -234,6 +234,13 @@ const Page = () => {
   )}
 </button>
         </div>
+        <button
+  type="button"
+  className="flex items-center justify-start shadow-lg bg-gray-100 mb-6 hover:bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+>
+  <Image src="/google.svg" alt="Google logo" width={23} height={23} className="ml-4" />
+  <span className="ml-4">Sign In with Google</span>
+</button>
                   <div className="flex items-center justify-between">
                     <Link
                       href="/signin"

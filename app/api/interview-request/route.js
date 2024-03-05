@@ -1,5 +1,4 @@
 import { supabase } from "@/utils/supabase";
-import { useSearchParams } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req, res) {
@@ -9,8 +8,8 @@ export async function GET(req, res) {
     if (pending) {
       results = await supabase
         .from("interview_request")
-        .select("*, business(*), individual!inner(*)")
-        .is("individual.interview_id", null)
+        .select("*, business(*), individual(*)")
+        .is("individual_id", null)
         .order("created_at", { ascending: false });
       if (results.error) throw results.error;
     } else {

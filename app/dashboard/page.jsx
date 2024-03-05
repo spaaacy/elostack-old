@@ -1,7 +1,7 @@
 "use client";
 
 import NavBar from "@/components/common/NavBar";
-import BusinessDashboard from "@/components/business/dashboard/dashboard";
+import BusinessDashboard from "@/components/business/dashboard/BusinessDashboard";
 import UserDashboard from "@/components/individual/dashboard/UserDashboard";
 import Loader from "@/components/common/Loader";
 import { UserContext } from "@/context/UserContext";
@@ -13,8 +13,10 @@ const Page = () => {
 
   useEffect(() => {
     const loadData = async () => {
-      await verifyLogin();
-      await fetchUser();
+      const success = await verifyLogin();
+      if (success) {
+        await fetchUser();
+      }
     };
 
     if (session) {

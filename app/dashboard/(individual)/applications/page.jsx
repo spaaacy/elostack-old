@@ -12,8 +12,10 @@ const Page = () => {
 
   useEffect(() => {
     const loadData = async () => {
-      await verifyLogin("individual");
-      await setLoading(false);
+      const success = await verifyLogin("individual");
+      if (success) {
+        await setLoading(false);
+      }
     };
 
     if (session) {

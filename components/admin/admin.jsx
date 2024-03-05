@@ -42,18 +42,6 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleComplete = async (id, complete) => {
-    if (!complete || !id) return;
-    const response = await fetch("/api/interview-request/update-complete", {
-      method: "POST",
-      body: JSON.stringify({ id, complete }),
-    });
-    if (response.status === 200) {
-      window.location.reload();
-      console.log("Interview request updated!");
-    }
-  };
-
   return (
     <main className="flex flex-col flex-1 bg-gray-100 min-h-screen bg-no-repeat bg-fixed bg-bottom">
       <Head>
@@ -75,8 +63,7 @@ const AdminDashboard = () => {
                 <th className="px-4 py-2">Candidate Name</th>
                 <th className="px-4 py-2">Company</th>
                 <th className="px-4 py-2">Position</th>
-                <th className="px-4 py-2">Technical Length</th>
-                <th className="px-4 py-2">Behavioral Length</th>
+                <th className="px-4 py-2">Type</th>
                 <th className="px-4 py-2"></th>
               </tr>
             </thead>
@@ -90,12 +77,11 @@ const AdminDashboard = () => {
                       <td className="border px-4 py-2">{request.individual_name}</td>
                       <td className="border px-4 py-2">{request.business.name}</td>
                       <td className="border px-4 py-2 capitalize">{request.position}</td>
-                      <td className="border px-4 py-2">{request.technical_length}</td>
-                      <td className="border px-4 py-2">{request.behavioral_length}</td>
+                      <td className="border px-4 py-2 capitalize">{request.type}</td>
                     </tr>
                     <tr>
                       <td className="border px-4 py-2 font-extrabold">Description</td>
-                      <td colspan="6" className="border px-4 py-2">
+                      <td colspan="5" className="border px-4 py-2">
                         {request.description}
                       </td>
                     </tr>

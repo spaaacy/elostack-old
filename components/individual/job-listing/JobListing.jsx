@@ -93,9 +93,9 @@ const JobListings = () => {
             className="p-4 border rounded-lg"
           >
             <option value="">Position Level</option>
-            <option value="Intern">Intern</option>
-            <option value="Junior">Junior</option>
-            <option value="Senior">Senior</option>
+            <option value="intern">Intern</option>
+            <option value="junior">Junior</option>
+            <option value="senior">Senior</option>
           </select>
 
           {/* Pay Min Input */}
@@ -127,7 +127,8 @@ const JobListings = () => {
         </div>
         <div className="grid grid-cols-3 gap-6">
           {filteredJobs.map((job) => (
-            <div
+            <Link
+              href={`/job-listing/${job.id}`}
               key={job.id}
               className="bg-gray-50 p-6 rounded-lg flex flex-col justify-between hover:shadow-xl transition-shadow duration-300"
             >
@@ -135,18 +136,13 @@ const JobListings = () => {
                 <h3 className="font-semibold text-lg">
                   {job.title} at {job.business.name}
                 </h3>
-                <p className="text-sm text-gray-600">{`${job.position} - ${job.location}`}</p>
+                <p className="text-sm text-gray-600 capitalize">{`${job.position} - ${job.location}`}</p>
                 <p>
                   Pay Range: ${job.starting_pay} - ${job.ending_pay}
                 </p>
                 <p className="text-sm">{job.description}</p>
               </div>
-              <Link href={`/job-listing/${job.id}`}>
-                <button className="inline-block bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-150 ease-in-out mt-4">
-                  Apply
-                </button>
-              </Link>
-            </div>
+            </Link>
           ))}
         </div>
       </main>

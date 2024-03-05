@@ -4,7 +4,11 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req, res) {
   try {
     const { id } = res.params;
-    const { data: jobListing, error } = await supabase.from("job_listing").select().eq("id", id).single();
+    const { data: jobListing, error } = await supabase
+      .from("job_listing")
+      .select("*, business(*)")
+      .eq("id", id)
+      .single();
     if (error) throw error;
     return NextResponse.json({ jobListing }, { status: 200 });
   } catch (error) {

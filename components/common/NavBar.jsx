@@ -9,7 +9,6 @@ import UserAccountNav from "./UserAccountNav";
 
 const NavBar = () => {
   const { session } = useContext(UserContext);
-  const router = useRouter();
   const [lastScrollY, setLastScrollY] = useState(0);
   const [navBarVisible, setNavBarVisible] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -59,20 +58,14 @@ const NavBar = () => {
         }`}
       >
         <div className="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4">
-          <Link href={"/plans"} className="px-4 py-2 rounded-sm text-gray-800 hover:bg-gray-200 transition-colors">
-            Plans
-          </Link>
           <Link
             href={"/job-listing"}
             className="px-4 py-2 rounded-sm text-gray-800 hover:bg-gray-200 transition-colors"
           >
             Job Listings
           </Link>
-          <Link
-            href={"/dashboard/about"}
-            className="px-4 py-2 rounded-sm text-gray-800 hover:bg-gray-200 transition-colors"
-          >
-            About
+          <Link href={"/faq"} className="px-4 py-2 rounded-sm text-gray-800 hover:bg-gray-200 transition-colors">
+            FAQ
           </Link>
         </div>
       </div>

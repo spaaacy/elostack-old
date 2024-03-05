@@ -2,7 +2,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import waveBg from "@/public/wave.svg";
-import { faLinkedin, faTwitter, faFacebook, faInstagram } from "@fortawesome/free-brands-svg-icons";
+import { faLinkedin } from "@fortawesome/free-brands-svg-icons";
 import { useParams } from "next/navigation";
 import Loader from "@/components/common/Loader";
 import { UserContext } from "@/context/UserContext";

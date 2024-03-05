@@ -13,9 +13,11 @@ const Accounts = () => {
 
   useEffect(() => {
     const loadData = async () => {
-      await verifyLogin();
-      await fetchUser();
-      setLoading(false);
+      const success = await verifyLogin();
+      if (success) {
+        await setLoading(false);
+        await fetchUser();
+      }
     };
 
     if (session) {

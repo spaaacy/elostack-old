@@ -7,6 +7,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { profileStore } from "../profileStore";
 import Loader from "@/components/common/Loader";
 import Link from "next/link";
+import formatDate from "@/utils/formatDate";
 const UserDashboard = () => {
   const { session } = useContext(UserContext);
   const [loadingData, setLoadingData] = useState(true);
@@ -102,7 +103,7 @@ const UserDashboard = () => {
                     <h3 className="font-semibold text-lg">
                       {app.job_listing.title} at {app.job_listing.business.name}
                     </h3>
-                    <p className="text-sm text-gray-600">{app.created_at}</p>
+                    <p className="text-sm text-gray-600">{formatDate(app.created_at)}</p>
                   </div>
                   <Link href={`/job-listing/${app.job_listing.id}`} className="text-blue-600 hover:underline">
                     View Details

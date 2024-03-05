@@ -17,37 +17,16 @@ const RequestInterview = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const request = {
-        individual_name: formData.candidateName,
-        individual_email: formData.candidateEmail,
-        description: formData.description,
-        position: formData.position,
-        business_id: session.data.session.user.id,
-      };
-      if (formData.interviewType === "tb") {
-        if (formData.technicalLength + formData.behavioralLength > 60)
-          throw Error("Total interview length greater exceeds limit!");
-
-        request["technical_length"] = formData.technicalLength;
-        request["behavioral_length"] = formData.behavioralLength;
-      } else if (formData.interviewType === "t") {
-        if (formData.interviewLength > 60) throw Error("Total interview length greater exceeds limit!");
-
-        request["technical_length"] = formData.interviewLength;
-      } else if (formData.interviewType === "b") {
-        if (formData.interviewLength > 60) throw Error("Total interview length greater exceeds limit!");
-        request["behavioral_length"] = formData.interviewLength;
-      }
-      const response = await fetch("/api/interview-request/create", {
-        method: "POST",
-        body: JSON.stringify(request),
-      });
-      if (response.status === 201) {
-        router.push("/dashboard");
-      }
-    } catch (error) {
-      console.error(error);
+    const request = {
+      ...formData,
+      business_id: session.data.session.user.id,
+    };
+    const response = await fetch("/api/interview-request/create", {
+      method: "POST",
+      body: JSON.stringify(request),
+    });
+    if (response.status === 201) {
+      router.push("/dashboard");
     }
   };
 
@@ -58,17 +37,17 @@ const RequestInterview = () => {
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-4">
           <input
             type="text"
-            name="candidateName"
+            name="individual_name"
             placeholder="Candidate Name"
-            value={formData.candidateName}
+            value={formData.individual_name}
             onChange={handleChange}
             className="w-full p-2 border border-gray-300 rounded"
           />
           <input
             type="text"
-            name="candidateEmail"
+            name="individual_email"
             placeholder="Candidate Email"
-            value={formData.candidateEmail}
+            value={formData.individual_email}
             onChange={handleChange}
             className="w-full p-2 border border-gray-300 rounded"
           />
@@ -85,57 +64,17 @@ const RequestInterview = () => {
           </select>
 
           <select
-            value={formData.interviewType}
-            name="interviewType"
+            value={formData.type}
+            name="type"
             onChange={handleChange}
             className="w-full p-2 border border-gray-300 rounded"
           >
             <option value="">Select Interview Type</option>
-            <option value="t">Technical</option>
-            <option value="b">Behavioral</option>
-            <option value="tb">Technical & Behavioral</option>
+            <option value="technical">Technical</option>
+            <option value="behavioral">Behavioral</option>
           </select>
 
-          <label className="font-semibold text-sm text-gray-500 -my-2">* Total interview length must be 1 hour</label>
-
-          {formData.interviewType === "tb" ? (
-            <>
-              <select
-                name="technicalLength"
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded"
-              >
-                <option value="">Select Technical Length</option>
-                <option value="15">15 minutes</option>
-                <option value="30">30 minutes</option>
-                <option value="45">45 minutes</option>
-                <option value="60">1 hour</option>
-              </select>
-              <select
-                name="behavioralLength"
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded"
-              >
-                <option value="">Select Behavioral Length</option>
-                <option value="15">15 minutes</option>
-                <option value="30">30 minutes</option>
-                <option value="45">45 minutes</option>
-                <option value="60">1 hour</option>
-              </select>
-            </>
-          ) : (
-            <select
-              name="interviewLength"
-              onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded"
-            >
-              <option value="">Select Length</option>
-              <option value="15">15 minutes</option>
-              <option value="30">30 minutes</option>
-              <option value="45">45 minutes</option>
-              <option value="60">1 hour</option>
-            </select>
-          )}
+          <label className="font-semibold text-sm text-gray-500 -my-2">* Interview will be 1 hour long</label>
           <textarea
             name="description"
             placeholder="Description"

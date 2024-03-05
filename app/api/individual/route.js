@@ -5,7 +5,7 @@ export async function GET(req, res) {
   try {
     const { data, error } = await supabase
       .from("individual")
-      .select("*, interview(*)")
+      .select("*, interview!public_individual_interview_id_fkey(grade)")
       .eq("searching", true)
       .order("created_at", { ascending: true });
     if (error) throw error;

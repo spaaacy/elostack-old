@@ -32,13 +32,15 @@ const FeedbackPage = () => {
   const fetchPurchase = async () => {
     const userId = session?.data?.session?.user.id;
     if (!userId) return;
-    const response = await fetch(`/api/purchase?business_id=${userId}&individual_id=${id}`);
-    if (response.status !== 200) {
-      router.push(`/individual/${id}`);
-      console.error("Please purchase the interview to access this page");
-    } else {
-      fetchInterview();
+    if (userId !== id) {
+      const response = await fetch(`/api/purchase?business_id=${userId}&individual_id=${id}`);
+      if (response.status !== 200) {
+        router.push(`/individual/${id}`);
+        console.error("Please purchase the interview to access this page");
+        return;
+      }
     }
+    fetchInterview();
   };
 
   if (!individual)

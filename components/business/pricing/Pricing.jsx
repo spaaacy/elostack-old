@@ -1,34 +1,47 @@
 "use client";
-
+import Image from 'next/image'
 import React, { useContext, useEffect, useState } from "react";
 import Head from "next/head";
 import { UserContext } from "@/context/UserContext";
 import { useRouter } from "next/navigation";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHandshake, faUsers, faBuilding, faCheck } from '@fortawesome/free-solid-svg-icons'
+
+
 
 const pricingPlans = [
   {
     id: 1,
-    name: "Tier I",
+    name: "EloStack Basic",
     price: 500,
-    features: ["First 5 interview on-the-house", "10 interviews"],
-    recommended: false,
+    description: "Perfect for individual users",
+    features: ["First 5 interview on-the-house", "10 interviews", "Feature 3"],
+    theme: "orange",
     amount: 10,
+    icon: faHandshake,
+    image: "/hand-shake.png"
   },
   {
     id: 2,
-    name: "Tier II",
+    name: "EloStack Premium",
     price: 1250,
-    features: ["First 5 interview on-the-house", "25 Interviews"],
-    recommended: true,
+    description: "Ideal for small teams",
+    features: ["First 5 interview on-the-house", "25 Interviews", "Feature 3"],
+    theme: "blue",
     amount: 25,
+    icon: faUsers,
+    image: "/people.png"
   },
   {
     id: 3,
-    name: "Tier III",
+    name: "EloStack Enterprise",
     price: 2500,
-    features: ["First 5 interview on-the-house", "50 Interviews"],
-    recommended: false,
+    description: "Best for large organizations",
+    features: ["First 5 interview on-the-house", "50 Interviews", "Feature 3"],
+    theme: "dark-blue",
     amount: 50,
+    icon: faBuilding,
+    image: "/skyline.png"
   },
 ];
 
@@ -80,55 +93,62 @@ const Pricing = () => {
       router.push("/signin");
     }
   };
-
+  const themeClasses = {
+    orange: {
+      bg: 'bg-orange-500',
+      hoverBg: 'hover:bg-orange-700',
+    },
+    blue: {
+      bg: 'bg-blue-500',
+      hoverBg: 'hover:bg-blue-700',
+    },
+    'dark-blue': {
+      bg: 'bg-blue-900',
+      hoverBg: 'hover:bg-blue-700',
+    },
+  };
   return (
     <main className="flex flex-col flex-1 bg-gray-100 min-h-screen bg-no-repeat bg-fixed bg-bottom bg-[url('/waves.svg')]">
       <Head>
         <title>Pricing | EloStack</title>
       </Head>
-      <div className="container mx-auto p-4 mt-16">
-        <div className="container mx-auto p-4 bg-white rounded-lg shadow mt-0 h-[43rem]">
+      <div className="container mx-auto p-4 mt-10">
+        <div className="container mx-auto p-4 bg-white rounded-lg shadow mt-0 h-[44rem]">
           <section className="text-center p-5">
             <h2 className="text-4xl font-bold text-blueprimary">Choose Your Plan</h2>
             <p className="text-gray-600 mt-2">Choose a plan that fits your needs best</p>
           </section>
           <section className="flex justify-center items-stretch flex-wrap gap-8 mt-8 h-[28rem]">
-            {pricingPlans.map((plan) => (
-              <div
-                key={plan.id}
-                className={`m-4 w-80 flex flex-col ${
-                  plan.recommended ? "border-2 border-green-500 -mt-4 h-[30rem]" : "border-2 border-gray-100"
-                } bg-white rounded-lg shadow-xl p-5 transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110 h-full`}
+          {pricingPlans.map((plan) => (
+  <div
+    key={plan.id}
+    className={`m-4 w-80 flex flex-col relative -mt-4 h-[30rem] bg-white rounded-lg shadow-xl p-5 transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110 h-full`}
+  >
+    <div className={`absolute top-0 left-0 w-full h-4 rounded-t-lg ${themeClasses[plan.theme].bg}`}></div>
+    <div className="flex justify-center my-4">
+      <Image src={plan.image} alt={plan.name} width={50} height={50} />
+    </div>
+              <h3 className="text-3xl font-bold text-center text-gray-900 my-4">{plan.name}</h3>
+              <p className="text-center text-gray-600">{plan.description}</p>
+              <h4 className="text-2xl font-bold text-center text-gray-900 my-2">${plan.price}</h4>
+              <ul className="flex-grow">
+  {plan.features.map((feature, index) => (
+    <li key={index} className="flex items-center border-t border-gray-200 pt-2 text-gray-600 mb-2 mt-3">
+      <div className="flex items-center mr-2">
+        <Image src="/checked.png" alt="Checked" width={16} height={16} />
+      </div>
+      {feature}
+    </li>
+  ))}
+</ul>
+              <button
+                onClick={() => handlePurchase(plan.amount)}
+                className={`${themeClasses[plan.theme].bg} text-white mt-4 py-2 px-4 rounded ${themeClasses[plan.theme].hoverBg} hover:text-white transition duration-150 ease-in-out`}
               >
-                {plan.recommended && (
-                  <span className="px-3 py-1 text-sm text-white bg-green-500 rounded-full self-end transform -translate-y-8 translate-x-8">
-                    RECOMMENDED
-                  </span>
-                )}
-                <h3 className="text-3xl font-bold text-center text-gray-900 my-2">{plan.name}</h3>
-                {/* {!user?.claimed_free_credits ? (
-                  <>
-                    <p className="text-center text-sm line-through text-gray-500">{`$${plan.price}`}</p>
-                    <p className="text-2xl text-center font-semibold my-2">{`$${plan.price - 250}`}</p>
-                  </>
-                ) : (
-                  <p className="text-2xl text-center font-semibold my-2">{plan.price}</p>
-                )} */}
-                <ul className="flex-grow">
-                  {plan.features.map((feature, index) => (
-                    <li key={index} className="list-disc list-inside border-t border-gray-200 pt-2 text-gray-600">
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-                <button
-                  onClick={() => handlePurchase(plan.amount)}
-                  className="bg-blueprimary text-white border border-blueprimary mt-4 py-2 px-4 rounded hover:bg-blue-500 hover:text-white transition duration-150 ease-in-out"
-                >
-                  Purchase
-                </button>
-              </div>
-            ))}
+                Purchase
+              </button>
+            </div>
+          ))}
           </section>
         </div>
       </div>

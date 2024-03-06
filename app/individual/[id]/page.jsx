@@ -204,6 +204,15 @@ const Page = () => {
                   </dl>
                 </div>
 
+{/* About Me Section */}
+{profileData.about_me && (
+  <div className="border-t border-gray-200 px-4 py-5 sm:p-6">
+    <h3 className="text-lg leading-6 font-medium text-gray-900">About Me</h3>
+    <p className="mt-2 text-sm text-gray-900">
+      {profileData.about_me}
+    </p>
+  </div>
+)}
                 {/* Professional Information Section */}
                 <div className="border-t border-gray-200 px-4 py-5 sm:p-6">
                   <h3 className="text-lg leading-6 font-medium text-gray-900">Professional Information</h3>
@@ -242,7 +251,36 @@ const Page = () => {
                         </dd>
                       </div>
                     )}
-                    
+                                        {profileData.resume && (
+                      <div className="sm:col-span-1">
+                        <dt className="text-sm font-medium text-gray-500">Resume</dt>
+                        <dd className="mt-1 text-sm text-gray-900">
+                          <a
+                            href={profileData.resume}
+                            className="text-blue-600 hover:text-blue-700"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            View Resume
+                          </a>
+                        </dd>
+                      </div>
+                    )}
+                                        {profileData.cv && (
+                      <div className="sm:col-span-1">
+                        <dt className="text-sm font-medium text-gray-500">Cover Letter</dt>
+                        <dd className="mt-1 text-sm text-gray-900">
+                          <a
+                            href={profileData.cv}
+                            className="text-blue-600 hover:text-blue-700"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            View Cover Letter
+                          </a>
+                        </dd>
+                      </div>
+                    )}
                   </dl>
                 </div>
 

@@ -73,7 +73,11 @@ const EditIndividualProfile = () => {
   if (loading) {
     return <Loader />;
   }
-
+  function handleFileChange(e) {
+    const file = e.target.files[0];
+    // Update your state with the selected file
+    setProfilePicture(file);
+  }
   return (
     <div className="bg-no-repeat bg-fixed bg-bottom bg-[url('/waves.svg')] w-screen">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 mb-60 mt-10">
@@ -110,6 +114,18 @@ const EditIndividualProfile = () => {
               />
             </div>
             <div className="mb-4">
+  <label htmlFor="profile_picture" className="block text-sm font-medium text-gray-700">
+    Profile Picture
+  </label>
+  <input
+    type="file"
+    name="profile_picture"
+    id="profile_picture"
+    onChange={handleFileChange}
+    className="mt-1 block w-full rounded border border-gray-300 bg-white px-5 py-2 shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+  />
+</div>
+            <div className="mb-4">
               <label htmlFor="gender" className="block text-sm font-medium text-gray-700">
                 Gender
               </label>
@@ -141,6 +157,17 @@ const EditIndividualProfile = () => {
                 className="mt-1 block w-full rounded border border-gray-300 bg-white px-5 py-2 shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               />
             </div>
+            <div className="text-xl font-semibold mb-6">About </div>
+<div className="mb-4">
+  <textarea
+    name="about_me"
+    id="about_me"
+    value={formData.about_me}
+    onChange={handleChange}
+    placeholder="Describe yourself here..."
+    className="mt-1 block w-full rounded border border-gray-300 bg-white px-5 py-2 shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+  />
+</div>
             <div className="text-xl font-semibold mb-6">Contact Information</div>
 
             <div className="mb-4">

@@ -97,7 +97,7 @@ const Page = () => {
       <NavBar />
       <main className="flex flex-col flex-1 bg-gray-100 min-h-screen bg-no-repeat bg-fixed bg-bottom bg-[url('/waves.svg')]">
         <Head>
-          <title>Track Applications | Your Company</title>
+          <title>Track Applications | EloStack</title>
         </Head>
         <main className="container mx-auto p-4 bg-white rounded-lg shadow mt-8">
           <section data-aos="fade-up">

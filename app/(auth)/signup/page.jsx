@@ -216,31 +216,31 @@ const Page = () => {
                     />
                   </div>
                   <div className="mb-6 relative">
-          <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2">
-            Password:
-          </label>
-          <input
-            type={passwordVisible ? "text" : "password"}
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-<button onClick={togglePasswordVisibility} className="absolute right-3 top-[1.6rem] mt-2">
-  {passwordVisible ? (
-    <Image src="/Hide.svg" alt="unhide password" width={25} height={25} />
-  ) : (
-    <Image src="/Unhide.png" alt="hide password" width={25} height={25} />
-  )}
-</button>
-        </div>
-        <button
-  type="button"
-  className="flex items-center justify-start shadow-lg bg-gray-100 mb-6 hover:bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded focus:outline-none focus:shadow-outline w-full"
->
-  <Image src="/google.svg" alt="Google logo" width={23} height={23} className="ml-4" />
-  <span className="ml-4">Sign In with Google</span>
-</button>
+                    <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2">
+                      Password:
+                    </label>
+                    <input
+                      type={passwordVisible ? "text" : "password"}
+                      id="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    />
+                    <button onClick={togglePasswordVisibility} className="absolute right-3 top-[1.6rem] mt-2">
+                      {passwordVisible ? (
+                        <Image src="/Hide.svg" alt="unhide password" width={25} height={25} />
+                      ) : (
+                        <Image src="/Unhide.png" alt="hide password" width={25} height={25} />
+                      )}
+                    </button>
+                  </div>
+                  {/* <button
+                    type="button"
+                    className="flex items-center justify-start shadow-lg bg-gray-100 mb-6 hover:bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+                  >
+                    <Image src="/google.svg" alt="Google logo" width={23} height={23} className="ml-4" />
+                    <span className="ml-4">Sign In with Google</span>
+                  </button> */}
                   <div className="flex items-center justify-between">
                     <Link
                       href="/signin"

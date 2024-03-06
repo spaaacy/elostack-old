@@ -82,13 +82,7 @@ const Page = ({}) => {
       window.location.reload();
     }
   };
-  const truncateDescription = (description, maxLength) => {
-    if (description.length > maxLength) {
-      return description.substring(0, maxLength) + "...";
-    } else {
-      return description;
-    }
-  };
+
   return (
     <main className="flex flex-col flex-1">
       <NavBar />
@@ -139,9 +133,9 @@ const Page = ({}) => {
             </div>
           </div>
 
-  <h2 className="font-bold mt-8">Description:</h2>
-  <p className="whitespace-pre-line">{truncateDescription(jobListing.description, 100)}</p>
-</div>
+          <h2 className="font-bold mt-8">Description:</h2>
+          <p className="whitespace-pre-line">{jobListing.description}</p>
+        </div>
       )}
     </main>
   );

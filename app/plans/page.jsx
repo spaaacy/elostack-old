@@ -18,7 +18,7 @@ const pricingPlans = [
     theme: "orange",
     amount: 10,
     icon: faHandshake,
-    image: "/hand-shake.png",
+    image: "/handshake.png",
   },
   {
     id: 2,

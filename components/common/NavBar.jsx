@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { UserContext } from "@/context/UserContext";
 import { useContext, useEffect } from "react";
 import UserAccountNav from "./UserAccountNav";
+import Image from "next/image";
 
 const NavBar = () => {
   const { session } = useContext(UserContext);
@@ -37,8 +38,11 @@ const NavBar = () => {
         navBarVisible ? "" : "-translate-y-full"
       }`}
     >
-      <Link href={"/"} className="text-3xl font-bold text-blueprimary hover:text-blue-700 transition-colors">
-        EloStack
+      <Link href={"/"} className="text-[2rem] font-bold text-blueprimary transition-colors">
+        <div className="flex items-center">
+          <Image src={"/logo.png"} alt="logo" width={50} height={50} />
+          EloStack
+        </div>
       </Link>
       <button className="lg:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
         {/* Hamburger icon */}

@@ -58,7 +58,7 @@ const UserAccountNav = () => {
       <div className="flex items-center gap-4">
         <img
           onClick={toggleDropdown}
-          src={session.data.image || "/Default_pfp.png"}
+          src={session.data.image || "/default_profile.png"}
           alt="Profile"
           className="cursor-pointer rounded-full w-10 h-10 transition-transform duration-200 ease-in-out transform hover:scale-105"
         />

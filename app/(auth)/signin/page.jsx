@@ -146,9 +146,9 @@ const Page = () => {
                       <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
                         <button type="button" onClick={togglePasswordVisibility} className="text-gray-500">
                           {showPassword ? (
-                            <Image src="/Hide.svg" alt="Hide password" width={25} height={25} />
+                            <Image src="/hide.svg" alt="hide password" width={25} height={25} />
                           ) : (
-                            <Image src="/Unhide.png" alt="Show password" width={25} height={25} />
+                            <Image src="/unhide.png" alt="Show password" width={25} height={25} />
                           )}
                         </button>
                       </div>

@@ -75,11 +75,12 @@ const EditIndividualProfile = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="bg-white shadow rounded-lg p-6 w-full lg:w-3/4 xl:w-1/2 mx-auto">
-        <div className="max-w-4xl mx-auto p-5">
-          <h1 className="text-2xl font-semibold mb-6">Edit Your Profile</h1>
+    <div className="bg-no-repeat bg-fixed bg-bottom bg-[url('/waves.svg')] w-screen">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 mb-60 mt-10">
+            <div className="bg-white shadow rounded-lg p-6 w-full lg:w-3/4 xl:w-3/5 mx-auto">
+                <h1 className="text-4xl font-semibold mb-6 flex justify-center text-blueprimary">Edit Your Profile</h1>
           <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="text-xl font-semibold mb-6">User Information</div>
             <div className="mb-4">
               <label htmlFor="first_name" className="block text-sm font-medium text-gray-700">
                 First Name<span className="text-red-500">*</span>

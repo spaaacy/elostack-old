@@ -21,6 +21,7 @@ const UserAccountNav = () => {
     if (error) {
       console.error(error);
     } else {
+      location.reload(); // Refresh the page to update the session state
       router.push("/"); // Refresh the page to update the session state
     }
   };

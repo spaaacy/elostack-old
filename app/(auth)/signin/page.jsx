@@ -70,15 +70,17 @@ const Page = () => {
     setShowPassword(!showPassword);
   };
 
-  const onSubmit = async (values) => {
-    const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: values.email,
-      password: values.password,
-    });
+const onSubmit = async (values) => {
+  const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: values.email,
+    password: values.password,
+  });
 
     if (data.user && data.session) {
+      location.reload();
       router.push("/");
+      
     } else {
       console.log(error);
     }

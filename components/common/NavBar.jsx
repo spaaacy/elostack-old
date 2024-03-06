@@ -52,7 +52,7 @@ const NavBar = () => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
         </svg>
       </button>
-      <div
+      {/* <div
         className={`${isMenuOpen ? "block" : "hidden"} lg:flex-grow lg:flex lg:justify-center lg:items-center ${
           session?.data.session ? "lg:mr-[2.5rem]" : ""
         }`}
@@ -68,14 +68,11 @@ const NavBar = () => {
             FAQ
           </Link>
         </div>
-      </div>
+      </div> */}
       {session?.data.session ? (
         <UserAccountNav />
       ) : (
-        <Link
-          href={"/signin"}
-          className="rounded-lg bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 transition-colors"
-        >
+        <Link href={"/signin"} className="rounded bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 transition-colors">
           Sign in
         </Link>
       )}

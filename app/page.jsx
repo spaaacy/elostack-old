@@ -2,8 +2,8 @@ import Head from "next/head";
 import Footer from "@/components/common/Footer";
 import NavBar from "@/components/common/NavBar";
 import HeroSection from "@/components/landing/HeroSection";
+import FAQ from "@/components/landing/FAQ";
 import HowItWorks from "@/components/landing/HowItWorks";
-import BenefitsSection from "@/components/landing/BenefitsSection";
 
 const Home = () => {
   return (
@@ -21,7 +21,7 @@ const Home = () => {
       <main className="flex flex-col">
         <HeroSection />
         <HowItWorks />
-        <BenefitsSection />
+        <FAQ />
       </main>
       <Footer />
     </>

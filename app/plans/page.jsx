@@ -122,11 +122,11 @@ const Page = () => {
                 <h2 className="text-4xl font-bold text-blueprimary">Choose Your Plan</h2>
                 <p className="text-gray-600 mt-2">Choose a plan that fits your needs best</p>
               </section>
-              <section className="flex justify-center items-stretch flex-wrap gap-8 mt-8 h-[28rem]">
+              <section className="flex justify-center items-stretch flex-wrap gap-2 mt-8 h-[28rem]">
                 {pricingPlans.map((plan) => (
                   <div
                     key={plan.id}
-                    className={`m-4 w-80 flex flex-col relative -mt-4 h-[30rem] bg-white rounded-lg shadow-xl p-5 transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110 h-full`}
+                    className={`m-4 w-80 flex flex-col relative -mt-4 bg-white rounded-lg shadow-xl p-5 transition duration-200 ease-in-out transform hover:-translate-y-1 hover:scale-105 h-full`}
                   >
                     <div
                       className={`absolute top-0 left-0 w-full h-4 rounded-t-lg ${themeClasses[plan.theme].bg}`}
@@ -150,14 +150,14 @@ const Page = () => {
                         </li>
                       ))}
                     </ul>
-                    <button
+                    {/* <button
                       onClick={() => handlePurchase(plan.amount)}
                       className={`${themeClasses[plan.theme].bg} text-white mt-4 py-2 px-4 rounded ${
                         themeClasses[plan.theme].hoverBg
                       } hover:text-white transition duration-150 ease-in-out`}
                     >
                       Purchase
-                    </button>
+                    </button> */}
                   </div>
                 ))}
               </section>

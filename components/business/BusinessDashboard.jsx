@@ -138,11 +138,11 @@ const BusinessDashboard = () => {
                 )}
               </div>
               <div className="flex justify-center items-center gap-4">
-                <Link href="/dashboard/search-individuals">
+                {/* <Link href="/dashboard/search-individuals">
                   <button className="inline-block bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
                     Search for Candidates
                   </button>
-                </Link>
+                </Link> */}
                 <Link href="/dashboard/request-interview">
                   <button className="inline-block bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
                     Request an Interview

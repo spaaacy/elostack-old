@@ -16,27 +16,22 @@ const HowItWorks = () => {
 
   const steps = [
     {
-      icon: <FaLightbulb className="text-yellow-500" size={30} />,
-      title: "Discover & Plan",
-      description: "Embark on a journey of discovery to tailor a strategy that aligns with your vision and objectives.",
-      highlights: ["- Comprehensive Needs Analysis", "- Custom Strategy Development", "- Setting Measurable Goals"],
+      title: "Create a Request",
+      description:
+        "Create a request for us to conduct a technical interview for any specific candidate of your choice, free of charge.",
       aos: "fade-up-right",
     },
     {
-      icon: <FaRocket className="text-red-500" size={30} />,
-      title: "Launch & Execute",
+      title: "Conduct Technical Interview",
       description:
-        "With precision and agility, we deploy your bespoke strategy, harnessing cutting-edge tools for peak performance.",
-      highlights: ["- Precision Execution", "- State-of-the-Art Tools", "- Continuous Monitoring & Updates"],
+        "Our talented engineers will contact the candidate and carry out a standardized unbiased interview, assessing your candidates skill.",
       aos: "fade-up",
       delay: 100,
     },
     {
-      icon: <FaHandsHelping className="text-green-500" size={30} />,
-      title: "Support & Grow",
+      title: "Access Video with Insight",
       description:
-        "Our commitment to your growth is unwavering, with adaptive support and optimization to propel you forward.",
-      highlights: ["- Dedicated Ongoing Support", "- Performance Optimization", "- Growth and Scaling Strategies"],
+        "You will be contacted when the interview is completed, and will have access to the entire recording and breakdown of the interview with feedback and an overall grade.",
       aos: "fade-up-left",
       delay: 200,
     },
@@ -45,13 +40,9 @@ const HowItWorks = () => {
 
   return (
     <section className="text-gray-600 body-font">
-      <div className="container px-5 py-24 mx-auto">
+      <div className="container px-5 my-12 mx-auto">
         <div className="text-center mb-20">
-          <h1
-            className=" text-5xl font-bold title-font mb-4 text-blueprimary"
-            data-aos="zoom-in"
-            style={{ textShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)" }}
-          >
+          <h1 className=" text-5xl font-extrabold title-font mb-4 text-blueprimary " data-aos="zoom-in">
             How EloStack Works
           </h1>
           <p className=" leading-relaxed xl:w-2/4  text-black text-xl lg:w-3/4 mx-auto">
@@ -61,18 +52,13 @@ const HowItWorks = () => {
         <div className="flex flex-wrap -m-4">
           {steps.map((step, index) => (
             <div className="p-4 md:w-1/3" key={index} data-aos={step.aos} data-aos-delay={step.delay}>
-              <div className="h-full bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 ease-in-out transform hover:-translate-y-2 hover:scale-105">
+              <div className="h-full bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-200 ease-in-out transform hover:-translate-y-2 hover:scale-105  border border-black">
                 <div className="p-6">
                   <div className="flex items-center space-x-3 mb-4">
-                    {step.icon}
+                    <h2 className="rounded-full px-3 py-1 text-md bg-black font-bold text-white">{index + 1}</h2>
                     <h2 className="text-xl font-semibold text-gray-900">{step.title}</h2>
                   </div>
                   <p className="leading-relaxed mb-3">{step.description}</p>
-                  {step.highlights.map((highlight, i) => (
-                    <p key={i} className="text-gray-700 mb-2">
-                      {highlight}
-                    </p>
-                  ))}
                 </div>
               </div>
             </div>

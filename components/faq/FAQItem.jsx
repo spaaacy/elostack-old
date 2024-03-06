@@ -38,7 +38,7 @@ const FAQItem = ({ question, answer }) => {
         style={{ maxHeight: `${maxHeight}` }}
         className="transition-max-height duration-500 ease-in-out"
       >
-        <div className="px-5 pt-0 pb-5 text-gray-700">{answer}</div>
+        <div className="px-5 pt-2 pb-5 text-gray-700">{answer}</div>
       </div>
     </div>
   );

@@ -27,7 +27,7 @@ const IndividualDashboard = () => {
   const fetchApplications = async () => {
     const userId = session.data.session?.user.id;
     if (userId) {
-      const response = await fetch(`/api/application/${userId}`, {
+      const response = await fetch(`/api/application/${userId}?latest=true`, {
         method: "GET",
       });
       if (response.status === 200) {
@@ -73,9 +73,11 @@ const IndividualDashboard = () => {
         <section data-aos="fade-up">
           <div className="p-5 text-center border-b border-gray-200">
             <h2 className="text-2xl font-bold ">{`Welcome back, ${profileData.first_name}`}</h2>
-            <p className="text-md text-gray-500 capitalize">{`${profileData.position} | ${
-              profileData.city
-            }, ${profileData.state.toUpperCase()}`}</p>
+            <p className="text-md text-gray-500 capitalize">{`${
+              profileData.position ? profileData.position : "Your Position"
+            } ${
+              profileData.city && profileData.state ? ` | ${profileData.city}, ${profileData.state.toUpperCase()}` : ""
+            }`}</p>
           </div>
         </section>
 
@@ -84,10 +86,17 @@ const IndividualDashboard = () => {
           <div className="flex justify-between items-center -mt-[2rem] ">
             <h2 className="text-3xl font-bold text-blueprimary">Your Applications</h2>
             <div className="mt-[2rem] flex justify-center items-center gap-4">
-              <Link href="/dashboard/applications">
-                <button className="inline-block bg-blue-600 text-white px-6 py-3 mb-6 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
-                  View All Applications
-                </button>
+              <Link
+                href={`/job-listing`}
+                className="inline-block bg-blue-600 text-white px-6 py-3 mb-6 rounded hover:bg-blue-700 transition duration-150 ease-in-out"
+              >
+                Find Job Listings
+              </Link>
+              <Link
+                href={"/dashboard/applications"}
+                className="inline-block bg-blue-600 text-white px-6 py-3 mb-6 rounded hover:bg-blue-700 transition duration-150 ease-in-out"
+              >
+                View All Applications
               </Link>
             </div>
           </div>

@@ -92,11 +92,11 @@ const UserAccountNav = () => {
             My Interview
           </Link>
         )}
-        {user && user?.business && (
+        {/* {user && user?.business && (
           <Link href={"/plans"} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
             Plans
           </Link>
-        )}
+        )} */}
         <hr className="my-1 border-gray-200" />
         <button
           onClick={handleSignOut}

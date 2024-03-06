@@ -111,7 +111,7 @@ const Page = () => {
               <h2 className="text-3xl font-bold text-blueprimary mt-4 mb-4">Your Applications</h2>
             </div>
             <div className="space-y-6">
-              {applications &&
+              {applications?.length > 0 ? (
                 applications.map((app) => (
                   <div
                     key={app.job_listing_id}
@@ -138,7 +138,10 @@ const Page = () => {
                       </button>
                     </div>
                   </div>
-                ))}
+                ))
+              ) : (
+                <p className="font-bold">You have made no applications</p>
+              )}
             </div>
           </section>
         </main>

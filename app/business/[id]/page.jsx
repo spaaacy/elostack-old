@@ -10,6 +10,7 @@ import Loader from "@/components/common/Loader";
 import { UserContext } from "@/context/UserContext";
 import EditProfileButton from "@/components/common/EditProfileButton";
 import { formatLink } from "@/utils/formatLink";
+import Link from "next/link";
 
 const Page = () => {
   const { id } = useParams();
@@ -189,7 +190,9 @@ const Page = () => {
                             <h4 className="font-medium text-lg">{post.title}</h4>
                             <p className="text-sm text-gray-600">{post.content}</p>
                           </div>
-                          <button className="text-blue-600 hover:underline">View Details</button>
+                          <Link href={`/job-listing/${post.id}`} className="text-blue-600 hover:underline">
+                            View Details
+                          </Link>
                         </div>
                       ))}
                   </div>

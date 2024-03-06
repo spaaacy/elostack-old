@@ -40,12 +40,12 @@ const HowItWorks = () => {
 
   return (
     <section className="text-gray-600 body-font">
-      <div className="container px-5 my-12 mx-auto">
+      <div className="container px-5 mt-0 mb-[8rem] mx-auto">
         <div className="text-center mb-20">
           <h1 className=" text-5xl font-extrabold title-font mb-4 text-blueprimary " data-aos="zoom-in">
             How EloStack Works
           </h1>
-          <p className=" leading-relaxed xl:w-2/4  text-black text-xl lg:w-3/4 mx-auto">
+          <p className=" leading-relaxed xl:w-2/4  text-black text-xl lg:w-3/4 mx-auto" data-aos="zoom-in">
             A step-by-step guide to our process, designed to ensure your success.
           </p>
         </div>

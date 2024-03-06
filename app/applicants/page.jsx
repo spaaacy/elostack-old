@@ -7,7 +7,7 @@ import Loader from "@/components/common/Loader";
 import Link from "next/link";
 import Avatar from "react-avatar";
 import formatDate from "@/utils/formatDate";
-
+import NavBar from "@/components/common/NavBar";
 const JobApplicants = () => {
   const { session } = useContext(UserContext);
   const [loading, setLoading] = useState(false);
@@ -49,7 +49,7 @@ const JobApplicants = () => {
 </Head>
 
 <main className="container mx-auto p-4 bg-white rounded-lg shadow mt-8">
-
+<NavBar />
 
   {/* Applicants List */}
   <section className="bg-white p-4 rounded-lg shadow-lg mb-6">

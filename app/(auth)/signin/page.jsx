@@ -130,9 +130,9 @@ const Page = () => {
                       <label htmlFor="password" className="text-gray-700 text-sm font-bold mb-2">
                         Password:
                       </label>
-                      <Link href="/forgot-password" className="text-blue-500 hover:text-blue-800 text-sm">
+                      {/* <Link href="/forgot-password" className="text-blue-500 hover:text-blue-800 text-sm">
                         Forgot Password?
-                      </Link>
+                      </Link> */}
                     </div>
                     <div className="relative">
                       <input

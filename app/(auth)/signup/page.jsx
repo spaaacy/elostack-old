@@ -242,12 +242,23 @@ const Page = () => {
                     <span className="ml-4">Sign In with Google</span>
                   </button> */}
                   <div className="flex items-center justify-between">
-                    <Link
-                      href="/signin"
-                      className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
-                    >
-                      Already have an account? Sign In
-                    </Link>
+                    <div className="flex flex-col gap-2">
+                      <Link
+                        href="/signin"
+                        className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
+                      >
+                        Already have an account? Sign In
+                      </Link>
+                      <p className="inline-block align-baseline text-sm ">
+                        By signing up, you agree to our{" "}
+                        <Link
+                          href="/terms-and-conditions.html"
+                          className="font-bold text-blue-600 dark:text-blue-500 hover:underline"
+                        >
+                          Terms & Conditions.
+                        </Link>
+                      </p>
+                    </div>
                     <button
                       type="submit"
                       className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"

@@ -74,7 +74,7 @@ const Page = () => {
             <div className="flex justify-between items-center -mt-[2rem] ">
               <h2 className="text-3xl font-bold text-blueprimary">Listings</h2>
               <div className="mt-[2rem]">
-                <Link href="/business/job-listing">
+                <Link href="/dasboard/create-listing">
                   <button className="inline-block bg-blueprimary text-white px-6 py-3 mb-6 rounded">
                     Create New Listing
                   </button>

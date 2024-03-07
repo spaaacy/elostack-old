@@ -108,7 +108,7 @@ const Page = () => {
                   <div className="mb-8 mt-[2rem]">
                     <div className="bg-gray-50 hover:shadow-xl rounded-lg p-4 shadow-inner mb-4">
                       <h3 className="text-xl font-semibold">Feedback</h3>
-                      <p className="italic">{individual.interview.feedback}</p>
+                      <p className="whitespace-pre-line">{individual.interview.feedback}</p>
                     </div>
                   </div>
                 </div>

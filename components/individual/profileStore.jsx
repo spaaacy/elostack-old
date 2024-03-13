@@ -16,7 +16,7 @@ export const profileStore = create((set) => ({
     websiteType: "",
     linkedIn: "",
     github: "",
-    cv:"",
+    cover_letter: "",
   },
   setProfileData: (newData) => set(() => ({ profileData: newData })),
 }));

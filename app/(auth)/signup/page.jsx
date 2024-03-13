@@ -108,7 +108,7 @@ const Page = () => {
         const { error } = await response.json();
         throw error;
       }
-
+      location.reload();
       router.push("/");
     } catch (error) {
       console.error(error);

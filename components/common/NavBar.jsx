@@ -33,15 +33,15 @@ const NavBar = () => {
   }, [lastScrollY]);
 
   return (
-    <nav
-      className={`fixed top-0 left-0 w-full z-50 px-4 lg:px-[300px] py-4 flex justify-between items-center bg-white shadow-md transition-transform duration-300 ${
-        navBarVisible ? "" : "-translate-y-full"
-      }`}
-    >
+<nav
+  className={`fixed top-0 left-0 w-full z-50 px-2 lg:px-[9rem] py-4 flex justify-between items-center bg-white shadow-md transition-transform duration-300 ${
+    navBarVisible ? "" : "-translate-y-full"
+  }`}
+>
       <Link href={"/"} className="text-[2rem] font-bold text-blueprimary transition-colors">
         <div className="flex items-center">
           <Image src={"/logo.png"} alt="logo" width={50} height={50} />
-          EloStack
+          <div className="ml-2">EloStack</div>
         </div>
       </Link>
       <button className="lg:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>

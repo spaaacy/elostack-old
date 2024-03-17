@@ -2,10 +2,10 @@ import Link from "next/link";
 
 const Footer = () => {
   return (
-    <footer className="mt-auto text-center py-2 text-sm text-gray-400 font-light">
+    <footer className="mt-auto text-center py-2 text-sm text-white font-light bg-[#0f0f1c]">
       Copyright © 2024 EloStack, Inc. All Rights Reserved.
       <div>
-        <Link href="/terms-and-conditions.html" className="hover:underline">
+        <Link href="/terms-and-conditions.html" className="hover:underline text-white">
           Terms & Conditions.
         </Link>
       </div>

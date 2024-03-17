@@ -34,13 +34,13 @@ const NavBar = () => {
 
   return (
 <nav
-  className={`fixed top-0 left-0 w-full z-50 px-2 lg:px-[9rem] py-4 flex justify-between items-center bg-[#0b1323] text-white shadow-md transition-transform duration-300 ${
+  className={`fixed top-0 left-0 w-full z-50 px-2 lg:px-[9rem] py-4 flex justify-between items-center bg-[#0f0f1c] text-white  transition-transform duration-300 ${
     navBarVisible ? "" : "-translate-y-full"
   }`}
 >
   <Link href={"/"} className="text-[1.5rem] font-bold text-white transition-colors hover:text-gray-300">
     <div className="flex items-center">
-      <Image src={"/image.png"} alt="logo" width={50} height={50} />
+      <Image src={"/logo1.png"} alt="logo" width={50} height={50} />
       <div className="ml-2">EloStack</div>
     </div>
   </Link>

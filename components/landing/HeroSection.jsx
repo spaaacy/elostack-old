@@ -12,7 +12,7 @@ const gradientTextStyle = css`
 `;
 const containerStyle = css`
   position: relative;
-  background: radial-gradient(ellipse 60% 60% at 50% 40%, #0F172A, #1A1B2F 60%, #0f0f1c 80%); // Darker purple in gradient
+  background: radial-gradient(ellipse 60% 60% at 52% 49%, #0F172A, #1A1B2F 60%, #0f0f1c 80%); // Darker purple in gradient
   color: #fff; // Lighter than white for a darker look
   display: flex;
   flex-direction: column;

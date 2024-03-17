@@ -2,12 +2,14 @@
 
 import { UserContext } from "@/context/UserContext";
 import Head from "next/head";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 import { profileStore } from "./profileStore";
 import Loader from "@/components/common/Loader";
 import Link from "next/link";
 import formatDate from "@/utils/formatDate";
+import { loadStripe } from "@stripe/stripe-js";
+import toast, { Toaster } from "react-hot-toast";
 
 const IndividualDashboard = () => {
   const { session } = useContext(UserContext);
@@ -16,9 +18,17 @@ const IndividualDashboard = () => {
   const [error, setError] = useState();
   const { profileData, setProfileData } = profileStore();
   const router = useRouter();
+  const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     if (session) {
+      console.log(session);
+      if (searchParams.has("success")) {
+        toast.success("Mock interview purchased!");
+      } else if (searchParams.has("cancelled")) {
+        toast.error("Purchase unsuccessful!");
+      }
       fetchIndividual();
       fetchApplications();
     }
@@ -55,7 +65,12 @@ const IndividualDashboard = () => {
   };
 
   if (loading) {
-    return <Loader />;
+    return (
+      <>
+        <Loader />
+        <Toaster />
+      </>
+    );
   }
 
   if (error) {
@@ -88,16 +103,25 @@ const IndividualDashboard = () => {
             <div className="mt-[2rem] flex justify-center items-center gap-4">
               <Link
                 href={`/job-listing`}
-                className="inline-block bg-blue-600 text-white px-6 py-3 mb-6 rounded hover:bg-blue-700 transition duration-150 ease-in-out"
+                className="inline-block bg-blueprimary text-white px-6 py-3 mb-6 rounded hover:bg-blue-600 transition duration-150 ease-in-out"
               >
                 Find Job Listings
               </Link>
               <Link
                 href={"/dashboard/applications"}
-                className="inline-block bg-blue-600 text-white px-6 py-3 mb-6 rounded hover:bg-blue-700 transition duration-150 ease-in-out"
+                className="inline-block bg-blueprimary text-white px-6 py-3 mb-6 rounded hover:bg-blue-600 transition duration-150 ease-in-out"
               >
                 View All Applications
               </Link>
+              <form action={"/api/payment/checkout-session"} method="POST">
+                <button
+                  className="text-left inline-block bg-blueprimary text-white px-6 py-3 mb-6 rounded hover:bg-blue-600 transition duration-150 ease-in-out"
+                  type="submit"
+                  role="link"
+                >
+                  Purchase Mock Interview
+                </button>
+              </form>
             </div>
           </div>
 
@@ -108,20 +132,22 @@ const IndividualDashboard = () => {
                   key={app.id}
                   className="bg-gray-50 p-6 rounded-lg flex justify-between items-center hover:shadow-xl transition-shadow duration-300"
                 >
-                  {console.log(app)}
                   <div>
                     <h3 className="font-semibold text-lg">
                       {app.job_listing.title} at {app.job_listing.business.name}
                     </h3>
                     <p className="text-sm text-gray-600">{formatDate(app.created_at)}</p>
                   </div>
-                  <Link href={`/job-listing/${app.job_listing.id}`} className="text-blue-600 hover:underline">
-                    View Details
-                  </Link>
+                  <form action={`/job-listing/${app.job_listing.id}`} className="text-blueprimary hover:underline">
+                    <button type="submit" role="link">
+                      View Details
+                    </button>
+                  </form>
                 </div>
               ))}
           </div>
         </section>
+        <Toaster />
       </main>
     </main>
   );

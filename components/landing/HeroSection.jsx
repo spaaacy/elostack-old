@@ -51,7 +51,7 @@ const buttonStyle = css`
   border-radius: 5px;
   border: none;
   font-weight: bold;
-  margin-top: 1.5rem;
+  margin-top:0.5rem;
   font-size: 1.2rem; // Increased font size
   cursor: pointer;
   transition: background-color 0.3s ease;

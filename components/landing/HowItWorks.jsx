@@ -39,26 +39,26 @@ const HowItWorks = () => {
   ];
 
   return (
-    <section className="text-gray-600 body-font">
+    <section className="text-white body-font bg-[#0f0f1c] w-screen">
       <div className="container px-5 mt-0 mb-[8rem] mx-auto">
         <div className="text-center mb-20">
-          <h1 className=" text-5xl font-extrabold title-font mb-4 text-blueprimary " data-aos="zoom-in">
+          <h1 className=" text-5xl font-extrabold title-font mb-4 text-white " data-aos="zoom-in">
             How EloStack Works
           </h1>
-          <p className=" leading-relaxed xl:w-2/4  text-black text-xl lg:w-3/4 mx-auto" data-aos="zoom-in">
+          <p className=" leading-relaxed xl:w-2/4  text-white text-xl lg:w-3/4 mx-auto" data-aos="zoom-in">
             A step-by-step guide to our process, designed to ensure your success.
           </p>
         </div>
         <div className="flex flex-wrap -m-4">
           {steps.map((step, index) => (
             <div className="p-4 md:w-1/3" key={index} data-aos={step.aos} data-aos-delay={step.delay}>
-              <div className="h-full bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-200 ease-in-out transform hover:-translate-y-2 hover:scale-105  border border-black">
+              <div className="h-full bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-200 ease-in-out transform hover:-translate-y-2 hover:scale-105  border border-gray-700">
                 <div className="p-6">
                   <div className="flex items-center space-x-3 mb-4">
-                    <h2 className="rounded-full px-3 py-1 text-md bg-black font-bold text-white">{index + 1}</h2>
-                    <h2 className="text-xl font-semibold text-gray-900">{step.title}</h2>
+                    <h2 className="rounded-full px-3 py-1 text-md bg-gray-700 font-bold text-white">{index + 1}</h2>
+                    <h2 className="text-xl font-semibold text-white">{step.title}</h2>
                   </div>
-                  <p className="leading-relaxed mb-3">{step.description}</p>
+                  <p className="leading-relaxed mb-3 text-gray-300">{step.description}</p>
                 </div>
               </div>
             </div>

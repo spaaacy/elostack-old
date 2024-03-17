@@ -1,26 +1,33 @@
 "use client";
 /** @jsxImportSource @emotion/react */
-import { css, keyframes } from '@emotion/react';
+import { css } from '@emotion/react';
 import Head from 'next/head';
 import { FaRocket } from 'react-icons/fa';
 
 const gradientTextStyle = css`
   display: inline-block;
-  background: linear-gradient(to right, #4D28D9, #887BFA); // Gradient from blue to purple
+  background: linear-gradient(to right, #3C1BD7, #7266F2); // Darker gradient from blue to purple
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 `;
 const containerStyle = css`
-  background: radial-gradient(circle at center, #0F172A, #1C1D35, #000);
-  color: #ddd; // Lighter than white for a darker look
+  position: relative;
+  background: radial-gradient(ellipse 60% 60% at 50% 40%, #0F172A, #1A1B2F 60%, #0f0f1c 80%); // Darker purple in gradient
+  color: #fff; // Lighter than white for a darker look
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height: 120vh;
   width: 100vw;
   padding: 0 20px;
   text-align: center;
+
+  &::after {
+    content: "";
+    display: block;
+    height: 10vh;
+  }
 `;
 
 const titleStyle = css`
@@ -38,7 +45,7 @@ const subtitleStyle = css`
 
 
 const buttonStyle = css`
-  background-color: #6D28D9;
+  background-color: #5B1FD5; // Darker purple
   color: #fff;
   padding: 20px 30px;
   border-radius: 5px;
@@ -56,25 +63,9 @@ const buttonStyle = css`
   }
 `;
 
-const githubCornerStyle = css`
-  position: absolute;
-  top: 0;
-  right: 0;
-  color: #fff;
-  font-size: 2.5rem;
-  padding: 10px;
-`;
 
-const rowStyle = css`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
 
-const imageStyle = css`
-  width: 300px;
-  height: 300px;
-`;
+
 
 export default function Home() {
   return (

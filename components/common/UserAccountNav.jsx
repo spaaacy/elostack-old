@@ -55,7 +55,7 @@ const UserAccountNav = () => {
   };
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative bg-gray-900 text-white" ref={dropdownRef}>
       <div className="flex items-center gap-4">
         <img
           onClick={toggleDropdown}
@@ -65,12 +65,12 @@ const UserAccountNav = () => {
         />
       </div>
       <div
-        className={`absolute right-0 mt-2 py-2 w-48 bg-white rounded-md shadow-xl z-20 border border-gray-100 ${
+        className={`absolute right-0 mt-2 py-2 w-48 bg-gray-800 rounded-md shadow-xl z-20 border border-gray-700 ${
           dropdownOpen ? "animate-fadeIn" : "animate-fadeOut"
         }`}
         style={{ display: dropdownOpen ? "block" : "none" }}
       >
-        <Link href="/dashboard" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+        <Link href="/dashboard" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">
           Dashboard
         </Link>
         {user && (
@@ -80,7 +80,7 @@ const UserAccountNav = () => {
                 ? `/business/${session?.data.session?.user.id}`
                 : `/individual/${session?.data.session?.user.id}`
             }
-            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+            className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700"
           >
             Profile
           </Link>
@@ -88,7 +88,7 @@ const UserAccountNav = () => {
         {user && !user?.business && (
           <Link
             href={`/individual/${session?.data.session?.user.id}/interview`}
-            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+            className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700"
           >
             My Interview
           </Link>
@@ -98,46 +98,46 @@ const UserAccountNav = () => {
             Plans
           </Link>
         )} */}
-        <hr className="my-1 border-gray-200" />
-        <button
-          onClick={handleSignOut}
-          className="block px-4 py-2 text-sm text-red-600 hover:bg-red-100 w-full text-left"
-        >
-          Sign Out
-        </button>
-      </div>
-
-      {/* Animation styles */}
-      <style jsx>{`
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(-10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        @keyframes fadeOut {
-          from {
-            opacity: 1;
-            transform: translateY(0);
-          }
-          to {
-            opacity: 0;
-            transform: translateY(-10px);
-          }
-        }
-        .animate-fadeIn {
-          animation: fadeIn 0.3s ease-out forwards;
-        }
-        .animate-fadeOut {
-          animation: fadeOut 0.3s ease-out forwards;
-        }
-      `}</style>
+<hr className="my-1 border-gray-700" />
+      <button
+        onClick={handleSignOut}
+        className="block px-4 py-2 text-sm text-red-500 hover:bg-gray-700 w-full text-left"
+      >
+        Sign Out
+      </button>
     </div>
-  );
+
+    {/* Animation styles */}
+    <style jsx>{`
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes fadeOut {
+        from {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        to {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+      }
+      .animate-fadeIn {
+        animation: fadeIn 0.3s ease-out forwards;
+      }
+      .animate-fadeOut {
+        animation: fadeOut 0.3s ease-out forwards;
+      }
+    `}</style>
+  </div>
+);
 };
 
 export default UserAccountNav;

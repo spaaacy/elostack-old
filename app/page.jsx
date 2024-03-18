@@ -4,6 +4,7 @@ import NavBar from "@/components/common/NavBar";
 import HeroSection from "@/components/landing/HeroSection";
 import FAQ from "@/components/landing/FAQ";
 import HowItWorks from "@/components/landing/HowItWorks";
+import PartneredCompanies from "@/components/landing/PartneredCompanies";
 
 const Home = () => {
   return (
@@ -20,6 +21,7 @@ const Home = () => {
 
       <main className="flex flex-col items-center">
         <HeroSection />
+        <PartneredCompanies />
         <HowItWorks />
         <FAQ />
       </main>

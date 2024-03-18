@@ -1,42 +1,93 @@
-import Image from "next/image";
-import Link from "next/link";
-import React from "react";
+"use client";
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
+import Head from 'next/head';
+import { FaRocket } from 'react-icons/fa';
 
-const HeroSection = () => {
+const gradientTextStyle = css`
+  display: inline-block;
+  background: linear-gradient(to right, #3C1BD7, #7266F2); // Darker gradient from blue to purple
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+`;
+const containerStyle = css`
+  position: relative;
+  background: radial-gradient(ellipse 60% 60% at 52% 49%, #0F172A, #1A1B2F 60%, #0f0f1c 80%); // Darker purple in gradient
+  color: #fff; // Lighter than white for a darker look
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 120vh;
+  width: 100vw;
+  padding: 0 20px;
+  text-align: center;
+
+  &::after {
+    content: "";
+    display: block;
+    height: 10vh;
+  }
+`;
+
+const titleStyle = css`
+  color: #fff; // White color
+  font-size: 5rem; // Significantly larger font size
+  margin-bottom: 20px;
+  margin-top: -50px;
+`;
+
+const subtitleStyle = css`
+  color: #FFFFFF; // Changed color
+  font-size: 1.5rem; // Slightly larger font size
+  margin-bottom: 40px;
+`;
+
+
+const buttonStyle = css`
+  background-color: #5B1FD5; // Darker purple
+  color: #fff;
+  padding: 20px 30px;
+  border-radius: 5px;
+  border: none;
+  font-weight: bold;
+  margin-top:0.5rem;
+  font-size: 1.2rem; // Increased font size
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  animation: jump 1s infinite;
+
+  @keyframes jump {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+  }
+`;
+
+
+
+
+
+export default function Home() {
   return (
-    <section className="flex flex-col items-center justify-center px-6 text-center min-h-screen ">
-      <div className="flex justify-between items-start w-full">
-        <div className="flex flex-col justify-start items-start gap-4 ml-14 text-left ">
-          <h1 className="text-4xl md:text-6xl font-bold text-blueprimary">Fast-track hiring programmers.</h1>
-          <h3 className="text-xl md:text-3xl mt-4 font-semibold bg-black text-white p-2 ">
-            On-Demand Technical
-            <br />
-            Interviews.
-          </h3>
-          <h3 className="text-xl md:text-3xl font-semibold bg-black text-white p-2">Pay as You Go.</h3>
-          <h3 className="text-xl md:text-3xl font-semibold bg-black text-white p-2">No Contract.</h3>
-          <div className="flex flex-wrap justify-center gap-4 mt-6">
-            <Link
-              href={"/signup"}
-              className="px-6 py-3 font-semibold text-white bg-black rounded-md shadow hover:bg-gray-900"
-            >
-              Get Started
-            </Link>
-          </div>
-        </div>
-        {/* Inline Image Below Buttons */}
-        <div className="">
-          <Image
-            src="/hero.png"
-            alt="EloStack Platform"
-            width={882} // Adjusted for better fit
-            height={336} // Maintained aspect ratio
-            priority
-          />
-        </div>
-      </div>
-    </section>
-  );
-};
+    <div css={containerStyle}>
+      <Head>
+        <title>EloStack</title>
+      </Head>
 
-export default HeroSection;
+      <div>
+      <h1 css={titleStyle}>
+  <FaRocket className="inline-block" color="#4D28D9" /> Your Software Engineering <br />
+  <span css={gradientTextStyle}>Job Connection</span>
+</h1>
+        <p css={subtitleStyle}>
+          We simplify the hiring process by conducting and <br /> managing the technical interviews ourselves.
+        </p>
+        <button css={buttonStyle}>
+          Get started with EloStack
+        </button>
+        
+      </div>
+    </div>
+  )
+}
+

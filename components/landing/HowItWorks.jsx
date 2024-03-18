@@ -1,72 +1,75 @@
 "use client";
-import React, { useEffect } from "react";
-import AOS from "aos";
-import "aos/dist/aos.css";
-import { FaLightbulb, FaRocket, FaHandsHelping } from "react-icons/fa"; // Icons for steps
+import React, { useEffect } from 'react';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+
+import { FaUserCircle, FaMicrophone, FaBriefcase } from 'react-icons/fa';
 
 const HowItWorks = () => {
-  useEffect(() => {
-    AOS.init({
-      duration: 1000,
-      easing: "ease-in-out",
-      once: true,
-      mirror: false,
-    });
-  }, []);
+    useEffect(() => {
+        AOS.init({
+            duration: 1000,
+            easing: 'ease-in-out',
+            once: true,
+            mirror: false,
+        });
+    }, []);
 
-  const steps = [
-    {
-      title: "Create a Request",
-      description:
-        "Create a request for us to conduct a technical interview for any specific candidate of your choice, free of charge.",
-      aos: "fade-up-right",
-    },
-    {
-      title: "Conduct Technical Interview",
-      description:
-        "Our talented engineers will contact the candidate and carry out a standardized unbiased interview, assessing your candidates skill.",
-      aos: "fade-up",
-      delay: 100,
-    },
-    {
-      title: "Access Video with Insight",
-      description:
-        "You will be contacted when the interview is completed, and will have access to the entire recording and breakdown of the interview with feedback and an overall grade.",
-      aos: "fade-up-left",
-      delay: 200,
-    },
-    // Add more steps as needed
-  ];
+    const steps = [
+        {
+            title: 'Create Your Profile',
+            description: 'Sign up and tell us about your skills and preferences. This is your first step towards your dream job.',
+            aos: 'fade-right',
+            icon: <FaUserCircle className="text-4xl text-purple-500" />,
+            image: '/profileEX.png', // Add your placeholder image path here
+        },
+        {
+            title: 'Interview with Us',
+            description: 'Request and complete a technical interview. Our experts will assess your skills in a fair and unbiased manner.',
+            aos: 'fade-left',
+            delay: 100,
+            icon: <FaMicrophone className="text-4xl text-blue-500" />,
+            image: '/profileEX.png', // Add your placeholder image path here
+        },
+        {
+            title: 'Get Matched & Apply',
+            description: 'We showcase your profile to potential employers. Apply to jobs on our platform and get recommendations based on your skills and preferences.',
+            aos: 'fade-right',
+            delay: 200,
+            icon: <FaBriefcase className="text-4xl text-red-500" />,
+            image: '/profileEX.png', // Add your placeholder image path here
+        },
+    ];
+
+    const getAOSDirection = (index) => {
+      return index % 2 === 0 ? 'fade-right' : 'fade-left';
+  };
+
 
   return (
-    <section className="text-gray-600 body-font">
-      <div className="container px-5 mt-0 mb-[8rem] mx-auto">
-        <div className="text-center mb-20">
-          <h1 className=" text-5xl font-extrabold title-font mb-4 text-blueprimary " data-aos="zoom-in">
-            How EloStack Works
-          </h1>
-          <p className=" leading-relaxed xl:w-2/4  text-black text-xl lg:w-3/4 mx-auto" data-aos="zoom-in">
-            A step-by-step guide to our process, designed to ensure your success.
-          </p>
-        </div>
-        <div className="flex flex-wrap -m-4">
-          {steps.map((step, index) => (
-            <div className="p-4 md:w-1/3" key={index} data-aos={step.aos} data-aos-delay={step.delay}>
-              <div className="h-full bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-200 ease-in-out transform hover:-translate-y-2 hover:scale-105  border border-black">
-                <div className="p-6">
-                  <div className="flex items-center space-x-3 mb-4">
-                    <h2 className="rounded-full px-3 py-1 text-md bg-black font-bold text-white">{index + 1}</h2>
-                    <h2 className="text-xl font-semibold text-gray-900">{step.title}</h2>
-                  </div>
-                  <p className="leading-relaxed mb-3">{step.description}</p>
-                </div>
-              </div>
+    <section className="text-white body-font bg-[#0f0f1c] w-screen ">
+        <div className="container mx-auto">
+            <div className="text-center mb-32">
+                
             </div>
-          ))}
+            <div className="flex flex-wrap">
+                {steps.map((step, index) => (
+                    <div className="w-full mb-8 flex flex-col md:flex-row md:justify-center items-center md:items-stretch text-center md:text-left" key={index} data-aos={getAOSDirection(index)} data-aos-delay="200">
+                        <img src={step.image} alt={step.title} className={`w-full md:w-1/2 object-cover ${index % 2 === 0 ? '' : 'md:order-2'}`} style={{ minHeight: '50vh' }} />
+                        <div className={`w-full md:w-1/2 p-8 flex flex-col justify-center items-center md:items-start ${index % 2 === 0 ? 'md:pl-12' : 'md:pr-12'}`} style={{ minHeight: '50vh' }}>
+                            <div className="flex items-center space-x-3 mb-4">
+                                {step.icon}
+                                <h2 className="text-3xl font-semibold text-white">{step.title}</h2>
+                            </div>
+                            <p className="text-xl leading-relaxed text-gray-300">{step.description}</p>
+                        </div>
+                    </div>
+                ))}
+            </div>
         </div>
-      </div>
     </section>
-  );
+);
+
 };
 
 export default HowItWorks;

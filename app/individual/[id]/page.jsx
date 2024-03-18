@@ -14,6 +14,7 @@ import { parsePhoneNumber } from "libphonenumber-js";
 import EditProfileButton from "@/components/common/EditProfileButton";
 import { profileStore } from "@/components/individual/profileStore";
 import FeaturedCard from "@/components/individual/profile/FeaturedCard";
+import MediaSection from "@/components/individual/profile/MediaSection";
 
 const Page = () => {
   const { id } = useParams();
@@ -115,7 +116,7 @@ const shouldShortenText = lineCount > 5;
 const lines = profileData.about_me.split('\n');
 
 // If the text should be shortened, join the first 5 lines and add "..."
-const shortenedText = shouldShortenText ? `${lines.slice(0, 3).join('\n')}...` : profileData.about_me;
+const shortenedText = shouldShortenText ? `${lines.slice(0, 5).join('\n')}...` : profileData.about_me;
 
   return (
     <main className="flex flex-col min-h-screen text-white w-full bg-gradient-to-b from-[#0f0f1c] via-[#1b1b29] to-[#2e2536]">
@@ -216,21 +217,22 @@ const shortenedText = shouldShortenText ? `${lines.slice(0, 3).join('\n')}...` :
                   </dl>
                 </div>
 
-                {/* About Me Section */}
-                {profileData.about_me && (
+{/* About Me Section */}
+{profileData.about_me && (
   <div className="border-t border-gray-700 px-4 py-5 sm:p-6">
     <h3 className="text-lg leading-6 font-medium text-white">About Me</h3>
-    <pre className="mt-2 text-sm text-white whitespace-pre-wrap mr-10">
-  {showFullText ? profileData.about_me : shortenedText}
-</pre>
-{shouldShortenText && (
-  <button onClick={toggleShowFullText} className="text-purple-500 mt-4">
-    {showFullText ? "Show Less" : "Read More"}
-  </button>
-)}
+    <div className={`mt-2 text-sm text-white whitespace-pre-wrap mr-10 overflow-hidden ${showFullText ? '' : 'h-20'}`}>
+      {profileData.about_me}
+    </div>
+    {profileData.about_me.length > 100 && (
+      <button onClick={toggleShowFullText} className="text-purple-500 mt-4">
+        {showFullText ? "Show Less" : "Read More"}
+      </button>
+    )}
   </div>
 )}
                 {/* Professional Information Section */}
+                <MediaSection />
                 <div className="border-t border-gray-700 px-4 py-5 sm:p-6">
                   <h3 className="text-lg leading-6 font-medium text-white">Professional Information</h3>
                   <dl className="mt-2 grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
@@ -308,3 +310,5 @@ const shortenedText = shouldShortenText ? `${lines.slice(0, 3).join('\n')}...` :
 };
 
 export default Page;
+
+

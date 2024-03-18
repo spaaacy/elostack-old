@@ -2,12 +2,14 @@
 
 import { UserContext } from "@/context/UserContext";
 import Head from "next/head";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 import { profileStore } from "./profileStore";
 import Loader from "@/components/common/Loader";
 import Link from "next/link";
 import formatDate from "@/utils/formatDate";
+import { loadStripe } from "@stripe/stripe-js";
+import toast, { Toaster } from "react-hot-toast";
 
 const IndividualDashboard = () => {
   const { session } = useContext(UserContext);
@@ -16,9 +18,16 @@ const IndividualDashboard = () => {
   const [error, setError] = useState();
   const { profileData, setProfileData } = profileStore();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_TEST_KEY);
 
   useEffect(() => {
     if (session) {
+      if (searchParams.has("success")) {
+        toast.success("Purchase made successfully!");
+      } else if (searchParams.has("cancelled")) {
+        toast.error("Purchase was unsuccessful!");
+      }
       fetchIndividual();
       fetchApplications();
     }
@@ -55,7 +64,12 @@ const IndividualDashboard = () => {
   };
 
   if (loading) {
-    return <Loader />;
+    return (
+      <>
+        <Loader />
+        <Toaster />
+      </>
+    );
   }
 
   if (error) {
@@ -68,7 +82,7 @@ const IndividualDashboard = () => {
         <title>Individual Dashboard | EloStack</title>
       </Head>
 
-      <main className="container mx-auto p-4 bg-white rounded-lg shadow mt-8">
+      <div className="container mx-auto p-4 bg-white rounded-lg shadow mt-8">
         {/* Profile Summary */}
         <section data-aos="fade-up">
           <div className="p-5 text-center border-b border-gray-200">
@@ -98,6 +112,15 @@ const IndividualDashboard = () => {
               >
                 View All Applications
               </Link>
+              <form action="/api/payment/mock-interview" method="POST">
+                <button
+                  type="submit"
+                  role="link"
+                  className="inline-block bg-blue-600 text-white px-6 py-3 mb-6 rounded hover:bg-blue-700 transition duration-150 ease-in-out"
+                >
+                  Purchase Mock Interview
+                </button>
+              </form>
             </div>
           </div>
 
@@ -122,7 +145,8 @@ const IndividualDashboard = () => {
               ))}
           </div>
         </section>
-      </main>
+      </div>
+      <Toaster />
     </main>
   );
 };

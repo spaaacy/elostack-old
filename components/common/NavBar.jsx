@@ -45,8 +45,8 @@ const NavBar = () => {
     </div>
   </Link>
   <div className={`hidden lg:flex justify-center space-x-8 ${session?.data.session ? 'mr-10' : ''}`}>
-    <Link href={"/job-listings"} className="text-gray-300 hover:text-white bg-gray-800 px-4 py-2 rounded-md text-base font-medium">Job listings</Link>
-    <Link href={"/applications"} className="text-gray-300 hover:text-white bg-gray-800 px-4 py-2 rounded-md text-base font-medium">Applications</Link>
+    <Link href={"/job-listing"} className="text-gray-300 hover:text-white bg-gray-800 px-4 py-2 rounded-md text-base font-medium">Job listings</Link>
+    <Link href={"/dashboard/applications"} className="text-gray-300 hover:text-white bg-gray-800 px-4 py-2 rounded-md text-base font-medium">Applications</Link>
     <Link href={"/schedule-interview"} className="text-gray-300 hover:text-white bg-gray-800 px-4 py-2 rounded-md text-base font-medium">Schedule interview</Link>
   </div>
   <div className="flex items-center">

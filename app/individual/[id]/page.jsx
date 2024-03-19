@@ -20,9 +20,6 @@ const Page = () => {
   const { session } = useContext(UserContext);
   const { profileData, setProfileData } = profileStore();
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState();
-  const [access, setAccess] = useState(false);
-  const [confirmPurchase, setConfirmPurchase] = useState(false);
 
   useEffect(() => {
     if (session) {
@@ -30,14 +27,6 @@ const Page = () => {
       fetchUser();
     }
   }, [session]);
-
-  const fetchPurchase = async (businessId) => {
-    if (!businessId) return;
-    const response = await fetch(`/api/purchase?business_id=${businessId}&individual_id=${id}`);
-    if (response.status === 200) {
-      setAccess(true);
-    }
-  };
 
   const fetchIndividual = async () => {
     const userId = id;
@@ -52,44 +41,6 @@ const Page = () => {
       }
     } else {
       console.log("Session not loaded or user ID undefined");
-    }
-  };
-
-  const fetchUser = async () => {
-    const userId = session?.data?.session?.user.id;
-    if (userId) {
-      const response = await fetch(`/api/user/${userId}`, {
-        method: "GET",
-      });
-      if (response.status === 200) {
-        const { user } = await response.json();
-        setUser(user);
-        if (user.business) {
-          fetchPurchase(userId);
-        }
-      }
-    }
-  };
-
-  const submitAccessInterview = async () => {
-    if (user.business) {
-      const businessId = session?.data?.session?.user.id;
-      if (businessId) {
-        const response = await fetch("/api/purchase/create", {
-          method: "POST",
-          body: JSON.stringify({
-            individual_id: id,
-            business_id: businessId,
-          }),
-        });
-        if (response.status === 201) {
-          setAccess(true);
-        } else {
-          console.error("Error making purchase!");
-        }
-      }
-    } else {
-      console.error("Must be logged in as business to access interview!");
     }
   };
 
@@ -135,46 +86,14 @@ const Page = () => {
                           <div className="mt-2 flex items-center text-sm text-gray-500">{profileData.pronouns}</div>
                         </div>
                       </div>
-                      {user && user.business ? (
-                        access ? (
-                          <Link
-                            href={`${id}/interview`}
-                            onClick={submitAccessInterview}
-                            className="px-4 py-2 rounded text-white bg-blue-500 hover:bg-blue-600 focus:outline-none"
-                          >
-                            View Interview
-                          </Link>
-                        ) : confirmPurchase ? (
-                          <div className="flex flex-col justify-center items-center">
-                            <p className="text-gray-400 font-light text-sm">Confirm Purchase</p>
-                            <div className="gap-2 flex items-center mt-2">
-                              <button onClick={() => setConfirmPurchase(false)} className="text-sm">
-                                No
-                              </button>
-                              <button
-                                onClick={() => {
-                                  setConfirmPurchase(false);
-                                  submitAccessInterview();
-                                }}
-                                className="text-sm px-4 py-2 rounded-full ml-2 text-white bg-blue-500 hover:bg-blue-600 focus:outline-none"
-                              >
-                                Yes
-                              </button>
-                            </div>
-                          </div>
-                        ) : (
-                          <div>
-                            <button
-                              onClick={() => setConfirmPurchase(true)}
-                              className="px-4 py-2 rounded text-white bg-blue-500 hover:bg-blue-600 focus:outline-none"
-                            >
-                              Access Interview
-                            </button>
-                          </div>
-                        )
-                      ) : (
-                        session?.data?.session?.user.id === id && <EditProfileButton />
-                      )}
+                      <Link
+                        href={`${id}/interview`}
+                        onClick={submitAccessInterview}
+                        className="px-4 py-2 rounded text-white bg-blue-500 hover:bg-blue-600 focus:outline-none"
+                      >
+                        View Interview
+                      </Link>
+                      {session?.data?.session?.user.id === id && <EditProfileButton />}
                     </div>
                   </div>
                 </div>

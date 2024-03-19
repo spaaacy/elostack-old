@@ -1,12 +1,10 @@
-import stripePackage from "stripe";
+const stripe = require("stripe")(process.env.NEXT_PUBLIC_STRIPE_SECRET_TEST_KEY);
 import { NextRequest, NextResponse } from "next/server";
-
-const stripe = stripePackage(process.env.STRIPE_SECRET_TEST_KEY);
 
 export async function POST(req, res) {
   try {
-    // Create Checkout Sessions from body params.
-    const session = await stripe.checkout.sessions.create({
+    const { individual_id } = await req.json();
+    const checkoutSession = await stripe.checkout.sessions.create({
       line_items: [
         {
           // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
@@ -15,10 +13,14 @@ export async function POST(req, res) {
         },
       ],
       mode: "payment",
+      metadata: {
+        individual_id,
+      },
       success_url: `${req.nextUrl.origin}/dashboard?success=true`,
       cancel_url: `${req.nextUrl.origin}/dashboard?cancelled=true`,
     });
-    return NextResponse.redirect(session.url, 303);
+
+    return NextResponse.json({ session: checkoutSession }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ errormessage }, { status: error.statusCode || 500 });
   }

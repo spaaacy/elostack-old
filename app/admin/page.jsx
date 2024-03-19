@@ -16,7 +16,7 @@ const Page = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const [interviewRequests, setInterviewRequests] = useState();
+  const [requests, setRequests] = useState();
 
   useEffect(() => {
     const loadData = async () => {
@@ -33,12 +33,12 @@ const Page = () => {
   }, [session]);
 
   const fetchRequests = async () => {
-    const response = await fetch("/api/interview-request?pending=true", {
+    const response = await fetch("/api/purchase", {
       method: "GET",
     });
     if (response.status === 200) {
       const results = await response.json();
-      setInterviewRequests(results.requests);
+      setRequests(results.requests);
       console.log(results);
     } else {
       console.error("Error fetching interview requests!");
@@ -83,31 +83,22 @@ const Page = () => {
               <table className="w-full table-auto text-sm">
                 <thead>
                   <tr>
-                    <th className="px-4 py-2">Request ID</th>
+                    <th className="px-4 py-2">Purchase ID</th>
                     <th className="px-4 py-2">Creation Date</th>
+                    <th className="px-4 py-2">Individual ID</th>
                     <th className="px-4 py-2">Candidate Name</th>
-                    <th className="px-4 py-2">Company</th>
-                    <th className="px-4 py-2">Position</th>
-                    <th className="px-4 py-2">Type</th>
-                    <th className="px-4 py-2"></th>
                   </tr>
                 </thead>
                 <tbody>
-                  {interviewRequests &&
-                    interviewRequests.map((request) => (
+                  {requests &&
+                    requests.map((request) => (
                       <>
                         <tr key={request.id}>
                           <td className="border px-4 py-2">{request.id}</td>
                           <td className="border px-4 py-2">{formatDate(request.created_at)}</td>
-                          <td className="border px-4 py-2">{request.individual_name}</td>
-                          <td className="border px-4 py-2">{request.business.name}</td>
-                          <td className="border px-4 py-2 capitalize">{request.position}</td>
-                          <td className="border px-4 py-2 capitalize">{request.type}</td>
-                        </tr>
-                        <tr>
-                          <td className="border px-4 py-2 font-extrabold">Description</td>
-                          <td colspan="5" className="border px-4 py-2">
-                            {request.description}
+                          <td className="border px-4 py-2">{request.individual.user_id}</td>
+                          <td className="border px-4 py-2">
+                            {`${request.individual.first_name} ${request.individual.last_name}`}
                           </td>
                         </tr>
                       </>
@@ -121,13 +112,13 @@ const Page = () => {
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
                 <div className="flex items-center gap-2">
                   <div>
-                    <label className="block font-semibold">Request ID</label>
+                    <label className="block font-semibold">Purchase ID</label>
                     <input
                       type="number"
-                      {...register("request_id", { required: true })}
+                      {...register("purchase_id", { required: true })}
                       className="mt-1 p-2 border rounded"
                     />
-                    {errors.request_id && <p>This field is required</p>}
+                    {errors.purchase_id && <p>This field is required</p>}
                   </div>
                   <div className="flex-1">
                     <label className="block font-semibold">Individual ID</label>

@@ -123,19 +123,19 @@ const IndividualDashboard = () => {
             <div className="mt-[2rem] flex justify-center items-center gap-4">
               <Link
                 href={`/job-listing`}
-                className="inline-block bg-blue-600 text-white px-6 py-3 mb-6 rounded hover:bg-blue-700 transition duration-150 ease-in-out"
+                className="inline-block bg-blueprimary text-white px-6 py-3 mb-6 rounded hover:bg-blue-600 transition duration-150 ease-in-out"
               >
                 Find Job Listings
               </Link>
               <Link
                 href={"/dashboard/applications"}
-                className="inline-block bg-blue-600 text-white px-6 py-3 mb-6 rounded hover:bg-blue-700 transition duration-150 ease-in-out"
+                className="inline-block bg-blueprimary text-white px-6 py-3 mb-6 rounded hover:bg-blue-600 transition duration-150 ease-in-out"
               >
                 View All Applications
               </Link>
               <button
                 onClick={handlePayment}
-                className="inline-block bg-blue-600 text-white px-6 py-3 mb-6 rounded hover:bg-blue-700 transition duration-150 ease-in-out"
+                className="inline-block text-left bg-blueprimary text-white px-6 py-3 mb-6 rounded hover:bg-blue-600 transition duration-150 ease-in-out"
               >
                 Purchase Mock Interview
               </button>

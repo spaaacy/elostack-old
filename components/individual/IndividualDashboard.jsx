@@ -16,6 +16,8 @@ const IndividualDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [applications, setApplications] = useState();
   const [error, setError] = useState();
+  const [purchase, setPurchase] = useState(false);
+  const [bookInterview, setBookInterview] = useState(false);
   const { profileData, setProfileData } = profileStore();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -52,6 +54,7 @@ const IndividualDashboard = () => {
       const result = await response.json();
       if (response.status === 200) {
         setProfileData(result.individual);
+        await fetchPurchase();
         setLoading(false);
       } else {
         router.push("/signin");
@@ -62,8 +65,22 @@ const IndividualDashboard = () => {
     }
   };
 
+  const fetchPurchase = async () => {
+    const userId = session?.data.session?.user.id;
+    if (userId) {
+      const response = await fetch(`/api/purchase/${userId}`);
+      const result = await response.json();
+      if (response.status !== 200) {
+        setPurchase(true);
+      } else if (result.data.status === "pending") {
+        setBookInterview(true);
+      }
+    } else {
+      console.log("Session not loaded or user ID undefined");
+    }
+  };
+
   const handlePayment = async () => {
-    console.log(profileData);
     if (!profileData.user_id) return;
     try {
       const response = await fetch("/api/checkout", {
@@ -137,12 +154,19 @@ const IndividualDashboard = () => {
               >
                 View All Applications
               </Link>
-              <button
-                onClick={handlePayment}
-                className="inline-block text-left bg-blueprimary text-white px-6 py-3 mb-6 rounded hover:bg-blue-600 transition duration-150 ease-in-out"
-              >
-                Purchase Mock Interview
-              </button>
+              {purchase && (
+                <button
+                  onClick={handlePayment}
+                  className="inline-block text-left bg-blueprimary text-white px-6 py-3 mb-6 rounded hover:bg-blue-600 transition duration-150 ease-in-out"
+                >
+                  Purchase Mock Interview
+                </button>
+              )}
+              {bookInterview && (
+                <button className="inline-block text-left bg-blueprimary text-white px-6 py-3 mb-6 rounded hover:bg-blue-600 transition duration-150 ease-in-out">
+                  Book interview
+                </button>
+              )}
             </div>
           </div>
 

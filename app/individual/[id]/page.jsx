@@ -15,6 +15,7 @@ import EditProfileButton from "@/components/common/EditProfileButton";
 import { profileStore } from "@/components/individual/profileStore";
 import FeaturedCard from "@/components/individual/profile/FeaturedCard";
 import MediaSection from "@/components/individual/profile/MediaSection";
+import ExperienceSection from "@/components/individual/ExperienceSection";
 
 const Page = () => {
   const { id } = useParams();
@@ -191,8 +192,8 @@ const shortenedText = shouldShortenText ? `${lines.slice(0, 5).join('\n')}...` :
             </div>
           </div>
 
-                {/* Contact Information Section */}
-                <div className="px-4 py-5 sm:p-6">
+{/* Contact Information Section */}
+<div className="px-4 py-5 sm:p-6">
   <h3 className="text-lg leading-6 font-medium text-white">Contact Information</h3>
   <dl className="mt-2 grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
     <div className="sm:col-span-1">
@@ -200,53 +201,39 @@ const shortenedText = shouldShortenText ? `${lines.slice(0, 5).join('\n')}...` :
       <dd className="mt-1 text-sm text-white">{session.data.session?.user.email}</dd>
     </div>
     {profileData.phone_number && (
-  <div className="sm:col-span-1">
-    <dt className="text-sm font-medium text-white">Phone</dt>
-    <dd className="mt-1 text-sm text-white">
-      {parsePhoneNumber(profileData.phone_number, "US").formatNational()}{" "}
-      <span className="text-white">{profileData.phone_type}</span>
-    </dd>
-  </div>
-)}
-<div className="sm:col-span-1 sm:col-start-2">
-  <dt className="text-sm font-medium text-white">Social Media</dt>
-  <dd className="mt-1 text-sm text-white flex gap-2">
-    <a
-      target="_blank"
-      href={formatLink(profileData.linkedin)}
-      className="transition-transform duration-200 ease-in-out transform hover:-translate-y-1 hover:scale-110"
-    >
-      <FontAwesomeIcon icon={faLinkedin} size="2x" color="#0e76a8" />
-    </a>
-    <a
-      target="_blank"
-      href={formatLink(profileData.github)}
-      className="transition-transform duration-200 ease-in-out transform hover:-translate-y-1 hover:scale-110"
-    >
-      <FontAwesomeIcon icon={faGithub} size="2x" />
-    </a>
-  </dd>
-</div>
+      <div className="sm:col-span-1">
+        <dt className="text-sm font-medium text-white">Phone</dt>
+        <dd className="mt-1 text-sm text-white">
+          {parsePhoneNumber(profileData.phone_number, "US").formatNational()}{" "}
+          <span className="text-white">{profileData.phone_type}</span>
+        </dd>
+      </div>
+    )}
     {profileData.address && (
-  <div className="sm:col-span-2">
-    <div className="flex justify-between items-center">
-      <div>
+      <div className="sm:col-span-1">
         <dt className="text-sm font-medium text-white">Address</dt>
         <dd className="mt-1 text-sm text-white">{profileData.address}</dd>
       </div>
-      <button
-        onClick={() => {
-          // Logic to show the map of the location
-          console.log("Showing map for:", profileData.address);
-        }}
-        className="inline-block text-white px-4 py-2 ml-4 rounded hover:bg-purple-900 transition duration-150 ease-in-out bg-purple-700"
-      >
-        Show Map
-      </button>
+    )}
+    <div className="sm:col-span-1">
+      <dt className="text-sm font-medium text-white">Social Media</dt>
+      <dd className="mt-1 text-sm text-white flex gap-2">
+        <a
+          target="_blank"
+          href={formatLink(profileData.linkedin)}
+          className="transition-transform duration-200 ease-in-out transform hover:-translate-y-1 hover:scale-110"
+        >
+          <FontAwesomeIcon icon={faLinkedin} size="2x" color="#0e76a8" />
+        </a>
+        <a
+          target="_blank"
+          href={formatLink(profileData.github)}
+          className="transition-transform duration-200 ease-in-out transform hover:-translate-y-1 hover:scale-110"
+        >
+          <FontAwesomeIcon icon={faGithub} size="2x" />
+        </a>
+      </dd>
     </div>
-  </div>
-)}
-    
   </dl>
 </div>
 
@@ -266,57 +253,7 @@ const shortenedText = shouldShortenText ? `${lines.slice(0, 5).join('\n')}...` :
 )}
                 {/* Professional Information Section */}
                 <MediaSection />
-                <div className="border-t border-gray-700 px-4 py-5 sm:p-6">
-                  <h3 className="text-lg leading-6 font-medium text-white">Professional Information</h3>
-                  <dl className="mt-2 grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
-                    
-                    {profileData.portfolio && (
-                      <div className="sm:col-span-1">
-                        <dt className="text-sm font-medium text-white">Portfolio</dt>
-                        <dd className="mt-1 text-sm text-white">
-                          <a
-                            href={profileData.portfolio}
-                            className="text-purple-500 hover:text-blue-700"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            View Portfolio
-                          </a>
-                        </dd>
-                      </div>
-                    )}
-                    {profileData.resume && (
-                      <div className="sm:col-span-1">
-                        <dt className="text-sm font-medium text-white">Resume</dt>
-                        <dd className="mt-1 text-sm text-white">
-                          <a
-                            href={profileData.resume}
-                            className="text-purple-500 hover:text-blue-700"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            View Resume
-                          </a>
-                        </dd>
-                      </div>
-                    )}
-                    {profileData.cover_letter && (
-                      <div className="sm:col-span-1">
-                        <dt className="text-sm font-medium text-purple-500">Cover Letter</dt>
-                        <dd className="mt-1 text-sm text-white">
-                          <a
-                            href={profileData.cover_letter}
-                            className="text-blue-600 hover:text-blue-700"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            View Cover Letter
-                          </a>
-                        </dd>
-                      </div>
-                    )}
-                  </dl>
-                </div>
+                <ExperienceSection />
 
               </main>
     </div>

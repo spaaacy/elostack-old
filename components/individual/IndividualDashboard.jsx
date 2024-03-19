@@ -74,7 +74,11 @@ const IndividualDashboard = () => {
       if (response.status !== 200) {
         throw Error("Something went wrong");
       }
-      const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_TEST_KEY);
+      const stripe = await loadStripe(
+        process.env.NODE_ENV === "production"
+          ? process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_LIVE_KEY
+          : process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_TEST_KEY
+      );
       if (!stripe) {
         throw Error("Something went wrong");
       }

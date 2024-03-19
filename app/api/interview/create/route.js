@@ -3,28 +3,26 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req, res) {
   try {
-    const interview = await req.json();
-    if (!interview) throw Error("Interview data not provided!");
+    const json = await req.json();
+    if (!json) throw Error("Interview data not provided!");
+    const { individual_id, grade, feedback, video_url, purchase_id } = json;
     let results;
 
-    // Update interview request with individual ID
-    results = await supabase
-      .from("interview_request")
-      .update({ individual_id: interview.individual_id })
-      .eq("id", interview.request_id);
-    if (results.error) throw results.error;
-
     // Create interview
-    results = await supabase.from("interview").insert(interview).select("id").single();
+    results = await supabase
+      .from("interview")
+      .insert({ individual_id, grade, feedback, video_url })
+      .select("id")
+      .single();
     if (results.error) throw results.error;
     const interviewId = results.data.id;
 
     // Update individual table with interview ID
     if (!interviewId) throw Error("Interview ID not found!");
     results = await supabase
-      .from("individual")
-      .update({ interview_id: interviewId })
-      .eq("user_id", interview.individual_id);
+      .from("purchase")
+      .update({ interview_id: interviewId, status: "complete" })
+      .eq("individual_id", individual_id);
     if (results.error) throw results.error;
 
     return NextResponse.json({ message: "Interview created successfully!" }, { status: 201 });

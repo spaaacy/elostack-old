@@ -19,7 +19,6 @@ const IndividualDashboard = () => {
   const { profileData, setProfileData } = profileStore();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_TEST_KEY);
 
   useEffect(() => {
     if (session) {
@@ -63,6 +62,28 @@ const IndividualDashboard = () => {
     }
   };
 
+  const handlePayment = async () => {
+    console.log(profileData);
+    if (!profileData.user_id) return;
+    try {
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+        body: JSON.stringify({ individual_id: profileData.user_id }),
+      });
+      const result = await response.json();
+      if (response.status !== 200) {
+        throw Error("Something went wrong");
+      }
+      const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_TEST_KEY);
+      if (!stripe) {
+        throw Error("Something went wrong");
+      }
+      await stripe.redirectToCheckout({ sessionId: result.session.id });
+    } catch (error) {
+      toast.error(error);
+    }
+  };
+
   if (loading) {
     return (
       <>
@@ -102,36 +123,32 @@ const IndividualDashboard = () => {
             <div className="mt-[2rem] flex justify-center items-center gap-4">
               <Link
                 href={`/job-listing`}
-                className="inline-block bg-blue-600 text-white px-6 py-3 mb-6 rounded hover:bg-blue-700 transition duration-150 ease-in-out"
+                className="inline-block bg-blueprimary text-white px-6 py-3 mb-6 rounded hover:bg-blue-600 transition duration-150 ease-in-out"
               >
                 Find Job Listings
               </Link>
               <Link
                 href={"/dashboard/applications"}
-                className="inline-block bg-blue-600 text-white px-6 py-3 mb-6 rounded hover:bg-blue-700 transition duration-150 ease-in-out"
+                className="inline-block bg-blueprimary text-white px-6 py-3 mb-6 rounded hover:bg-blue-600 transition duration-150 ease-in-out"
               >
                 View All Applications
               </Link>
-              <form action="/api/payment/mock-interview" method="POST">
-                <button
-                  type="submit"
-                  role="link"
-                  className="inline-block bg-blue-600 text-white px-6 py-3 mb-6 rounded hover:bg-blue-700 transition duration-150 ease-in-out"
-                >
-                  Purchase Mock Interview
-                </button>
-              </form>
+              <button
+                onClick={handlePayment}
+                className="inline-block text-left bg-blueprimary text-white px-6 py-3 mb-6 rounded hover:bg-blue-600 transition duration-150 ease-in-out"
+              >
+                Purchase Mock Interview
+              </button>
             </div>
           </div>
 
           <div className="space-y-6">
             {applications &&
-              applications.map((app) => (
+              applications.map((app, i) => (
                 <div
-                  key={app.id}
+                  key={i}
                   className="bg-gray-50 p-6 rounded-lg flex justify-between items-center hover:shadow-xl transition-shadow duration-300"
                 >
-                  {console.log(app)}
                   <div>
                     <h3 className="font-semibold text-lg">
                       {app.job_listing.title} at {app.job_listing.business.name}

@@ -11,9 +11,7 @@ import Link from "next/link";
 const Page = () => {
   const { id } = useParams();
   const { session, verifyLogin } = useContext(UserContext);
-  const [user, setUser] = useState();
   const [loading, setLoading] = useState(true);
-  const router = useRouter();
   const [individual, setIndividual] = useState();
 
   useEffect(() => {
@@ -27,7 +25,7 @@ const Page = () => {
         }
         if (success) {
           await setLoading(false);
-          fetchPurchase();
+          fetchInterview();
         }
       }
     };
@@ -43,20 +41,6 @@ const Page = () => {
       const results = await response.json();
       setIndividual(results.individual);
     }
-  };
-
-  const fetchPurchase = async () => {
-    const userId = session?.data?.session?.user.id;
-    if (!userId) return;
-    if (userId !== id) {
-      const response = await fetch(`/api/purchase?business_id=${userId}&individual_id=${id}`);
-      if (response.status !== 200) {
-        router.push(`/individual/${id}`);
-        console.error("Please purchase the interview to access this page");
-        return;
-      }
-    }
-    fetchInterview();
   };
 
   if (loading || !individual) {

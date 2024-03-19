@@ -10,7 +10,8 @@ export async function POST(req, res) {
       line_items: [
         {
           // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-          price: "price_1OvAYeJipfpKYmm3vCwBfvfM",
+          price:
+            process.env.NODE_ENV === "production" ? "price_1OvAN0JipfpKYmm3XrwWsZh9" : "price_1OvAYeJipfpKYmm3vCwBfvfM",
           quantity: 1,
         },
       ],

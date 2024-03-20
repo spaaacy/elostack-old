@@ -3,6 +3,7 @@ import { useContext, useState, useEffect, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
 import { UserContext } from "@/context/UserContext";
 import Loader from "@/components/common/Loader";
+import { createClient } from "@supabase/supabase-js";
 
 const EditIndividualProfile = () => {
   const { session } = useContext(UserContext);
@@ -10,6 +11,7 @@ const EditIndividualProfile = () => {
   const router = useRouter();
   const [formData, setFormData] = useState();
   const [loading, setLoading] = useState(true);
+  const [profilePicture, setProfilePicture] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -47,16 +49,17 @@ const EditIndividualProfile = () => {
     // Check for a valid session and user ID before proceeding
     if (userId) {
       try {
+        const fetchFormData = new FormData();
+        if (profilePicture) fetchFormData.append("profile_picture", profilePicture);
+        fetchFormData.append("profile_data", JSON.stringify({ ...formData, user_id: userId }));
         await fetch("/api/individual/edit-profile", {
           method: "POST",
-          body: JSON.stringify({
-            ...formData,
-            user_id: userId,
-          }),
+          headers: {
+            "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
+          },
+          body: fetchFormData,
         });
 
-        // Handle successful profile update, e.g., redirecting the user or showing a success message
-        console.log("Profile updated successfully");
         router.push(`/individual/${userId}`);
       } catch (error) {
         console.error("Error updating profile:", error.message);
@@ -70,11 +73,11 @@ const EditIndividualProfile = () => {
     }
   };
 
-  // function handleFileChange(e) {
-  //   const file = e.target.files[0];
-  //   // Update your state with the selected file
-  //   setProfilePicture(file);
-  // }
+  function handleFileChange(e) {
+    const file = e.target.files[0];
+    // Update your state with the selected file
+    setProfilePicture(file);
+  }
 
   if (loading) {
     return <Loader />;
@@ -115,7 +118,7 @@ const EditIndividualProfile = () => {
                 className="mt-1 block w-full rounded border border-gray-300 bg-white  p-2 shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               />
             </div>
-            {/* <div className="mb-4">
+            <div className="mb-4">
               <label htmlFor="profile_picture" className="block text-sm font-medium text-gray-700">
                 Profile Picture
               </label>
@@ -126,7 +129,7 @@ const EditIndividualProfile = () => {
                 onChange={handleFileChange}
                 className="mt-1 block w-full rounded border border-gray-300 bg-white  p-2 shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               />
-            </div> */}
+            </div>
             <div className="mb-4">
               <label htmlFor="gender" className="block text-sm font-medium text-gray-700">
                 Gender

@@ -16,7 +16,7 @@ const IndividualDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [applications, setApplications] = useState();
   const [error, setError] = useState();
-  const [purchase, setPurchase] = useState(false);
+  const [purchase, setPurchase] = useState(null);
   const [bookInterview, setBookInterview] = useState(false);
   const { profileData, setProfileData } = profileStore();
   const router = useRouter();
@@ -79,10 +79,10 @@ const IndividualDashboard = () => {
     const userId = session?.data.session?.user.id;
     if (userId) {
       const response = await fetch(`/api/purchase/${userId}`);
+      if (response.status !== 200) return;
       const result = await response.json();
-      if (response.status !== 200) {
-        setPurchase(true);
-      } else if (result.data.status === "pending") {
+      setPurchase(result.data);
+      if (result.data.status === "pending") {
         if (searchParams.has("booking_confirmed")) {
           confirmBooking(result.data.payment_intent_id);
         } else {
@@ -153,25 +153,31 @@ const IndividualDashboard = () => {
 
         {/* Job Application Status */}
         <section data-aos="fade-right" className="bg-center p-8 rounded-lg shadow-lg">
-          <div className="flex justify-between items-center -mt-[2rem] ">
+          <div className="flex justify-between items-center ">
             <h2 className="text-3xl font-bold text-blueprimary">Your Applications</h2>
-            <div className="mt-[2rem] flex justify-center items-center gap-4">
+            <div className="flex justify-center items-center gap-4">
+              {purchase?.status !== "complete" && (
+                <p className="mr-4">
+                  {`Booking Status: `}
+                  <span className="font-bold capitalize ">{purchase?.status}</span>
+                </p>
+              )}
               <Link
                 href={`/job-listing`}
-                className="inline-block bg-blueprimary text-white px-6 py-3 mb-6 rounded hover:bg-blue-600 transition duration-150 ease-in-out"
+                className="inline-block bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-600 transition duration-150 ease-in-out"
               >
                 Find Job Listings
               </Link>
               <Link
                 href={"/dashboard/applications"}
-                className="inline-block bg-blueprimary text-white px-6 py-3 mb-6 rounded hover:bg-blue-600 transition duration-150 ease-in-out"
+                className="inline-block bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-600 transition duration-150 ease-in-out"
               >
                 View All Applications
               </Link>
-              {purchase && (
+              {!purchase && (
                 <button
                   onClick={handlePayment}
-                  className="inline-block text-left bg-blueprimary text-white px-6 py-3 mb-6 rounded hover:bg-blue-600 transition duration-150 ease-in-out"
+                  className="inline-block text-left bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-600 transition duration-150 ease-in-out"
                 >
                   Purchase Mock Interview
                 </button>
@@ -180,7 +186,7 @@ const IndividualDashboard = () => {
                 <Link
                   target="_blank"
                   href={"https://calendly.com/elostack/30min"}
-                  className="inline-block text-left bg-blueprimary text-white px-6 py-3 mb-6 rounded hover:bg-blue-600 transition duration-150 ease-in-out"
+                  className="inline-block text-left bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-600 transition duration-150 ease-in-out"
                 >
                   Book interview
                 </Link>

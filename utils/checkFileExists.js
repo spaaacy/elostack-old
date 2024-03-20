@@ -1,4 +1,4 @@
-export default function checkImageExists(image_url) {
+export default function checkFileExists(image_url) {
   var http = new XMLHttpRequest();
 
   http.open("HEAD", image_url, false);

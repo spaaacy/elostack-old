@@ -65,6 +65,16 @@ const IndividualDashboard = () => {
     }
   };
 
+  const confirmBooking = async (payment_intent_id) => {
+    const response = await fetch("/api/purchase/confirm-booking", {
+      method: "POST",
+      body: JSON.stringify({ payment_intent_id }),
+    });
+    if (response.status === 200) {
+      toast.success("Booking confirmed!");
+    }
+  };
+
   const fetchPurchase = async () => {
     const userId = session?.data.session?.user.id;
     if (userId) {
@@ -73,7 +83,11 @@ const IndividualDashboard = () => {
       if (response.status !== 200) {
         setPurchase(true);
       } else if (result.data.status === "pending") {
-        setBookInterview(true);
+        if (searchParams.has("booking_confirmed")) {
+          confirmBooking(result.data.payment_intent_id);
+        } else {
+          setBookInterview(true);
+        }
       }
     } else {
       console.log("Session not loaded or user ID undefined");
@@ -163,9 +177,13 @@ const IndividualDashboard = () => {
                 </button>
               )}
               {bookInterview && (
-                <button className="inline-block text-left bg-blueprimary text-white px-6 py-3 mb-6 rounded hover:bg-blue-600 transition duration-150 ease-in-out">
+                <Link
+                  target="_blank"
+                  href={"https://calendly.com/elostack/30min"}
+                  className="inline-block text-left bg-blueprimary text-white px-6 py-3 mb-6 rounded hover:bg-blue-600 transition duration-150 ease-in-out"
+                >
                   Book interview
-                </button>
+                </Link>
               )}
             </div>
           </div>

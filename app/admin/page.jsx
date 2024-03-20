@@ -83,7 +83,7 @@ const Page = () => {
               <table className="w-full table-auto text-sm">
                 <thead>
                   <tr>
-                    <th className="px-4 py-2">Purchase ID</th>
+                    <th className="px-4 py-2">Payment Intent ID</th>
                     <th className="px-4 py-2">Creation Date</th>
                     <th className="px-4 py-2">Individual ID</th>
                     <th className="px-4 py-2">Candidate Name</th>
@@ -94,7 +94,7 @@ const Page = () => {
                     requests.map((request) => (
                       <>
                         <tr key={request.id}>
-                          <td className="border px-4 py-2">{request.id}</td>
+                          <td className="border px-4 py-2">{request.payment_intent_id}</td>
                           <td className="border px-4 py-2">{formatDate(request.created_at)}</td>
                           <td className="border px-4 py-2">{request.individual.user_id}</td>
                           <td className="border px-4 py-2">
@@ -112,13 +112,13 @@ const Page = () => {
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
                 <div className="flex items-center gap-2">
                   <div>
-                    <label className="block font-semibold">Purchase ID</label>
+                    <label className="block font-semibold">Payment Intent ID</label>
                     <input
-                      type="number"
-                      {...register("purchase_id", { required: true })}
+                      type="text"
+                      {...register("payment_intent_id", { required: true })}
                       className="mt-1 p-2 border rounded"
                     />
-                    {errors.purchase_id && <p>This field is required</p>}
+                    {errors.payment_intent_id && <p>This field is required</p>}
                   </div>
                   <div className="flex-1">
                     <label className="block font-semibold">Individual ID</label>

@@ -84,9 +84,9 @@ const Page = () => {
                 <thead>
                   <tr>
                     <th className="px-4 py-2">Payment Intent ID</th>
-                    <th className="px-4 py-2">Creation Date</th>
                     <th className="px-4 py-2">Individual ID</th>
                     <th className="px-4 py-2">Candidate Name</th>
+                    <th className="px-4 py-2">Status</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -95,11 +95,11 @@ const Page = () => {
                       <>
                         <tr key={request.id}>
                           <td className="border px-4 py-2">{request.payment_intent_id}</td>
-                          <td className="border px-4 py-2">{formatDate(request.created_at)}</td>
                           <td className="border px-4 py-2">{request.individual.user_id}</td>
                           <td className="border px-4 py-2">
                             {`${request.individual.first_name} ${request.individual.last_name}`}
                           </td>
+                          <td className="border px-4 py-2 capitalize">{request.status}</td>
                         </tr>
                       </>
                     ))}
@@ -145,13 +145,13 @@ const Page = () => {
                   {errors.feedback && <p>This field is required</p>}
                 </div>
                 <div>
-                  <label className="block font-semibold">Video URL</label>
+                  <label className="block font-semibold">YouTube Video ID</label>
                   <input
                     type="text"
-                    {...register("video_url", { required: true })}
+                    {...register("youtube_id", { required: true })}
                     className="w-full mt-1 p-2 border rounded"
                   />
-                  {errors.video_url && <p>This field is required</p>}
+                  {errors.youtube_id && <p>This field is required</p>}
                 </div>
 
                 <div className="flex justify-end">

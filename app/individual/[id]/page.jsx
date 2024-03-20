@@ -110,12 +110,14 @@ const Page = () => {
                         </div>
                       </div>
                       <div className="flex gap-2 items-center">
-                        <Link
-                          href={`${id}/interview`}
-                          className="px-4 py-2 rounded text-white bg-blue-500 hover:bg-blue-600 focus:outline-none"
-                        >
-                          View Interview
-                        </Link>
+                        {profileData.interview_id && (
+                          <Link
+                            href={`${id}/interview`}
+                            className="px-4 py-2 rounded text-white bg-blue-500 hover:bg-blue-600 focus:outline-none"
+                          >
+                            View Interview
+                          </Link>
+                        )}
                         {session?.data?.session?.user.id === id && <EditProfileButton />}
                       </div>
                     </div>

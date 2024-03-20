@@ -156,7 +156,7 @@ const IndividualDashboard = () => {
           <div className="flex justify-between items-center ">
             <h2 className="text-3xl font-bold text-blueprimary">Your Applications</h2>
             <div className="flex justify-center items-center gap-4">
-              {purchase?.status !== "complete" && (
+              {purchase && purchase?.status !== "complete" && (
                 <p className="mr-4">
                   {`Booking Status: `}
                   <span className="font-bold capitalize ">{purchase?.status}</span>

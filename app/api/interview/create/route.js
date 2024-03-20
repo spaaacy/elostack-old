@@ -5,13 +5,13 @@ export async function POST(req, res) {
   try {
     const json = await req.json();
     if (!json) throw Error("Interview data not provided!");
-    const { individual_id, grade, feedback, video_url, payment_intent_id } = json;
+    const { individual_id, grade, feedback, youtube_id, payment_intent_id } = json;
     let results;
 
     // Create interview
     results = await supabase
       .from("interview")
-      .insert({ individual_id, grade, feedback, video_url })
+      .insert({ individual_id, grade, feedback, youtube_id })
       .select("id")
       .single();
     if (results.error) throw results.error;

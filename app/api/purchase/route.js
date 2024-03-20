@@ -6,7 +6,7 @@ export async function GET(req, res) {
     const results = await supabase
       .from("purchase")
       .select("*, individual(*)")
-      .eq("status", "pending")
+      .neq("status", "complete")
       .order("created_at", { ascending: false });
     if (results.error) throw results.error;
     return NextResponse.json({ requests: results.data }, { status: 200 });

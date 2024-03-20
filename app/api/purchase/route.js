@@ -3,8 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req, res) {
   try {
-    let results;
-    results = await supabase
+    const results = await supabase
       .from("purchase")
       .select("*, individual(*)")
       .eq("status", "pending")

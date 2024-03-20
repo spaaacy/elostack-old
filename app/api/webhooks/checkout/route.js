@@ -27,7 +27,9 @@ export async function POST(req) {
     if (event.type === "checkout.session.completed") {
       const individual_id = event.data.object.metadata.individual_id;
       if (individual_id) {
-        const { error } = await supabase.from("purchase").insert({ user_id: individual_id });
+        const { error } = await supabase
+          .from("purchase")
+          .insert({ payment_intent_id: event.data.object.payment_intent, individual_id });
         if (error) throw error;
       } else {
         throw Error("Individual ID missing from metadata!");

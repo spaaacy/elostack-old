@@ -24,7 +24,6 @@ const Page = () => {
   useEffect(() => {
     if (session) {
       fetchIndividual();
-      fetchUser();
     }
   }, [session]);
 
@@ -86,14 +85,15 @@ const Page = () => {
                           <div className="mt-2 flex items-center text-sm text-gray-500">{profileData.pronouns}</div>
                         </div>
                       </div>
-                      <Link
-                        href={`${id}/interview`}
-                        onClick={submitAccessInterview}
-                        className="px-4 py-2 rounded text-white bg-blue-500 hover:bg-blue-600 focus:outline-none"
-                      >
-                        View Interview
-                      </Link>
-                      {session?.data?.session?.user.id === id && <EditProfileButton />}
+                      <div className="flex gap-2 items-center">
+                        <Link
+                          href={`${id}/interview`}
+                          className="px-4 py-2 rounded text-white bg-blue-500 hover:bg-blue-600 focus:outline-none"
+                        >
+                          View Interview
+                        </Link>
+                        {session?.data?.session?.user.id === id && <EditProfileButton />}
+                      </div>
                     </div>
                   </div>
                 </div>

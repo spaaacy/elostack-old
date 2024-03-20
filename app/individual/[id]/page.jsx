@@ -16,7 +16,7 @@ import { profileStore } from "@/components/individual/profileStore";
 import FeaturedCard from "@/components/individual/profile/FeaturedCard";
 import { supabase } from "@/utils/supabase";
 import Image from "next/image";
-import checkImageExists from "@/utils/checkImageExists";
+import checkFileExists from "@/utils/checkFileExists";
 
 const Page = () => {
   const { id } = useParams();
@@ -24,12 +24,18 @@ const Page = () => {
   const { profileData, setProfileData } = profileStore();
   const [loading, setLoading] = useState(true);
   const [imageExists, setImageExists] = useState(false);
+  const [resumeExists, setResumeExists] = useState(false);
+  const [coverLetterExists, setCoverLetterExists] = useState(false);
   const imageSrc = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/${process.env.NEXT_PUBLIC_STORAGE_PATH}/profile-pictures/${id}/default`;
+  const resumeSrc = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/${process.env.NEXT_PUBLIC_STORAGE_PATH}/documents/${id}/resume`;
+  const coverLetterSrc = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/${process.env.NEXT_PUBLIC_STORAGE_PATH}/documents/${id}/cover-letter`;
 
   useEffect(() => {
     if (session) {
       fetchIndividual();
-      setImageExists(checkImageExists(imageSrc));
+      setImageExists(checkFileExists(imageSrc));
+      setResumeExists(checkFileExists(imageSrc));
+      setCoverLetterExists(checkFileExists(imageSrc));
     }
   }, [session]);
 
@@ -187,12 +193,12 @@ const Page = () => {
                         </dd>
                       </div>
                     )}
-                    {profileData.resume && (
+                    {resumeExists && (
                       <div className="sm:col-span-1">
                         <dt className="text-sm font-medium text-gray-500">Resume</dt>
                         <dd className="mt-1 text-sm text-gray-900">
                           <a
-                            href={profileData.resume}
+                            href={resumeSrc}
                             className="text-blue-600 hover:text-blue-700"
                             target="_blank"
                             rel="noopener noreferrer"
@@ -202,12 +208,12 @@ const Page = () => {
                         </dd>
                       </div>
                     )}
-                    {profileData.cover_letter && (
+                    {coverLetterExists && (
                       <div className="sm:col-span-1">
                         <dt className="text-sm font-medium text-gray-500">Cover Letter</dt>
                         <dd className="mt-1 text-sm text-gray-900">
                           <a
-                            href={profileData.cover_letter}
+                            href={coverLetterSrc}
                             className="text-blue-600 hover:text-blue-700"
                             target="_blank"
                             rel="noopener noreferrer"

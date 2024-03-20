@@ -9,13 +9,15 @@ const EditIndividualProfile = () => {
   const { session } = useContext(UserContext);
 
   const router = useRouter();
-  const [formData, setFormData] = useState();
+  const [individualData, setFormData] = useState();
   const [loading, setLoading] = useState(true);
-  const [profilePicture, setProfilePicture] = useState(null);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    if (e.target.type === "file") {
+      setFormData({ ...individualData, [e.target.name]: e.target.files[0] });
+    } else {
+      setFormData({ ...individualData, [e.target.name]: e.target.value });
+    }
   };
 
   useEffect(() => {
@@ -45,19 +47,33 @@ const EditIndividualProfile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const userId = session?.data.session?.user.id;
+    console.log(individualData);
 
     // Check for a valid session and user ID before proceeding
     if (userId) {
       try {
-        const fetchFormData = new FormData();
-        if (profilePicture) fetchFormData.append("profile_picture", profilePicture);
-        fetchFormData.append("profile_data", JSON.stringify({ ...formData, user_id: userId }));
+        const formData = new FormData();
+
+        // Add files to formData and remove from object
+        if (individualData.profilePicture) {
+          formData.append("profilePicture", individualData.profilePicture);
+          delete individualData.profilePicture;
+        }
+        if (individualData.resume) {
+          formData.append("resume", individualData.resume);
+          delete individualData.resume;
+        }
+        if (individualData.coverLetter) {
+          formData.append("coverLetter", individualData.coverLetter);
+          delete individualData.coverLetter;
+        }
+        formData.append("profile_data", JSON.stringify({ ...individualData, user_id: userId }));
         await fetch("/api/individual/edit-profile", {
           method: "POST",
           headers: {
             "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
           },
-          body: fetchFormData,
+          body: formData,
         });
 
         router.push(`/individual/${userId}`);
@@ -72,12 +88,6 @@ const EditIndividualProfile = () => {
       }
     }
   };
-
-  function handleFileChange(e) {
-    const file = e.target.files[0];
-    // Update your state with the selected file
-    setProfilePicture(file);
-  }
 
   if (loading) {
     return <Loader />;
@@ -98,7 +108,7 @@ const EditIndividualProfile = () => {
                 type="text"
                 name="first_name"
                 id="first_name"
-                value={formData.first_name}
+                value={individualData.first_name}
                 onChange={handleChange}
                 placeholder="Enter your first name"
                 className="mt-1 block w-full rounded border border-gray-300 bg-white p-2 shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
@@ -112,21 +122,21 @@ const EditIndividualProfile = () => {
                 type="text"
                 name="last_name"
                 id="last_name"
-                value={formData.last_name}
+                value={individualData.last_name}
                 onChange={handleChange}
                 placeholder="Enter your last name"
                 className="mt-1 block w-full rounded border border-gray-300 bg-white  p-2 shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="profile_picture" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="profilePicture" className="block text-sm font-medium text-gray-700">
                 Profile Picture
               </label>
               <input
                 type="file"
-                name="profile_picture"
-                id="profile_picture"
-                onChange={handleFileChange}
+                name="profilePicture"
+                id="profilePicture"
+                onChange={handleChange}
                 className="mt-1 block w-full rounded border border-gray-300 bg-white  p-2 shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               />
             </div>
@@ -138,7 +148,7 @@ const EditIndividualProfile = () => {
                 name="gender"
                 id="gender"
                 defaultValue="male"
-                value={formData.gender}
+                value={individualData.gender}
                 onChange={handleChange}
                 className="mt-1 block w-full rounded border border-gray-300 bg-white  p-2 shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               >
@@ -157,17 +167,17 @@ const EditIndividualProfile = () => {
                 type="date"
                 name="birthday"
                 id="birthday"
-                value={formData.birthday}
+                value={individualData.birthday}
                 onChange={handleChange}
                 className="mt-1 block w-full rounded border border-gray-300 bg-white  p-2 shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               />
             </div>
-            <div className="text-xl font-semibold mb-6">About </div>
+            <div className="text-xl font-semibold mb-6">About</div>
             <div className="mb-4">
               <textarea
                 name="about_me"
                 id="about_me"
-                value={formData.about_me}
+                value={individualData.about_me}
                 onChange={handleChange}
                 rows={10}
                 placeholder="Describe yourself here..."
@@ -184,7 +194,7 @@ const EditIndividualProfile = () => {
                 type="text"
                 name="phone_number"
                 id="phone_number"
-                value={formData.phone_number}
+                value={individualData.phone_number}
                 onChange={handleChange}
                 placeholder="Enter your phone number"
                 className="mt-1 block w-full rounded border border-gray-300 bg-white  p-2 shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
@@ -195,7 +205,7 @@ const EditIndividualProfile = () => {
               <select
                 name="phone_type"
                 id="phone_type"
-                value={formData.phone_type}
+                value={individualData.phone_type}
                 onChange={handleChange}
                 className="mt-1 block w-full rounded border border-gray-300 bg-white  p-2 shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               >
@@ -214,7 +224,7 @@ const EditIndividualProfile = () => {
                 type="text"
                 name="country"
                 id="country"
-                value={formData.country}
+                value={individualData.country}
                 onChange={handleChange}
                 placeholder="Ex: United States"
                 className="mt-1 block w-full rounded border border-gray-300 bg-white  p-2 shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
@@ -228,7 +238,7 @@ const EditIndividualProfile = () => {
                 type="text"
                 name="state"
                 id="state"
-                value={formData.state}
+                value={individualData.state}
                 onChange={handleChange}
                 placeholder="Ex: FL"
                 className="mt-1 block w-full rounded border border-gray-300 bg-white  p-2 shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
@@ -242,7 +252,7 @@ const EditIndividualProfile = () => {
                 type="text"
                 name="city"
                 id="city"
-                value={formData.city}
+                value={individualData.city}
                 onChange={handleChange}
                 placeholder="Enter your City"
                 className="mt-1 block w-full rounded border border-gray-300 bg-white  p-2 shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
@@ -256,7 +266,7 @@ const EditIndividualProfile = () => {
                 type="text"
                 name="address"
                 id="address"
-                value={formData.address}
+                value={individualData.address}
                 onChange={handleChange}
                 placeholder="Enter your Address"
                 className="mt-1 block w-full rounded border border-gray-300 bg-white  p-2 shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
@@ -270,14 +280,14 @@ const EditIndividualProfile = () => {
                 type="text"
                 name="postal_code"
                 id="postal_code"
-                value={formData.postal_code}
+                value={individualData.postal_code}
                 onChange={handleChange}
                 placeholder="Enter your postal code"
                 className="mt-1 block w-full rounded border border-gray-300 bg-white  p-2 shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               />
             </div>
-            {/* 
-            <div className="text-xl font-semibold mb-6">Professional Information</div>
+
+            <div className="text-xl font-semibold mb-6">Documents</div>
             <div className="mb-4">
               <label htmlFor="resume" className="block text-sm font-medium text-gray-700">
                 Upload Resume<span className="text-red-500">*</span>
@@ -293,18 +303,18 @@ const EditIndividualProfile = () => {
             </div>
 
             <div className="mb-4">
-              <label htmlFor="cover_letter" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="coverLetter" className="block text-sm font-medium text-gray-700">
                 Upload Cover Letter<span className="text-red-500">*</span>
               </label>
               <input
                 type="file"
-                name="cover_letter"
-                id="cover_letter"
+                name="coverLetter"
+                id="coverLetter"
                 onChange={handleChange}
                 accept=".pdf"
                 className="mt-1 block w-full rounded border border-gray-300 bg-white  p-2 shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               />
-            </div> */}
+            </div>
 
             <div className="text-xl font-semibold mb-6">Online Presence</div>
             <div className="mb-4">
@@ -315,7 +325,7 @@ const EditIndividualProfile = () => {
                 type="text"
                 name="portfolio"
                 id="portfolio"
-                value={formData.portfolio}
+                value={individualData.portfolio}
                 onChange={handleChange}
                 placeholder="Enter your portfolio URL"
                 className="mt-1 block w-full rounded border border-gray-300 bg-white  p-2 shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
@@ -329,7 +339,7 @@ const EditIndividualProfile = () => {
                 type="text"
                 name="linkedin"
                 id="linkedin"
-                value={formData.linkedin}
+                value={individualData.linkedin}
                 onChange={handleChange}
                 placeholder="Enter your LinkedIn URL"
                 className="mt-1 mb-4 block w-full rounded border border-gray-300 bg-white  p-2 shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
@@ -343,7 +353,7 @@ const EditIndividualProfile = () => {
                 type="text"
                 name="github"
                 id="github"
-                value={formData.github}
+                value={individualData.github}
                 onChange={handleChange}
                 placeholder="Enter your GitHub URL"
                 className="mt-1 mb-4 block w-full rounded border border-gray-300 bg-white  p-2 shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"

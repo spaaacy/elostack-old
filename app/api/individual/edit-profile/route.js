@@ -4,7 +4,9 @@ import { NextRequest, NextResponse } from "next/server";
 export const POST = async (req, res) => {
   try {
     const formData = await req.formData();
-    const profilePicture = formData.get("profile_picture");
+    const profilePicture = formData.get("profilePicture");
+    const resume = formData.get("resume");
+    const coverLetter = formData.get("coverLetter");
     const profileData = JSON.parse(formData.get("profile_data"));
 
     // Authentication
@@ -20,6 +22,22 @@ export const POST = async (req, res) => {
       results = await supabase.storage
         .from("profile-pictures")
         .upload(`${profileData.user_id}/default`, profilePicture, { cacheControl: 3600, upsert: true });
+      if (results.error) throw results.error;
+    }
+
+    // Upload resume
+    if (resume) {
+      results = await supabase.storage
+        .from("documents")
+        .upload(`${profileData.user_id}/resume`, resume, { cacheControl: 3600, upsert: true });
+      if (results.error) throw results.error;
+    }
+
+    // Upload cover letter
+    if (coverLetter) {
+      results = await supabase.storage
+        .from("documents")
+        .upload(`${profileData.user_id}/cover-letter`, coverLetter, { cacheControl: 3600, upsert: true });
       if (results.error) throw results.error;
     }
 

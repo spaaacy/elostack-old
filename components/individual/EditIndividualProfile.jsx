@@ -60,7 +60,7 @@ const EditIndividualProfile = () => {
           body: fetchFormData,
         });
 
-        // router.push(`/individual/${userId}`);
+        router.push(`/individual/${userId}`);
       } catch (error) {
         console.error("Error updating profile:", error.message);
       }

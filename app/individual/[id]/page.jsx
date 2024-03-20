@@ -14,16 +14,22 @@ import { parsePhoneNumber } from "libphonenumber-js";
 import EditProfileButton from "@/components/common/EditProfileButton";
 import { profileStore } from "@/components/individual/profileStore";
 import FeaturedCard from "@/components/individual/profile/FeaturedCard";
+import { supabase } from "@/utils/supabase";
+import Image from "next/image";
+import checkImageExists from "@/utils/checkImageExists";
 
 const Page = () => {
   const { id } = useParams();
   const { session } = useContext(UserContext);
   const { profileData, setProfileData } = profileStore();
   const [loading, setLoading] = useState(true);
+  const [imageExists, setImageExists] = useState(false);
+  const imageSrc = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/${process.env.NEXT_PUBLIC_STORAGE_PATH}/profile-pictures/${id}/default`;
 
   useEffect(() => {
     if (session) {
       fetchIndividual();
+      setImageExists(checkImageExists(imageSrc));
     }
   }, [session]);
 
@@ -67,11 +73,21 @@ const Page = () => {
                 <div className="p-5 border-b border-gray-200">
                   <div className="flex items-center space-x-5">
                     <div className="flex-shrink-0">
-                      <div className="h-20 w-20 rounded-full bg-blue-100 flex items-center justify-center">
-                        <span className="text-xl font-medium uppercase">
-                          {profileData.first_name[0] + profileData.last_name[0]}
-                        </span>
-                      </div>
+                      {imageExists ? (
+                        <Image
+                          className="w-[150px] h-[150px] object-cover rounded-full"
+                          width={150}
+                          height={150}
+                          alt="profile_picture"
+                          src={imageSrc}
+                        />
+                      ) : (
+                        <div className="h-[150px] w-[150px] rounded-full bg-blue-100 flex items-center justify-center">
+                          <span className="text-5xl font-medium uppercase">
+                            {profileData.first_name[0] + profileData.last_name[0]}
+                          </span>
+                        </div>
+                      )}
                     </div>
                     <div className="flex w-full justify-between items-center">
                       <div className="flex-1 min-w-0">
@@ -79,9 +95,11 @@ const Page = () => {
                           {`${profileData.first_name} ${profileData.last_name}`}
                         </h2>
                         <div className="mt-1 flex flex-col sm:flex-row sm:flex-wrap sm:mt-0 sm:space-x-6">
-                          <div className="mt-2 flex items-center text-sm text-gray-500">
-                            {profileData.city}, {profileData.state}
-                          </div>
+                          {profileData.city && profileData.state && (
+                            <div className="mt-2 flex items-center text-sm text-gray-500">
+                              {profileData.city}, {profileData.state}
+                            </div>
+                          )}
                           <div className="mt-2 flex items-center text-sm text-gray-500">{profileData.pronouns}</div>
                         </div>
                       </div>

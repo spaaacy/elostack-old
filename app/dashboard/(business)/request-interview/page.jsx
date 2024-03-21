@@ -53,75 +53,77 @@ const Page = () => {
     );
 
   return (
-    <>
+    <main className="flex flex-col min-h-screen text-white w-full bg-gradient-to-b from-[#0f0f1c] via-[#1b1b29] to-[#251b30]">
       <NavBar />
-      <div>
-        <>
-          <section className="container mx-auto bg-white mt-6 bg-center p-8 rounded-lg shadow-lg w-3/5">
-            <h2 className="text-3xl font-bold text-blueprimary">Request Interview</h2>
-            <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-4">
-              <input
-                type="text"
-                name="individual_name"
-                placeholder="Candidate Name"
-                value={formData.individual_name}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded"
-              />
-              <input
-                type="text"
-                name="individual_email"
-                placeholder="Candidate Email"
-                value={formData.individual_email}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded"
-              />
-              <select
-                defaultValue="intern"
-                value={formData.position}
-                name="position"
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded"
+      <main className="container mx-auto p-4 bg-[#1b1b29] rounded-lg shadow mt-8 w-3/5">
+        <section className="p-5 border-b border-gray-700">
+          <div className="text-center">
+            <h2 className="text-4xl font-bold">Request Interview</h2>
+          </div>
+        </section>
+        <section className="p-8">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-4">
+            <input
+              type="text"
+              name="individual_name"
+              placeholder="Candidate Name"
+              value={formData.individual_name}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-700 rounded bg-[#0f0f1c] focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50 transition duration-150 ease-in-out text-white"
+            />
+            <input
+              type="text"
+              name="individual_email"
+              placeholder="Candidate Email"
+              value={formData.individual_email}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-700 rounded bg-[#0f0f1c] focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50 transition duration-150 ease-in-out text-white"
+            />
+            <select
+              defaultValue="intern"
+              value={formData.position}
+              name="position"
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-700 rounded bg-[#0f0f1c] focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50 transition duration-150 ease-in-out text-white"
+            >
+              <option value="">Select Position</option>
+              <option value="intern">Intern</option>
+              <option value="junior">Junior</option>
+            </select>
+
+            <select
+              value={formData.type}
+              name="type"
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-700 rounded bg-[#0f0f1c] focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50 transition duration-150 ease-in-out text-white"
+            >
+              <option value="">Select Interview Type</option>
+              <option value="technical">Technical</option>
+              <option value="behavioral">Behavioral</option>
+            </select>
+
+            <label className="font-semibold text-sm text-gray-400 -my-2">* Interview will be 1 hour long</label>
+            <textarea
+              name="description"
+              placeholder="Description"
+              value={formData.description}
+              onChange={handleChange}
+              rows={5}
+              className="w-full p-2 border border-gray-700 rounded resize-none bg-[#0f0f1c] focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50 transition duration-150 ease-in-out text-white"
+            />
+
+            <div className="flex justify-end">
+              <button
+                type="submit"
+                className="inline-block bg-purple-700 text-white px-6 py-3 mb-6 rounded hover:bg-purple-900 transition duration-150 ease-in-out"
               >
-                <option value="">Select Position</option>
-                <option value="intern">Intern</option>
-                <option value="junior">Junior</option>
-              </select>
-
-              <select
-                value={formData.type}
-                name="type"
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded"
-              >
-                <option value="">Select Interview Type</option>
-                <option value="technical">Technical</option>
-                <option value="behavioral">Behavioral</option>
-              </select>
-
-              <label className="font-semibold text-sm text-gray-500 -my-2">* Interview will be 1 hour long</label>
-              <textarea
-                name="description"
-                placeholder="Description"
-                value={formData.description}
-                onChange={handleChange}
-                rows={5}
-                className="w-full p-2 border border-gray-300 rounded resize-none"
-              />
-
-              <div className="flex justify-end">
-                <button
-                  type="submit"
-                  className="inline-block bg-blue-600 text-white px-6 py-3 mb-6 rounded hover:bg-blue-700 transition duration-150 ease-in-out mauto"
-                >
-                  Submit
-                </button>
-              </div>
-            </form>
-          </section>
-        </>
-      </div>
-    </>
+                Submit
+              </button>
+            </div>
+          </form>
+        </section>
+      </main>
+    </main>
   );
 };
 

@@ -12,6 +12,7 @@ const NavBar = ({ isModalOpen }) => {
   const [lastScrollY, setLastScrollY] = useState(0);
   const [navBarVisible, setNavBarVisible] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [user, setUser] = useState();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,10 +28,30 @@ const NavBar = ({ isModalOpen }) => {
     if (!isModalOpen) {
       window.addEventListener("scroll", handleScroll, { passive: true });
     }
+
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, [lastScrollY, isModalOpen]);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const userId = session?.data?.session?.user.id;
+      if (userId) {
+        const response = await fetch(`/api/user/${userId}`, {
+          method: "GET",
+        });
+        if (response.status === 200) {
+          const { user } = await response.json();
+          setUser(user);
+        }
+      }
+    };
+
+    if (session) {
+      fetchUser();
+    }
+  }, [session]);
 
   return (
     <nav
@@ -38,40 +59,70 @@ const NavBar = ({ isModalOpen }) => {
         navBarVisible && !isModalOpen ? "" : "-translate-y-full"
       }`}
     >
-  <Link href={"/"} className="text-[1.5rem] font-bold text-white transition-colors hover:text-gray-300">
-    <div className="flex items-center">
-      <Image src={"/logo1.png"} alt="logo" width={50} height={50} />
-      <div className="ml-2">EloStack</div>
-    </div>
-  </Link>
-  <div className={`hidden lg:flex justify-center space-x-8 ${session?.data.session ? 'mr-10' : ''}`}>
-    <Link href={"/job-listing"} className="text-gray-300 hover:text-white bg-gray-800 px-4 py-2 rounded-md text-base font-medium">Job listings</Link>
-    <Link href={"/dashboard/applications"} className="text-gray-300 hover:text-white bg-gray-800 px-4 py-2 rounded-md text-base font-medium">Applications</Link>
-    <Link href={"/schedule-interview"} className="text-gray-300 hover:text-white bg-gray-800 px-4 py-2 rounded-md text-base font-medium">Schedule interview</Link>
-  </div>
-  <div className="flex items-center">
-    <button className="lg:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-      {/* Hamburger icon */}
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        className="h-6 w-6 text-white"
-      >
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-      </svg>
-    </button>
-    {session?.data.session ? (
-      <UserAccountNav />
-    ) : (
-      <Link href={"/signin"} className="rounded bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 transition-colors">
-        Sign in
+      <Link href={"/"} className="text-[1.5rem] font-bold text-white transition-colors hover:text-gray-300">
+        <div className="flex items-center">
+          <Image src={"/logo1.png"} alt="logo" width={50} height={50} />
+          <div className="ml-2">EloStack</div>
+        </div>
       </Link>
-    )}
-  </div>
-</nav>
-);
+      <div className={`hidden lg:flex justify-center space-x-8 ${session?.data.session ? 'mr-10' : ''}`}>
+        {user?.business ? (
+          <>
+            <Link href={"/dashboard/create-listing"} className="text-gray-300 hover:text-white bg-gray-800 px-4 py-2 rounded-md text-base font-medium">
+              Create Listing
+            </Link>
+            <Link href={"/dashboard/search-individuals"} className="text-gray-300 hover:text-white bg-gray-800 px-4 py-2 rounded-md text-base font-medium">
+              Find Candidates
+            </Link>
+            <Link href={"/dashboard/request-interview"} className="text-gray-300 hover:text-white bg-gray-800 px-4 py-2 rounded-md text-base font-medium">
+              Request Interview
+            </Link>
+          </>
+        ) : (
+          <>
+            <Link href={"/job-listing"} className="text-gray-300 hover:text-white bg-gray-800 px-4 py-2 rounded-md text-base font-medium">
+              Job listings
+            </Link>
+            <Link href={"/dashboard/applications"} className="text-gray-300 hover:text-white bg-gray-800 px-4 py-2 rounded-md text-base font-medium">
+              Applications
+            </Link>
+            <Link href={"/schedule-interview"} className="text-gray-300 hover:text-white bg-gray-800 px-4 py-2 rounded-md text-base font-medium">
+              Schedule interview
+            </Link>
+          </>
+        )}
+      </div>
+      <div className="flex items-center">
+        <button className="lg:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          {/* Hamburger icon */}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            className="h-6 w-6 text-white"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+        </button>
+        {session?.data.session ? (
+          <UserAccountNav />
+        ) : (
+          <Link
+            href={"/signin"}
+            className="rounded bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 transition-colors"
+          >
+            Sign in
+          </Link>
+        )}
+      </div>
+    </nav>
+  );
 };
 
 export default NavBar;

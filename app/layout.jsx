@@ -1,7 +1,9 @@
 "use client";
 
+import GoogleAnalytics from "@/components/common/GoogleAnalytics";
 import { UserProvider } from "@/context/UserContext";
 import "@/styles/globals.css";
+import Script from "next/script";
 
 // Removed the export statement for metadata
 const metadata = {
@@ -13,7 +15,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        {/* Metadata usage remains unchanged */}
+      <GoogleAnalytics ga_id={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS} />
         <title>{metadata.title}</title>
         <meta name="description" content={metadata.description} />
       </head>

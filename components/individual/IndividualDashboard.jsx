@@ -162,7 +162,7 @@ const IndividualDashboard = () => {
                   onClick={handlePayment}
                   className="text-left inline-block bg-purple-700 text-white px-6 py-3 rounded hover:bg-purple-900 transition duration-150 ease-in-out"
                 >
-                  Purchase Mock Interview
+                  Book Mock Interview
                 </button>
               )}
               {bookInterview && (
@@ -171,7 +171,7 @@ const IndividualDashboard = () => {
                   href={"https://calendly.com/elostack/30min"}
                   className="inline-block text-left bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-600 transition duration-150 ease-in-out"
                 >
-                  Book interview
+                  Schedule Interview
                 </Link>
               )}
             </div>

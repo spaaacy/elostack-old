@@ -17,7 +17,7 @@ export default function RootLayout({ children }) {
         <title>{metadata.title}</title>
         <meta name="description" content={metadata.description} />
       </head>
-      <body className="flex flex-col min-h-screen bg-black">
+      <body className="flex flex-col min-h-screen bg-[#0f0f1c]">
         <UserProvider>{children}</UserProvider>
       </body>
     </html>

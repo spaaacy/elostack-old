@@ -82,9 +82,9 @@ const NavBar = ({ isModalOpen }) => {
         ) : (
           <Link
             href={"/signin"}
-            className="rounded bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 transition-colors"
+            className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
           >
-            Sign in
+            Sign In
           </Link>
         )}
       </div>

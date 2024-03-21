@@ -1,14 +1,13 @@
 "use client";
-
-import { useState } from "react";
+import React from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { UserContext } from "@/context/UserContext";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import UserAccountNav from "./UserAccountNav";
 import Image from "next/image";
 
-const NavBar = () => {
+const NavBar = ({ isModalOpen }) => {
   const { session } = useContext(UserContext);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [navBarVisible, setNavBarVisible] = useState(true);
@@ -25,19 +24,20 @@ const NavBar = () => {
       setLastScrollY(currentScrollY);
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
+    if (!isModalOpen) {
+      window.addEventListener("scroll", handleScroll, { passive: true });
+    }
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [lastScrollY]);
+  }, [lastScrollY, isModalOpen]);
 
   return (
-<nav
-  className={`fixed top-0 left-0 w-full z-50 px-2 lg:px-[9rem] py-4 flex justify-between items-center bg-[#0f0f1c] text-white  transition-transform duration-300 ${
-    navBarVisible ? "" : "-translate-y-full"
-  }`}
->
+    <nav
+      className={`fixed top-0 left-0 w-full z-50 px-2 lg:px-[9rem] py-4 flex justify-between items-center bg-[#0f0f1c] text-white transition-transform duration-300 ${
+        navBarVisible && !isModalOpen ? "" : "-translate-y-full"
+      }`}
+    >
   <Link href={"/"} className="text-[1.5rem] font-bold text-white transition-colors hover:text-gray-300">
     <div className="flex items-center">
       <Image src={"/logo1.png"} alt="logo" width={50} height={50} />
@@ -65,7 +65,7 @@ const NavBar = () => {
     {session?.data.session ? (
       <UserAccountNav />
     ) : (
-      <Link href={"/signin"} className="rounded bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 transition-colors">
+      <Link href={"/signin"} className="rounded bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 transition-colors">
         Sign in
       </Link>
     )}

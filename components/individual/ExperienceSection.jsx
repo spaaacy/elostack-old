@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { FaBriefcase, FaTrash, FaEdit } from 'react-icons/fa';
 import moment from 'moment';
+import { formatDate } from "@/utils/formatDate";
+import NavBar from '@/components/common/NavBar';
 
 const ExperienceSection = () => {
   const [experiences, setExperiences] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedExperience, setSelectedExperience] = useState(null);
+  const [expandedExperience, setExpandedExperience] = useState(null);
   const [newExperience, setNewExperience] = useState({
     title: '',
     company: '',
@@ -65,19 +68,31 @@ const ExperienceSection = () => {
 
   const calculateDuration = (startDate, endDate) => {
     const start = moment(startDate);
-    const end = moment(endDate);
+    const end = endDate ? moment(endDate) : moment(); // Use current date if endDate is not provided
     const duration = moment.duration(end.diff(start));
     const years = duration.years();
     const months = duration.months();
     return `${years} yr ${months} mos`;
   };
+  const toggleExpandExperience = (experienceId) => {
+    if (expandedExperience === experienceId) {
+      setExpandedExperience(null);
+    } else {
+      setExpandedExperience(experienceId);
+    }
+  };
+
+  const isDescriptionExpanded = (experienceId) => {
+    return expandedExperience === experienceId;
+  };
 
   return (
     <div className="container mx-auto py-8">
+      <NavBar isModalOpen={isModalOpen} />
       <h2 className="text-2xl font-bold mb-4 text-white">Experience</h2>
       <button
         onClick={() => setIsModalOpen(true)}
-        className="px-4 py-2 bg-blue-600 text-white rounded-md mb-4"
+        className="px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-md mb-4"
       >
         <FaBriefcase className="inline-block mr-2" />
         Add Experience
@@ -85,7 +100,7 @@ const ExperienceSection = () => {
       <div className="space-y-6">
         {experiences.map((experience, index) => (
           <div key={index} className="bg-gray-800 p-6 rounded-lg shadow-md">
-            <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center justify-between mb-2 ">
               <div className="flex items-center">
                 <FaBriefcase className="text-blue-500 mr-2" />
                 <h3 className="text-xl font-semibold text-white">{experience.title}</h3>
@@ -93,7 +108,7 @@ const ExperienceSection = () => {
               <div>
                 <button
                   onClick={() => handleEditExperience(experience)}
-                  className="px-2 py-1 bg-blue-600 text-white rounded-md mr-2"
+                  className="px-2 py-1 bg-purple-500 hover:bg-purple-600 text-white rounded-md mr-2"
                 >
                   <FaEdit />
                 </button>
@@ -107,18 +122,27 @@ const ExperienceSection = () => {
             </div>
             <p className="text-white">{experience.company} · {experience.employmentType}</p>
             <p className="text-gray-400">
-              {experience.startDate} - {experience.endDate}
+              {formatDate(experience.startDate)} - {experience.endDate ? formatDate(experience.endDate) : 'Present'}
             </p>
             <p className="text-gray-400">{calculateDuration(experience.startDate, experience.endDate)}</p>
             <p className="text-gray-400">{experience.location} · {experience.locationType}</p>
-            {experience.description.length > 100 ? (
-              <div>
-                <p className="text-gray-300 mt-2">{experience.description.slice(0, 100)}...</p>
-                <button className="text-blue-500">Read More</button>
-              </div>
-            ) : (
-              <p className="text-gray-300 mt-2">{experience.description}</p>
-            )}
+            <div className="text-gray-300 mt-2">
+              <p
+                className={`whitespace-pre-wrap ${
+                  !isDescriptionExpanded(experience.id) ? 'line-clamp-1' : ''
+                }`}
+              >
+                {experience.description}
+              </p>
+              {experience.description.split('\n').length > 1 && (
+                <button
+                  className="text-purple-500"
+                  onClick={() => toggleExpandExperience(experience.id)}
+                >
+                  {isDescriptionExpanded(experience.id) ? 'Show Less' : 'Read More'}
+                </button>
+              )}
+            </div>
             <div className="mt-4">
               {experience.skills.map((skill, index) => (
                 <span
@@ -132,14 +156,14 @@ const ExperienceSection = () => {
           </div>
         ))}
       </div>
-{isModalOpen && (
-  <div className="fixed z-10 inset-0 overflow-y-auto  ">
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="fixed inset-0 transition-opacity" onClick={() => setIsModalOpen(false)}>
-        <div className="absolute inset-0 bg-black opacity-50"></div>
-      </div>
-      <div className="bg-gray-900 rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-2xl sm:w-full p-6 z-20">
-       <h2 className="text-2xl font-bold mb-4 text-white">
+      {isModalOpen && (
+        <div className="fixed z-10 inset-0 overflow-y-auto mt-12">
+          <div className="flex items-center justify-center min-h-screen">
+            <div className="fixed inset-0 transition-opacity" onClick={() => setIsModalOpen(false)}>
+              <div className="absolute inset-0 bg-black opacity-50"></div>
+            </div>
+            <div className="bg-gray-900 rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-2xl sm:w-full p-6 z-20">
+              <h2 className="text-2xl font-bold mb-4 text-white">
                 {selectedExperience ? 'Edit Experience' : 'Add Experience'}
               </h2>
               <div className="mb-4">
@@ -207,19 +231,6 @@ const ExperienceSection = () => {
                   value={newExperience.endDate}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label htmlFor="duration" className="block text-white">Duration</label>
-                <input
-                  type="text"
-                  id="duration"
-                  name="duration"
-                  value={newExperience.duration}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
-                  required
                 />
               </div>
               <div className="mb-4">
@@ -274,14 +285,14 @@ const ExperienceSection = () => {
                       skills: e.target.value.split(',').map((skill) => skill.trim()),
                     }))
                   }
-                  className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+                  className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 "
                   required
                 />
               </div>
               <div className="flex justify-end">
                 <button
                   onClick={handleSaveExperience}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50"
+                  className="px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-md  focus:outline-none focus:ring-2  focus:ring-opacity-50"
                 >
                   Save
                 </button>

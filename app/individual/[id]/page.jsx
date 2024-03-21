@@ -16,6 +16,8 @@ import { profileStore } from "@/components/individual/profileStore";
 import FeaturedCard from "@/components/individual/profile/FeaturedCard";
 import MediaSection from "@/components/individual/profile/MediaSection";
 import ExperienceSection from "@/components/individual/ExperienceSection";
+import EducationSection from "@/components/individual/EducationSection";
+import { formatDate } from "@/utils/formatDate";
 
 const Page = () => {
   const { id } = useParams();
@@ -107,17 +109,18 @@ const toggleShowFullText = () => {
       </>
     );
   }
-  // Count the number of newline characters in the string
-const lineCount = (profileData.about_me.match(/\n/g) || []).length;
+
+// Count the number of newline characters in the string
+const lineCount = profileData.about_me ? (profileData.about_me.match(/\n/g) || []).length : 0;
 
 // If the number of lines is greater than 5, show a shortened version of the text
 const shouldShortenText = lineCount > 5;
 
 // Split the text into lines
-const lines = profileData.about_me.split('\n');
+const lines = profileData.about_me ? profileData.about_me.split('\n') : [];
 
 // If the text should be shortened, join the first 5 lines and add "..."
-const shortenedText = shouldShortenText ? `${lines.slice(0, 5).join('\n')}...` : profileData.about_me;
+const shortenedText = shouldShortenText ? `${lines.slice(0, 5).join('\n')}...` : profileData.about_me || '';
 
   return (
     <main className="flex flex-col min-h-screen text-white w-full bg-gradient-to-b from-[#0f0f1c] via-[#1b1b29] to-[#2e2536]">
@@ -242,7 +245,7 @@ const shortenedText = shouldShortenText ? `${lines.slice(0, 5).join('\n')}...` :
   <div className="border-t border-gray-700 px-4 py-5 sm:p-6">
     <h3 className="text-lg leading-6 font-medium text-white">About Me</h3>
     <div className={`mt-2 text-sm text-white whitespace-pre-wrap mr-10 overflow-hidden ${showFullText ? '' : 'h-20'}`}>
-      {profileData.about_me}
+      {showFullText ? profileData.about_me : shortenedText}
     </div>
     {profileData.about_me.length > 100 && (
       <button onClick={toggleShowFullText} className="text-purple-500 mt-4">
@@ -253,8 +256,9 @@ const shortenedText = shouldShortenText ? `${lines.slice(0, 5).join('\n')}...` :
 )}
                 {/* Professional Information Section */}
                 <MediaSection />
+                <EducationSection />
                 <ExperienceSection />
-
+                
               </main>
     </div>
   </main>

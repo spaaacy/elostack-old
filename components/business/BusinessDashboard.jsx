@@ -4,20 +4,17 @@ import Head from "next/head";
 import React, { useContext, useEffect, useState } from "react";
 import Link from "next/link";
 import { UserContext } from "@/context/UserContext";
-import Avatar from "react-avatar";
 
 const BusinessDashboard = () => {
   const { session } = useContext(UserContext);
   const [jobListings, setJobListings] = useState();
   const [businessDetails, setBusinessDetails] = useState();
-  const [purchases, setPurchases] = useState();
   const [user, setUser] = useState();
 
   useEffect(() => {
     if (session) {
       fetchListings();
       fetchBusinessDetails();
-      fetchPurchases();
       fetchUser();
     }
   }, [session]);
@@ -44,19 +41,6 @@ const BusinessDashboard = () => {
       if (response.status === 200) {
         const results = await response.json();
         setJobListings(results.data);
-      }
-    }
-  };
-
-  const fetchPurchases = async () => {
-    const userId = session?.data?.session?.user.id;
-    if (userId) {
-      const response = await fetch(`/api/purchase/${userId}`, {
-        method: "GET",
-      });
-      if (response.status === 200) {
-        const results = await response.json();
-        setPurchases(results.purchases);
       }
     }
   };
@@ -138,46 +122,12 @@ const BusinessDashboard = () => {
                 )}
               </div>
               <div className="flex justify-center items-center gap-4">
-                {/* <Link href="/dashboard/search-individuals">
+                <Link href="/dashboard/search-individuals">
                   <button className="inline-block bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
                     Search for Candidates
                   </button>
-                </Link> */}
-                <Link href="/dashboard/request-interview">
-                  <button className="inline-block bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
-                    Request an Interview
-                  </button>
                 </Link>
               </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {purchases?.length > 0 ? (
-                purchases.map((purchase) => (
-                  <div className="bg-gray-50 p-6 rounded-lg shadow hover:shadow-xl transition-shadow duration-300 flex items-center">
-                    <Avatar
-                      name={`${purchase.individual.first_name} ${purchase.individual.last_name}`}
-                      size="100"
-                      round={true}
-                      className="mr-4"
-                    />
-                    <div className="flex flex-col">
-                      <h3 className="font-semibold text-lg">{`${purchase.individual.first_name} ${purchase.individual.last_name} `}</h3>
-                      <p className="text-sm text-gray-600 capitalize">{purchase.individual.position}</p>
-                      <div>
-                        <Link
-                          href={`/individual/${purchase.individual.user_id}`}
-                          className=" mt-6 inline-block bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-600 transition duration-150 ease-in-out"
-                        >
-                          View Profile
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div className="font-bold">No purchases made</div>
-              )}
             </div>
           </section>
 

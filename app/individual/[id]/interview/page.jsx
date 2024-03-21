@@ -11,9 +11,7 @@ import Link from "next/link";
 const Page = () => {
   const { id } = useParams();
   const { session, verifyLogin } = useContext(UserContext);
-  const [user, setUser] = useState();
   const [loading, setLoading] = useState(true);
-  const router = useRouter();
   const [individual, setIndividual] = useState();
 
   useEffect(() => {
@@ -27,7 +25,7 @@ const Page = () => {
         }
         if (success) {
           await setLoading(false);
-          fetchPurchase();
+          fetchInterview();
         }
       }
     };
@@ -43,20 +41,6 @@ const Page = () => {
       const results = await response.json();
       setIndividual(results.individual);
     }
-  };
-
-  const fetchPurchase = async () => {
-    const userId = session?.data?.session?.user.id;
-    if (!userId) return;
-    if (userId !== id) {
-      const response = await fetch(`/api/purchase?business_id=${userId}&individual_id=${id}`);
-      if (response.status !== 200) {
-        router.push(`/individual/${id}`);
-        console.error("Please purchase the interview to access this page");
-        return;
-      }
-    }
-    fetchInterview();
   };
 
   if (loading || !individual) {
@@ -80,7 +64,7 @@ const Page = () => {
           <div className="max-w-7xl mx-auto">
             <h1 className="text-5xl font-bold text-center mb-12 text-blueprimary">Interview Feedback</h1>
             {individual && individual.interview && (
-              <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-10">
+              <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-10 flex flex-col">
                 <div className="p-6">
                   <Link href={`/individual/${id}`}>
                     <h2 className="text-3xl font-semibold mb-4 capitalize">
@@ -90,16 +74,17 @@ const Page = () => {
                   <p className="text-xl font-semibold text-blueprimary mb-6 capitalize">
                     Overall Grade: {individual.interview.grade}
                   </p>
-                  <div className="flex justify-center">
-                    <video
-                      controls
-                      className="max-w-full h-auto rounded-lg shadow-md"
-                      style={{ maxWidth: "1250px", width: "100%" }}
-                    >
-                      <source src={individual.interview.video_url} type="video/mp4" />
-                      Your browser does not support the video tag.
-                    </video>
-                  </div>
+                  <iframe
+                    className="mx-auto"
+                    width="1020"
+                    height="600"
+                    src={`https://www.youtube-nocookie.com/embed/${individual.interview.youtube_id}`}
+                    title="YouTube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allowfullscreen
+                  ></iframe>
                   <div className="flex justify-center">
                     <h2 className="text-4xl font-semibold mb-4 text-blueprimary mt-[2.5rem] text-center mr-[3.5rem]">
                       Score Card

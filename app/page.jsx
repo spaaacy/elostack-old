@@ -21,7 +21,7 @@ const Home = () => {
 
       <main className="flex flex-col items-center">
         <HeroSection />
-        <PartneredCompanies />
+        {/* <PartneredCompanies /> */}
         <HowItWorks />
         <FAQ />
       </main>

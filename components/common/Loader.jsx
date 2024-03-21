@@ -3,7 +3,7 @@ import { HashLoader, MoonLoader, PacmanLoader } from "react-spinners";
 
 const Loader = () => {
   return (
-    <div className="flex flex-1 bg-[#0f0f1c]">
+    <div className="flex flex-1 ">
       <div className="m-auto">
         <HashLoader color={"#7C3AED"} />
       </div>
@@ -12,5 +12,3 @@ const Loader = () => {
 };
 
 export default Loader;
-
-      

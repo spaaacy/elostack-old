@@ -143,11 +143,6 @@ const IndividualDashboard = () => {
         <section className="p-5 border-b border-gray-700">
           <div className="text-center">
             <h2 className="text-2xl font-bold">{`Welcome back, ${profileData.first_name}`}</h2>
-            <p className="text-md text-gray-400 capitalize">{`${
-              profileData.position ? profileData.position : "Your Position"
-            } ${
-              profileData.city && profileData.state ? ` | ${profileData.city}, ${profileData.state.toUpperCase()}` : ""
-            }`}</p>
           </div>
         </section>
 
@@ -162,18 +157,6 @@ const IndividualDashboard = () => {
                   <span className="font-bold capitalize ">{purchase?.status}</span>
                 </p>
               )}
-              <Link
-                href={`/job-listing`}
-                className="inline-block text-white px-6 py-3 rounded hover:bg-purple-900 transition duration-150 ease-in-out bg-purple-700"
-              >
-                Find Job Listings
-              </Link>
-              <Link
-                href={"/dashboard/applications"}
-                className="inline-block bg-purple-700 text-white px-6 py-3 rounded hover:bg-purple-900 transition duration-150 ease-in-out"
-              >
-                View All Applications
-              </Link>
               {!purchase && (
                 <button
                   onClick={handlePayment}

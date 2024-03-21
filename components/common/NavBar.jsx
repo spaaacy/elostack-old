@@ -38,40 +38,58 @@ const NavBar = ({ isModalOpen }) => {
         navBarVisible && !isModalOpen ? "" : "-translate-y-full"
       }`}
     >
-  <Link href={"/"} className="text-[1.5rem] font-bold text-white transition-colors hover:text-gray-300">
-    <div className="flex items-center">
-      <Image src={"/logo1.png"} alt="logo" width={50} height={50} />
-      <div className="ml-2">EloStack</div>
-    </div>
-  </Link>
-  <div className={`hidden lg:flex justify-center space-x-8 ${session?.data.session ? 'mr-10' : ''}`}>
-    <Link href={"/job-listing"} className="text-gray-300 hover:text-white bg-gray-800 px-4 py-2 rounded-md text-base font-medium">Job listings</Link>
-    <Link href={"/dashboard/applications"} className="text-gray-300 hover:text-white bg-gray-800 px-4 py-2 rounded-md text-base font-medium">Applications</Link>
-    <Link href={"/schedule-interview"} className="text-gray-300 hover:text-white bg-gray-800 px-4 py-2 rounded-md text-base font-medium">Schedule interview</Link>
-  </div>
-  <div className="flex items-center">
-    <button className="lg:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-      {/* Hamburger icon */}
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        className="h-6 w-6 text-white"
-      >
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-      </svg>
-    </button>
-    {session?.data.session ? (
-      <UserAccountNav />
-    ) : (
-      <Link href={"/signin"} className="rounded bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 transition-colors">
-        Sign in
+      <Link href={"/"} className="text-[1.5rem] font-bold text-white transition-colors hover:text-gray-300">
+        <div className="flex items-center">
+          <Image src={"/logo1.png"} alt="logo" width={50} height={50} />
+          <div className="ml-2">EloStack</div>
+        </div>
       </Link>
-    )}
-  </div>
-</nav>
-);
+      <div className={`hidden lg:flex justify-center space-x-4 ${session?.data.session ? "mr-10" : ""}`}>
+        <Link
+          href={"/job-listing"}
+          className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
+        >
+          Job listings
+        </Link>
+        <Link
+          href={"/dashboard/applications"}
+          className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
+        >
+          Applications
+        </Link>
+        <Link
+          href={"/dashboard"}
+          className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
+        >
+          Schedule Interview
+        </Link>
+      </div>
+      <div className="flex items-center">
+        <button className="lg:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          {/* Hamburger icon */}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            className="h-6 w-6 text-white"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+        {session?.data.session ? (
+          <UserAccountNav />
+        ) : (
+          <Link
+            href={"/signin"}
+            className="rounded bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 transition-colors"
+          >
+            Sign in
+          </Link>
+        )}
+      </div>
+    </nav>
+  );
 };
 
 export default NavBar;

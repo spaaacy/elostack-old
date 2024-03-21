@@ -78,87 +78,85 @@ const Page = () => {
         </section>
         <div className="flex flex-wrap gap-4 mb-6 items-center bg-[#1b1b29] text-black p-4 rounded-lg">
           {/* Role Filter Dropdown */}
-              <input
-                value={filters.title}
-                onChange={(e) => handleFilterChange(e, "title")}
-                className="ml-4 p-4 border rounded-lg bg-gray-600 text-white"
-                placeholder="Job title"
-                type="text"
-              />
+          <input
+            value={filters.title}
+            onChange={(e) => handleFilterChange(e, "title")}
+            className="ml-4 p-4 border rounded-lg bg-gray-600 text-white"
+            placeholder="Job title"
+            type="text"
+          />
 
-              {/* Role Filter Dropdown */}
-              <input
-                value={filters.company}
-                onChange={(e) => handleFilterChange(e, "company")}
-                className="p-4 border rounded-lg bg-gray-600 text-white"
-                placeholder="Company"
-                type="text"
-              />
+          {/* Role Filter Dropdown */}
+          <input
+            value={filters.company}
+            onChange={(e) => handleFilterChange(e, "company")}
+            className="p-4 border rounded-lg bg-gray-600 text-white"
+            placeholder="Company"
+            type="text"
+          />
 
-              {/* Position Filter */}
-              <select
-                value={filters.position}
-                onChange={(e) => handleFilterChange(e, "position")}
-                className="p-4 border rounded-lg bg-gray-600 text-white"
-              >
-                <option value="">Position Level</option>
-                <option value="intern">Intern</option>
-                <option value="junior">Junior</option>
-                <option value="senior">Senior</option>
-              </select>
+          {/* Position Filter */}
+          <select
+            value={filters.position}
+            onChange={(e) => handleFilterChange(e, "position")}
+            className="p-4 border rounded-lg bg-gray-600 text-white"
+          >
+            <option value="">Position Level</option>
+            <option value="intern">Intern</option>
+            <option value="junior">Junior</option>
+            <option value="senior">Senior</option>
+          </select>
 
-              {/* Pay Min Input */}
-              <input
-                type="number"
-                placeholder="Min Pay"
-                value={filters.starting_pay}
-                onChange={(e) => handleFilterChange(e, "starting_pay")}
-                className="p-4 border rounded-lg bg-gray-600 text-white"
-              />
+          {/* Pay Min Input */}
+          <input
+            type="number"
+            placeholder="Min Pay"
+            value={filters.starting_pay}
+            onChange={(e) => handleFilterChange(e, "starting_pay")}
+            className="p-4 border rounded-lg bg-gray-600 text-white"
+          />
 
-              {/* Pay Max Input */}
-              <input
-                type="number"
-                placeholder="Max Pay"
-                value={filters.ending_pay}
-                onChange={(e) => handleFilterChange(e, "ending_pay")}
-                className="p-4 border rounded-lg bg-gray-600 text-white"
-              />
+          {/* Pay Max Input */}
+          <input
+            type="number"
+            placeholder="Max Pay"
+            value={filters.ending_pay}
+            onChange={(e) => handleFilterChange(e, "ending_pay")}
+            className="p-4 border rounded-lg bg-gray-600 text-white"
+          />
 
-              {/* Location Filter */}
-              <input
-                value={filters.location}
-                onChange={(e) => handleFilterChange(e, "location")}
-                className=" p-4 border rounded-lg bg-gray-600 text-white"
-                placeholder="Location"
-                type="text"
-              />
+          {/* Location Filter */}
+          <input
+            value={filters.location}
+            onChange={(e) => handleFilterChange(e, "location")}
+            className=" p-4 border rounded-lg bg-gray-600 text-white"
+            placeholder="Location"
+            type="text"
+          />
         </div>
         <section className="p-8 rounded-lg shadow-lg bg-[#1b1b29]">
-  <div className="grid grid-cols-3 gap-4 mt-4">
-    {filteredJobs.map((job) => (
-      <Link
-        href={`/job-listing/${job.id}`}
-        key={job.id}
-        className="bg-gray-600 p-6 rounded-lg flex flex-col justify-between items-start hover:shadow-lg transition-shadow duration-300"
-      >
-        <div>
-          <h3 className="font-semibold text-lg text-white">
-            {job.title} at {job.business.name}
-          </h3>
-          <p className="text-sm text-gray-400 capitalize">{`${job.position} - ${job.location}`}</p>
-          <p className="my-3 text-white">
-            Pay Range: ${job.starting_pay} - ${job.ending_pay}
-          </p>
-          <p className="text-sm text-gray-400">{truncateDescription(job.description, 220)}</p>
-        </div>
-        <div className="text-purple-400 font-bold hover:underline self-end">
-          View Details
-        </div>
-      </Link>
-    ))}
-  </div>
-</section>
+          <div className="grid grid-cols-3 gap-4 mt-4">
+            {filteredJobs.map((job) => (
+              <Link
+                href={`/job-listing/${job.id}`}
+                key={job.id}
+                className="bg-gray-600 p-6 rounded-lg flex flex-col justify-between items-start hover:shadow-lg transition-shadow duration-300"
+              >
+                <div>
+                  <h3 className="font-semibold text-lg text-white">
+                    {job.title} at {job.business.name}
+                  </h3>
+                  <p className="text-sm text-gray-400 capitalize">{`${job.position} - ${job.location}`}</p>
+                  <p className="my-3 text-white">
+                    Pay Range: ${job.starting_pay} - ${job.ending_pay}
+                  </p>
+                  <p className="text-sm text-gray-400">{truncateDescription(job.description, 220)}</p>
+                </div>
+                <div className="text-purple-400 font-bold hover:underline self-end">View Details</div>
+              </Link>
+            ))}
+          </div>
+        </section>
       </main>
       <Footer />
     </main>

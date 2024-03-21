@@ -14,12 +14,12 @@ const FAQProvider = ({ children }) => {
     {
       question: "How can EloStack help me as a candidate?",
       answer:
-        "EloStack provides a platform for you to showcase your skills to potential employers. We conduct technical interviews which are then accessible to companies looking for engineers, increasing your visibility and chances of getting hired.",
+        "EloStack provides a platform for you to showcase your skills to potential employers. We conduct technical mock interviews which are then accessible to companies looking for engineers, increasing your visibility and chances of getting hired.",
     },
     {
       question: "What is EloStack exactly?",
       answer:
-        "EloStack is a job listing website dedicated to software engineers. All candidates on our site are pre-vetted using technical interviews, which are accessible to companies looking for engineers.",
+        "EloStack is a job listing website dedicated to software engineers. All candidates on our site are pre-vetted using technical mock interviews, which are accessible to companies looking for engineers.",
     },
     {
       question: "What if I am unsatisfied with the interview?",
@@ -28,7 +28,7 @@ const FAQProvider = ({ children }) => {
     },
     {
       question: "How much do you charge?",
-      answer: "Mock interviews are at $30.",
+      answer: "An hour long mock interview is $30.",
     },
     {
       question: "Can I choose the topics for my interviews?",

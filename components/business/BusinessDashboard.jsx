@@ -113,24 +113,6 @@ const BusinessDashboard = () => {
             </div>
           </section>
 
-          <section className="bg-cover bg-white mt-4 bg-center p-8 rounded-lg shadow-2xl space-y-6 ">
-            <div className="flex justify-between items-center ">
-              <div className="flex flex-col justify-center items-start">
-                <h2 className="text-3xl font-bold text-blueprimary">Your candidates</h2>
-                {user?.credits >= 0 && (
-                  <h3 className="text-sm text-gray-500">{`Balance: ${user?.credits} Interviews`}</h3>
-                )}
-              </div>
-              <div className="flex justify-center items-center gap-4">
-                <Link href="/dashboard/search-individuals">
-                  <button className="inline-block bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
-                    Search for Candidates
-                  </button>
-                </Link>
-              </div>
-            </div>
-          </section>
-
           {/* Post a Job */}
         </main>{" "}
         <div className="mt-52"></div>

@@ -119,21 +119,21 @@ const Page = () => {
   };
 
   return (
-    <>
+    <main className="flex flex-col min-h-screen text-white w-full bg-gradient-to-b from-[#0f0f1c] via-[#1b1b29] to-[#2e2536]">
       <NavBar />
       <div>
-        <main className="flex flex-col flex-1 bg-gray-100 min-h-screen bg-no-repeat bg-fixed bg-bottom bg-[url('/waves.svg')]">
+        <main className="flex flex-col flex-1 min-h-screen">
           <Head>
             <title>{isBusiness ? "Business Signup" : "Individual Signup"} | EloStack</title>
           </Head>
 
-          <main className="container mx-auto p-8 bg-white rounded-lg shadow-md mt-20 flex justify-center items-center">
+          <main className="container mx-auto p-8 bg-[#1b1b29] rounded-lg shadow-md mt-20 flex justify-center items-center">
             <section className="grid md:grid-cols-2 gap-4">
-              <div className="p-8 text-center md:text-left border-r border-gray-200 flex flex-col items-center">
-                <h2 className="text-2xl font-bold mb-4 text-blueprimary">
+              <div className="p-8 text-center md:text-left border-r border-gray-700 flex flex-col items-center">
+                <h2 className="text-2xl font-bold mb-4 text-purple-500">
                   {isBusiness ? "Business Signup" : "Individual Signup"}
                 </h2>
-                <p className="text-md text-gray-500 text-center">
+                <p className="text-md text-gray-400 text-center">
                   {isBusiness
                     ? "Join EloStack and streamline your hiring process. Find top talent, conduct efficient technical interviews, and hire with confidence."
                     : "Join EloStack and find your next job. Get matched with top companies, showcase your skills, and ace your interviews."}
@@ -146,7 +146,7 @@ const Page = () => {
                     <button
                       onClick={() => setIsBusiness(false)}
                       className={`font-bold py-2 px-4 rounded-l focus:outline-none focus:shadow-outline mx-2 ${
-                        isBusiness ? "bg-gray-500 text-white" : "bg-blue-500 text-white"
+                        isBusiness ? "bg-gray-700 text-white" : "bg-purple-700 text-white"
                       }`}
                     >
                       Individual Signup
@@ -154,7 +154,7 @@ const Page = () => {
                     <button
                       onClick={() => setIsBusiness(true)}
                       className={`font-bold py-2 px-4 rounded-r focus:outline-none focus:shadow-outline mx-2 ${
-                        isBusiness ? "bg-blue-500 text-white" : "bg-gray-500 text-white"
+                        isBusiness ? "bg-purple-700 text-white" : "bg-gray-700 text-white"
                       }`}
                     >
                       Business Signup
@@ -163,7 +163,7 @@ const Page = () => {
 
                   {isBusiness ? (
                     <div className="mb-4">
-                      <label htmlFor="businessName" className="block text-gray-700 text-sm font-bold mb-2">
+                      <label htmlFor="businessName" className="block text-white text-sm font-bold mb-2">
                         Business Name:
                       </label>
                       <input
@@ -171,13 +171,13 @@ const Page = () => {
                         id="businessName"
                         value={businessName}
                         onChange={(e) => setBusinessName(e.target.value)}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        className="shadow appearance-none border rounded w-full py-2 px-3 bg-gray-800 text-white leading-tight focus:outline-none focus:shadow-outline"
                       />
                     </div>
                   ) : (
                     <>
                       <div className="mb-4">
-                        <label htmlFor="firstName" className="block text-gray-700 text-sm font-bold mb-2">
+                        <label htmlFor="firstName" className="block text-white text-sm font-bold mb-2">
                           First Name:
                         </label>
                         <input
@@ -185,11 +185,11 @@ const Page = () => {
                           id="firstName"
                           value={firstName}
                           onChange={(e) => setFirstName(e.target.value)}
-                          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          className="shadow appearance-none border rounded w-full py-2 px-3 bg-gray-800 text-white leading-tight focus:outline-none focus:shadow-outline"
                         />
                       </div>
                       <div className="mb-4">
-                        <label htmlFor="lastName" className="block text-gray-700 text-sm font-bold mb-2">
+                        <label htmlFor="lastName" className="block text-white text-sm font-bold mb-2">
                           Last Name:
                         </label>
                         <input
@@ -197,14 +197,14 @@ const Page = () => {
                           id="lastName"
                           value={lastName}
                           onChange={(e) => setLastName(e.target.value)}
-                          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          className="shadow appearance-none border rounded w-full py-2 px-3 bg-gray-800 text-white leading-tight focus:outline-none focus:shadow-outline"
                         />
                       </div>
                     </>
                   )}
 
                   <div className="mb-4">
-                    <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2">
+                    <label htmlFor="email" className="block text-white text-sm font-bold mb-2">
                       Email:
                     </label>
                     <input
@@ -212,11 +212,11 @@ const Page = () => {
                       id="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      className="shadow appearance-none border rounded w-full py-2 px-3 bg-gray-800 text-white leading-tight focus:outline-none focus:shadow-outline"
                     />
                   </div>
                   <div className="mb-6 relative">
-                    <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2">
+                    <label htmlFor="password" className="block text-white text-sm font-bold mb-2">
                       Password:
                     </label>
                     <input
@@ -224,36 +224,29 @@ const Page = () => {
                       id="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      className="shadow appearance-none border rounded w-full py-2 px-3 bg-gray-800 text-white leading-tight focus:outline-none focus:shadow-outline"
                     />
                     <button onClick={togglePasswordVisibility} className="absolute right-3 top-[1.6rem] mt-2">
                       {passwordVisible ? (
-                        <Image src="/hide.svg" alt="unhide password" width={25} height={25} />
+                        <Image src="/hide.png" alt="unhide password" width={25} height={25} />
                       ) : (
                         <Image src="/unhide.png" alt="hide password" width={25} height={25} />
                       )}
                     </button>
                   </div>
-                  {/* <button
-                    type="button"
-                    className="flex items-center justify-start shadow-lg bg-gray-100 mb-6 hover:bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded focus:outline-none focus:shadow-outline w-full"
-                  >
-                    <Image src="/google.svg" alt="Google logo" width={23} height={23} className="ml-4" />
-                    <span className="ml-4">Sign In with Google</span>
-                  </button> */}
                   <div className="flex items-center justify-between">
                     <div className="flex flex-col gap-2">
                       <Link
                         href="/signin"
-                        className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
+                        className="inline-block align-baseline font-bold text-sm text-white"
                       >
-                        Already have an account? Sign In
+                        Already have an account? <span className="text-purple-500 hover:text-purple-700">Sign In</span>
                       </Link>
-                      <p className="inline-block align-baseline text-sm ">
+                      <p className="inline-block align-baseline text-sm text-gray-400">
                         By signing up, you agree to our{" "}
                         <Link
                           href="/terms-and-conditions.html"
-                          className="font-bold text-blue-600 dark:text-blue-500 hover:underline"
+                          className="font-bold text-purple-500 hover:text-purple-700 hover:underline"
                         >
                           Terms & Conditions.
                         </Link>
@@ -261,7 +254,7 @@ const Page = () => {
                     </div>
                     <button
                       type="submit"
-                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                      className="bg-purple-700 hover:bg-purple-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
                     >
                       Sign Up
                     </button>
@@ -272,7 +265,7 @@ const Page = () => {
           </main>
         </main>
       </div>
-    </>
+    </main>
   );
 };
 

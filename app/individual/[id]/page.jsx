@@ -19,6 +19,8 @@ import ExperienceSection from "@/components/individual/ExperienceSection";
 import { supabase } from "@/utils/supabase";
 import Image from "next/image";
 import checkFileExists from "@/utils/checkFileExists";
+import EducationSection from "@/components/individual/EducationSection";
+import { formatDate } from "@/utils/formatDate";
 
 const Page = () => {
   const { id } = useParams();
@@ -228,6 +230,7 @@ const Page = () => {
           )}
           {/* Professional Information Section */}
           <MediaSection />
+          <EducationSection />
           <ExperienceSection />
         </div>
       </div>

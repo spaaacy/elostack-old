@@ -65,7 +65,7 @@ const Page = () => {
     }
   };
   return (
-    <main className="flex flex-col min-h-screen text-white w-full bg-gradient-to-b from-[#0f0f1c] via-[#1b1b29] to-[#2c1d3c]">
+    <main className="flex flex-col min-h-screen text-white w-full bg-gradient-to-b from-[#0f0f1c] via-[#1b1b29] to-[#251b30]">
       <NavBar />
       <Head>
         <title>Job Listings | Your Company</title>

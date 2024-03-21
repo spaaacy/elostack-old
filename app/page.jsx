@@ -3,8 +3,9 @@ import Footer from "@/components/common/Footer";
 import NavBar from "@/components/common/NavBar";
 import HeroSection from "@/components/landing/HeroSection";
 import FAQ from "@/components/landing/FAQ";
-import HowItWorks from "@/components/landing/HowItWorks";
+import Benefits from "@/components/landing/Benefits";
 import PartneredCompanies from "@/components/landing/PartneredCompanies";
+import HowItWorks from "@/components/landing/HowItWorks";
 
 const Home = () => {
   return (
@@ -22,6 +23,7 @@ const Home = () => {
       <main className="flex flex-col items-center">
         <HeroSection />
         {/* <PartneredCompanies /> */}
+        <Benefits />
         <HowItWorks />
         <FAQ />
       </main>

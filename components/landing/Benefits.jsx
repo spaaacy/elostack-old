@@ -63,7 +63,7 @@ const Benefits = () => {
               <img
                 src={step.image}
                 alt={step.title}
-                className={`brightness-[100%] contrast-[90%] w-full md:w-1/2 object-cover ${
+                className={`brightness-[100%] contrast-[90%] w-full md:w-1/2 object-scale-down ${
                   index % 2 === 0 ? "" : "md:order-2"
                 }`}
                 style={{ minHeight: "50vh" }}

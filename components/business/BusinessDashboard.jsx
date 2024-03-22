@@ -4,20 +4,17 @@ import Head from "next/head";
 import React, { useContext, useEffect, useState } from "react";
 import Link from "next/link";
 import { UserContext } from "@/context/UserContext";
-import Avatar from "react-avatar";
 
 const BusinessDashboard = () => {
   const { session } = useContext(UserContext);
   const [jobListings, setJobListings] = useState();
   const [businessDetails, setBusinessDetails] = useState();
-  const [purchases, setPurchases] = useState();
   const [user, setUser] = useState();
 
   useEffect(() => {
     if (session) {
       fetchListings();
       fetchBusinessDetails();
-      fetchPurchases();
       fetchUser();
     }
   }, [session]);
@@ -48,19 +45,6 @@ const BusinessDashboard = () => {
     }
   };
 
-  const fetchPurchases = async () => {
-    const userId = session?.data?.session?.user.id;
-    if (userId) {
-      const response = await fetch(`/api/purchase/${userId}`, {
-        method: "GET",
-      });
-      if (response.status === 200) {
-        const results = await response.json();
-        setPurchases(results.purchases);
-      }
-    }
-  };
-
   const fetchBusinessDetails = async () => {
     const userId = session?.data?.session?.user.id;
     if (userId) {
@@ -84,9 +68,7 @@ const BusinessDashboard = () => {
         {/* Profile Summary */}
         <section className="p-5 border-b border-gray-700">
           <div className="text-center">
-            {businessDetails && (
-              <h1 className="text-4xl font-bold">{`${businessDetails?.name} Dashboard`}</h1>
-            )}
+            {businessDetails && <h1 className="text-4xl font-bold">{`${businessDetails?.name} Dashboard`}</h1>}
           </div>
         </section>
 
@@ -135,24 +117,24 @@ const BusinessDashboard = () => {
           <div className="flex justify-between items-center">
             <div className="flex flex-col justify-center items-start">
               <h2 className="text-3xl font-bold text-white">Your Candidates</h2>
-              {user?.credits >= 0 && (
-                <h3 className="text-sm text-gray-400">{`Balance: ${user?.credits} Interviews`}</h3>
-              )}
             </div>
             <div className="flex justify-center items-center gap-4">
-              <Link
+              {/* <Link
                 href="/dashboard/request-interview"
                 className="inline-block bg-purple-700 text-white px-6 py-3 rounded hover:bg-purple-900 transition duration-150 ease-in-out"
               >
                 Request an Interview
-              </Link>
+              </Link> */}
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-            {purchases?.length > 0 ? (
+            {/* {purchases?.length > 0 ? (
               purchases.map((purchase) => (
-                <div key={purchase.id} className="bg-[#0f0f1c] p-6 rounded-lg shadow hover:shadow-lg transition-shadow duration-300 flex items-center">
+                <div
+                  key={purchase.id}
+                  className="bg-[#0f0f1c] p-6 rounded-lg shadow hover:shadow-lg transition-shadow duration-300 flex items-center"
+                >
                   <Avatar
                     name={`${purchase.individual.first_name} ${purchase.individual.last_name}`}
                     size="100"
@@ -173,7 +155,7 @@ const BusinessDashboard = () => {
               ))
             ) : (
               <div className="font-bold">No purchases made</div>
-            )}
+            )} */}
           </div>
         </section>
       </main>

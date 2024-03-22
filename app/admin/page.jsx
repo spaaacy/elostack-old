@@ -16,7 +16,7 @@ const Page = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const [interviewRequests, setInterviewRequests] = useState();
+  const [requests, setRequests] = useState();
 
   useEffect(() => {
     const loadData = async () => {
@@ -33,12 +33,12 @@ const Page = () => {
   }, [session]);
 
   const fetchRequests = async () => {
-    const response = await fetch("/api/interview-request?pending=true", {
+    const response = await fetch("/api/purchase", {
       method: "GET",
     });
     if (response.status === 200) {
       const results = await response.json();
-      setInterviewRequests(results.requests);
+      setRequests(results.requests);
       console.log(results);
     } else {
       console.error("Error fetching interview requests!");
@@ -82,60 +82,51 @@ const Page = () => {
             <table className="w-full table-auto text-sm mt-4">
               <thead>
                 <tr className="bg-[#0f0f1c]">
-                  <th className="px-4 py-2">Request ID</th>
-                  <th className="px-4 py-2">Creation Date</th>
+                  <th className="px-4 py-2">Payment Intent ID</th>
+                  <th className="px-4 py-2">Individual ID</th>
                   <th className="px-4 py-2">Candidate Name</th>
-                  <th className="px-4 py-2">Company</th>
-                  <th className="px-4 py-2">Position</th>
-                  <th className="px-4 py-2">Type</th>
-                  <th className="px-4 py-2"></th>
+                  <th className="px-4 py-2">Status</th>
                 </tr>
               </thead>
               <tbody>
-                {interviewRequests &&
-                  interviewRequests.map((request) => (
-                    <React.Fragment key={request.id}>
-                      <tr className="bg-[#1b1b29] hover:bg-[#251b30]">
-                        <td className="border px-4 py-2">{request.id}</td>
-                        <td className="border px-4 py-2">{formatDate(request.created_at)}</td>
-                        <td className="border px-4 py-2">{request.individual_name}</td>
-                        <td className="border px-4 py-2">{request.business.name}</td>
-                        <td className="border px-4 py-2 capitalize">{request.position}</td>
-                        <td className="border px-4 py-2 capitalize">{request.type}</td>
-                      </tr>
-                      <tr className="bg-[#1b1b29] hover:bg-[#251b30]">
-                        <td className="border px-4 py-2 font-extrabold">Description</td>
-                        <td colSpan="5" className="border px-4 py-2">
-                          {request.description}
+                {requests &&
+                  requests.map((request) => (
+                    <>
+                      <tr key={request.id}>
+                        <td className="border px-4 py-2">{request.payment_intent_id}</td>
+                        <td className="border px-4 py-2">{request.individual.user_id}</td>
+                        <td className="border px-4 py-2">
+                          {`${request.individual.first_name} ${request.individual.last_name}`}
                         </td>
+                        <td className="border px-4 py-2 capitalize">{request.status}</td>
                       </tr>
-                    </React.Fragment>
+                    </>
                   ))}
               </tbody>
             </table>
           </section>
 
-          <section className="p-8 rounded-lg shadow-lg">
-            <h2 className="text-2xl font-bold text-white">Upload New Interview</h2>
+          <section className="bg-center p-8 rounded-lg shadow-lg">
+            <h2 className="text-2xl font-bold text-blueprimary">Upload New Interview</h2>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
               <div className="flex items-center gap-2">
                 <div>
-                  <label className="block font-semibold">Request ID</label>
+                  <label className="block font-semibold">Payment Intent ID</label>
                   <input
-                    type="number"
-                    {...register("request_id", { required: true })}
+                    type="text"
+                    {...register("payment_intent_id", { required: true })}
                     className="mt-1 p-2 border rounded bg-[#0f0f1c] text-white"
                   />
-                  {errors.request_id && <p className="text-red-500">This field is required</p>}
+                  {errors.payment_intent_id && <p>This field is required</p>}
                 </div>
                 <div className="flex-1">
                   <label className="block font-semibold">Individual ID</label>
                   <input
                     type="text"
                     {...register("individual_id", { required: true })}
-                    className="mt-1 p-2 border rounded w-full bg-[#0f0f1c] text-white"
+                    className="mt-1 p-2 border rounded bg-[#0f0f1c] text-white w-full"
                   />
-                  {errors.individual_id && <p className="text-red-500">This field is required</p>}
+                  {errors.individual_id && <p>This field is required</p>}
                 </div>
                 <div>
                   <label className="block font-semibold">Grade</label>
@@ -144,7 +135,7 @@ const Page = () => {
                     {...register("grade", { required: true })}
                     className="mt-1 p-2 border rounded bg-[#0f0f1c] text-white"
                   />
-                  {errors.grade && <p className="text-red-500">This field is required</p>}
+                  {errors.grade && <p>This field is required</p>}
                 </div>
               </div>
               <div>
@@ -157,17 +148,20 @@ const Page = () => {
                 {errors.feedback && <p className="text-red-500">This field is required</p>}
               </div>
               <div>
-                <label className="block font-semibold">Video URL</label>
+                <label className="block font-semibold">YouTube Video ID</label>
                 <input
                   type="text"
-                  {...register("video_url", { required: true })}
-                  className="w-full mt-1 p-2 border rounded bg-[#0f0f1c] text-white"
+                  {...register("youtube_id", { required: true })}
+                  className="mt-1 p-2 border rounded bg-[#0f0f1c] text-white w-full"
                 />
-                {errors.video_url && <p className="text-red-500">This field is required</p>}
+                {errors.youtube_id && <p className="text-red-500">This field is required</p>}
               </div>
 
               <div className="flex justify-end">
-                <button type="submit" className="mt-2 px-4 py-2 bg-purple-700 text-white rounded hover:bg-purple-900 transition duration-150 ease-in-out">
+                <button
+                  type="submit"
+                  className="mt-2 px-4 py-2 bg-purple-700 text-white rounded hover:bg-purple-900 transition duration-150 ease-in-out"
+                >
                   Upload
                 </button>
               </div>

@@ -23,7 +23,11 @@ export async function GET(req, res) {
           .order("created_at", { ascending: false });
       }
     } else {
-      results = await supabase.from("job_listing").select("*, business(*)").eq("active", true);
+      results = await supabase
+        .from("job_listing")
+        .select("*, business(*)")
+        .eq("active", true)
+        .order("created_at", { ascending: false });
     }
     if (results.error) throw results.error;
     return NextResponse.json({ data: results.data }, { status: 200 });

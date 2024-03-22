@@ -75,9 +75,13 @@
   }
 }
 
-@layer components {
-  .outline-button {
-    @apply border border-gray-800 text-lg font-normal rounded-lg py-2 px-4;
+@layer utilities {
+  .card-gradient {
+    background: linear-gradient(135deg, #6227749f 0%, #c533649f 100%);
+    box-shadow: 0 8px 32px 0 rgba(57, 54, 211, 0.3);
+  }
+  .card-gradient:hover {
+    box-shadow: 0 16px 64px 0 rgba(57, 54, 211, 0.4); /* Increase shadow size on hover */
   }
 }
 
@@ -88,7 +92,7 @@
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #0f0f1c;
 }
 
 /* Handle */
@@ -101,6 +105,7 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
 .custom-video-size {
   width: 100rem; /* Example fixed width */
   height: auto; /* Maintain aspect ratio */

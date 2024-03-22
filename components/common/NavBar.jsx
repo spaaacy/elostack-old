@@ -65,28 +65,46 @@ const NavBar = ({ isModalOpen }) => {
           <div className="ml-2">EloStack</div>
         </div>
       </Link>
-      <div className={`hidden lg:flex justify-center space-x-8 ${session?.data.session ? 'mr-10' : ''}`}>
+      <div className={`hidden lg:flex justify-center space-x-8 ${session?.data.session ? "mr-10" : ""}`}>
         {user?.business ? (
           <>
-            <Link href={"/dashboard/create-listing"} className="text-gray-300 hover:text-white bg-gray-800 px-4 py-2 rounded-md text-base font-medium">
+            <Link
+              href={"/dashboard/create-listing"}
+              className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
+            >
               Create Listing
             </Link>
-            <Link href={"/dashboard/search-individuals"} className="text-gray-300 hover:text-white bg-gray-800 px-4 py-2 rounded-md text-base font-medium">
+            <Link
+              href={"/dashboard/search-individuals"}
+              className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
+            >
               Find Candidates
             </Link>
-            <Link href={"/dashboard/request-interview"} className="text-gray-300 hover:text-white bg-gray-800 px-4 py-2 rounded-md text-base font-medium">
+            <Link
+              href={"/dashboard/request-interview"}
+              className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
+            >
               Request Interview
             </Link>
           </>
         ) : (
           <>
-            <Link href={"/job-listing"} className="text-gray-300 hover:text-white bg-gray-800 px-4 py-2 rounded-md text-base font-medium">
+            <Link
+              href={"/job-listing"}
+              className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
+            >
               Job listings
             </Link>
-            <Link href={"/dashboard/applications"} className="text-gray-300 hover:text-white bg-gray-800 px-4 py-2 rounded-md text-base font-medium">
+            <Link
+              href={"/dashboard/applications"}
+              className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
+            >
               Applications
             </Link>
-            <Link href={"/schedule-interview"} className="text-gray-300 hover:text-white bg-gray-800 px-4 py-2 rounded-md text-base font-medium">
+            <Link
+              href={"/schedule-interview"}
+              className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
+            >
               Schedule interview
             </Link>
           </>
@@ -102,12 +120,7 @@ const NavBar = ({ isModalOpen }) => {
             stroke="currentColor"
             className="h-6 w-6 text-white"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M4 6h16M4 12h16M4 18h16"
-            />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
         {session?.data.session ? (
@@ -115,9 +128,9 @@ const NavBar = ({ isModalOpen }) => {
         ) : (
           <Link
             href={"/signin"}
-            className="rounded bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 transition-colors"
+            className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
           >
-            Sign in
+            Sign In
           </Link>
         )}
       </div>

@@ -36,19 +36,6 @@ const containerStyle = css`
   }
 `;
 
-const titleStyle = css`
-  color: #fff; // White color
-  font-size: 5rem; // Significantly larger font size
-  margin-bottom: 20px;
-  margin-top: -50px;
-`;
-
-const subtitleStyle = css`
-  color: #ffffff; // Changed color
-  font-size: 1.5rem; // Slightly larger font size
-  margin-bottom: 40px;
-`;
-
 const buttonStyle = css`
   background-color: #5b1fd5; // Darker purple
   color: #fff;
@@ -81,16 +68,16 @@ export default function Home() {
       </Head>
 
       <div>
-        <h1 css={titleStyle}>
+        <h1 className="text-white text-5xl md:text-8xl mb-5 -mt-[50px]">
           <FaRocket className="inline-block" color="#4D28D9" /> Your Software Engineering
           <br />
           <span css={gradientTextStyle}>Job Connection Platform</span>
         </h1>
-        <p css={subtitleStyle}>
+        <h2 className="text-white text-xl md:text-2xl mb-[40px]">
           Don't wait for employers to interview you.
           <br />
           Let your mock interview do the talking.
-        </p>
+        </h2>
         <Link href={"/dashboard"}>
           <button css={buttonStyle}> Get Started with EloStack</button>
         </Link>

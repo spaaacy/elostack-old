@@ -123,7 +123,7 @@ const IndividualDashboard = () => {
         }),
       });
       if (response.status === 201) {
-        window.location.reload();
+        router.push("https://calendly.com/elostack/mock-interview");
       }
     } catch (error) {
       toast.error(error);

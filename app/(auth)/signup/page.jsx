@@ -228,7 +228,7 @@ const Page = () => {
                     />
                     <button onClick={togglePasswordVisibility} className="absolute right-3 top-[1.6rem] mt-2">
                       {passwordVisible ? (
-                        <Image src="/hide.png" alt="unhide password" width={25} height={25} />
+                        <Image src="/hide.svg" alt="unhide password" width={25} height={25} />
                       ) : (
                         <Image src="/unhide.png" alt="hide password" width={25} height={25} />
                       )}
@@ -236,10 +236,7 @@ const Page = () => {
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex flex-col gap-2">
-                      <Link
-                        href="/signin"
-                        className="inline-block align-baseline font-bold text-sm text-white"
-                      >
+                      <Link href="/signin" className="inline-block align-baseline font-bold text-sm text-white">
                         Already have an account? <span className="text-purple-500 hover:text-purple-700">Sign In</span>
                       </Link>
                       <p className="inline-block align-baseline text-sm text-gray-400">

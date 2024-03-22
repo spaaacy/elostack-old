@@ -59,65 +59,107 @@ const BusinessDashboard = () => {
   };
 
   return (
-    <>
-      <main className="flex flex-col flex-1 bg-gray-100 min-h-screen bg-no-repeat bg-fixed bg-bottom bg-[url('/waves.svg')]">
-        <Head>
-          <title>Job Seeker Dashboard | EloStack</title>
-        </Head>
-        <main className="container mx-auto p-4 bg-white rounded-lg shadow mt-8">
-          {/* Profile Summary */}
+    <main className="flex flex-col min-h-screen text-white w-full bg-gradient-to-b from-[#0f0f1c] via-[#1b1b29] to-[#251b30]">
+      <Head>
+        <title>Business Dashboard | EloStack</title>
+      </Head>
 
-          <section>
-            <div className="p-5 text-center border-b border-gray-200">
-              {businessDetails && <h1 className="text-4xl font-bold ">{`${businessDetails?.name} Dashboard`}</h1>}
+      <main className="container mx-auto p-4 bg-[#1b1b29] rounded-lg shadow mt-8">
+        {/* Profile Summary */}
+        <section className="p-5 border-b border-gray-700">
+          <div className="text-center">
+            {businessDetails && <h1 className="text-4xl font-bold">{`${businessDetails?.name} Dashboard`}</h1>}
+          </div>
+        </section>
+
+        {/* Job Listings */}
+        <section className="p-8 rounded-lg shadow-lg">
+          <div className="flex justify-between items-center">
+            <h2 className="text-3xl font-bold text-white">Latest Job Listings</h2>
+            <div className="flex justify-center items-center gap-4">
+              <Link
+                href="/dashboard/create-listing"
+                className="inline-block bg-purple-700 text-white px-6 py-3 rounded hover:bg-purple-900 transition duration-150 ease-in-out"
+              >
+                Create Listing
+              </Link>
+              <Link
+                href="/dashboard/view-listings"
+                className="inline-block bg-purple-700 text-white px-6 py-3 rounded hover:bg-purple-900 transition duration-150 ease-in-out"
+              >
+                View All Listings
+              </Link>
             </div>
-          </section>
+          </div>
 
-          {/* Job Listings */}
-          {/* Your Applications */}
-          <section className="bg-center mt-4 p-8 rounded-lg shadow-lg">
-            <div className="flex justify-between mb-4 items-center -mt-[2rem] ">
-              <h2 className="text-3xl font-bold text-blueprimary">Latest Job Listings</h2>
-              <div className="flex items-center justify-center gap-4">
-                <Link href="/dashboard/create-listing">
-                  <button className="inline-block bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
-                    Create Listing
-                  </button>
-                </Link>
+          <div className="space-y-6 mt-4">
+            {jobListings &&
+              jobListings.map((jobListing) => (
+                <div
+                  key={jobListing.id}
+                  className="bg-[#0f0f1c] p-6 rounded-lg flex justify-between items-center hover:shadow-lg transition-shadow duration-300"
+                >
+                  <div>
+                    <h3 className="font-semibold text-lg">{jobListing.title}</h3>
+                    <p className="text-sm text-gray-400">{jobListing.location}</p>
+                    <p className="text-sm text-gray-400">{`$${jobListing.starting_pay} - $${jobListing.ending_pay}`}</p>
+                  </div>
+                  <Link href={`/job-listing/${jobListing.id}`} className="text-purple-500 font-bold hover:underline">
+                    Details
+                  </Link>
+                </div>
+              ))}
+          </div>
+        </section>
 
-                <Link href="/dashboard/view-listings">
-                  <button className="inline-block bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-150 ease-in-out">
-                    View All Listings
-                  </button>
-                </Link>
-              </div>
+        {/* Your Candidates */}
+        <section className="p-8 rounded-lg shadow-lg mt-8">
+          <div className="flex justify-between items-center">
+            <div className="flex flex-col justify-center items-start">
+              <h2 className="text-3xl font-bold text-white">Your Candidates</h2>
             </div>
+            <div className="flex justify-center items-center gap-4">
+              {/* <Link
+                href="/dashboard/request-interview"
+                className="inline-block bg-purple-700 text-white px-6 py-3 rounded hover:bg-purple-900 transition duration-150 ease-in-out"
+              >
+                Request an Interview
+              </Link> */}
+            </div>
+          </div>
 
-            <div className="space-y-6">
-              {jobListings &&
-                jobListings.map((jobListing) => (
-                  <div
-                    key={jobListing.id}
-                    className="bg-gray-50 p-6 rounded-lg flex justify-between items-center hover:shadow-xl transition-shadow duration-300 relative"
-                  >
-                    <div>
-                      <h3 className="font-semibold text-lg">{jobListing.title}</h3>
-                      <p className="text-sm text-gray-600">{jobListing.location}</p>
-                      <p className="text-sm text-gray-600">{`$${jobListing.starting_pay} - $${jobListing.ending_pay}`}</p>
-                    </div>
-                    <Link href={`/job-listing/${jobListing.id}`} className="text-blueprimary hover:underline">
-                      Details
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+            {/* {purchases?.length > 0 ? (
+              purchases.map((purchase) => (
+                <div
+                  key={purchase.id}
+                  className="bg-[#0f0f1c] p-6 rounded-lg shadow hover:shadow-lg transition-shadow duration-300 flex items-center"
+                >
+                  <Avatar
+                    name={`${purchase.individual.first_name} ${purchase.individual.last_name}`}
+                    size="100"
+                    round={true}
+                    className="mr-4"
+                  />
+                  <div className="flex flex-col">
+                    <h3 className="font-semibold text-lg">{`${purchase.individual.first_name} ${purchase.individual.last_name}`}</h3>
+                    <p className="text-sm text-gray-400 capitalize">{purchase.individual.position}</p>
+                    <Link
+                      href={`/individual/${purchase.individual.user_id}`}
+                      className="mt-4 inline-block bg-purple-700 text-white px-4 py-2 rounded hover:bg-purple-900 transition duration-150 ease-in-out"
+                    >
+                      View Profile
                     </Link>
                   </div>
-                ))}
-            </div>
-          </section>
-
-          {/* Post a Job */}
-        </main>{" "}
-        <div className="mt-52"></div>
+                </div>
+              ))
+            ) : (
+              <div className="font-bold">No purchases made</div>
+            )} */}
+          </div>
+        </section>
       </main>
-    </>
+    </main>
   );
 };
 

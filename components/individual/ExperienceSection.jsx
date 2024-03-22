@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FaBriefcase, FaTrash, FaEdit } from 'react-icons/fa';
 import moment from 'moment';
-import { formatDate } from "@/utils/formatDate";
+import formatDate from "@/utils/formatDate";
 import NavBar from '@/components/common/NavBar';
 
 const ExperienceSection = () => {

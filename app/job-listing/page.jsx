@@ -28,6 +28,7 @@ const Page = () => {
       method: "GET",
     });
     const results = await response.json();
+    console.log(results.data);
     setJobListings(results.data);
     setLoading(false);
   };

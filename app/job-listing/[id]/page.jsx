@@ -84,57 +84,66 @@ const Page = ({}) => {
   };
 
   return (
-    <main className="flex flex-col flex-1">
+    <main className="flex flex-col min-h-screen text-white w-full bg-gradient-to-b from-[#0f0f1c] via-[#1b1b29] to-[#251b30]">
       <NavBar />
       {loading ? (
         <div className="flex flex-1">
           <Loader />
         </div>
       ) : (
-        <div className="flex flex-col w-[1080px] mx-auto py-6">
-          <div className="flex">
-            <div className="flex flex-col flex-1">
-              <Link
-                href={`/business/${jobListing.business?.user_id}`}
-                className="text-blue-600 dark:text-blue-500 hover:underline"
-              >
-                {jobListing.business?.name}
-              </Link>
-              <div className="flex justify-between">
-                <h1 className="text-3xl font-bold capitalize ">{jobListing.title}</h1>
-                {applied ? (
-                  <div className="flex gap-2 items-center justify-center">
-                    <p className="font-medium">Applied</p>
-                    <Image src={"/done.svg"} alt="done" width={25} height={25} />
-                  </div>
-                ) : session.data.session?.user.id === jobListing?.business_id ? (
-                  <Link
-                    href={`/dashboard/edit-listing/${jobListing?.id}`}
-                    className="bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-150 ease-in-out"
-                  >
-                    Edit Listing
-                  </Link>
-                ) : (
-                  !user?.business && (
-                    <button
-                      onClick={handleApply}
-                      className="bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-150 ease-in-out"
-                    >
-                      Apply
-                    </button>
-                  )
-                )}
-              </div>
-              <p className="text-gray-500 capitalize">{jobListing.position}</p>
-              <p className="text-gray-500 capitalize">{`${jobListing.location}, (${
+        <div className="container mx-auto p-4 bg-[#1b1b29] rounded-lg shadow mt-8">
+          <div className="p-5 border-b border-gray-700">
+            <div className="text-center">
+              <h1 className="text-4xl font-bold mb-2">{jobListing.title}</h1>
+              <p className="text-lg text-gray-400 capitalize">{`${jobListing.position} | ${jobListing.location}, (${
                 jobListing.remote ? "Remote" : "On-site"
               })`}</p>
-              <p className="text-gray-500 capitalize">{`$${jobListing.starting_pay} - $${jobListing.ending_pay}`}</p>
             </div>
           </div>
 
-          <h2 className="font-bold mt-8">Description:</h2>
-          <p className="whitespace-pre-line">{jobListing.description}</p>
+          <div className="p-8">
+            <div className="flex justify-between items-center mb-8">
+              <Link
+                href={`/business/${jobListing.business?.user_id}`}
+                className="text-purple-500 hover:text-purple-400 hover:underline"
+              >
+                {jobListing.business?.name}
+              </Link>
+              {applied ? (
+                <div className="flex gap-2 items-center justify-center">
+                  <p className="font-medium">Applied</p>
+                  <Image src={"/done.svg"} alt="done" width={25} height={25} />
+                </div>
+              ) : session.data.session?.user.id === jobListing?.business_id ? (
+                <Link
+                  href={`/dashboard/edit-listing/${jobListing?.id}`}
+                  className="bg-purple-700 text-white px-6 py-3 rounded hover:bg-purple-800 transition duration-150 ease-in-out"
+                >
+                  Edit Listing
+                </Link>
+              ) : (
+                !user?.business && (
+                  <button
+                    onClick={handleApply}
+                    className="bg-purple-700 text-white px-6 py-3 rounded hover:bg-purple-800 transition duration-150 ease-in-out"
+                  >
+                    Apply
+                  </button>
+                )
+              )}
+            </div>
+
+            <div className="mb-8">
+              <h2 className="text-2xl font-bold mb-2">Salary Range</h2>
+              <p className="text-lg text-gray-400">{`$${jobListing.starting_pay} - $${jobListing.ending_pay}`}</p>
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-bold mb-4">Description</h2>
+              <p className="text-lg text-gray-400 whitespace-pre-line">{jobListing.description}</p>
+            
+            </div>
+          </div>
         </div>
       )}
     </main>

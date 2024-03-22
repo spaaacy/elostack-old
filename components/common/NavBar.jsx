@@ -12,6 +12,7 @@ const NavBar = ({ isModalOpen }) => {
   const [lastScrollY, setLastScrollY] = useState(0);
   const [navBarVisible, setNavBarVisible] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [user, setUser] = useState();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,10 +28,30 @@ const NavBar = ({ isModalOpen }) => {
     if (!isModalOpen) {
       window.addEventListener("scroll", handleScroll, { passive: true });
     }
+
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, [lastScrollY, isModalOpen]);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const userId = session?.data?.session?.user.id;
+      if (userId) {
+        const response = await fetch(`/api/user/${userId}`, {
+          method: "GET",
+        });
+        if (response.status === 200) {
+          const { user } = await response.json();
+          setUser(user);
+        }
+      }
+    };
+
+    if (session) {
+      fetchUser();
+    }
+  }, [session]);
 
   return (
     <nav
@@ -44,25 +65,50 @@ const NavBar = ({ isModalOpen }) => {
           <div className="ml-2">EloStack</div>
         </div>
       </Link>
-      <div className={`hidden lg:flex justify-center space-x-4 ${session?.data.session ? "mr-10" : ""}`}>
-        <Link
-          href={"/job-listing"}
-          className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
-        >
-          Job listings
-        </Link>
-        <Link
-          href={"/dashboard/applications"}
-          className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
-        >
-          Applications
-        </Link>
-        <Link
-          href={"/dashboard"}
-          className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
-        >
-          Schedule Interview
-        </Link>
+      <div className={`hidden lg:flex justify-center space-x-8 ${session?.data.session ? "mr-10" : ""}`}>
+        {user?.business ? (
+          <>
+            <Link
+              href={"/dashboard/create-listing"}
+              className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
+            >
+              Create Listing
+            </Link>
+            <Link
+              href={"/dashboard/search-individuals"}
+              className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
+            >
+              Find Candidates
+            </Link>
+            <Link
+              href={"/dashboard/request-interview"}
+              className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
+            >
+              Request Interview
+            </Link>
+          </>
+        ) : (
+          <>
+            <Link
+              href={"/job-listing"}
+              className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
+            >
+              Job listings
+            </Link>
+            <Link
+              href={"/dashboard/applications"}
+              className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
+            >
+              Applications
+            </Link>
+            <Link
+              href={"/schedule-interview"}
+              className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
+            >
+              Schedule interview
+            </Link>
+          </>
+        )}
       </div>
       <div className="flex items-center">
         <button className="lg:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>

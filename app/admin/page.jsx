@@ -67,103 +67,108 @@ const Page = () => {
   return (
     <>
       <NavBar />
-      <div>
-        <main className="flex flex-col flex-1 bg-gray-100 min-h-screen bg-no-repeat bg-fixed bg-bottom">
-          <Head>
-            <title>Admin Dashboard | EloStack</title>
-          </Head>
+      <main className="flex flex-col min-h-screen text-white w-full bg-gradient-to-b from-[#0f0f1c] via-[#1b1b29] to-[#251b30]">
+        <Head>
+          <title>Admin Dashboard | EloStack</title>
+        </Head>
 
-          <main className="container mx-auto p-4 bg-white rounded-lg shadow mt-8">
-            <section className="p-5 text-center border-b border-gray-200">
-              <h1 className="text-3xl font-bold mb-4">Admin Dashboard</h1>
-            </section>
+        <main className="container mx-auto p-4 bg-[#1b1b29] rounded-lg shadow mt-8">
+          <section className="p-5 text-center border-b border-gray-700">
+            <h1 className="text-3xl font-bold mb-4">Admin Dashboard</h1>
+          </section>
 
-            <section className="bg-center p-8 rounded-lg shadow-lg">
-              <h2 className="text-2xl font-bold text-blueprimary">Pending Interview Requests</h2>
-              <table className="w-full table-auto text-sm">
-                <thead>
-                  <tr>
-                    <th className="px-4 py-2">Payment Intent ID</th>
-                    <th className="px-4 py-2">Individual ID</th>
-                    <th className="px-4 py-2">Candidate Name</th>
-                    <th className="px-4 py-2">Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {requests &&
-                    requests.map((request) => (
-                      <>
-                        <tr key={request.id}>
-                          <td className="border px-4 py-2">{request.payment_intent_id}</td>
-                          <td className="border px-4 py-2">{request.individual.user_id}</td>
-                          <td className="border px-4 py-2">
-                            {`${request.individual.first_name} ${request.individual.last_name}`}
-                          </td>
-                          <td className="border px-4 py-2 capitalize">{request.status}</td>
-                        </tr>
-                      </>
-                    ))}
-                </tbody>
-              </table>
-            </section>
+          <section className="p-8 rounded-lg shadow-lg">
+            <h2 className="text-2xl font-bold text-white">Pending Interview Requests</h2>
+            <table className="w-full table-auto text-sm mt-4">
+              <thead>
+                <tr className="bg-[#0f0f1c]">
+                  <th className="px-4 py-2">Payment Intent ID</th>
+                  <th className="px-4 py-2">Individual ID</th>
+                  <th className="px-4 py-2">Candidate Name</th>
+                  <th className="px-4 py-2">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {requests &&
+                  requests.map((request) => (
+                    <>
+                      <tr key={request.id}>
+                        <td className="border px-4 py-2">{request.payment_intent_id}</td>
+                        <td className="border px-4 py-2">{request.individual.user_id}</td>
+                        <td className="border px-4 py-2">
+                          {`${request.individual.first_name} ${request.individual.last_name}`}
+                        </td>
+                        <td className="border px-4 py-2 capitalize">{request.status}</td>
+                      </tr>
+                    </>
+                  ))}
+              </tbody>
+            </table>
+          </section>
 
-            <section className="bg-center p-8 rounded-lg shadow-lg">
-              <h2 className="text-2xl font-bold text-blueprimary">Upload New Interview</h2>
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
-                <div className="flex items-center gap-2">
-                  <div>
-                    <label className="block font-semibold">Payment Intent ID</label>
-                    <input
-                      type="text"
-                      {...register("payment_intent_id", { required: true })}
-                      className="mt-1 p-2 border rounded"
-                    />
-                    {errors.payment_intent_id && <p>This field is required</p>}
-                  </div>
-                  <div className="flex-1">
-                    <label className="block font-semibold">Individual ID</label>
-                    <input
-                      type="text"
-                      {...register("individual_id", { required: true })}
-                      className="mt-1 p-2 border rounded w-full"
-                    />
-                    {errors.individual_id && <p>This field is required</p>}
-                  </div>
-                  <div>
-                    <label className="block font-semibold">Grade</label>
-                    <input type="text" {...register("grade", { required: true })} className="mt-1 p-2 border rounded" />
-                    {errors.grade && <p>This field is required</p>}
-                  </div>
-                </div>
+          <section className="bg-center p-8 rounded-lg shadow-lg">
+            <h2 className="text-2xl font-bold text-blueprimary">Upload New Interview</h2>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
+              <div className="flex items-center gap-2">
                 <div>
-                  <label className="block font-semibold">Feedback</label>
-                  <textarea
-                    rows={10}
-                    {...register("feedback", { required: true })}
-                    className="w-full mt-1 p-2 border rounded"
-                  />
-                  {errors.feedback && <p>This field is required</p>}
-                </div>
-                <div>
-                  <label className="block font-semibold">YouTube Video ID</label>
+                  <label className="block font-semibold">Payment Intent ID</label>
                   <input
                     type="text"
-                    {...register("youtube_id", { required: true })}
-                    className="w-full mt-1 p-2 border rounded"
+                    {...register("payment_intent_id", { required: true })}
+                    className="mt-1 p-2 border rounded bg-[#0f0f1c] text-white"
                   />
-                  {errors.youtube_id && <p>This field is required</p>}
+                  {errors.payment_intent_id && <p>This field is required</p>}
                 </div>
+                <div className="flex-1">
+                  <label className="block font-semibold">Individual ID</label>
+                  <input
+                    type="text"
+                    {...register("individual_id", { required: true })}
+                    className="mt-1 p-2 border rounded bg-[#0f0f1c] text-white w-full"
+                  />
+                  {errors.individual_id && <p>This field is required</p>}
+                </div>
+                <div>
+                  <label className="block font-semibold">Grade</label>
+                  <input
+                    type="text"
+                    {...register("grade", { required: true })}
+                    className="mt-1 p-2 border rounded bg-[#0f0f1c] text-white"
+                  />
+                  {errors.grade && <p>This field is required</p>}
+                </div>
+              </div>
+              <div>
+                <label className="block font-semibold">Feedback</label>
+                <textarea
+                  rows={10}
+                  {...register("feedback", { required: true })}
+                  className="w-full mt-1 p-2 border rounded bg-[#0f0f1c] text-white"
+                />
+                {errors.feedback && <p className="text-red-500">This field is required</p>}
+              </div>
+              <div>
+                <label className="block font-semibold">YouTube Video ID</label>
+                <input
+                  type="text"
+                  {...register("youtube_id", { required: true })}
+                  className="mt-1 p-2 border rounded bg-[#0f0f1c] text-white w-full"
+                />
+                {errors.youtube_id && <p className="text-red-500">This field is required</p>}
+              </div>
 
-                <div className="flex justify-end">
-                  <button type="submit" className="mt-2 px-4 py-2 bg-blue-500 text-white rounded">
-                    Upload
-                  </button>
-                </div>
-              </form>
-            </section>
-          </main>
+              <div className="flex justify-end">
+                <button
+                  type="submit"
+                  className="mt-2 px-4 py-2 bg-purple-700 text-white rounded hover:bg-purple-900 transition duration-150 ease-in-out"
+                >
+                  Upload
+                </button>
+              </div>
+            </form>
+          </section>
         </main>
-      </div>
+      </main>
     </>
   );
 };

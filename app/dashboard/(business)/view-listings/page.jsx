@@ -5,8 +5,7 @@ import Loader from "@/components/common/Loader";
 import { useContext, useEffect, useState } from "react";
 import Link from "next/link";
 import { UserContext } from "@/context/UserContext";
-import { formatDate } from "@/utils/formatDate";
-
+import formatDate from "@/utils/formatDate";
 const Page = () => {
   const { session, verifyLogin } = useContext(UserContext);
   const [loading, setLoading] = useState(true);

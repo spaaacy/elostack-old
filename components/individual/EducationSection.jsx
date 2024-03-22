@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { FaGraduationCap, FaTrash, FaEdit } from 'react-icons/fa';
 import moment from 'moment';
-import { formatDate } from "@/utils/formatDate";
+import formatDate from "@/utils/formatDate";
 
 const EducationSection = () => {
   const [educations, setEducations] = useState([]);
@@ -15,7 +15,7 @@ const EducationSection = () => {
     fieldOfStudy: '',
     startDate: '',
     endDate: '',
-    grade: '',
+    
     description: '',
     activities: [],
   });
@@ -45,7 +45,7 @@ const EducationSection = () => {
       fieldOfStudy: '',
       startDate: '',
       endDate: '',
-      grade: '',
+      
       description: '',
       activities: [],
     });
@@ -123,7 +123,7 @@ const EducationSection = () => {
               {formatDate(education.startDate)} - {education.endDate ? formatDate(education.endDate) : 'Present'}
             </p>
             <p className="text-gray-400">{calculateDuration(education.startDate, education.endDate)}</p>
-            <p className="text-gray-400">Grade: {education.grade}</p>
+            
             <div className="text-gray-300 mt-2">
               <p
                 className={`whitespace-pre-wrap ${
@@ -223,17 +223,7 @@ const EducationSection = () => {
                   className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
                 />
               </div>
-              <div className="mb-4">
-                <label htmlFor="grade" className="block text-white">Grade</label>
-                <input
-                  type="text"
-                  id="grade"
-                  name="grade"
-                  value={newEducation.grade}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
-                />
-              </div>
+              
               <div className="mb-4">
                 <label htmlFor="description" className="block text-white">Description</label>
                 <textarea

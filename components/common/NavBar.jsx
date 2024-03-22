@@ -102,7 +102,7 @@ const NavBar = ({ isModalOpen }) => {
               Applications
             </Link>
             <Link
-              href={"/schedule-interview"}
+              href={"/dashboard"}
               className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
             >
               Schedule interview

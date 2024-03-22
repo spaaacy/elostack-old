@@ -1,7 +1,7 @@
 "use client";
 
 import NavBar from "@/components/common/NavBar";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLinkedin } from "@fortawesome/free-brands-svg-icons";
 import { useParams } from "next/navigation";
@@ -17,7 +17,8 @@ const Page = () => {
   const [business, setBusiness] = useState();
   const [loading, setLoading] = useState(true);
   const [jobListings, setJobListings] = useState();
-  const [isFullTextShown, setIsFullTextShown] = useState(false);
+  const [showFullText, setShowFullText] = useState(false);
+  const aboutRef = useRef();
 
   useEffect(() => {
     fetchBusiness();
@@ -46,6 +47,17 @@ const Page = () => {
     } else {
       console.error("Error fetching business!");
     }
+  };
+
+  const toggleShowFullText = () => {
+    setShowFullText(!showFullText);
+  };
+
+  const isOverflowing = () => {
+    if (aboutRef.current) {
+      return aboutRef.current.scrollHeight > aboutRef.current.clientHeight;
+    }
+    return false;
   };
 
   if (loading) {
@@ -90,7 +102,19 @@ const Page = () => {
           </div>
           <div className="px-4 py-5 sm:p-6">
             <h3 className="text-lg leading-6 font-medium text-white">About</h3>
-            <p className="mt-2 text-sm text-white">{business.description}</p>
+            <div
+              ref={aboutRef}
+              className={`mt-2 text-sm text-white whitespace-pre-wrap overflow-hidden ${
+                showFullText ? "" : "h-20"
+              }`}
+            >
+              {business.description}
+            </div>
+            {isOverflowing() && (
+              <button onClick={toggleShowFullText} className="text-purple-500 mt-4">
+                {showFullText ? "Show Less" : "Read More"}
+              </button>
+            )}
           </div>
           <div className="px-4 py-5 sm:p-6 border-t border-gray-700">
             <h3 className="text-lg leading-6 font-medium text-white">Company Information</h3>
@@ -99,11 +123,21 @@ const Page = () => {
                 <dt className="text-sm font-medium text-white">Email</dt>
                 <dd className="mt-1 text-sm text-white">{business.user.email}</dd>
               </div>
+              {business.founded_date && (
+                <div className="sm:col-span-1">
+                  <dt className="text-sm font-medium text-white">Date Founded</dt>
+                  <dd className="mt-1 text-sm text-white">{business.founded_date}</dd>
+                </div>
+              )}
               <div className="sm:col-span-1">
                 {business.website && (
                   <>
                     <dt className="text-sm font-medium text-white">Website</dt>
-                    <a href={formatLink(business.website)} target="_blank" className="text-purple-500 hover:text-purple-600">
+                    <a
+                      href={formatLink(business.website)}
+                      target="_blank"
+                      className="text-purple-500 hover:text-purple-600"
+                    >
                       {business.website}
                     </a>
                   </>
@@ -111,13 +145,16 @@ const Page = () => {
               </div>
               <div className="sm:col-span-1">
                 {business.linkedin && (
-                  <a
-                    target="_blank"
-                    href={formatLink(business.linkedin)}
-                    className="transition-transform duration-200 ease-in-out transform hover:-translate-y-1 hover:scale-110"
-                  >
-                    <FontAwesomeIcon icon={faLinkedin} size="2x" color="#0e76a8" />
-                  </a>
+                  <>
+                    <dt className="text-sm font-medium text-white">Linkedin</dt>
+                    <a
+                      target="_blank"
+                      href={formatLink(business.linkedin)}
+                      className="transition-transform duration-200 ease-in-out transform hover:-translate-y-1 hover:scale-110"
+                    >
+                      <FontAwesomeIcon icon={faLinkedin} size="2x" color="#0e76a8" />
+                    </a>
+                  </>
                 )}
               </div>
             </dl>

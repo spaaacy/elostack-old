@@ -9,6 +9,7 @@ const EditBusinessProfile = () => {
   const { session } = useContext(UserContext);
   const [formData, setFormData] = useState();
   const [loading, setLoading] = useState(true);
+  const [pfpPreview, setPfpPreview] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -24,6 +25,12 @@ const EditBusinessProfile = () => {
     });
   };
 
+  const handlePfpChange = (e) => {
+    const file = e.target.files[0];
+    setFormData({ ...formData, pfp: file });
+    setPfpPreview(URL.createObjectURL(file));
+  };
+
   const fetchBusinessDetails = async () => {
     const userId = session?.data?.session?.user.id;
     if (userId) {
@@ -32,6 +39,7 @@ const EditBusinessProfile = () => {
       console.log({ result, response });
       if (response.status === 200) {
         setFormData(result.business);
+        setPfpPreview(result.business.pfp);
         setLoading(false);
       } else {
         console.error("Fetching business details failed!");
@@ -77,6 +85,29 @@ const EditBusinessProfile = () => {
             <div className="mb-4">
               <h2 className="text-xl font-semibold mb-2 text-white">Company Information</h2>
 
+              <div className="flex items-center mb-4">
+                <div className="w-20 h-20 rounded-full overflow-hidden">
+                  {pfpPreview ? (
+                    <img src={pfpPreview} alt="Profile Picture Preview" className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-gray-300 text-gray-600 text-4xl font-bold">
+                      {formData?.name ? formData.name.charAt(0).toUpperCase() : ""}
+                    </div>
+                  )}
+                </div>
+                <label htmlFor="pfp" className="ml-4 cursor-pointer text-purple-500 hover:text-purple-600">
+                  Change Profile Picture
+                </label>
+                <input
+                  type="file"
+                  name="pfp"
+                  id="pfp"
+                  accept="image/*"
+                  onChange={handlePfpChange}
+                  className="hidden"
+                />
+              </div>
+
               <label htmlFor="name" className="block text-sm font-medium text-gray-400 mt-3">
                 Company Name
               </label>
@@ -100,6 +131,18 @@ const EditBusinessProfile = () => {
                 value={formData?.industry}
                 onChange={handleChange}
                 placeholder="Enter your industry"
+                className="mt-1 block w-full rounded border border-gray-600 bg-[#0f0f1c] text-white px-5 py-2 shadow-sm placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+              />
+
+              <label htmlFor="founded_date" className="block text-sm font-medium text-gray-400 mt-3">
+                Date Founded
+              </label>
+              <input
+                type="date"
+                name="founded_date"
+                id="founded_date"
+                value={formData?.founded_date}
+                onChange={handleChange}
                 className="mt-1 block w-full rounded border border-gray-600 bg-[#0f0f1c] text-white px-5 py-2 shadow-sm placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
               />
 

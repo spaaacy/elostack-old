@@ -126,7 +126,7 @@ const Page = () => {
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-800 text-white"
+                      className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline bg-gray-800 text-white"
                     />
                   </div>
                   <div className="mb-6">
@@ -142,12 +142,12 @@ const Page = () => {
                         name="password"
                         value={formData.password}
                         onChange={handleInputChange}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-800 text-white"
+                        className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline bg-gray-800 text-white"
                       />
                       <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
                         <button type="button" onClick={togglePasswordVisibility} className="text-gray-400">
                           {showPassword ? (
-                            <Image src="/hide.png" alt="hide password" width={25} height={25} />
+                            <Image src="/hide.svg" alt="hide password" width={25} height={25} />
                           ) : (
                             <Image src="/unhide.png" alt="Show password" width={25} height={25} />
                           )}
@@ -178,13 +178,17 @@ const Page = () => {
 };
 
 export default Page;
-                      {/* <Link href="/forgot-password" className="text-blue-500 hover:text-blue-800 text-sm">
+{
+  /* <Link href="/forgot-password" className="text-blue-500 hover:text-blue-800 text-sm">
                         Forgot Password?
-                      </Link> */}
-                  {/* <button
+                      </Link> */
+}
+{
+  /* <button
                     type="button"
                     className="flex items-center justify-start shadow-lg bg-gray-100 mb-6 hover:bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded focus:outline-none focus:shadow-outline w-full"
                   >
                     <Image src="/google.svg" alt="Google logo" width={23} height={23} className="ml-4" />
                     <span className="ml-4">Sign In with Google</span>
-                  </button> */}
+                  </button> */
+}

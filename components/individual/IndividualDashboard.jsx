@@ -10,6 +10,7 @@ import Link from "next/link";
 import formatDate from "@/utils/formatDate";
 import { loadStripe } from "@stripe/stripe-js";
 import toast, { Toaster } from "react-hot-toast";
+import { v4 as uuidv4 } from "uuid";
 
 const IndividualDashboard = () => {
   const { session } = useContext(UserContext);
@@ -97,23 +98,33 @@ const IndividualDashboard = () => {
   const handlePayment = async () => {
     if (!profileData.user_id) return;
     try {
-      const response = await fetch("/api/checkout", {
+      // const response = await fetch("/api/checkout", {
+      //   method: "POST",
+      //   body: JSON.stringify({ individual_id: profileData.user_id }),
+      // });
+      // const result = await response.json();
+      // if (response.status !== 200) {
+      //   throw Error("Something went wrong");
+      // }
+      // const stripe = await loadStripe(
+      //   process.env.NODE_ENV === "production"
+      //     ? process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_LIVE_KEY
+      //     : process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_TEST_KEY
+      // );
+      // if (!stripe) {
+      //   throw Error("Something went wrong");
+      // }
+      // await stripe.redirectToCheckout({ sessionId: result.session.id });
+      const response = await fetch("/api/purchase/create", {
         method: "POST",
-        body: JSON.stringify({ individual_id: profileData.user_id }),
+        body: JSON.stringify({
+          individual_id: profileData.user_id,
+          payment_intent_id: uuidv4(),
+        }),
       });
-      const result = await response.json();
-      if (response.status !== 200) {
-        throw Error("Something went wrong");
+      if (response.status === 201) {
+        window.location.reload();
       }
-      const stripe = await loadStripe(
-        process.env.NODE_ENV === "production"
-          ? process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_LIVE_KEY
-          : process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_TEST_KEY
-      );
-      if (!stripe) {
-        throw Error("Something went wrong");
-      }
-      await stripe.redirectToCheckout({ sessionId: result.session.id });
     } catch (error) {
       toast.error(error);
     }
@@ -168,8 +179,8 @@ const IndividualDashboard = () => {
               {bookInterview && (
                 <Link
                   target="_blank"
-                  href={"https://calendly.com/elostack/30min"}
-                  className="inline-block text-left bg-blueprimary text-white px-6 py-3 rounded hover:bg-blue-600 transition duration-150 ease-in-out"
+                  href={"https://calendly.com/elostack/mock-interview"}
+                  className="text-left inline-block bg-purple-700 text-white px-6 py-3 rounded hover:bg-purple-900 transition duration-150 ease-in-out"
                 >
                   Schedule Interview
                 </Link>

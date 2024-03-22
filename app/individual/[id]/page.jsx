@@ -11,7 +11,6 @@ import { formatLink } from "@/utils/formatLink";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLinkedin, faGithub } from "@fortawesome/free-brands-svg-icons";
 import { parsePhoneNumber } from "libphonenumber-js";
-import EditProfileButton from "@/components/common/EditProfileButton";
 import { profileStore } from "@/components/individual/profileStore";
 import FeaturedCard from "@/components/individual/profile/FeaturedCard";
 import MediaSection from "@/components/individual/profile/MediaSection";
@@ -139,7 +138,7 @@ const Page = () => {
                   </div>
                 )}
               </div>
-              <div className="flex w-full justify-between items-center">
+              <div className="flex justify-between items-center">
                 <div className="flex-1 min-w-0">
                   <h2 className="text-2xl font-bold leading-7 text-white sm:text-3xl sm:truncate">
                     {`${profileData.first_name} ${profileData.last_name}`}
@@ -161,7 +160,16 @@ const Page = () => {
                   View Interview
                 </Link>
               )}
-              {session?.data?.session?.user.id === id && <EditProfileButton />}
+              {session?.data?.session?.user.id === id && (
+                <div className="flex flex-1">
+                  <button
+                    onClick={() => router.push("/dashboard/edit-profile")}
+                    className="ml-auto px-4 py-2 rounded text-white bg-purple-500 hover:bg-purple-600 focus:outline-none"
+                  >
+                    Edit Profile
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 
@@ -229,9 +237,9 @@ const Page = () => {
             </div>
           )}
           {/* Professional Information Section */}
-          <MediaSection />
+          {/* <MediaSection />
           <EducationSection />
-          <ExperienceSection />
+          <ExperienceSection /> */}
         </div>
       </div>
     </main>

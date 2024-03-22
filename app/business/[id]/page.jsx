@@ -7,7 +7,6 @@ import { faLinkedin } from "@fortawesome/free-brands-svg-icons";
 import { useParams } from "next/navigation";
 import Loader from "@/components/common/Loader";
 import { UserContext } from "@/context/UserContext";
-import EditProfileButton from "@/components/common/EditProfileButton";
 import { formatLink } from "@/utils/formatLink";
 import Link from "next/link";
 
@@ -95,7 +94,16 @@ const Page = () => {
                       )}
                     </div>
                   </div>
-                  {session?.data?.session?.user.id === id && <EditProfileButton />}
+                  {session?.data?.session?.user.id === id && (
+                    <div className="flex flex-1">
+                      <button
+                        onClick={() => router.push("/dashboard/edit-profile")}
+                        className="ml-auto px-4 py-2 rounded text-white bg-purple-500 hover:bg-purple-600 focus:outline-none"
+                      >
+                        Edit Profile
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -104,9 +112,7 @@ const Page = () => {
             <h3 className="text-lg leading-6 font-medium text-white">About</h3>
             <div
               ref={aboutRef}
-              className={`mt-2 text-sm text-white whitespace-pre-wrap overflow-hidden ${
-                showFullText ? "" : "h-20"
-              }`}
+              className={`mt-2 text-sm text-white whitespace-pre-wrap overflow-hidden ${showFullText ? "" : "h-20"}`}
             >
               {business.description}
             </div>

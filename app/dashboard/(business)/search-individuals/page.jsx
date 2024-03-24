@@ -45,13 +45,7 @@ const Page = () => {
 
   let filteredCandidates = [];
   if (candidates) {
-    filteredCandidates = candidates.filter(
-      (candidate) =>
-        (candidate.first_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          candidate.last_name?.toLowerCase().includes(searchTerm.toLowerCase())) &&
-        candidate.position?.toLowerCase().includes(position.toLowerCase()) &&
-        (grade !== "" ? candidate.interview?.grade?.toLowerCase().includes(grade.toLowerCase()) : true)
-    );
+    filteredCandidates = candidates.filter((candidate) => true);
   }
 
   if (loading)
@@ -104,7 +98,7 @@ const Page = () => {
           </div>
 
           <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredCandidates.map((candidate, index) => (
+            {applicants.map((candidate, index) => (
               <div
                 key={candidate.id}
                 className="bg-[#0f0f1c] p-6 rounded-lg flex hover:shadow-lg transition-shadow duration-300"

@@ -13,11 +13,11 @@ export const POST = async (req, res) => {
     const access_token = req.headers.get("x-supabase-auth").split(" ")[0];
     const refresh_token = req.headers.get("x-supabase-auth").split(" ")[1];
     if (!access_token || !refresh_token) throw Error("You must be authorized to do this action!");
-    let results;
-    results = await supabase.auth.setSession({ access_token, refresh_token });
-    if (results.error) throw results.error;
+    const auth = await supabase.auth.setSession({ access_token, refresh_token });
+    if (auth.error) throw auth.error;
 
     // Upload picture
+    let results;
     if (profilePicture) {
       results = await supabase.storage
         .from("profile-pictures")

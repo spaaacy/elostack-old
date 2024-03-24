@@ -15,8 +15,8 @@ const Page = () => {
     const loadData = async () => {
       const success = await verifyLogin("business");
       if (success) {
-        await setLoading(false);
-        fetchListings();
+        await fetchListings();
+        setLoading(false);
       }
     };
 
@@ -84,7 +84,8 @@ const Page = () => {
             <div className="space-y-6 mt-4">
               {jobListings &&
                 jobListings.map((listing) => (
-                  <div
+                  <Link
+                    href={`/job-listing/${listing.id}`}
                     key={listing.id}
                     className="bg-[#0f0f1c] p-6 rounded-lg flex justify-between items-center hover:shadow-lg transition-shadow duration-300"
                   >
@@ -100,10 +101,10 @@ const Page = () => {
                     </div>
                     <div className="flex justify-center items-center gap-4">
                       <Link
-                        href={`/job-listing/${listing.id}`}
+                        href={`/job-listing/${listing.id}/view-applicants`}
                         className="text-white bg-purpleprimary px-4 py-2 rounded hover:bg-purple-700 transition duration-150 ease-in-out"
                       >
-                        Details
+                        View Applicants
                       </Link>
                       <Link
                         href={`/dashboard/edit-listing/${listing.id}`}
@@ -120,7 +121,7 @@ const Page = () => {
                         {listing.active ? "Close" : "Re-Open"} Listing
                       </button>
                     </div>
-                  </div>
+                  </Link>
                 ))}
             </div>
           </section>

@@ -53,6 +53,9 @@ const Page = () => {
     if (userId) {
       const response = await fetch(`/api/application/${userId}`, {
         method: "GET",
+        headers: {
+          "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
+        },
       });
       if (response.status === 200) {
         const results = await response.json();
@@ -68,6 +71,9 @@ const Page = () => {
     if (userId && jobListingId) {
       const response = await fetch(`/api/application/cancel`, {
         method: "DELETE",
+        headers: {
+          "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
+        },
         body: JSON.stringify({
           user_id: userId,
           job_listing_id: jobListingId,

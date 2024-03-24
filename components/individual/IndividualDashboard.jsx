@@ -40,6 +40,9 @@ const IndividualDashboard = () => {
     if (userId) {
       const response = await fetch(`/api/application/${userId}?latest=true`, {
         method: "GET",
+        headers: {
+          "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
+        },
       });
       if (response.status === 200) {
         const results = await response.json();

@@ -55,6 +55,9 @@ const Page = ({}) => {
     if (userId) {
       const response = await fetch(`/api/application?user_id=${userId}&job_listing_id=${jobListingId}`, {
         method: "GET",
+        headers: {
+          "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
+        },
       });
       if (response.status !== 200) {
         setApplied(false);
@@ -69,6 +72,9 @@ const Page = ({}) => {
     if (userId) {
       const response = await fetch("/api/application/create", {
         method: "POST",
+        headers: {
+          "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
+        },
         body: JSON.stringify({
           user_id: userId,
           job_listing_id: jobListingId,
@@ -132,7 +138,6 @@ const Page = ({}) => {
                 )
               )}
             </div>
-
             <div className="mb-8">
               <h2 className="text-2xl font-bold mb-2">Salary Range</h2>
               <p className="text-lg text-gray-400">{`$${jobListing.starting_pay} - $${jobListing.ending_pay}`}</p>

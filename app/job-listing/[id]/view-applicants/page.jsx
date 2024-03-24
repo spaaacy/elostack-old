@@ -8,61 +8,72 @@ import Link from "next/link";
 import Avatar from "react-avatar";
 import formatDate from "@/utils/formatDate";
 import NavBar from "@/components/common/NavBar";
+import { useParams, useRouter } from "next/navigation";
 const JobApplicants = () => {
-  const { session } = useContext(UserContext);
-  const [loading, setLoading] = useState(false);
+  const { session, verifyLogin } = useContext(UserContext);
+  const { id } = useParams();
+  const [loading, setLoading] = useState(true);
   const [positionFilter, setPositionFilter] = useState("all");
   const [dateFilter, setDateFilter] = useState("all");
   const [gradeFilter, setGradeFilter] = useState("all");
+  const [applicants, setApplicants] = useState();
+  const [searchFilter, setSearchFilter] = useState("");
+  const router = useRouter();
 
-  // Mock data
-  const applicants = [
-    {
-      id: 1,
-      name: "John Doe",
-      applied_at: new Date(),
-      position: "intern",
-      grade: "A",
-      profile_picture_url: "url_to_picture",
-    },
-    {
-      id: 2,
-      name: "Jane Doe",
-      applied_at: new Date(),
-      position: "senior",
-      grade: "B",
-      profile_picture_url: "url_to_picture",
-    },
-    // Add more mock applicants as needed
-  ];
-
-  if (loading) {
-    return <Loader />;
+  let filteredApplicants = [];
+  if (applicants) {
+    filteredApplicants = applicants.filter((applicant) => {
+      applicant.position?.toLowerCase().includes(position.toLowerCase()) &&
+        (grade !== "" ? applicant.interview?.grade?.toLowerCase().includes(grade.toLowerCase()) : true);
+    });
   }
 
-  const [searchFilter, setSearchFilter] = useState("");
+  useEffect(() => {
+    const loadData = async () => {
+      const success = await verifyLogin("business");
+      if (success) {
+        await fetchApplicants();
+        setLoading(false);
+      }
+    };
 
-  const filteredApplicants = applicants.filter((applicant) => {
-    const matchesPosition = positionFilter === "all" || applicant.position === positionFilter;
-    const matchesDate =
-      dateFilter === "all" ||
-      (dateFilter === "last7days" && new Date() - applicant.applied_at <= 7 * 24 * 60 * 60 * 1000) ||
-      (dateFilter === "last30days" && new Date() - applicant.applied_at <= 30 * 24 * 60 * 60 * 1000) ||
-      (dateFilter === "last6months" && new Date() - applicant.applied_at <= 180 * 24 * 60 * 60 * 1000) ||
-      (dateFilter === "lastyear" && new Date() - applicant.applied_at <= 365 * 24 * 60 * 60 * 1000);
-    const matchesGrade = gradeFilter === "all" || applicant.grade === gradeFilter;
-    const matchesSearch = applicant.name.toLowerCase().includes(searchFilter.toLowerCase());
+    if (session) {
+      loadData();
+    }
+  }, [session]);
 
-    return matchesPosition && matchesDate && matchesGrade && matchesSearch;
-  });
+  const fetchApplicants = async () => {
+    const userId = session?.data?.session?.user.id;
+    if (!userId) return;
+    const response = await fetch(`/api/application?job_listing_id=${id}`, {
+      method: "GET",
+      headers: {
+        "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
+      },
+    });
+    if (response.status === 200) {
+      const results = await response.json();
+      console.log(results);
+      setApplicants(results.data);
+    } else {
+      router.push("/dashboard");
+    }
+  };
 
+  if (loading)
+    return (
+      <>
+        <NavBar />
+        <Loader />
+      </>
+    );
   return (
-    <main className="flex flex-col flex-1 bg-gray-100 min-h-screen bg-no-repeat bg-fixed bg-bottom bg-[url('/waves.svg')]">
+    <main className="flex flex-col flex-1 min-h-screen">
       <Head>
         <title>Job Applicants | EloStack</title>
       </Head>
 
-      <main className="container mx-auto p-4 bg-white rounded-lg shadow mt-8">
+      <div className="container mx-auto p-4 bg-white rounded-lg shadow mt-8">
         <NavBar />
 
         {/* Applicants List */}
@@ -139,7 +150,7 @@ const JobApplicants = () => {
               ))}
           </div>
         </section>
-      </main>
+      </div>
     </main>
   );
 };

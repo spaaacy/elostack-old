@@ -15,3 +15,6 @@ export async function GET(req, res) {
     return NextResponse.json({ error }, { status: 500 });
   }
 }
+
+// Prevents caching of results at build-time
+export const dynamic = "force-dynamic";

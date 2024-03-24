@@ -42,10 +42,7 @@ const HowItWorks = () => {
     <section className="bg-[#0f0f1c] w-screen body-font">
       <div className="container px-4 sm:px-6 lg:px-8 mt-0 mb-[8rem] mx-auto">
         <div className="text-center mb-16 md:mb-20">
-          <h1
-            className="text-3xl sm:text-4xl md:text-5xl font-extrabold title-font mb-4 text-white"
-            data-aos="zoom-in"
-          >
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold title-font mb-4 text-white" data-aos="zoom-in">
             How EloStack Works
           </h1>
           <p
@@ -57,21 +54,14 @@ const HowItWorks = () => {
         </div>
         <div className="flex flex-wrap -m-4">
           {steps.map((step, index) => (
-            <div
-              className="p-4 md:w-1/3"
-              key={index}
-              data-aos={step.aos}
-              data-aos-delay={step.delay}
-            >
-              <div className="h-full bg-gray-800 rounded-lg overflow-hidden shadow-lg transition-all duration-200 ease-in-out transform hover:-translate-y-2 hover:scale-105">
+            <div className="p-4 md:w-1/3" key={index} data-aos={step.aos} data-aos-delay={step.delay}>
+              <div className="h-full card-gradient rounded-lg overflow-hidden shadow-lg transition-all duration-200 ease-in-out transform hover:-translate-y-2 hover:scale-105">
                 <div className="p-4 sm:p-6">
                   <div className="flex items-center space-x-3 mb-2 sm:mb-4">
-                    <h2 className="rounded-full px-2 sm:px-3 py-1 text-xs sm:text-md bg-white font-[900] text-black">
+                    <h2 className="rounded-full px-2 sm:px-3 py-1 sm:py-2 text-xs sm:text-md bg-white font-[900] text-black">
                       {index + 1}
                     </h2>
-                    <h2 className="text-lg sm:text-xl font-bold text-white">
-                      {step.title}
-                    </h2>
+                    <h2 className="text-lg sm:text-xl font-bold text-white">{step.title}</h2>
                   </div>
                   <p className="leading-relaxed mb-3 font-semibold text-sm sm:text-base text-white">
                     {step.description}

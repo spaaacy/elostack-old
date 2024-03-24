@@ -77,7 +77,7 @@
 
 @layer utilities {
   .card-gradient {
-    background: linear-gradient(135deg, #6227749f 0%, #c533649f 100%);
+    background: linear-gradient(135deg, #7266f2 0%, #6f2da8 100%);
     box-shadow: 0 8px 32px 0 rgba(57, 54, 211, 0.3);
   }
   .card-gradient:hover {

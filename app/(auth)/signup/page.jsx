@@ -146,7 +146,7 @@ const Page = () => {
                     <button
                       onClick={() => setIsBusiness(false)}
                       className={`font-bold py-2 px-4 rounded-l focus:outline-none focus:shadow-outline mx-2 ${
-                        isBusiness ? "bg-gray-700 text-white" : "bg-purple-700 text-white"
+                        isBusiness ? "bg-gray-700 text-white" : "bg-purpleprimary text-white"
                       }`}
                     >
                       Individual Signup
@@ -154,7 +154,7 @@ const Page = () => {
                     <button
                       onClick={() => setIsBusiness(true)}
                       className={`font-bold py-2 px-4 rounded-r focus:outline-none focus:shadow-outline mx-2 ${
-                        isBusiness ? "bg-purple-700 text-white" : "bg-gray-700 text-white"
+                        isBusiness ? "bg-purpleprimary text-white" : "bg-gray-700 text-white"
                       }`}
                     >
                       Business Signup
@@ -237,13 +237,13 @@ const Page = () => {
                   <div className="flex items-center justify-between">
                     <div className="flex flex-col gap-2">
                       <Link href="/signin" className="inline-block align-baseline font-bold text-sm text-white">
-                        Already have an account? <span className="text-purple-500 hover:text-purple-700">Sign In</span>
+                        Already have an account? <span className="text-purple-500 hover:text-purple-500">Sign In</span>
                       </Link>
                       <p className="inline-block align-baseline text-sm text-gray-400">
                         By signing up, you agree to our{" "}
                         <Link
                           href="/terms-and-conditions.html"
-                          className="font-bold text-purple-500 hover:text-purple-700 hover:underline"
+                          className="font-bold text-purple-500 hover:text-purple-500 hover:underline"
                         >
                           Terms & Conditions.
                         </Link>
@@ -251,7 +251,7 @@ const Page = () => {
                     </div>
                     <button
                       type="submit"
-                      className="bg-purple-700 hover:bg-purple-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
+                      className="bg-purpleprimary hover:bg-purple-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
                     >
                       Sign Up
                     </button>

@@ -99,7 +99,7 @@ const Page = () => {
                     <div className="flex flex-1">
                       <button
                         onClick={() => router.push("/dashboard/edit-profile")}
-                        className="ml-auto px-4 py-2 rounded text-white bg-purple-500 hover:bg-purple-600 focus:outline-none"
+                        className="ml-auto px-4 py-2 rounded text-white bg-purpleprimary hover:bg-purple-700 focus:outline-none"
                       >
                         Edit Profile
                       </button>
@@ -143,7 +143,7 @@ const Page = () => {
                     <a
                       href={formatLink(business.website)}
                       target="_blank"
-                      className="text-purple-500 hover:text-purple-600"
+                      className="text-purple-500 hover:text-purple-500"
                     >
                       {business.website}
                     </a>
@@ -216,7 +216,7 @@ const Page = () => {
                       <h4 className="font-medium text-lg text-white">{post.title}</h4>
                       <p className="text-sm text-gray-400">{post.content}</p>
                     </div>
-                    <Link href={`/job-listing/${post.id}`} className="text-purple-500 hover:text-purple-600">
+                    <Link href={`/job-listing/${post.id}`} className="text-purple-500 hover:text-purple-500">
                       View Details
                     </Link>
                   </div>

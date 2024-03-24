@@ -79,13 +79,13 @@ const BusinessDashboard = () => {
             <div className="flex justify-center items-center gap-4">
               <Link
                 href="/dashboard/create-listing"
-                className="inline-block bg-purple-700 text-white px-6 py-3 rounded hover:bg-purple-900 transition duration-150 ease-in-out"
+                className="inline-block bg-purpleprimary text-white px-6 py-3 rounded hover:bg-purple-700 transition duration-150 ease-in-out"
               >
                 Create Listing
               </Link>
               <Link
                 href="/dashboard/view-listings"
-                className="inline-block bg-purple-700 text-white px-6 py-3 rounded hover:bg-purple-900 transition duration-150 ease-in-out"
+                className="inline-block bg-purpleprimary text-white px-6 py-3 rounded hover:bg-purple-700 transition duration-150 ease-in-out"
               >
                 View All Listings
               </Link>
@@ -121,7 +121,7 @@ const BusinessDashboard = () => {
             <div className="flex justify-center items-center gap-4">
               {/* <Link
                 href="/dashboard/request-interview"
-                className="inline-block bg-purple-700 text-white px-6 py-3 rounded hover:bg-purple-900 transition duration-150 ease-in-out"
+                className="inline-block bg-purpleprimary text-white px-6 py-3 rounded hover:bg-purple-700 transition duration-150 ease-in-out"
               >
                 Request an Interview
               </Link> */}
@@ -146,7 +146,7 @@ const BusinessDashboard = () => {
                     <p className="text-sm text-gray-400 capitalize">{purchase.individual.position}</p>
                     <Link
                       href={`/individual/${purchase.individual.user_id}`}
-                      className="mt-4 inline-block bg-purple-700 text-white px-4 py-2 rounded hover:bg-purple-900 transition duration-150 ease-in-out"
+                      className="mt-4 inline-block bg-purpleprimary text-white px-4 py-2 rounded hover:bg-purple-700 transition duration-150 ease-in-out"
                     >
                       View Profile
                     </Link>

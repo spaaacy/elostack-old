@@ -158,11 +158,11 @@ const Page = () => {
                   <div className="flex items-center justify-between">
                     <Link href="/signup" className="inline-block align-baseline font-bold text-sm text-gray-400">
                       Don't Have an Account?
-                      <span className="ml-2 text-purple-500 hover:text-purple-700">Sign Up</span>
+                      <span className="ml-2 text-purple-500 hover:text-purple-500">Sign Up</span>
                     </Link>
                     <button
                       type="submit"
-                      className="bg-purple-700 hover:bg-purple-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
+                      className="bg-purpleprimary hover:bg-purple-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
                     >
                       Sign In
                     </button>

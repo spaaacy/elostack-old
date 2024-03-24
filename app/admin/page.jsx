@@ -106,7 +106,7 @@ const Page = () => {
           </section>
 
           <section className="bg-center p-8 rounded-lg shadow-lg">
-            <h2 className="text-2xl font-bold text-blueprimary">Upload New Interview</h2>
+            <h2 className="text-2xl font-bold text-white">Upload New Interview</h2>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
               <div className="flex items-center gap-2">
                 <div>
@@ -159,7 +159,7 @@ const Page = () => {
               <div className="flex justify-end">
                 <button
                   type="submit"
-                  className="mt-2 px-4 py-2 bg-purple-700 text-white rounded hover:bg-purple-900 transition duration-150 ease-in-out"
+                  className="mt-2 px-4 py-2 bg-purpleprimary text-white rounded hover:bg-purple-700 transition duration-150 ease-in-out"
                 >
                   Upload
                 </button>

@@ -97,7 +97,7 @@ const Page = () => {
       <NavBar />
       <Head>
         <title>Track Applications | EloStack</title>
-      </Head>  
+      </Head>
       <main className="container mx-auto p-4 bg-[#1b1b29] rounded-lg shadow mt-8">
         <section className="p-5 border-b border-gray-700">
           <div className="text-center">

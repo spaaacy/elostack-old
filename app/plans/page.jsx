@@ -119,7 +119,7 @@ const Page = () => {
           <div className="container mx-auto p-4 mt-10">
             <div className="container mx-auto p-4 bg-white rounded-lg shadow mt-0 h-[44rem]">
               <section className="text-center p-5">
-                <h2 className="text-4xl font-bold text-blueprimary">Choose Your Plan</h2>
+                <h2 className="text-4xl font-bold text-blue-600">Choose Your Plan</h2>
                 <p className="text-gray-600 mt-2">Choose a plan that fits your needs best</p>
               </section>
               <section className="flex justify-center items-stretch flex-wrap gap-2 mt-8 h-[28rem]">

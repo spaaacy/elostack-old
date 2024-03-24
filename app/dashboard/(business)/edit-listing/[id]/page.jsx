@@ -230,7 +230,7 @@ const Page = () => {
             <div className="flex items-center justify-end w-full">
               <button
                 type="submit"
-                className="inline-block bg-purple-700 text-white px-6 py-3 mb-4 rounded hover:bg-purple-900 transition duration-150 ease-in-out"
+                className="inline-block bg-purpleprimary text-white px-6 py-3 mb-4 rounded hover:bg-purple-700 transition duration-150 ease-in-out"
               >
                 Update Job Listing
               </button>

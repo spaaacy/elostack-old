@@ -5,7 +5,7 @@ const Loader = () => {
   return (
     <div className="flex flex-1 ">
       <div className="m-auto">
-        <HashLoader color={"#7C3AED"} />
+        <HashLoader color={"#6f2da8"} />
       </div>
     </div>
   );

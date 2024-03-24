@@ -182,19 +182,19 @@ const Page = () => {
               </div>
             </div>
             <div className="mb-4">
-  <label htmlFor="deadline" className="block font-semibold mb-2 text-gray-400">
-    Application Deadline
-  </label>
-  <input
-    value={formData.deadline}
-    type="date"
-    id="deadline"
-    name="deadline"
-    onChange={handleChange}
-    className="py-2 form-input pr-6 mt-1 block w-full rounded-md border border-gray-700 bg-[#0f0f1c] shadow-md focus:border-gray-400 focus:ring focus:ring-purple-200 focus:ring-opacity-50 transition duration-150 ease-in-out pl-4 text-white"
-    style={{ colorScheme: 'dark' }}
-  />
-</div>
+              <label htmlFor="deadline" className="block font-semibold mb-2 text-gray-400">
+                Application Deadline
+              </label>
+              <input
+                value={formData.deadline}
+                type="date"
+                id="deadline"
+                name="deadline"
+                onChange={handleChange}
+                className="py-2 form-input pr-6 mt-1 block w-full rounded-md border border-gray-700 bg-[#0f0f1c] shadow-md focus:border-gray-400 focus:ring focus:ring-purple-200 focus:ring-opacity-50 transition duration-150 ease-in-out pl-4 text-white"
+                style={{ colorScheme: "dark" }}
+              />
+            </div>
 
             {/* Job Description */}
             <div className="mb-6 col-span-2">
@@ -216,7 +216,7 @@ const Page = () => {
             <div className="flex items-center justify-end w-full">
               <button
                 type="submit"
-                className="inline-block bg-purple-700 text-white px-6 py-3 mb-4 rounded hover:bg-purple-900 transition duration-150 ease-in-out"
+                className="inline-block bg-purpleprimary text-white px-6 py-3 mb-4 rounded hover:bg-purple-700 transition duration-150 ease-in-out"
               >
                 Create Job Listing
               </button>

@@ -117,7 +117,7 @@ const Page = ({}) => {
               ) : session.data.session?.user.id === jobListing?.business_id ? (
                 <Link
                   href={`/dashboard/edit-listing/${jobListing?.id}`}
-                  className="bg-purple-700 text-white px-6 py-3 rounded hover:bg-purple-800 transition duration-150 ease-in-out"
+                  className="bg-purpleprimary text-white px-6 py-3 rounded hover:bg-purple-700 transition duration-150 ease-in-out"
                 >
                   Edit Listing
                 </Link>
@@ -125,7 +125,7 @@ const Page = ({}) => {
                 !user?.business && (
                   <button
                     onClick={handleApply}
-                    className="bg-purple-700 text-white px-6 py-3 rounded hover:bg-purple-800 transition duration-150 ease-in-out"
+                    className="bg-purpleprimary text-white px-6 py-3 rounded hover:bg-purple-700 transition duration-150 ease-in-out"
                   >
                     Apply
                   </button>
@@ -141,7 +141,6 @@ const Page = ({}) => {
             <div>
               <h2 className="text-2xl font-bold mb-4">Description</h2>
               <p className="text-lg text-gray-400 whitespace-pre-line">{jobListing.description}</p>
-            
             </div>
           </div>
         </div>

@@ -7,7 +7,7 @@ import { FaRocket } from "react-icons/fa";
 
 const gradientTextStyle = css`
   display: inline-block;
-  background: linear-gradient(to right, #3c1bd7, #7266f2); // Darker gradient from blue to purple
+  background: linear-gradient(to right, #6f2da8, #7266f2); // Darker gradient from blue to purple
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 `;
@@ -37,7 +37,7 @@ const containerStyle = css`
 `;
 
 const buttonStyle = css`
-  background-color: #5b1fd5; // Darker purple
+  background-color: #6f2da8; // Darker purple
   color: #fff;
   padding: 20px 30px;
   border-radius: 5px;
@@ -69,7 +69,7 @@ export default function Home() {
 
       <div>
         <h1 className="text-white text-5xl md:text-8xl mb-5 -mt-[50px]">
-          <FaRocket className="inline-block" color="#4D28D9" /> Your Software Engineering
+          <FaRocket className="inline-block" color="#6f2da8" /> Your Software Engineering
           <br />
           <span css={gradientTextStyle}>Job Connection Platform</span>
         </h1>

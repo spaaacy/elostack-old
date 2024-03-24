@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { FaBriefcase, FaTrash, FaEdit } from 'react-icons/fa';
-import moment from 'moment';
+import React, { useState } from "react";
+import { FaBriefcase, FaTrash, FaEdit } from "react-icons/fa";
+import moment from "moment";
 import formatDate from "@/utils/formatDate";
-import NavBar from '@/components/common/NavBar';
+import NavBar from "@/components/common/NavBar";
 
 const ExperienceSection = () => {
   const [experiences, setExperiences] = useState([]);
@@ -10,14 +10,14 @@ const ExperienceSection = () => {
   const [selectedExperience, setSelectedExperience] = useState(null);
   const [expandedExperience, setExpandedExperience] = useState(null);
   const [newExperience, setNewExperience] = useState({
-    title: '',
-    company: '',
-    employmentType: '',
-    startDate: '',
-    endDate: '',
-    location: '',
-    locationType: '',
-    description: '',
+    title: "",
+    company: "",
+    employmentType: "",
+    startDate: "",
+    endDate: "",
+    location: "",
+    locationType: "",
+    description: "",
     skills: [],
   });
 
@@ -32,32 +32,28 @@ const ExperienceSection = () => {
   const handleSaveExperience = () => {
     if (selectedExperience) {
       setExperiences((prevExperiences) =>
-        prevExperiences.map((experience) =>
-          experience === selectedExperience ? newExperience : experience
-        )
+        prevExperiences.map((experience) => (experience === selectedExperience ? newExperience : experience))
       );
       setSelectedExperience(null);
     } else {
       setExperiences((prevExperiences) => [...prevExperiences, newExperience]);
     }
     setNewExperience({
-      title: '',
-      company: '',
-      employmentType: '',
-      startDate: '',
-      endDate: '',
-      location: '',
-      locationType: '',
-      description: '',
+      title: "",
+      company: "",
+      employmentType: "",
+      startDate: "",
+      endDate: "",
+      location: "",
+      locationType: "",
+      description: "",
       skills: [],
     });
     setIsModalOpen(false);
   };
 
   const handleDeleteExperience = (experienceToDelete) => {
-    setExperiences((prevExperiences) =>
-      prevExperiences.filter((experience) => experience !== experienceToDelete)
-    );
+    setExperiences((prevExperiences) => prevExperiences.filter((experience) => experience !== experienceToDelete));
   };
 
   const handleEditExperience = (experienceToEdit) => {
@@ -92,7 +88,7 @@ const ExperienceSection = () => {
       <h2 className="text-2xl font-bold mb-4 text-white">Experience</h2>
       <button
         onClick={() => setIsModalOpen(true)}
-        className="px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-md mb-4"
+        className="px-4 py-2 bg-purpleprimary hover:bg-purple-700 text-white rounded-md mb-4"
       >
         <FaBriefcase className="inline-block mr-2" />
         Add Experience
@@ -108,7 +104,7 @@ const ExperienceSection = () => {
               <div>
                 <button
                   onClick={() => handleEditExperience(experience)}
-                  className="px-2 py-1 bg-purple-500 hover:bg-purple-600 text-white rounded-md mr-2"
+                  className="px-2 py-1 bg-purpleprimary hover:bg-purple-700 text-white rounded-md mr-2"
                 >
                   <FaEdit />
                 </button>
@@ -120,26 +116,23 @@ const ExperienceSection = () => {
                 </button>
               </div>
             </div>
-            <p className="text-white">{experience.company} · {experience.employmentType}</p>
+            <p className="text-white">
+              {experience.company} · {experience.employmentType}
+            </p>
             <p className="text-gray-400">
-              {formatDate(experience.startDate)} - {experience.endDate ? formatDate(experience.endDate) : 'Present'}
+              {formatDate(experience.startDate)} - {experience.endDate ? formatDate(experience.endDate) : "Present"}
             </p>
             <p className="text-gray-400">{calculateDuration(experience.startDate, experience.endDate)}</p>
-            <p className="text-gray-400">{experience.location} · {experience.locationType}</p>
+            <p className="text-gray-400">
+              {experience.location} · {experience.locationType}
+            </p>
             <div className="text-gray-300 mt-2">
-              <p
-                className={`whitespace-pre-wrap ${
-                  !isDescriptionExpanded(experience.id) ? 'line-clamp-1' : ''
-                }`}
-              >
+              <p className={`whitespace-pre-wrap ${!isDescriptionExpanded(experience.id) ? "line-clamp-1" : ""}`}>
                 {experience.description}
               </p>
-              {experience.description.split('\n').length > 1 && (
-                <button
-                  className="text-purple-500"
-                  onClick={() => toggleExpandExperience(experience.id)}
-                >
-                  {isDescriptionExpanded(experience.id) ? 'Show Less' : 'Read More'}
+              {experience.description.split("\n").length > 1 && (
+                <button className="text-purple-500" onClick={() => toggleExpandExperience(experience.id)}>
+                  {isDescriptionExpanded(experience.id) ? "Show Less" : "Read More"}
                 </button>
               )}
             </div>
@@ -164,10 +157,12 @@ const ExperienceSection = () => {
             </div>
             <div className="bg-gray-900 rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-2xl sm:w-full p-6 z-20">
               <h2 className="text-2xl font-bold mb-4 text-white">
-                {selectedExperience ? 'Edit Experience' : 'Add Experience'}
+                {selectedExperience ? "Edit Experience" : "Add Experience"}
               </h2>
               <div className="mb-4">
-                <label htmlFor="title" className="block text-white">Title</label>
+                <label htmlFor="title" className="block text-white">
+                  Title
+                </label>
                 <input
                   type="text"
                   id="title"
@@ -179,7 +174,9 @@ const ExperienceSection = () => {
                 />
               </div>
               <div className="mb-4">
-                <label htmlFor="company" className="block text-white">Company</label>
+                <label htmlFor="company" className="block text-white">
+                  Company
+                </label>
                 <input
                   type="text"
                   id="company"
@@ -191,7 +188,9 @@ const ExperienceSection = () => {
                 />
               </div>
               <div className="mb-4">
-                <label htmlFor="employmentType" className="block text-white">Employment Type</label>
+                <label htmlFor="employmentType" className="block text-white">
+                  Employment Type
+                </label>
                 <select
                   id="employmentType"
                   name="employmentType"
@@ -211,7 +210,9 @@ const ExperienceSection = () => {
                 </select>
               </div>
               <div className="mb-4">
-                <label htmlFor="startDate" className="block text-white">Start Date</label>
+                <label htmlFor="startDate" className="block text-white">
+                  Start Date
+                </label>
                 <input
                   type="text"
                   id="startDate"
@@ -223,7 +224,9 @@ const ExperienceSection = () => {
                 />
               </div>
               <div className="mb-4">
-                <label htmlFor="endDate" className="block text-white">End Date</label>
+                <label htmlFor="endDate" className="block text-white">
+                  End Date
+                </label>
                 <input
                   type="text"
                   id="endDate"
@@ -234,7 +237,9 @@ const ExperienceSection = () => {
                 />
               </div>
               <div className="mb-4">
-                <label htmlFor="location" className="block text-white">Location</label>
+                <label htmlFor="location" className="block text-white">
+                  Location
+                </label>
                 <input
                   type="text"
                   id="location"
@@ -246,7 +251,9 @@ const ExperienceSection = () => {
                 />
               </div>
               <div className="mb-4">
-                <label htmlFor="locationType" className="block text-white">Location Type</label>
+                <label htmlFor="locationType" className="block text-white">
+                  Location Type
+                </label>
                 <select
                   id="locationType"
                   name="locationType"
@@ -262,7 +269,9 @@ const ExperienceSection = () => {
                 </select>
               </div>
               <div className="mb-4">
-                <label htmlFor="description" className="block text-white">Description</label>
+                <label htmlFor="description" className="block text-white">
+                  Description
+                </label>
                 <textarea
                   id="description"
                   name="description"
@@ -273,16 +282,18 @@ const ExperienceSection = () => {
                 ></textarea>
               </div>
               <div className="mb-4">
-                <label htmlFor="skills" className="block text-white">Skills</label>
+                <label htmlFor="skills" className="block text-white">
+                  Skills
+                </label>
                 <input
                   type="text"
                   id="skills"
                   name="skills"
-                  value={newExperience.skills.join(', ')}
+                  value={newExperience.skills.join(", ")}
                   onChange={(e) =>
                     setNewExperience((prevExperience) => ({
                       ...prevExperience,
-                      skills: e.target.value.split(',').map((skill) => skill.trim()),
+                      skills: e.target.value.split(",").map((skill) => skill.trim()),
                     }))
                   }
                   className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 "
@@ -292,7 +303,7 @@ const ExperienceSection = () => {
               <div className="flex justify-end">
                 <button
                   onClick={handleSaveExperience}
-                  className="px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-md  focus:outline-none focus:ring-2  focus:ring-opacity-50"
+                  className="px-4 py-2 bg-purpleprimary hover:bg-purple-700 text-white rounded-md  focus:outline-none focus:ring-2  focus:ring-opacity-50"
                 >
                   Save
                 </button>

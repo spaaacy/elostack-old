@@ -58,12 +58,12 @@ const Page = () => {
       </>
     );
 
-    return (
-      <>
-        <NavBar />
-        <main className="flex flex-col min-h-screen text-white w-full bg-gradient-to-b from-[#0f0f1c] via-[#1b1b29] to-[#251b30]">
-          <main className="container mx-auto p-4 bg-[#1b1b29] rounded-lg shadow mt-8">
-            <section className="p-5 border-b border-gray-700">
+  return (
+    <>
+      <NavBar />
+      <main className="flex flex-col min-h-screen text-white w-full bg-gradient-to-b from-[#0f0f1c] via-[#1b1b29] to-[#251b30]">
+        <main className="container mx-auto p-4 bg-[#1b1b29] rounded-lg shadow mt-8">
+          <section className="p-5 border-b border-gray-700">
             <div className="text-center">
               <h2 className="text-4xl font-bold">Your Job Listings</h2>
             </div>
@@ -74,7 +74,7 @@ const Page = () => {
               <h2 className="text-3xl font-bold text-white">Listings</h2>
               <div>
                 <Link href="/dashboard/create-listing">
-                  <button className="inline-block bg-purple-700 text-white px-6 py-3 rounded hover:bg-purple-900 transition duration-150 ease-in-out">
+                  <button className="inline-block bg-purpleprimary text-white px-6 py-3 rounded hover:bg-purple-700 transition duration-150 ease-in-out">
                     Create New Listing
                   </button>
                 </Link>
@@ -101,19 +101,19 @@ const Page = () => {
                     <div className="flex justify-center items-center gap-4">
                       <Link
                         href={`/job-listing/${listing.id}`}
-                        className="text-white bg-purple-700 px-4 py-2 rounded hover:bg-purple-900 transition duration-150 ease-in-out"
+                        className="text-white bg-purpleprimary px-4 py-2 rounded hover:bg-purple-700 transition duration-150 ease-in-out"
                       >
                         Details
                       </Link>
                       <Link
                         href={`/dashboard/edit-listing/${listing.id}`}
-                        className="text-white bg-purple-700 px-4 py-2 rounded hover:bg-purple-900 transition duration-150 ease-in-out"
+                        className="text-white bg-purpleprimary px-4 py-2 rounded hover:bg-purple-700 transition duration-150 ease-in-out"
                       >
                         Edit
                       </Link>
                       <button
                         className={`text-white ${
-                          listing.active ? "bg-red-500 hover:bg-red-700" : "bg-purple-700 hover:bg-purple-900"
+                          listing.active ? "bg-red-500 hover:bg-red-700" : "bg-purpleprimary hover:bg-purple-700"
                         } px-4 py-2 rounded transition duration-150 ease-in-out`}
                         onClick={() => closeJobListing(listing.id, !listing.active)}
                       >

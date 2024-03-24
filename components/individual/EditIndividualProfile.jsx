@@ -363,7 +363,7 @@ const EditIndividualProfile = () => {
             <div>
               <button
                 type="submit"
-                className="px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-opacity-50"
+                className="px-4 py-2 bg-purpleprimary hover:bg-purple-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-opacity-50"
               >
                 Save Changes
               </button>

@@ -123,7 +123,7 @@ const Page = () => {
                     Grade: {candidate.interview?.grade ? candidate.interview?.grade : "-"}
                   </p>
                   <Link href={`/individual/${candidate.user_id}`}>
-                    <button className="mt-4 bg-purple-700 text-white px-4 py-2 rounded hover:bg-purple-800 transition-colors duration-300">
+                    <button className="mt-4 bg-purpleprimary text-white px-4 py-2 rounded hover:bg-purple-700 transition-colors duration-300">
                       View Profile
                     </button>
                   </Link>

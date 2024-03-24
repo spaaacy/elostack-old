@@ -1,7 +1,7 @@
-"use client"
-import React, { useState } from 'react';
-import { FaGraduationCap, FaTrash, FaEdit } from 'react-icons/fa';
-import moment from 'moment';
+"use client";
+import React, { useState } from "react";
+import { FaGraduationCap, FaTrash, FaEdit } from "react-icons/fa";
+import moment from "moment";
 import formatDate from "@/utils/formatDate";
 
 const EducationSection = () => {
@@ -10,13 +10,13 @@ const EducationSection = () => {
   const [selectedEducation, setSelectedEducation] = useState(null);
   const [expandedEducation, setExpandedEducation] = useState(null);
   const [newEducation, setNewEducation] = useState({
-    school: '',
-    degree: '',
-    fieldOfStudy: '',
-    startDate: '',
-    endDate: '',
-    
-    description: '',
+    school: "",
+    degree: "",
+    fieldOfStudy: "",
+    startDate: "",
+    endDate: "",
+
+    description: "",
     activities: [],
   });
 
@@ -31,31 +31,27 @@ const EducationSection = () => {
   const handleSaveEducation = () => {
     if (selectedEducation) {
       setEducations((prevEducations) =>
-        prevEducations.map((education) =>
-          education === selectedEducation ? newEducation : education
-        )
+        prevEducations.map((education) => (education === selectedEducation ? newEducation : education))
       );
       setSelectedEducation(null);
     } else {
       setEducations((prevEducations) => [...prevEducations, newEducation]);
     }
     setNewEducation({
-      school: '',
-      degree: '',
-      fieldOfStudy: '',
-      startDate: '',
-      endDate: '',
-      
-      description: '',
+      school: "",
+      degree: "",
+      fieldOfStudy: "",
+      startDate: "",
+      endDate: "",
+
+      description: "",
       activities: [],
     });
     setIsModalOpen(false);
   };
 
   const handleDeleteEducation = (educationToDelete) => {
-    setEducations((prevEducations) =>
-      prevEducations.filter((education) => education !== educationToDelete)
-    );
+    setEducations((prevEducations) => prevEducations.filter((education) => education !== educationToDelete));
   };
 
   const handleEditEducation = (educationToEdit) => {
@@ -90,7 +86,7 @@ const EducationSection = () => {
       <h2 className="text-2xl font-bold mb-4 text-white">Education</h2>
       <button
         onClick={() => setIsModalOpen(true)}
-        className="px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-md mb-4"
+        className="px-4 py-2 bg-purpleprimary hover:bg-purple-700 text-white rounded-md mb-4"
       >
         <FaGraduationCap className="inline-block mr-2" />
         Add Education
@@ -106,7 +102,7 @@ const EducationSection = () => {
               <div>
                 <button
                   onClick={() => handleEditEducation(education)}
-                  className="px-2 py-1 bg-purple-500 hover:bg-purple-600 text-white rounded-md mr-2"
+                  className="px-2 py-1 bg-purpleprimary hover:bg-purple-700 text-white rounded-md mr-2"
                 >
                   <FaEdit />
                 </button>
@@ -118,25 +114,20 @@ const EducationSection = () => {
                 </button>
               </div>
             </div>
-            <p className="text-white">{education.degree} in {education.fieldOfStudy}</p>
+            <p className="text-white">
+              {education.degree} in {education.fieldOfStudy}
+            </p>
             <p className="text-gray-400">
-              {formatDate(education.startDate)} - {education.endDate ? formatDate(education.endDate) : 'Present'}
+              {formatDate(education.startDate)} - {education.endDate ? formatDate(education.endDate) : "Present"}
             </p>
             <p className="text-gray-400">{calculateDuration(education.startDate, education.endDate)}</p>
-            
+
             <div className="text-gray-300 mt-2">
-              <p
-                className={`whitespace-pre-wrap ${
-                  !isDescriptionExpanded(education.id) ? "line-clamp-1" : ""
-                }`}
-              >
+              <p className={`whitespace-pre-wrap ${!isDescriptionExpanded(education.id) ? "line-clamp-1" : ""}`}>
                 {education.description}
               </p>
               {education.description.split("\n").length > 1 && (
-                <button
-                  className="text-purple-500"
-                  onClick={() => toggleExpandEducation(education.id)}
-                >
+                <button className="text-purple-500" onClick={() => toggleExpandEducation(education.id)}>
                   {isDescriptionExpanded(education.id) ? "Show Less" : "Read More"}
                 </button>
               )}
@@ -162,10 +153,12 @@ const EducationSection = () => {
             </div>
             <div className="bg-gray-900 rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-2xl sm:w-full p-6 z-20">
               <h2 className="text-2xl font-bold mb-4 text-white">
-                {selectedEducation ? 'Edit Education' : 'Add Education'}
+                {selectedEducation ? "Edit Education" : "Add Education"}
               </h2>
               <div className="mb-4">
-                <label htmlFor="school" className="block text-white">School</label>
+                <label htmlFor="school" className="block text-white">
+                  School
+                </label>
                 <input
                   type="text"
                   id="school"
@@ -177,7 +170,9 @@ const EducationSection = () => {
                 />
               </div>
               <div className="mb-4">
-                <label htmlFor="degree" className="block text-white">Degree</label>
+                <label htmlFor="degree" className="block text-white">
+                  Degree
+                </label>
                 <input
                   type="text"
                   id="degree"
@@ -189,7 +184,9 @@ const EducationSection = () => {
                 />
               </div>
               <div className="mb-4">
-                <label htmlFor="fieldOfStudy" className="block text-white">Field of Study</label>
+                <label htmlFor="fieldOfStudy" className="block text-white">
+                  Field of Study
+                </label>
                 <input
                   type="text"
                   id="fieldOfStudy"
@@ -201,7 +198,9 @@ const EducationSection = () => {
                 />
               </div>
               <div className="mb-4">
-                <label htmlFor="startDate" className="block text-white">Start Date</label>
+                <label htmlFor="startDate" className="block text-white">
+                  Start Date
+                </label>
                 <input
                   type="text"
                   id="startDate"
@@ -213,7 +212,9 @@ const EducationSection = () => {
                 />
               </div>
               <div className="mb-4">
-                <label htmlFor="endDate" className="block text-white">End Date</label>
+                <label htmlFor="endDate" className="block text-white">
+                  End Date
+                </label>
                 <input
                   type="text"
                   id="endDate"
@@ -223,9 +224,11 @@ const EducationSection = () => {
                   className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
                 />
               </div>
-              
+
               <div className="mb-4">
-                <label htmlFor="description" className="block text-white">Description</label>
+                <label htmlFor="description" className="block text-white">
+                  Description
+                </label>
                 <textarea
                   id="description"
                   name="description"
@@ -236,16 +239,18 @@ const EducationSection = () => {
                 ></textarea>
               </div>
               <div className="mb-4">
-                <label htmlFor="activities" className="block text-white">Activities</label>
+                <label htmlFor="activities" className="block text-white">
+                  Activities
+                </label>
                 <input
                   type="text"
                   id="activities"
                   name="activities"
-                  value={newEducation.activities.join(', ')}
+                  value={newEducation.activities.join(", ")}
                   onChange={(e) =>
                     setNewEducation((prevEducation) => ({
                       ...prevEducation,
-                      activities: e.target.value.split(',').map((activity) => activity.trim()),
+                      activities: e.target.value.split(",").map((activity) => activity.trim()),
                     }))
                   }
                   className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2"
@@ -254,7 +259,7 @@ const EducationSection = () => {
               <div className="flex justify-end">
                 <button
                   onClick={handleSaveEducation}
-                  className="px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-opacity-50"
+                  className="px-4 py-2 bg-purpleprimary hover:bg-purple-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-opacity-50"
                 >
                   Save
                 </button>

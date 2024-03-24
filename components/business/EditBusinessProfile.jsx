@@ -95,17 +95,10 @@ const EditBusinessProfile = () => {
                     </div>
                   )}
                 </div>
-                <label htmlFor="pfp" className="ml-4 cursor-pointer text-purple-500 hover:text-purple-600">
+                <label htmlFor="pfp" className="ml-4 cursor-pointer text-purple-500 hover:text-purple-500">
                   Change Profile Picture
                 </label>
-                <input
-                  type="file"
-                  name="pfp"
-                  id="pfp"
-                  accept="image/*"
-                  onChange={handlePfpChange}
-                  className="hidden"
-                />
+                <input type="file" name="pfp" id="pfp" accept="image/*" onChange={handlePfpChange} className="hidden" />
               </div>
 
               <label htmlFor="name" className="block text-sm font-medium text-gray-400 mt-3">
@@ -262,7 +255,7 @@ const EditBusinessProfile = () => {
             <div>
               <button
                 type="submit"
-                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-purple-700 hover:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-purpleprimary hover:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
               >
                 Save Changes
               </button>

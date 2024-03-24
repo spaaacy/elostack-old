@@ -75,12 +75,8 @@ const CandidateTracker = () => {
                     <h3 className="font-semibold text-lg">
                       {candidate.name} for {candidate.job_listing.title}
                     </h3>
-                    <p className="text-sm text-gray-400">
-                      Applied on: {formatDate(candidate.application.created_at)}
-                    </p>
-                    <p className="text-sm text-gray-400">
-                      Interview Stage: {candidate.application.interview_stage}
-                    </p>
+                    <p className="text-sm text-gray-400">Applied on: {formatDate(candidate.application.created_at)}</p>
+                    <p className="text-sm text-gray-400">Interview Stage: {candidate.application.interview_stage}</p>
                     <p className="text-sm text-gray-400">
                       Interview Start: {formatDate(candidate.application.interview_start)}
                     </p>

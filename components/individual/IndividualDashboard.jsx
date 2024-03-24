@@ -171,7 +171,7 @@ const IndividualDashboard = () => {
               {!purchase && (
                 <button
                   onClick={handlePayment}
-                  className="text-left inline-block bg-purple-700 text-white px-6 py-3 rounded hover:bg-purple-900 transition duration-150 ease-in-out"
+                  className="text-left inline-block bg-purpleprimary text-white px-6 py-3 rounded hover:bg-purple-700 transition duration-150 ease-in-out"
                 >
                   Book Mock Interview
                 </button>
@@ -180,7 +180,7 @@ const IndividualDashboard = () => {
                 <Link
                   target="_blank"
                   href={"https://calendly.com/elostack/mock-interview"}
-                  className="text-left inline-block bg-purple-700 text-white px-6 py-3 rounded hover:bg-purple-900 transition duration-150 ease-in-out"
+                  className="text-left inline-block bg-purpleprimary text-white px-6 py-3 rounded hover:bg-purple-700 transition duration-150 ease-in-out"
                 >
                   Schedule Interview
                 </Link>

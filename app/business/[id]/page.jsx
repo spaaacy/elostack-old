@@ -4,7 +4,7 @@ import NavBar from "@/components/common/NavBar";
 import { useContext, useEffect, useState, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLinkedin } from "@fortawesome/free-brands-svg-icons";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Loader from "@/components/common/Loader";
 import { UserContext } from "@/context/UserContext";
 import { formatLink } from "@/utils/formatLink";
@@ -18,6 +18,7 @@ const Page = () => {
   const [jobListings, setJobListings] = useState();
   const [showFullText, setShowFullText] = useState(false);
   const aboutRef = useRef();
+  const router = useRouter();
 
   useEffect(() => {
     fetchBusiness();

@@ -6,6 +6,7 @@ export async function GET(req, res) {
     const { id } = res.params;
     const { data, error } = await supabase.from("user").select().eq("user_id", id).single();
     if (error) throw error;
+    console.log(data);
     return NextResponse.json({ user: data }, { status: 200 });
   } catch (error) {
     console.error(error);

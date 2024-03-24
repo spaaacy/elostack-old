@@ -1,4 +1,6 @@
 import { supabase } from "@/utils/supabase";
+import { cookies } from "next/headers";
+import { useParams } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req, res) {
@@ -15,3 +17,6 @@ export async function GET(req, res) {
     return NextResponse.json({ error }, { status: 500 });
   }
 }
+
+// Prevents caching of results at build-time
+export const dynamic = "force-dynamic";

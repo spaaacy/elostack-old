@@ -6,7 +6,6 @@ import { UserContext } from "@/context/UserContext";
 import { useEffect, useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import Head from "next/head";
-import formatDate from "@/utils/formatDate";
 
 const Page = () => {
   const { session, verifyLogin } = useContext(UserContext);

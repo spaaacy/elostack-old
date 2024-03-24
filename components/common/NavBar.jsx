@@ -128,7 +128,7 @@ const NavBar = ({ isModalOpen }) => {
         ) : (
           <Link
             href={"/signin"}
-            className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
+            className="text-gray-300 bg-purple-700 hover:bg-purple-900 hover:text-white  px-4 py-2 rounded-sm text-base font-medium"
           >
             Sign In
           </Link>

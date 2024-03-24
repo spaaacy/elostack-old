@@ -9,6 +9,7 @@ export async function GET(req, res) {
       .neq("status", "complete")
       .order("created_at", { ascending: false });
     if (results.error) throw results.error;
+    console.log(results.data);
     return NextResponse.json({ requests: results.data }, { status: 200 });
   } catch (error) {
     console.error(error);

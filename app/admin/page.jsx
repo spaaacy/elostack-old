@@ -1,12 +1,12 @@
 "use client";
 
+export const dynamic = "force-dynamic";
 import Loader from "@/components/common/Loader";
 import NavBar from "@/components/common/NavBar";
 import { UserContext } from "@/context/UserContext";
 import { useEffect, useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import Head from "next/head";
-import formatDate from "@/utils/formatDate";
 
 const Page = () => {
   const { session, verifyLogin } = useContext(UserContext);

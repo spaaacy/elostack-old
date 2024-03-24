@@ -17,16 +17,8 @@ const Page = () => {
   useEffect(() => {
     const loadData = async () => {
       if (session) {
-        let success;
-        if (session?.data?.session?.user.id === id) {
-          success = true;
-        } else {
-          success = await verifyLogin("business");
-        }
-        if (success) {
-          await setLoading(false);
-          fetchInterview();
-        }
+        await fetchInterview();
+        setLoading(false);
       }
     };
     loadData();
@@ -87,7 +79,6 @@ const Page = () => {
               <div className="mb-8">
                 <h2 className="text-4xl font-semibold mb-6 text-purple-500 text-center">Score Card</h2>
                 <div className="bg-gray-800 hover:shadow-xl rounded-lg p-6 shadow-inner">
-                  <h3 className="text-2xl font-semibold text-white mb-4">Feedback</h3>
                   <MarkdownInput text={individual.interview.feedback} />
                 </div>
               </div>

@@ -25,9 +25,9 @@ const Home = () => {
         <HeroSection />
         {/* <PartneredCompanies /> */}
         <Benefits />
+        <Discount />
         <HowItWorks />
         <FAQ />
-        <Discount />
       </main>
       <Footer />
     </>

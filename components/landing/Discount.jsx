@@ -26,7 +26,7 @@ const Discount = () => {
 
   if (!timeRemaining) return;
   return (
-    <footer className="bg-purpleprimary py-2 fixed bottom-0 w-full">
+    <footer className="bg-purpleprimary py-2 w-full mb-12">
       <div className="container px-4">
         <div className="flex flex-1 justify-center items-center space-x-4">
           <p className="text-white text-md font-semibold mr-4">

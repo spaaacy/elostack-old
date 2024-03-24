@@ -153,24 +153,25 @@ const Page = () => {
                   </div>
                 </div>
               </div>
-              {profileData.interview_id && (
-                <Link
-                  href={`${id}/interview`}
-                  className="px-4 py-2 rounded text-white bg-blue-500 hover:bg-blue-600 focus:outline-none"
-                >
-                  View Interview
-                </Link>
-              )}
-              {session?.data?.session?.user.id === id && (
-                <div className="flex flex-1">
+
+              <div className="ml-auto flex flex-1 justify-end gap-4">
+                {profileData.interview_id && (
+                  <Link
+                    href={`${id}/interview`}
+                    className="px-4 py-2 rounded text-white bg-purpleprimary hover:bg-purple-700 focus:outline-none"
+                  >
+                    View Interview
+                  </Link>
+                )}
+                {session?.data?.session?.user.id === id && (
                   <button
                     onClick={() => router.push("/dashboard/edit-profile")}
-                    className="ml-auto px-4 py-2 rounded text-white bg-purpleprimary hover:bg-purple-700 focus:outline-none"
+                    className="px-4 py-2 rounded text-white bg-purpleprimary hover:bg-purple-700 focus:outline-none"
                   >
                     Edit Profile
                   </button>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </div>
 

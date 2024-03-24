@@ -77,11 +77,12 @@
 
 @layer utilities {
   .card-gradient {
-    background: linear-gradient(135deg, #7266f2 0%, #6f2da8 100%);
-    box-shadow: 0 8px 32px 0 rgba(57, 54, 211, 0.3);
+    background: linear-gradient(135deg, #c56cd6 0%, #4d1f75 100%);
+    /* background: linear-gradient(135deg, #7266f2 0%, #4d1f75 100%); */
+    box-shadow: 0 8px 32px 0 rgba(77, 31, 117, 0.5);
   }
   .card-gradient:hover {
-    box-shadow: 0 16px 64px 0 rgba(57, 54, 211, 0.4); /* Increase shadow size on hover */
+    box-shadow: 0 16px 64px 0 rgba(77, 31, 117, 0.7); /* Increase shadow size on hover */
   }
 }
 

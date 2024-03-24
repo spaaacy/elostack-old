@@ -1,5 +1,4 @@
 "use client";
-
 import Loader from "@/components/common/Loader";
 import NavBar from "@/components/common/NavBar";
 import { UserContext } from "@/context/UserContext";
@@ -7,6 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
+import MarkdownInput from "@/components/admin/MarkdownInput";
 
 const Page = () => {
   const { id } = useParams();
@@ -29,7 +29,6 @@ const Page = () => {
         }
       }
     };
-
     loadData();
   }, [session]);
 
@@ -59,42 +58,37 @@ const Page = () => {
         <title>Feedback | EloStack</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" />
       </Head>
-
-      <main className="container mx-auto p-4 bg-[#1b1b29] rounded-lg shadow mt-8">
-        <h1 className="text-4xl font-bold text-center mb-8">Interview Feedback</h1>
+      <main className="container mx-auto px-8 py-12 bg-[#1b1b29] rounded-lg shadow mt-8">
+        <h1 className="text-5xl font-bold text-center mb-12 text-purple-500">Interview Feedback</h1>
         {individual && individual.interview && (
           <div className="bg-[#0f0f1c] rounded-lg shadow-lg overflow-hidden mb-10">
-            <div className="p-6">
+            <div className="p-8">
               <Link href={`/individual/${id}`}>
-                <h2 className="text-3xl font-semibold mb-4 capitalize text-white">
+                <h2 className="text-4xl font-semibold mb-6 capitalize text-white hover:text-purple-500 transition duration-300">
                   {individual.first_name} {individual.last_name} - {individual.position}
                 </h2>
               </Link>
-              <p className="text-xl font-semibold text-purple-500 mb-6 capitalize">
+              <p className="text-2xl font-semibold text-purple-500 mb-8 capitalize">
                 Overall Grade: {individual.interview.grade}
               </p>
-              <div className="flex justify-center">
+              <div className="flex justify-center mb-12">
                 <iframe
-                  className="mx-auto"
-                  width="1020"
-                  height="600"
+                  className="mx-auto rounded-lg shadow-lg w-full"
+                  width="1280"
+                  height="720"
                   src={`https://www.youtube-nocookie.com/embed/${individual.interview.youtube_id}`}
                   title="YouTube video player"
-                  frameborder="0"
+                  frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerpolicy="strict-origin-when-cross-origin"
-                  allowfullscreen
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
                 ></iframe>
               </div>
-              <div className="flex justify-center">
-                <h2 className="text-4xl font-semibold mb-4 text-purple-500 mt-[2.5rem] text-center mr-[3.5rem]">
-                  Score Card
-                </h2>
-              </div>
-              <div className="mb-8 mt-[2rem]">
-                <div className="bg-gray-800 hover:shadow-xl rounded-lg p-4 shadow-inner mb-4">
-                  <h3 className="text-xl font-semibold text-white">Feedback</h3>
-                  <p className="text-gray-300 whitespace-pre-line">{individual.interview.feedback}</p>
+              <div className="mb-8">
+                <h2 className="text-4xl font-semibold mb-6 text-purple-500 text-center">Score Card</h2>
+                <div className="bg-gray-800 hover:shadow-xl rounded-lg p-6 shadow-inner">
+                  <h3 className="text-2xl font-semibold text-white mb-4">Feedback</h3>
+                  <MarkdownInput text={individual.interview.feedback} />
                 </div>
               </div>
             </div>

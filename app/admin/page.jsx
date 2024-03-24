@@ -6,6 +6,7 @@ import { UserContext } from "@/context/UserContext";
 import { useEffect, useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import Head from "next/head";
+import MarkdownInput from "@/components/admin/MarkdownInput";
 
 const Page = () => {
   const { session, verifyLogin } = useContext(UserContext);
@@ -14,8 +15,22 @@ const Page = () => {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm();
   const [requests, setRequests] = useState();
+
+  const fetchRequests = async () => {
+    const response = await fetch("/api/purchase", {
+      method: "GET",
+    });
+    if (response.status === 200) {
+      const results = await response.json();
+      setRequests(results.requests);
+      console.log(results);
+    } else {
+      console.error("Error fetching interview requests!");
+    }
+  };
 
   useEffect(() => {
     const loadData = async () => {
@@ -31,19 +46,6 @@ const Page = () => {
     }
   }, [session]);
 
-  const fetchRequests = async () => {
-    const response = await fetch("/api/purchase", {
-      method: "GET",
-    });
-    if (response.status === 200) {
-      const results = await response.json();
-      setRequests(results.requests);
-      console.log(results);
-    } else {
-      console.error("Error fetching interview requests!");
-    }
-  };
-
   const onSubmit = async (data) => {
     const response = await fetch("/api/interview/create", {
       method: "POST",
@@ -54,6 +56,8 @@ const Page = () => {
       console.log("Interview created successfully!");
     }
   };
+
+  const feedback = watch("feedback", "");
 
   if (loading)
     return (
@@ -108,7 +112,7 @@ const Page = () => {
           <section className="bg-center p-8 rounded-lg shadow-lg">
             <h2 className="text-2xl font-bold text-white">Upload New Interview</h2>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
-              <div className="flex items-center gap-2">
+             <div className="flex items-center gap-2">
                 <div>
                   <label className="block font-semibold">Payment Intent ID</label>
                   <input
@@ -145,6 +149,10 @@ const Page = () => {
                   className="w-full mt-1 p-2 border rounded bg-[#0f0f1c] text-white"
                 />
                 {errors.feedback && <p className="text-red-500">This field is required</p>}
+              </div>
+              <div>
+                <label className="block font-semibold">Preview</label>
+                <MarkdownInput text={feedback} />
               </div>
               <div>
                 <label className="block font-semibold">YouTube Video ID</label>

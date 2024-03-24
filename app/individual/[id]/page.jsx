@@ -1,7 +1,7 @@
 "use client";
 
 import NavBar from "@/components/common/NavBar";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Head from "next/head";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "@/context/UserContext";
@@ -36,6 +36,7 @@ const Page = () => {
   const imageSrc = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/${process.env.NEXT_PUBLIC_STORAGE_PATH}/profile-pictures/${id}/default`;
   const resumeSrc = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/${process.env.NEXT_PUBLIC_STORAGE_PATH}/documents/${id}/resume`;
   const coverLetterSrc = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/${process.env.NEXT_PUBLIC_STORAGE_PATH}/documents/${id}/cover-letter`;
+  const router = useRouter();
 
   useEffect(() => {
     if (session) {

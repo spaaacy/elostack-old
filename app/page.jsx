@@ -6,6 +6,7 @@ import FAQ from "@/components/landing/FAQ";
 import Benefits from "@/components/landing/Benefits";
 import PartneredCompanies from "@/components/landing/PartneredCompanies";
 import HowItWorks from "@/components/landing/HowItWorks";
+import Discount from "@/components/landing/Discount";
 
 const Home = () => {
   return (
@@ -26,6 +27,7 @@ const Home = () => {
         <Benefits />
         <HowItWorks />
         <FAQ />
+        <Discount />
       </main>
       <Footer />
     </>

@@ -1,6 +1,5 @@
 "use client";
 
-export const dynamic = "force-dynamic";
 import Loader from "@/components/common/Loader";
 import NavBar from "@/components/common/NavBar";
 import { UserContext } from "@/context/UserContext";

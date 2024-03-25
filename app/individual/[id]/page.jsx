@@ -179,20 +179,24 @@ const Page = () => {
               <div className="sm:col-span-1">
                 <dt className="text-sm font-medium text-white">Social Media</dt>
                 <dd className="mt-1 text-sm text-white flex gap-2">
-                  <a
-                    target="_blank"
-                    href={formatLink(profileData.linkedin)}
-                    className="transition-transform duration-200 ease-in-out transform hover:-translate-y-1 hover:scale-110"
-                  >
-                    <FontAwesomeIcon icon={faLinkedin} size="2x" color="#0e76a8" />
-                  </a>
-                  <a
-                    target="_blank"
-                    href={formatLink(profileData.github)}
-                    className="transition-transform duration-200 ease-in-out transform hover:-translate-y-1 hover:scale-110"
-                  >
-                    <FontAwesomeIcon icon={faGithub} size="2x" />
-                  </a>
+                  {profileData.linkedin && (
+                    <a
+                      target="_blank"
+                      href={formatLink(profileData.linkedin)}
+                      className="transition-transform duration-200 ease-in-out transform hover:-translate-y-1 hover:scale-110"
+                    >
+                      <FontAwesomeIcon icon={faLinkedin} size="2x" color="#0e76a8" />
+                    </a>
+                  )}
+                  {profileData.github && (
+                    <a
+                      target="_blank"
+                      href={formatLink(profileData.github)}
+                      className="transition-transform duration-200 ease-in-out transform hover:-translate-y-1 hover:scale-110"
+                    >
+                      <FontAwesomeIcon icon={faGithub} size="2x" />
+                    </a>
+                  )}
                 </dd>
               </div>
             </dl>

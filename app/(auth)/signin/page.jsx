@@ -10,7 +10,7 @@ import NavBar from "@/components/common/NavBar";
 import { UserContext } from "@/context/UserContext";
 import Loader from "@/components/common/Loader";
 import Image from "next/image";
-
+import Footer from "@/components/common/Footer";
 const Page = () => {
   const { session } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
@@ -32,6 +32,7 @@ const Page = () => {
       <>
         <NavBar />
         <Loader />
+        
       </>
     );
 
@@ -166,6 +167,7 @@ const Page = () => {
                     >
                       Sign In
                     </button>
+                    
                   </div>
                 </form>
               </div>
@@ -173,6 +175,7 @@ const Page = () => {
           </main>
         </main>
       </div>
+      <Footer />
     </main>
   );
 };

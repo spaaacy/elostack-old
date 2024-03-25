@@ -9,6 +9,7 @@ import Avatar from "react-avatar";
 import formatDate from "@/utils/formatDate";
 import NavBar from "@/components/common/NavBar";
 import { useParams, useRouter } from "next/navigation";
+import Footer from "@/components/common/Footer";
 const JobApplicants = () => {
   const { session, verifyLogin } = useContext(UserContext);
   const { id } = useParams();
@@ -151,6 +152,7 @@ const JobApplicants = () => {
           </div>
         </section>
       </div>
+      <Footer />
     </main>
   );
 };

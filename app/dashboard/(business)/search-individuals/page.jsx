@@ -8,6 +8,7 @@ import Head from "next/head";
 import Link from "next/link";
 import Avatar from "react-avatar";
 import "aos/dist/aos.css";
+import Footer from "@/components/common/Footer";
 
 const Page = () => {
   const { session, verifyLogin } = useContext(UserContext);
@@ -133,6 +134,7 @@ const Page = () => {
           </div>
         </section>
       </main>
+      <Footer />
     </main>
   );
 };

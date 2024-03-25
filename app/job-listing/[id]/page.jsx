@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
+import Footer from "@/components/common/Footer";
 
 const Page = ({}) => {
   const { id: jobListingId } = useParams();
@@ -150,6 +151,7 @@ const Page = ({}) => {
           </div>
         </div>
       )}
+      <Footer />
     </main>
   );
 };

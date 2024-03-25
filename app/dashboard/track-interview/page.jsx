@@ -8,6 +8,7 @@ import Loader from "@/components/common/Loader";
 import Link from "next/link";
 import formatDate from "@/utils/formatDate";
 import NavBar from "@/components/common/NavBar";
+import Footer from "@/components/common/Footer";
 
 const CandidateTracker = () => {
   const { session } = useContext(UserContext);
@@ -92,6 +93,7 @@ const CandidateTracker = () => {
           </div>
         </section>
       </main>
+      <Footer />
     </main>
   );
 };

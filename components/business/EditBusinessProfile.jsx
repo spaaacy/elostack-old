@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { UserContext } from "@/context/UserContext";
 import Loader from "@/components/common/Loader";
 import Head from "next/head";
+import Footer from "../common/Footer";
 
 const EditBusinessProfile = () => {
   const { session } = useContext(UserContext);
@@ -266,6 +267,7 @@ const EditBusinessProfile = () => {
           </form>
         </div>
       </main>
+      <Footer />
     </main>
   );
 };

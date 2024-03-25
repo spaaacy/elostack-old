@@ -6,6 +6,7 @@ import { useContext, useEffect, useState } from "react";
 import Link from "next/link";
 import { UserContext } from "@/context/UserContext";
 import formatDate from "@/utils/formatDate";
+import Footer from "@/components/common/Footer";
 const Page = () => {
   const { session, verifyLogin } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
@@ -133,6 +134,7 @@ const Page = () => {
             </div>
           </section>
         </main>
+        <Footer />
       </main>
     </>
   );

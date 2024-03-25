@@ -5,6 +5,7 @@ import Loader from "@/components/common/Loader";
 import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { UserContext } from "@/context/UserContext";
+import Footer from "@/components/common/Footer";
 
 const Page = () => {
   const { session, verifyLogin } = useContext(UserContext);
@@ -123,6 +124,7 @@ const Page = () => {
           </form>
         </section>
       </main>
+      <Footer />
     </main>
   );
 };

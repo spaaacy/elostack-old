@@ -7,6 +7,7 @@ import Head from "next/head";
 import { UserContext } from "@/context/UserContext";
 import { useRouter } from "next/navigation";
 import { faHandshake, faUsers, faBuilding } from "@fortawesome/free-solid-svg-icons";
+import Footer from "@/components/common/Footer";
 
 const pricingPlans = [
   {
@@ -165,6 +166,7 @@ const Page = () => {
           </div>
         </main>
       </div>
+      <Footer />
     </main>
   );
 };

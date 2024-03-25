@@ -8,7 +8,7 @@ export async function GET(req, res) {
     const results = await supabase
       .from("purchase")
       .select("*, individual(*)")
-      .neq("status", "complete")
+      .eq("status", "booked")
       .order("created_at", { ascending: false });
     if (results.error) throw results.error;
     return NextResponse.json({ requests: results.data }, { status: 200 });

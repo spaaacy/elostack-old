@@ -21,7 +21,9 @@ export async function POST(req, res) {
         .insert({ user_id: user.userId, first_name: user.firstName, last_name: user.lastName });
       if (errorProfile) throw errorProfile;
     } else {
-      const { error: errorProfile } = await supabase.from("business").insert({ user_id: user.userId, name: user.name });
+      const { error: errorProfile } = await supabase
+        .from("business")
+        .insert({ user_id: "3f91cb9a-4a98-4d23-90f7-4b265c5a8c6c", name: user.name });
       if (errorProfile) throw errorProfile;
     }
     return NextResponse.json({ message: "User created successfully!" }, { status: 201 });

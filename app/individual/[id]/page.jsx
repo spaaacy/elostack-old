@@ -67,28 +67,6 @@ const Page = () => {
     setShowFullText(!showFullText);
   };
 
-  const submitAccessInterview = async () => {
-    if (user.business) {
-      const businessId = session?.data?.session?.user.id;
-      if (businessId) {
-        const response = await fetch("/api/purchase/create", {
-          method: "POST",
-          body: JSON.stringify({
-            individual_id: id,
-            business_id: businessId,
-          }),
-        });
-        if (response.status === 201) {
-          setAccess(true);
-        } else {
-          console.error("Error making purchase!");
-        }
-      }
-    } else {
-      console.error("Must be logged in as business to access interview!");
-    }
-  };
-
   // Count the number of newline characters in the string
   const lineCount = (profileData?.about_me?.match(/\n/g) || []).length;
 

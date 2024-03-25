@@ -25,16 +25,18 @@ export async function POST(req) {
     const event = stripe.webhooks.constructEvent(body, signature, secret);
 
     if (event.type === "checkout.session.completed") {
-      const individual_id = event.data.object.metadata.individual_id;
-      if (!individual_id) throw Error("Individual ID missing from metadata!");
+      const user_id = event.data.object.metadata.user_id;
+      if (!user_id) throw Error("User ID missing from metadata!");
+
       const auth = await supabase.auth.signInWithPassword({
         email: process.env.SUPABASE_ADMIN_EMAIL,
         password: process.env.SUPABASE_ADMIN_PASSWORD,
       });
       if (auth.error) throw auth.error;
+
       const { error } = await supabase
         .from("purchase")
-        .insert({ payment_intent_id: event.data.object.payment_intent, individual_id });
+        .insert({ payment_intent_id: event.data.object.payment_intent, user_id });
       if (error) throw error;
     }
 

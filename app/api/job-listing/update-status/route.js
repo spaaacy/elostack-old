@@ -3,6 +3,13 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req, res) {
   try {
+    // Authentication
+    const access_token = req.headers.get("x-supabase-auth").split(" ")[0];
+    const refresh_token = req.headers.get("x-supabase-auth").split(" ")[1];
+    if (!access_token || !refresh_token) throw Error("You must be authorized to do this action!");
+    const auth = await supabase.auth.setSession({ access_token, refresh_token });
+    if (auth.error) throw auth.error;
+
     const { id, active } = await req.json();
     if (!id) throw Error("Job listing ID not provided!");
     const { error } = await supabase.from("job_listing").update({ active: active }).eq("id", id);

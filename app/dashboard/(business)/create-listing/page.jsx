@@ -58,6 +58,9 @@ const Page = () => {
       };
       const response = await fetch("/api/job-listing/edit", {
         method: "POST",
+        headers: {
+          "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
+        },
         body: JSON.stringify(newListing),
       });
       if (response.status === 201) {

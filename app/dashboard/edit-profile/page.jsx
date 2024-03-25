@@ -6,6 +6,7 @@ import Loader from "@/components/common/Loader";
 import { UserContext } from "@/context/UserContext";
 import { useContext, useEffect, useState } from "react";
 import EditBusinessProfile from "@/components/business/EditBusinessProfile";
+import Head from "next/head";
 
 const Page = () => {
   const { session, verifyLogin } = useContext(UserContext);
@@ -50,6 +51,7 @@ const Page = () => {
   return (
     <>
       <NavBar />
+      <Head><title>Edit Profile | EloStack</title></Head>
       <div className="flex flex-1">
         {user ? user.business ? <EditBusinessProfile /> : <EditIndividualProfile /> : <Loader />}
       </div>

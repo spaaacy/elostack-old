@@ -7,6 +7,7 @@ import Link from "next/link";
 import { UserContext } from "@/context/UserContext";
 import formatDate from "@/utils/formatDate";
 import Footer from "@/components/common/Footer";
+import Head from "next/head";
 const Page = () => {
   const { session, verifyLogin } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
@@ -64,8 +65,10 @@ const Page = () => {
 
   return (
     <>
+    
       <NavBar />
       <main className="flex flex-col min-h-screen text-white w-full bg-gradient-to-b from-[#0f0f1c] via-[#1b1b29] to-[#251b30]">
+      <Head><title>View Listings | EloStack</title></Head>
         <main className="container mx-auto p-4 bg-[#1b1b29] rounded-lg shadow mt-8">
           <section className="p-5 border-b border-gray-700">
             <div className="text-center">

@@ -9,14 +9,14 @@ const EditIndividualProfile = () => {
   const { session } = useContext(UserContext);
 
   const router = useRouter();
-  const [individualData, setFormData] = useState();
+  const [individualData, setIndividualData] = useState();
   const [loading, setLoading] = useState(true);
 
   const handleChange = (e) => {
     if (e.target.type === "file") {
-      setFormData({ ...individualData, [e.target.name]: e.target.files[0] });
+      setIndividualData({ ...individualData, [e.target.name]: e.target.files[0] });
     } else {
-      setFormData({ ...individualData, [e.target.name]: e.target.value });
+      setIndividualData({ ...individualData, [e.target.name]: e.target.value });
     }
   };
 
@@ -33,7 +33,7 @@ const EditIndividualProfile = () => {
       const response = await fetch(`/api/individual/${userId}`);
       const result = await response.json();
       if (response.status === 200) {
-        setFormData(result.individual);
+        setIndividualData(result.individual);
         setLoading(false);
       } else {
         router.push("/signin");
@@ -67,6 +67,7 @@ const EditIndividualProfile = () => {
           formData.append("coverLetter", individualData.coverLetter);
           delete individualData.coverLetter;
         }
+        delete individualData.user; // User object is also fetched at page load and must be deleted
         formData.append("profile_data", JSON.stringify({ ...individualData, user_id: userId }));
         await fetch("/api/individual/edit-profile", {
           method: "POST",
@@ -111,7 +112,7 @@ const EditIndividualProfile = () => {
                 value={individualData.first_name}
                 onChange={handleChange}
                 placeholder="Enter your first name"
-                className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+                className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
                 required
               />
             </div>
@@ -126,12 +127,12 @@ const EditIndividualProfile = () => {
                 value={individualData.last_name}
                 onChange={handleChange}
                 placeholder="Enter your last name"
-                className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+                className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
                 required
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="profilePicture" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="profilePicture" className="block text-white">
                 Profile Picture
               </label>
               <input
@@ -139,7 +140,7 @@ const EditIndividualProfile = () => {
                 name="profilePicture"
                 id="profilePicture"
                 onChange={handleChange}
-                className="mt-1 block w-full rounded border border-gray-300 bg-white  p-2 shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                className="mt-1 block w-full p-2 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
             </div>
             <div className="mb-4">
@@ -152,7 +153,7 @@ const EditIndividualProfile = () => {
                 defaultValue="male"
                 value={individualData.gender}
                 onChange={handleChange}
-                className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+                className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
               >
                 <option value="Please select">Please select</option>
                 <option value="male">Male</option>
@@ -170,7 +171,7 @@ const EditIndividualProfile = () => {
                 id="birthday"
                 value={individualData.birthday}
                 onChange={handleChange}
-                className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+                className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
             </div>
             <div className="text-xl font-semibold mb-6 text-white">About</div>
@@ -182,7 +183,7 @@ const EditIndividualProfile = () => {
                 onChange={handleChange}
                 rows={10}
                 placeholder="Describe yourself here..."
-                className="resize-none w-full px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+                className="resize-none w-full px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
             </div>
             <div className="text-xl font-semibold mb-6 text-white">Contact Information</div>
@@ -197,7 +198,7 @@ const EditIndividualProfile = () => {
                 value={individualData.phone_number}
                 onChange={handleChange}
                 placeholder="Enter your phone number"
-                className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+                className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
               <label htmlFor="phone_type" className="block text-white mt-4">
                 Phone Type
@@ -207,7 +208,7 @@ const EditIndividualProfile = () => {
                 id="phone_type"
                 value={individualData.phone_type}
                 onChange={handleChange}
-                className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+                className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
               >
                 <option value="">Please select</option>
                 <option value="mobile">Mobile</option>
@@ -218,7 +219,7 @@ const EditIndividualProfile = () => {
             <div className="text-xl font-semibold mb-6 text-white">Location</div>
             <div className="mb-4">
               <label htmlFor="country" className="block text-white">
-                Country<span className="text-red-500">*</span>
+                Country
               </label>
               <input
                 type="text"
@@ -227,8 +228,7 @@ const EditIndividualProfile = () => {
                 value={individualData.country}
                 onChange={handleChange}
                 placeholder="Ex: United States"
-                className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
-                required
+                className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
             </div>
             <div className="mb-4">
@@ -242,7 +242,7 @@ const EditIndividualProfile = () => {
                 value={individualData.state}
                 onChange={handleChange}
                 placeholder="Ex: FL"
-                className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+                className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
             </div>
             <div className="mb-4">
@@ -256,7 +256,7 @@ const EditIndividualProfile = () => {
                 value={individualData.city}
                 onChange={handleChange}
                 placeholder="Enter your City"
-                className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+                className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
             </div>
             <div className="mb-4">
@@ -270,7 +270,7 @@ const EditIndividualProfile = () => {
                 value={individualData.address}
                 onChange={handleChange}
                 placeholder="Enter your Address"
-                className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+                className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
             </div>
             <div className="mb-4">
@@ -284,14 +284,14 @@ const EditIndividualProfile = () => {
                 value={individualData.postal_code}
                 onChange={handleChange}
                 placeholder="Enter your postal code"
-                className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+                className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
             </div>
 
-            <div className="text-xl font-semibold mb-6">Documents</div>
+            <div className="text-xl font-semibold mb-6 text-white">Documents</div>
             <div className="mb-4">
-              <label htmlFor="resume" className="block text-sm font-medium text-gray-700">
-                Upload Resume<span className="text-red-500">*</span>
+              <label htmlFor="resume" className="block text-white">
+                Upload Resume
               </label>
               <input
                 type="file"
@@ -299,13 +299,13 @@ const EditIndividualProfile = () => {
                 id="resume"
                 onChange={handleChange}
                 accept=".pdf"
-                className="mt-1 block w-full rounded border border-gray-300 bg-white  p-2 shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                className="mt-1 block w-full p-2 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
             </div>
 
             <div className="mb-4">
-              <label htmlFor="coverLetter" className="block text-sm font-medium text-gray-700">
-                Upload Cover Letter<span className="text-red-500">*</span>
+              <label htmlFor="coverLetter" className="block text-white">
+                Upload Cover Letter
               </label>
               <input
                 type="file"
@@ -313,7 +313,7 @@ const EditIndividualProfile = () => {
                 id="coverLetter"
                 onChange={handleChange}
                 accept=".pdf"
-                className="mt-1 block w-full rounded border border-gray-300 bg-white  p-2 shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                className="mt-1 block w-full p-2 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
             </div>
 
@@ -329,7 +329,7 @@ const EditIndividualProfile = () => {
                 value={individualData.portfolio}
                 onChange={handleChange}
                 placeholder="Enter your portfolio URL"
-                className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+                className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
             </div>
             <div className="mb-4">
@@ -343,7 +343,7 @@ const EditIndividualProfile = () => {
                 value={individualData.linkedin}
                 onChange={handleChange}
                 placeholder="Enter your LinkedIn URL"
-                className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+                className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
             </div>
             <div className="mb-4">
@@ -357,13 +357,13 @@ const EditIndividualProfile = () => {
                 value={individualData.github}
                 onChange={handleChange}
                 placeholder="Enter your GitHub URL"
-                className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+                className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
             </div>
             <div>
               <button
                 type="submit"
-                className="px-4 py-2 bg-purpleprimary hover:bg-purple-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-opacity-50"
+                className="px-4 py-2 bg-purple-500 hover:bg-purple-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-opacity-50"
               >
                 Save Changes
               </button>

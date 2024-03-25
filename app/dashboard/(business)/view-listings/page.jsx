@@ -42,6 +42,9 @@ const Page = () => {
   const closeJobListing = async (listingId, active) => {
     const response = await fetch("/api/job-listing/update-status", {
       method: "POST",
+      headers: {
+        "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
+      },
       body: JSON.stringify({ id: listingId, active }),
     });
     if (response.status === 200) {
@@ -84,13 +87,17 @@ const Page = () => {
             <div className="space-y-6 mt-4">
               {jobListings &&
                 jobListings.map((listing) => (
-                  <Link
-                    href={`/job-listing/${listing.id}`}
+                  <div
                     key={listing.id}
                     className="bg-[#0f0f1c] p-6 rounded-lg flex justify-between items-center hover:shadow-lg transition-shadow duration-300"
                   >
                     <div>
-                      <h3 className="font-semibold text-lg">{listing.title}</h3>
+                      <Link
+                        href={`/job-listing/${listing.id}`}
+                        className="font-semibold text-lg hover:underline hover:text-gray-300"
+                      >
+                        {listing.title}
+                      </Link>
                       <p className="text-sm text-gray-400">{listing.location}</p>
                       <p className="text-sm text-gray-400">Posted on: {formatDate(listing.created_at)}</p>
                       <div className="flex text-sm text-gray-400">
@@ -110,18 +117,18 @@ const Page = () => {
                         href={`/dashboard/edit-listing/${listing.id}`}
                         className="text-white bg-purpleprimary px-4 py-2 rounded hover:bg-purple-700 transition duration-150 ease-in-out"
                       >
-                        Edit
+                        Edit Listing
                       </Link>
                       <button
                         className={`text-white ${
-                          listing.active ? "bg-red-500 hover:bg-red-700" : "bg-purpleprimary hover:bg-purple-700"
+                          listing.active ? "bg-red-700 hover:bg-red-600" : "bg-purpleprimary hover:bg-purple-700"
                         } px-4 py-2 rounded transition duration-150 ease-in-out`}
                         onClick={() => closeJobListing(listing.id, !listing.active)}
                       >
                         {listing.active ? "Close" : "Re-Open"} Listing
                       </button>
                     </div>
-                  </Link>
+                  </div>
                 ))}
             </div>
           </section>

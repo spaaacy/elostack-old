@@ -17,18 +17,21 @@ const Page = () => {
     formState: { errors },
     watch,
   } = useForm();
-  const [requests, setRequests] = useState();
+  const [purchases, setPurchases] = useState();
 
-  const fetchRequests = async () => {
+  const fetchPurchases = async () => {
     const response = await fetch("/api/purchase", {
       method: "GET",
+      headers: {
+        "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
+      },
     });
     if (response.status === 200) {
       const results = await response.json();
-      setRequests(results.requests);
+      setPurchases(results.purchases);
       console.log(results);
     } else {
-      console.error("Error fetching interview requests!");
+      console.error("Error fetching interview purchases!");
     }
   };
 
@@ -37,7 +40,7 @@ const Page = () => {
       const success = await verifyLogin("admin");
       if (success) {
         await setLoading(false);
-        fetchRequests();
+        fetchPurchases();
       }
     };
 
@@ -49,6 +52,9 @@ const Page = () => {
   const onSubmit = async (data) => {
     const response = await fetch("/api/interview/create", {
       method: "POST",
+      headers: {
+        "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
+      },
       body: JSON.stringify(data),
     });
     if (response.status === 201) {
@@ -81,7 +87,7 @@ const Page = () => {
           </section>
 
           <section className="p-8 rounded-lg shadow-lg">
-            <h2 className="text-2xl font-bold text-white">Pending Interview Requests</h2>
+            <h2 className="text-2xl font-bold text-white">Pending Interview Purchases</h2>
             <table className="w-full table-auto text-sm mt-4">
               <thead>
                 <tr className="bg-[#0f0f1c]">
@@ -92,8 +98,8 @@ const Page = () => {
                 </tr>
               </thead>
               <tbody>
-                {requests &&
-                  requests.map((request) => (
+                {purchases &&
+                  purchases.map((request) => (
                     <>
                       <tr key={request.id}>
                         <td className="border px-4 py-2">{request.payment_intent_id}</td>
@@ -112,7 +118,7 @@ const Page = () => {
           <section className="bg-center p-8 rounded-lg shadow-lg">
             <h2 className="text-2xl font-bold text-white">Upload New Interview</h2>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
-             <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2">
                 <div>
                   <label className="block font-semibold">Payment Intent ID</label>
                   <input

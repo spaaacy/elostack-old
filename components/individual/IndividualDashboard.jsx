@@ -75,6 +75,7 @@ const IndividualDashboard = () => {
       body: JSON.stringify({ payment_intent_id }),
     });
     if (response.status === 200) {
+      setPurchase({ ...purchase, status: "booked" });
       toast.success("Booking confirmed!");
     }
   };
@@ -82,7 +83,12 @@ const IndividualDashboard = () => {
   const fetchPurchase = async () => {
     const userId = session?.data.session?.user.id;
     if (userId) {
-      const response = await fetch(`/api/purchase/${userId}`);
+      const response = await fetch(`/api/purchase/${userId}`, {
+        method: "GET",
+        headers: {
+          "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
+        },
+      });
       if (response.status !== 200) return;
       const result = await response.json();
       setPurchase(result.data);
@@ -103,7 +109,7 @@ const IndividualDashboard = () => {
     try {
       // const response = await fetch("/api/checkout", {
       //   method: "POST",
-      //   body: JSON.stringify({ individual_id: profileData.user_id }),
+      //   body: JSON.stringify({ user_id: profileData.user_id }),
       // });
       // const result = await response.json();
       // if (response.status !== 200) {
@@ -118,10 +124,11 @@ const IndividualDashboard = () => {
       //   throw Error("Something went wrong");
       // }
       // await stripe.redirectToCheckout({ sessionId: result.session.id });
+
       const response = await fetch("/api/purchase/create", {
         method: "POST",
         body: JSON.stringify({
-          individual_id: profileData.user_id,
+          user_id: profileData.user_id,
           payment_intent_id: uuidv4(),
         }),
       });

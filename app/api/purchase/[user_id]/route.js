@@ -1,7 +1,7 @@
 import { supabase } from "@/utils/supabase";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req, res) {
+export async function GET(req, res) {
   try {
     // Authentication
     const access_token = req.headers.get("x-supabase-auth").split(" ")[0];
@@ -10,11 +10,10 @@ export async function POST(req, res) {
     const auth = await supabase.auth.setSession({ access_token, refresh_token });
     if (auth.error) throw auth.error;
 
-    const listing = await req.json();
-    console.log(listing);
-    const { error } = await supabase.from("job_listing").upsert(listing);
+    const { user_id } = res.params;
+    const { data, error } = await supabase.from("purchase").select("*").eq("user_id", user_id).single();
     if (error) throw error;
-    return NextResponse.json({ message: "Job listed successfully!" }, { status: 201 });
+    return NextResponse.json({ data }, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error }, { status: 500 });

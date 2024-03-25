@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req, res) {
   try {
-    const { individual_id } = await req.json();
+    const { user_id } = await req.json();
     const checkoutSession = await stripe.checkout.sessions.create({
       line_items: [
         {
@@ -17,7 +17,7 @@ export async function POST(req, res) {
       ],
       mode: "payment",
       metadata: {
-        individual_id,
+        user_id,
       },
       success_url: `${req.nextUrl.origin}/dashboard?success=true`,
       cancel_url: `${req.nextUrl.origin}/dashboard?cancelled=true`,

@@ -8,6 +8,7 @@ import Link from "next/link";
 import Loader from "@/components/common/Loader";
 import formatDate from "@/utils/formatDate";
 import { profileStore } from "@/components/individual/profileStore";
+import Footer from "@/components/common/Footer";
 
 const Page = () => {
   const { session, verifyLogin } = useContext(UserContext);
@@ -150,6 +151,7 @@ const Page = () => {
           </div>
         </section>
       </main>
+      <Footer />
     </main>
   );
 };

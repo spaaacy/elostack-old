@@ -7,6 +7,7 @@ import { useEffect, useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import Head from "next/head";
 import MarkdownInput from "@/components/admin/MarkdownInput";
+import Footer from "@/components/common/Footer";
 
 const Page = () => {
   const { session, verifyLogin } = useContext(UserContext);
@@ -181,6 +182,7 @@ const Page = () => {
             </form>
           </section>
         </main>
+        <Footer />
       </main>
     </>
   );

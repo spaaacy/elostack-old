@@ -7,6 +7,7 @@ import { useContext, useEffect, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import MarkdownInput from "@/components/admin/MarkdownInput";
+import Footer from "@/components/common/Footer";
 
 const Page = () => {
   const { id } = useParams();
@@ -86,6 +87,7 @@ const Page = () => {
           </div>
         )}
       </main>
+      <Footer />
     </main>
   );
 };

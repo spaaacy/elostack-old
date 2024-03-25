@@ -1,3 +1,4 @@
+import Footer from "@/components/common/Footer";
 import NavBar from "@/components/common/NavBar";
 import CustomCalendar from "@/components/individual/CustomCalendar";
 import Head from "next/head";
@@ -25,6 +26,7 @@ const Page = async () => {
 
         </div>
       </div>
+      <Footer />
       </div>
     </>
   );

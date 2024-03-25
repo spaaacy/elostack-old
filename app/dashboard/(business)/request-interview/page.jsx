@@ -5,6 +5,8 @@ import Loader from "@/components/common/Loader";
 import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { UserContext } from "@/context/UserContext";
+import Footer from "@/components/common/Footer";
+import Head from "next/head";
 
 const Page = () => {
   const { session, verifyLogin } = useContext(UserContext);
@@ -54,6 +56,9 @@ const Page = () => {
 
   return (
     <main className="flex flex-col min-h-screen text-white w-full bg-gradient-to-b from-[#0f0f1c] via-[#1b1b29] to-[#251b30]">
+      <Head>
+      <title>Request Interview | EloStack</title>
+      </Head>
       <NavBar />
       <main className="container mx-auto p-4 bg-[#1b1b29] rounded-lg shadow mt-8 w-3/5">
         <section className="p-5 border-b border-gray-700">
@@ -123,6 +128,7 @@ const Page = () => {
           </form>
         </section>
       </main>
+      <Footer />
     </main>
   );
 };

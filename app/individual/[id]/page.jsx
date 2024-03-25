@@ -20,6 +20,7 @@ import Image from "next/image";
 import checkFileExists from "@/utils/checkFileExists";
 import EducationSection from "@/components/individual/EducationSection";
 import { formatDate } from "@/utils/formatDate";
+import Footer from "@/components/common/Footer";
 
 const Page = () => {
   const { id } = useParams();
@@ -226,6 +227,7 @@ const Page = () => {
           <ExperienceSection /> */}
         </div>
       </div>
+      <Footer />
     </main>
   );
 };

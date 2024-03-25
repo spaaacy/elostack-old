@@ -11,6 +11,7 @@ import formatDate from "@/utils/formatDate";
 import { loadStripe } from "@stripe/stripe-js";
 import toast, { Toaster } from "react-hot-toast";
 import { v4 as uuidv4 } from "uuid";
+import Footer from "../common/Footer";
 
 const IndividualDashboard = () => {
   const { session } = useContext(UserContext);
@@ -223,6 +224,7 @@ const IndividualDashboard = () => {
         </section>
         <Toaster />
       </div>
+      <Footer />
     </main>
   );
 };

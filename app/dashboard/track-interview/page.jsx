@@ -8,6 +8,7 @@ import Loader from "@/components/common/Loader";
 import Link from "next/link";
 import formatDate from "@/utils/formatDate";
 import NavBar from "@/components/common/NavBar";
+import Footer from "@/components/common/Footer";
 
 const CandidateTracker = () => {
   const { session } = useContext(UserContext);
@@ -53,7 +54,7 @@ const CandidateTracker = () => {
   return (
     <main className="flex flex-col min-h-screen text-white w-full bg-gradient-to-b from-[#0f0f1c] via-[#1b1b29] to-[#251b30]">
       <Head>
-        <title>Candidate Tracker | YourApp</title>
+        <title>Candidate Tracker | EloStack</title>
       </Head>
 
       <main className="container mx-auto p-4 bg-[#1b1b29] rounded-lg shadow mt-8">
@@ -92,6 +93,7 @@ const CandidateTracker = () => {
           </div>
         </section>
       </main>
+      <Footer />
     </main>
   );
 };

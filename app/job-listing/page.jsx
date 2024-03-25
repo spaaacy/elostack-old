@@ -69,7 +69,7 @@ const Page = () => {
     <main className="flex flex-col min-h-screen text-white w-full bg-gradient-to-b from-[#0f0f1c] via-[#1b1b29] to-[#251b30]">
       <NavBar />
       <Head>
-        <title>Job Listings | Your Company</title>
+        <title>Job Listings</title>
       </Head>
       <main className="container mx-auto p-4 bg-[#1b1b29] rounded-lg shadow mt-16">
         <section className="p-5 border-b border-gray-700">

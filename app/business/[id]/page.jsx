@@ -9,6 +9,7 @@ import Loader from "@/components/common/Loader";
 import { UserContext } from "@/context/UserContext";
 import { formatLink } from "@/utils/formatLink";
 import Link from "next/link";
+import Footer from "@/components/common/Footer";
 
 const Page = () => {
   const { id } = useParams();
@@ -225,6 +226,7 @@ const Page = () => {
           </div>
         </main>
       </div>
+      <Footer />
     </main>
   );
 };

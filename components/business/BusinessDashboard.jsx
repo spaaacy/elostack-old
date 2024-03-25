@@ -4,6 +4,7 @@ import Head from "next/head";
 import React, { useContext, useEffect, useState } from "react";
 import Link from "next/link";
 import { UserContext } from "@/context/UserContext";
+import Footer from "../common/Footer";
 
 const BusinessDashboard = () => {
   const { session } = useContext(UserContext);
@@ -159,6 +160,7 @@ const BusinessDashboard = () => {
           </div>
         </section>
       </main>
+      <Footer />
     </main>
   );
 };

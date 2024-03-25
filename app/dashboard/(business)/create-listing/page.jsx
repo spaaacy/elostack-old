@@ -6,6 +6,7 @@ import { UserContext } from "@/context/UserContext";
 import { useContext, useEffect, useState } from "react";
 import Head from "next/head";
 import { useRouter } from "next/navigation";
+import Footer from "@/components/common/Footer";
 
 const Page = () => {
   const { session, verifyLogin } = useContext(UserContext);
@@ -227,6 +228,7 @@ const Page = () => {
           </form>
         </section>
       </main>
+      <Footer />
     </main>
   );
 };

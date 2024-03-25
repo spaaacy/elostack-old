@@ -9,6 +9,7 @@ import Link from "next/link";
 import Head from "next/head";
 import { createClient } from "@supabase/supabase-js";
 import Image from "next/image";
+import Footer from "@/components/common/Footer";
 
 const Page = () => {
   const { session } = useContext(UserContext);
@@ -270,6 +271,7 @@ const Page = () => {
           </main>
         </main>
       </div>
+      <Footer />
     </main>
   );
 };

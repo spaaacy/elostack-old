@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { UserContext } from "@/context/UserContext";
 import Loader from "@/components/common/Loader";
 import { createClient } from "@supabase/supabase-js";
+import Footer from "../common/Footer";
 
 const EditIndividualProfile = () => {
   const { session } = useContext(UserContext);
@@ -371,6 +372,7 @@ const EditIndividualProfile = () => {
           </form>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

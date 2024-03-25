@@ -16,6 +16,8 @@ export const POST = async (req, res) => {
     const auth = await supabase.auth.setSession({ access_token, refresh_token });
     if (auth.error) throw auth.error;
 
+    console.log({ profileData, profilePicture, resume, coverLetter });
+
     // Upload picture
     let results;
     if (profilePicture) {

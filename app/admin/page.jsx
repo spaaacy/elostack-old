@@ -49,6 +49,9 @@ const Page = () => {
   const onSubmit = async (data) => {
     const response = await fetch("/api/interview/create", {
       method: "POST",
+      headers: {
+        "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
+      },
       body: JSON.stringify(data),
     });
     if (response.status === 201) {
@@ -112,7 +115,7 @@ const Page = () => {
           <section className="bg-center p-8 rounded-lg shadow-lg">
             <h2 className="text-2xl font-bold text-white">Upload New Interview</h2>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
-             <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2">
                 <div>
                   <label className="block font-semibold">Payment Intent ID</label>
                   <input

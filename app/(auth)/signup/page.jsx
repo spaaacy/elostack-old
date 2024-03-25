@@ -57,11 +57,15 @@ const Page = () => {
           emailRedirectTo: "https://elostack.com/",
         },
       });
+      console.log(data);
 
       if (error) throw error;
 
       const response = await fetch("api/user/create", {
         method: "POST",
+        headers: {
+          "X-Supabase-Auth": data.session.access_token + " " + data.session.refresh_token,
+        },
         body: JSON.stringify({
           name: businessName,
           email,
@@ -74,7 +78,7 @@ const Page = () => {
         const { error } = await response.json();
         throw error;
       }
-
+      location.reload();
       router.push("/");
     } catch (error) {
       console.error(error);
@@ -90,11 +94,15 @@ const Page = () => {
           emailRedirectTo: "https://elostack.com/",
         },
       });
+      console.log(data);
 
       if (error) throw error;
 
       const response = await fetch("api/user/create", {
         method: "POST",
+        headers: {
+          "X-Supabase-Auth": data.session.access_token + " " + data.session.refresh_token,
+        },
         body: JSON.stringify({
           firstName: firstName,
           lastName: lastName,

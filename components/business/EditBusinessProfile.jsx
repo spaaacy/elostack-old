@@ -53,6 +53,9 @@ const EditBusinessProfile = () => {
       try {
         const response = await fetch("/api/business/edit-profile", {
           method: "POST",
+          headers: {
+            "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
+          },
           body: JSON.stringify({ ...formData, user_id: session?.data?.session?.user.id }),
         });
 

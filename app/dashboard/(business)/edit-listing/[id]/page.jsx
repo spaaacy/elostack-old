@@ -79,7 +79,7 @@ const Page = () => {
         },
         body: JSON.stringify(newListing),
       });
-      if (response.status === 201) {
+      if (response.status === 200) {
         router.push("/dashboard");
         console.log("Job listed successfully");
       }

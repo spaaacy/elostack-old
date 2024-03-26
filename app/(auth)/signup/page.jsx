@@ -70,7 +70,7 @@ const Page = () => {
         body: JSON.stringify({
           name: businessName,
           email,
-          userId: data.user.id,
+          user_id: data.user.id,
           business: true,
         }),
       });
@@ -108,7 +108,7 @@ const Page = () => {
           firstName: firstName,
           lastName: lastName,
           email,
-          userId: data.user.id,
+          user_id: data.user.id,
           business: false,
         }),
       });

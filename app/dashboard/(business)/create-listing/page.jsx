@@ -57,7 +57,7 @@ const Page = () => {
         location: formData.location,
         deadline: formData.deadline,
       };
-      const response = await fetch("/api/job-listing/edit", {
+      const response = await fetch("/api/job-listing/create", {
         method: "POST",
         headers: {
           "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,

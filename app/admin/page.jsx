@@ -11,13 +11,19 @@ import Footer from "@/components/common/Footer";
 
 const Page = () => {
   const { session, verifyLogin } = useContext(UserContext);
-  const [loading, setLoading] = useState(true);
   const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    watch,
+    register: registerInterview,
+    handleSubmit: handleSubmitInterview,
+    formState: { errors: errorsInterview },
+    watch: watchInterview,
   } = useForm();
+  const {
+    register: registerListing,
+    handleSubmit: handleSubmitListing,
+    formState: { errors: errorsListing },
+    watch: watchListing,
+  } = useForm();
+  const [loading, setLoading] = useState(true);
   const [purchases, setPurchases] = useState();
 
   const fetchPurchases = async () => {
@@ -50,7 +56,8 @@ const Page = () => {
     }
   }, [session]);
 
-  const onSubmit = async (data) => {
+  const onSubmitInterview = async (data) => {
+    if (!session) return;
     const response = await fetch("/api/interview/create", {
       method: "POST",
       headers: {
@@ -64,7 +71,22 @@ const Page = () => {
     }
   };
 
-  const feedback = watch("feedback", "");
+  const onSubmitListing = async (data) => {
+    if (!session) return;
+    console.log(data);
+    let response = await fetch("/api/job-listing/create-custom", {
+      method: "POST",
+      headers: {
+        "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
+      },
+      body: JSON.stringify(data),
+    });
+    if (response.status === 201) {
+      window.location.reload();
+    }
+  };
+
+  const feedback = watchInterview("feedback", "");
 
   if (loading)
     return (
@@ -118,44 +140,44 @@ const Page = () => {
 
           <section className="bg-center p-8 rounded-lg shadow-lg">
             <h2 className="text-2xl font-bold text-white">Upload New Interview</h2>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
+            <form onSubmit={handleSubmitInterview(onSubmitInterview)} className="space-y-4 mt-4">
               <div className="flex items-center gap-2">
                 <div>
                   <label className="block font-semibold">Payment Intent ID</label>
                   <input
                     type="text"
-                    {...register("payment_intent_id", { required: true })}
+                    {...registerInterview("payment_intent_id", { required: true })}
                     className="mt-1 p-2 border rounded bg-[#0f0f1c] text-white"
                   />
-                  {errors.payment_intent_id && <p>This field is required</p>}
+                  {errorsInterview.payment_intent_id && <p className="text-red-500">This field is required</p>}
                 </div>
                 <div className="flex-1">
                   <label className="block font-semibold">Individual ID</label>
                   <input
                     type="text"
-                    {...register("individual_id", { required: true })}
+                    {...registerInterview("individual_id", { required: true })}
                     className="mt-1 p-2 border rounded bg-[#0f0f1c] text-white w-full"
                   />
-                  {errors.individual_id && <p>This field is required</p>}
+                  {errorsInterview.individual_id && <p className="text-red-500">This field is required</p>}
                 </div>
                 <div>
                   <label className="block font-semibold">Grade</label>
                   <input
                     type="text"
-                    {...register("grade", { required: true })}
+                    {...registerInterview("grade", { required: true })}
                     className="mt-1 p-2 border rounded bg-[#0f0f1c] text-white"
                   />
-                  {errors.grade && <p>This field is required</p>}
+                  {errorsInterview.grade && <p className="text-red-500">This field is required</p>}
                 </div>
               </div>
               <div>
                 <label className="block font-semibold">Feedback</label>
                 <textarea
                   rows={10}
-                  {...register("feedback", { required: true })}
+                  {...registerInterview("feedback", { required: true })}
                   className="w-full mt-1 p-2 border rounded bg-[#0f0f1c] text-white"
                 />
-                {errors.feedback && <p className="text-red-500">This field is required</p>}
+                {errorsInterview.feedback && <p className="text-red-500">This field is required</p>}
               </div>
               <div>
                 <label className="block font-semibold">Preview</label>
@@ -165,10 +187,10 @@ const Page = () => {
                 <label className="block font-semibold">YouTube Video ID</label>
                 <input
                   type="text"
-                  {...register("youtube_id", { required: true })}
+                  {...registerInterview("youtube_id", { required: true })}
                   className="mt-1 p-2 border rounded bg-[#0f0f1c] text-white w-full"
                 />
-                {errors.youtube_id && <p className="text-red-500">This field is required</p>}
+                {errorsInterview.youtube_id && <p className="text-red-500">This field is required</p>}
               </div>
 
               <div className="flex justify-end">
@@ -177,6 +199,101 @@ const Page = () => {
                   className="mt-2 px-4 py-2 bg-purpleprimary text-white rounded hover:bg-purple-700 transition duration-150 ease-in-out"
                 >
                   Upload
+                </button>
+              </div>
+            </form>
+          </section>
+
+          <section className="bg-center p-8 rounded-lg shadow-lg">
+            <h2 className="text-2xl font-bold text-white">Create New Listing</h2>
+            <form onSubmit={handleSubmitListing(onSubmitListing)} className="space-y-4 mt-4">
+              <label className="block font-semibold">Business Name</label>
+              <input
+                type="text"
+                {...registerListing("business.name", { required: true })}
+                className="mt-1 p-2 border rounded bg-[#0f0f1c] text-white w-full"
+              />
+              {errorsListing.business && <p className="text-red-500">This field is required</p>}
+              <label className="block font-semibold">Title</label>
+              <input
+                type="text"
+                {...registerListing("title", { required: true })}
+                className="mt-1 p-2 border rounded bg-[#0f0f1c] text-white w-full"
+              />
+              {errorsListing.title && <p className="text-red-500">This field is required</p>}
+              <label className="block font-semibold">Description</label>
+              <input
+                type="text"
+                {...registerListing("description", { required: true })}
+                className="mt-1 p-2 border rounded bg-[#0f0f1c] text-white w-full"
+              />
+              {errorsListing.description && <p className="text-red-500">This field is required</p>}
+
+              <div className="flex gap-4 items-center justify-start w-full">
+                <div>
+                  <label className="block font-semibold">Position</label>
+                  <select
+                    {...registerListing("position", { required: true })}
+                    className="px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  >
+                    <option value="Please select">Please select</option>
+                    <option value="intern">Intern</option>
+                    <option value="junior">Junior</option>
+                    <option value="other">Other</option>
+                  </select>
+                  {errorsListing.position && <p className="text-red-500">This field is required</p>}
+                </div>
+                <div>
+                  <label className="block font-semibold">Location</label>
+                  <input
+                    type="text"
+                    {...registerListing("location", { required: true })}
+                    className="mt-1 p-2 border rounded bg-[#0f0f1c] text-white"
+                  />
+                  {errorsListing.location && <p className="text-red-500">This field is required</p>}
+                </div>
+                <div>
+                  <label className="block font-semibold">Remote</label>
+                  <select
+                    {...registerListing("remote", { required: true })}
+                    className="px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  >
+                    <option value={"false"}>Please select</option>
+                    <option value={"false"}>No</option>
+                    <option value={"true"}>Yes</option>
+                  </select>
+                  {errorsListing.remote && <p className="text-red-500">This field is required</p>}
+                </div>
+                <div>
+                  <label className="block font-semibold">Starting Pay</label>
+                  <input
+                    type="number"
+                    {...registerListing("starting_pay", { required: false })}
+                    className="mt-1 p-2 border rounded bg-[#0f0f1c] text-white"
+                  />
+                </div>
+                <div>
+                  <label className="block font-semibold">Ending Pay</label>
+                  <input
+                    type="number"
+                    {...registerListing("ending_pay", { required: false })}
+                    className="mt-1 p-2 border rounded bg-[#0f0f1c] text-white"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-semibold">Deadline</label>
+                  <input
+                    type="date"
+                    {...registerListing("deadline", { required: false })}
+                    className="mt-1 p-2 border rounded bg-[#0f0f1c] text-white"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="mt-2 px-4 py-2 bg-purpleprimary text-white rounded hover:bg-purple-700 transition duration-150 ease-in-out self-center ml-auto"
+                >
+                  Create
                 </button>
               </div>
             </form>

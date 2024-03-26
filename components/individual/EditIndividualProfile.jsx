@@ -163,6 +163,24 @@ const EditIndividualProfile = () => {
               </select>
             </div>
             <div className="mb-4">
+              <label htmlFor="position" className="block text-white">
+                Position
+              </label>
+              <select
+                name="position"
+                id="position"
+                defaultValue="intern"
+                value={individualData.position}
+                onChange={handleChange}
+                className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+              >
+                <option value="Please select">Please select</option>
+                <option value="intern">Intern</option>
+                <option value="junior">Junior</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div className="mb-4">
               <label htmlFor="birthday" className="block text-white">
                 Birthday
               </label>

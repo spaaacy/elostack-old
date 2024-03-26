@@ -254,7 +254,14 @@ const Page = () => {
                           href="/terms-and-conditions.html"
                           className="font-bold text-purple-500 hover:text-purple-500 hover:underline"
                         >
-                          Terms & Conditions.
+                          Terms & Conditions
+                        </Link>
+                        {" and "}
+                        <Link
+                          href="/privacy-notice.html"
+                          className="font-bold text-purple-500 hover:text-purple-500 hover:underline"
+                        >
+                          Privacy Notice.
                         </Link>
                       </p>
                     </div>

@@ -63,8 +63,53 @@ const NavBar = () => {
           <div className="ml-2">EloStack</div>
         </div>
       </Link>
-      <div className={`hidden lg:flex justify-center space-x-8 ${session?.data.session ? "mr-10" : ""}`}>
-        {user?.business ? (
+      <div className={`${isMenuOpen ? "block" : "hidden"} lg:hidden absolute top-full right-0 mt-4 bg-[#0f0f1c] text-white py-2 px-4 space-y-2 rounded-md shadow-lg`}>
+        {user?.business || pathname === "/business/landing" ? (
+          <>
+            <Link
+              href="/dashboard/create-listing"
+              className="block text-gray-300 hover:text-white hover:bg-gray-800 px-2 py-1 rounded-sm text-sm font-medium"
+            >
+              Create Listing
+            </Link>
+            <Link
+              href="/dashboard/search-individuals"
+              className="block text-gray-300 hover:text-white hover:bg-gray-800 px-2 py-1 rounded-sm text-sm font-medium"
+            >
+              Find Candidates
+            </Link>
+            <Link
+              href="/dashboard/request-interview"
+              className="block text-gray-300 hover:text-white hover:bg-gray-800 px-2 py-1 rounded-sm text-sm font-medium"
+            >
+              Request Interview
+            </Link>
+          </>
+        ) : (
+          <>
+            <Link
+              href="/job-listing"
+              className="block text-gray-300 hover:text-white hover:bg-gray-800 px-2 py-1 rounded-sm text-sm font-medium"
+            >
+              Job Listings
+            </Link>
+            <Link
+              href="/dashboard/applications"
+              className="block text-gray-300 hover:text-white hover:bg-gray-800 px-2 py-1 rounded-sm text-sm font-medium"
+            >
+              Applications
+            </Link>
+            <Link
+              href="/dashboard"
+              className="block text-gray-300 hover:text-white hover:bg-gray-800 px-2 py-1 rounded-sm text-sm font-medium"
+            >
+              Schedule Interview
+            </Link>
+          </>
+        )}
+      </div>
+      <div className="hidden lg:flex lg:items-center lg:space-x-8 lg:ml-40">
+        {user?.business || pathname === "/business/landing" ? (
           <>
             <Link
               href="/dashboard/create-listing"
@@ -108,18 +153,12 @@ const NavBar = () => {
           </>
         )}
       </div>
-      <div className="flex items-center">
-        <button className="lg:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-          {/* Hamburger icon */}
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            className="h-6 w-6 text-white"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
+      <div className="flex items-center justify-end lg:justify-start">
+        <button
+          className={`lg:hidden text-white text-2xl focus:outline-none mr-4`}
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+        >
+          {isMenuOpen ? <>&#10005;</> : <>&#9776;</>}
         </button>
         {session?.data.session ? (
           <UserAccountNav />
@@ -127,13 +166,13 @@ const NavBar = () => {
           <>
             <Link
               href={pathname === "/business/landing" ? "/" : "/business/landing"}
-              className="text-gray-300 bg-purpleprimary hover:bg-purple-700 hover:text-white px-4 py-2 rounded-sm text-base font-medium mr-4"
+              className="text-gray-300 bg-purpleprimary hover:bg-purple-700 hover:text-white px-2 py-1 lg:px-4 lg:py-2 rounded-sm text-sm lg:text-base font-medium mr-2 lg:mr-4"
             >
               {pathname === "/business/landing" ? "For Individuals" : "For Companies"}
             </Link>
             <Link
               href="/signin"
-              className="text-gray-300 bg-purpleprimary hover:bg-purple-700 hover:text-white px-4 py-2 rounded-sm text-base font-medium"
+              className="text-gray-300 bg-purpleprimary hover:bg-purple-700 hover:text-white px-2 py-1 lg:px-4 lg:py-2 rounded-sm text-sm lg:text-base font-medium"
             >
               Sign In
             </Link>

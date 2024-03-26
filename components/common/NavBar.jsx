@@ -1,18 +1,18 @@
 "use client";
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { UserContext } from "@/context/UserContext";
-import { useContext, useEffect, useState } from "react";
 import UserAccountNav from "./UserAccountNav";
 import Image from "next/image";
+import { usePathname } from 'next/navigation';
 
-const NavBar = ({ isModalOpen }) => {
+const NavBar = () => {
   const { session } = useContext(UserContext);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [navBarVisible, setNavBarVisible] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [user, setUser] = useState();
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,14 +25,12 @@ const NavBar = ({ isModalOpen }) => {
       setLastScrollY(currentScrollY);
     };
 
-    if (!isModalOpen) {
-      window.addEventListener("scroll", handleScroll, { passive: true });
-    }
+    window.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [lastScrollY, isModalOpen]);
+  }, [lastScrollY]);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -56,12 +54,12 @@ const NavBar = ({ isModalOpen }) => {
   return (
     <nav
       className={`fixed top-0 left-0 w-full z-50 px-2 lg:px-[9rem] py-4 flex justify-between items-center bg-[#0f0f1c] text-white transition-transform duration-300 ${
-        navBarVisible && !isModalOpen ? "" : "-translate-y-full"
+        navBarVisible ? "" : "-translate-y-full"
       }`}
     >
-      <Link href={"/"} className="text-[1.5rem] font-bold text-white transition-colors hover:text-gray-300">
+      <Link href="/" className="text-[1.5rem] font-bold text-white transition-colors hover:text-gray-300">
         <div className="flex items-center">
-          <Image src={"/logo1.png"} alt="logo" width={50} height={50} />
+          <Image src="/logo1.png" alt="logo" width={50} height={50} />
           <div className="ml-2">EloStack</div>
         </div>
       </Link>
@@ -69,19 +67,19 @@ const NavBar = ({ isModalOpen }) => {
         {user?.business ? (
           <>
             <Link
-              href={"/dashboard/create-listing"}
+              href="/dashboard/create-listing"
               className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
             >
               Create Listing
             </Link>
             <Link
-              href={"/dashboard/search-individuals"}
+              href="/dashboard/search-individuals"
               className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
             >
               Find Candidates
             </Link>
             <Link
-              href={"/dashboard/request-interview"}
+              href="/dashboard/request-interview"
               className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
             >
               Request Interview
@@ -90,19 +88,19 @@ const NavBar = ({ isModalOpen }) => {
         ) : (
           <>
             <Link
-              href={"/job-listing"}
+              href="/job-listing"
               className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
             >
               Job Listings
             </Link>
             <Link
-              href={"/dashboard/applications"}
+              href="/dashboard/applications"
               className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
             >
               Applications
             </Link>
             <Link
-              href={"/dashboard"}
+              href="/dashboard"
               className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
             >
               Schedule Interview
@@ -126,12 +124,20 @@ const NavBar = ({ isModalOpen }) => {
         {session?.data.session ? (
           <UserAccountNav />
         ) : (
-          <Link
-            href={"/signin"}
-            className="text-gray-300 bg-purpleprimary hover:bg-purple-700 hover:text-white  px-4 py-2 rounded-sm text-base font-medium"
-          >
-            Sign In
-          </Link>
+          <>
+            <Link
+              href={pathname === "/business/landing" ? "/" : "/business/landing"}
+              className="text-gray-300 bg-purpleprimary hover:bg-purple-700 hover:text-white px-4 py-2 rounded-sm text-base font-medium mr-4"
+            >
+              {pathname === "/business/landing" ? "For Individuals" : "For Companies"}
+            </Link>
+            <Link
+              href="/signin"
+              className="text-gray-300 bg-purpleprimary hover:bg-purple-700 hover:text-white px-4 py-2 rounded-sm text-base font-medium"
+            >
+              Sign In
+            </Link>
+          </>
         )}
       </div>
     </nav>

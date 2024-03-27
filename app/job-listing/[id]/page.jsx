@@ -5,7 +5,7 @@ import Loader from "@/components/common/Loader";
 import { UserContext } from "@/context/UserContext";
 import Image from "next/image";
 import Link from "next/link";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 import Footer from "@/components/common/Footer";
 
@@ -17,6 +17,7 @@ const Page = ({}) => {
   const [applied, setApplied] = useState();
   const [user, setUser] = useState();
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   useEffect(() => {
     if (session) {
@@ -72,27 +73,16 @@ const Page = ({}) => {
   const handleApply = async () => {
     const userId = session.data.session?.user.id;
     if (userId) {
-      let response;
-      if (searchParams.has("c")) {
-        response = await fetch("/api/application/send-email", {
-          method: "POST",
-          headers: {
-            "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
-          },
-          body: JSON.stringify({ user_id: userId, email: session.data.session.user.email }),
-        });
-      } else {
-        response = await fetch("/api/application/create", {
-          method: "POST",
-          headers: {
-            "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
-          },
-          body: JSON.stringify({
-            user_id: userId,
-            job_listing_id: jobListingId,
-          }),
-        });
-      }
+      const response = await fetch("/api/application/create", {
+        method: "POST",
+        headers: {
+          "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
+        },
+        body: JSON.stringify({
+          user_id: userId,
+          job_listing_id: jobListingId,
+        }),
+      });
       if (response.status === 201) {
         console.log("Application made successfully!");
       } else {
@@ -102,8 +92,24 @@ const Page = ({}) => {
     }
   };
 
-  const handleOAuth = async () => {
-    if (session) {
+  const handleEmailApply = async () => {
+    const userId = session.data.session?.user.id;
+    if (!userId || !user) return;
+    if (user.refresh_token && user.access_token) {
+      const response = await fetch("/api/application/send-email", {
+        method: "POST",
+        headers: {
+          "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
+        },
+        body: JSON.stringify({ user_id: userId, email: session.data.session.user.email }),
+      });
+      if (response.status === 201) {
+        console.log("Application made successfully!");
+      } else {
+        console.error("Application unsuccessful!");
+      }
+      window.location.reload();
+    } else {
       const response = await fetch("/api/oauth/request-permission", {
         method: "POST",
         headers: {
@@ -112,7 +118,7 @@ const Page = ({}) => {
       });
       if (response.status === 200) {
         const { url } = await response.json();
-        window.open(url);
+        router.push(url);
       }
     }
   };
@@ -159,20 +165,12 @@ const Page = ({}) => {
                 ) : (
                   !user?.business && (
                     <button
-                      onClick={handleApply}
+                      onClick={searchParams.has("c") ? handleEmailApply : handleApply}
                       className="bg-purpleprimary text-white px-6 py-3 rounded hover:bg-purple-700 transition duration-150 ease-in-out"
                     >
                       Apply
                     </button>
                   )
-                )}
-                {searchParams.has("c") && (
-                  <button
-                    onClick={handleOAuth}
-                    className="bg-purpleprimary text-white px-6 py-3 rounded hover:bg-purple-700 transition duration-150 ease-in-out"
-                  >
-                    Grant permissions
-                  </button>
                 )}
               </div>
             </div>

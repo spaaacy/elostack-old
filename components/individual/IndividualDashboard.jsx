@@ -48,7 +48,6 @@ const IndividualDashboard = () => {
       },
       body: JSON.stringify({
         code: searchParams.get("code"),
-        scope: searchParams.get("scope"),
         user_id: userId,
       }),
     });

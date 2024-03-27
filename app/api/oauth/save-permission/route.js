@@ -14,7 +14,7 @@ export async function POST(req, res) {
     });
     if (auth.error) throw auth.error;
 
-    const { code, scope, user_id } = await req.json();
+    const { code, user_id } = await req.json();
 
     const oauth2Client = new google.auth.OAuth2(
       process.env.GOOGLE_OAUTH_CLIENT_ID,
@@ -23,7 +23,6 @@ export async function POST(req, res) {
     );
 
     const { tokens } = await oauth2Client.getToken(code);
-    console.log(tokens);
     const { error } = await supabase
       .from("user")
       .update({

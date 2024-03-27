@@ -29,12 +29,33 @@ const IndividualDashboard = () => {
         toast.success("Purchase made successfully!");
       } else if (searchParams.has("cancelled")) {
         toast.error("Purchase was unsuccessful!");
+      } else if (searchParams.has("code") && searchParams.has("scope")) {
+        handleOAuth();
       }
 
       fetchIndividual();
       fetchApplications();
     }
   }, [session]);
+
+  const handleOAuth = async () => {
+    const userId = session.data.session?.user.id;
+    if (!session) return;
+    const response = await fetch("/api/oauth/save-permission", {
+      method: "POST",
+      headers: {
+        "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
+      },
+      body: JSON.stringify({
+        code: searchParams.get("code"),
+        scope: searchParams.get("scope"),
+        user_id: userId,
+      }),
+    });
+    if (response.status === 201) {
+      toast.success("Permission granted!");
+    }
+  };
 
   const fetchApplications = async () => {
     const userId = session.data.session?.user.id;

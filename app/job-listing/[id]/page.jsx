@@ -79,6 +79,7 @@ const Page = ({}) => {
           headers: {
             "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
           },
+          body: JSON.stringify({ user_id: userId, email: session.data.session.user.email }),
         });
       } else {
         response = await fetch("/api/application/create", {

@@ -13,19 +13,33 @@ export async function POST(req, res) {
     const auth = await supabase.auth.setSession({ access_token, refresh_token });
     if (auth.error) throw auth.error;
 
+    const { email, user_id } = await req.json();
+
+    const { data, error } = await supabase
+      .from("user")
+      .select("refresh_token, access_token")
+      .eq("user_id", user_id)
+      .single();
+    if (error) throw error;
+    if (!data.refresh_token || !data.access_token) throw Error("Refresh token and/or access token not found!");
+
     const transporter = nodeMailer.createTransport({
       service: "Gmail",
       host: "smtp.gmail.com",
       port: 465,
       secure: true,
       auth: {
-        user: "",
-        pass: "",
+        type: "OAuth2",
+        clientId: process.env.GOOGLE_OAUTH_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
+        user: email,
+        refreshToken: data.refresh_token,
+        accessToken: data.access_token,
       },
     });
 
     const info = await transporter.sendMail({
-      from: "Mohamed <aakifahamath@gmail.com>",
+      from: email,
       to: "elostackinc@gmail.com",
       subject: "Hello from EloStack!",
       html: "<h1>Hello!</h1>",

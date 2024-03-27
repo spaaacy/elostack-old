@@ -18,7 +18,7 @@ export async function POST(req, res) {
     );
 
     // generate a url that asks permissions for Blogger and Google Calendar scopes
-    const scopes = ["https://www.googleapis.com/auth/gmail.compose"];
+    const scopes = ["https://mail.google.com/"];
 
     const url = oauth2Client.generateAuthUrl({
       // 'online' (default) or 'offline' (gets refresh_token)

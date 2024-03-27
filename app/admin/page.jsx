@@ -222,10 +222,11 @@ const Page = () => {
               />
               {errorsListing.title && <p className="text-red-500">This field is required</p>}
               <label className="block font-semibold">Description</label>
-              <input
+              <textarea
                 type="text"
+                rows={10}
                 {...registerListing("description", { required: true })}
-                className="mt-1 p-2 border rounded bg-[#0f0f1c] text-white w-full"
+                className="resize-none mt-1 p-2 border rounded bg-[#0f0f1c] text-white w-full"
               />
               {errorsListing.description && <p className="text-red-500">This field is required</p>}
 

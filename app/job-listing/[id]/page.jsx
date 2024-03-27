@@ -5,7 +5,7 @@ import Loader from "@/components/common/Loader";
 import { UserContext } from "@/context/UserContext";
 import Image from "next/image";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 import Footer from "@/components/common/Footer";
 
@@ -16,6 +16,7 @@ const Page = ({}) => {
   const [loading, setLoading] = useState(true);
   const [applied, setApplied] = useState();
   const [user, setUser] = useState();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     if (session) {
@@ -26,7 +27,7 @@ const Page = ({}) => {
   }, [session]);
 
   const fetchListing = async () => {
-    const response = await fetch(`/api/job-listing/${jobListingId}`, {
+    const response = await fetch(`/api/job-listing/${jobListingId}${searchParams.has("c") ? "?c=true" : ""}`, {
       method: "GET",
     });
     const results = await response.json();
@@ -71,22 +72,47 @@ const Page = ({}) => {
   const handleApply = async () => {
     const userId = session.data.session?.user.id;
     if (userId) {
-      const response = await fetch("/api/application/create", {
-        method: "POST",
-        headers: {
-          "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
-        },
-        body: JSON.stringify({
-          user_id: userId,
-          job_listing_id: jobListingId,
-        }),
-      });
+      let response;
+      if (searchParams.has("c")) {
+        response = await fetch("/api/application/send-email", {
+          method: "POST",
+          headers: {
+            "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
+          },
+        });
+      } else {
+        response = await fetch("/api/application/create", {
+          method: "POST",
+          headers: {
+            "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
+          },
+          body: JSON.stringify({
+            user_id: userId,
+            job_listing_id: jobListingId,
+          }),
+        });
+      }
       if (response.status === 201) {
         console.log("Application made successfully!");
       } else {
         console.error("Application unsuccessful!");
       }
       window.location.reload();
+    }
+  };
+
+  const handleOAuth = async () => {
+    if (session) {
+      const response = await fetch("/api/oauth/request-permission", {
+        method: "POST",
+        headers: {
+          "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
+        },
+      });
+      if (response.status === 200) {
+        const { url } = await response.json();
+        window.open(url);
+      }
     }
   };
 
@@ -116,28 +142,38 @@ const Page = ({}) => {
               >
                 {jobListing.business?.name}
               </Link>
-              {applied ? (
-                <div className="flex gap-2 items-center justify-center">
-                  <p className="font-medium">Applied</p>
-                  <Image src={"/done.svg"} alt="done" width={25} height={25} />
-                </div>
-              ) : session.data.session?.user.id === jobListing?.business_id ? (
-                <Link
-                  href={`/dashboard/edit-listing/${jobListing?.id}`}
-                  className="bg-purpleprimary text-white px-6 py-3 rounded hover:bg-purple-700 transition duration-150 ease-in-out"
-                >
-                  Edit Listing
-                </Link>
-              ) : (
-                !user?.business && (
-                  <button
-                    onClick={handleApply}
+              <div className="flex justify-center items-center gap-2">
+                {applied ? (
+                  <div className="flex gap-2 items-center justify-center">
+                    <p className="font-medium">Applied</p>
+                    <Image src={"/done.svg"} alt="done" width={25} height={25} />
+                  </div>
+                ) : session.data.session?.user.id === jobListing?.business_id ? (
+                  <Link
+                    href={`/dashboard/edit-listing/${jobListing?.id}`}
                     className="bg-purpleprimary text-white px-6 py-3 rounded hover:bg-purple-700 transition duration-150 ease-in-out"
                   >
-                    Apply
+                    Edit Listing
+                  </Link>
+                ) : (
+                  !user?.business && (
+                    <button
+                      onClick={handleApply}
+                      className="bg-purpleprimary text-white px-6 py-3 rounded hover:bg-purple-700 transition duration-150 ease-in-out"
+                    >
+                      Apply
+                    </button>
+                  )
+                )}
+                {searchParams.has("c") && (
+                  <button
+                    onClick={handleOAuth}
+                    className="bg-purpleprimary text-white px-6 py-3 rounded hover:bg-purple-700 transition duration-150 ease-in-out"
+                  >
+                    Grant permissions
                   </button>
-                )
-              )}
+                )}
+              </div>
             </div>
             <div className="mb-8">
               <h2 className="text-2xl font-bold mb-2">Salary Range</h2>

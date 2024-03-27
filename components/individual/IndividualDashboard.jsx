@@ -8,7 +8,6 @@ import { profileStore } from "./profileStore";
 import Loader from "@/components/common/Loader";
 import Link from "next/link";
 import formatDate from "@/utils/formatDate";
-import { loadStripe } from "@stripe/stripe-js";
 import toast, { Toaster } from "react-hot-toast";
 import { v4 as uuidv4 } from "uuid";
 import Footer from "../common/Footer";
@@ -31,6 +30,7 @@ const IndividualDashboard = () => {
       } else if (searchParams.has("cancelled")) {
         toast.error("Purchase was unsuccessful!");
       }
+
       fetchIndividual();
       fetchApplications();
     }

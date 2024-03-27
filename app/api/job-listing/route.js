@@ -7,6 +7,7 @@ export async function GET(req, res) {
     const business_id = req.nextUrl.searchParams.get("business_id");
     const latest = req.nextUrl.searchParams.get("latest");
     let results;
+    let customListings;
     if (business_id) {
       if (latest) {
         results = await supabase
@@ -28,9 +29,14 @@ export async function GET(req, res) {
         .select("*, business(*)")
         .eq("active", true)
         .order("created_at", { ascending: false });
+      customListings = await supabase
+        .from("job_listing_custom")
+        .select("*")
+        .eq("active", true)
+        .order("created_at", { ascending: false });
     }
     if (results.error) throw results.error;
-    return NextResponse.json({ data: results.data }, { status: 200 });
+    return NextResponse.json({ data: [...results.data, ...customListings.data] }, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error }, { status: 500 });

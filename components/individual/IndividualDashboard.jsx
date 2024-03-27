@@ -8,7 +8,6 @@ import { profileStore } from "./profileStore";
 import Loader from "@/components/common/Loader";
 import Link from "next/link";
 import formatDate from "@/utils/formatDate";
-import { loadStripe } from "@stripe/stripe-js";
 import toast, { Toaster } from "react-hot-toast";
 import { v4 as uuidv4 } from "uuid";
 import Footer from "../common/Footer";
@@ -30,11 +29,32 @@ const IndividualDashboard = () => {
         toast.success("Purchase made successfully!");
       } else if (searchParams.has("cancelled")) {
         toast.error("Purchase was unsuccessful!");
+      } else if (searchParams.has("code") && searchParams.has("scope")) {
+        handleOAuth();
       }
+
       fetchIndividual();
       fetchApplications();
     }
   }, [session]);
+
+  const handleOAuth = async () => {
+    const userId = session.data.session?.user.id;
+    if (!session) return;
+    const response = await fetch("/api/oauth/save-permission", {
+      method: "POST",
+      headers: {
+        "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
+      },
+      body: JSON.stringify({
+        code: searchParams.get("code"),
+        user_id: userId,
+      }),
+    });
+    if (response.status === 201) {
+      toast.success("Permission granted!");
+    }
+  };
 
   const fetchApplications = async () => {
     const userId = session.data.session?.user.id;

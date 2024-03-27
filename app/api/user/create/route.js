@@ -11,19 +11,20 @@ export async function POST(req, res) {
     if (auth.error) throw auth.error;
 
     const user = await req.json();
+    console.log(user);
     const { error: errorUsers } = await supabase
       .from("user")
-      .insert({ user_id: user.userId, business: user.business, email: user.email });
+      .insert({ user_id: user.user_id, business: user.business, email: user.email });
     if (errorUsers) throw errorUsers;
     if (!user.business) {
       const { error: errorProfile } = await supabase
         .from("individual")
-        .insert({ user_id: user.userId, first_name: user.firstName, last_name: user.lastName });
+        .insert({ user_id: user.user_id, first_name: user.firstName, last_name: user.lastName });
       if (errorProfile) throw errorProfile;
     } else {
       const { error: errorProfile } = await supabase
         .from("business")
-        .insert({ user_id: "3f91cb9a-4a98-4d23-90f7-4b265c5a8c6c", name: user.name });
+        .insert({ user_id: user.user_id, name: user.name });
       if (errorProfile) throw errorProfile;
     }
     return NextResponse.json({ message: "User created successfully!" }, { status: 201 });

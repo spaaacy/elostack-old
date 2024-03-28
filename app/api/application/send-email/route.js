@@ -41,9 +41,27 @@ export async function POST(req, res) {
 
     const info = await transporter.sendMail({
       from: email,
-      to: "elostackinc@gmail.com",
-      subject: "Hello from EloStack!",
-      html: "<h1>Hello!</h1>",
+      to: "aakifmohamed@elostack.com",
+      subject: "Interest in job opening",
+      text: `Dear Hiring Manager,
+
+I hope this email finds you well. I am writing to express my keen interest in the Software Engineer Junior position advertised by ABC Business. With my educational background and hands-on experience in software development, I am excited about the opportunity to contribute to your team and grow both personally and professionally within your esteemed company.
+
+I recently graduated with a degree in Computer Science from XYZ University and have completed internships where I gained practical experience in software development methodologies, coding languages, and problem-solving skills. During my internship at [Previous Company/Institution], I had the opportunity to work on a diverse range of projects, which enhanced my understanding of software engineering principles and methodologies. Additionally, my coursework equipped me with a solid foundation in algorithms, data structures, and object-oriented programming.
+
+What particularly draws me to ABC Business is your reputation for innovative solutions and commitment to excellence. I am impressed by the projects your team has undertaken, especially [mention any specific projects or technologies you admire about the company]. I am eager to bring my skills and enthusiasm for software development to contribute to your ongoing success.
+
+I am confident that my technical skills, coupled with my strong work ethic and passion for continuous learning, make me a valuable asset to your team. I am excited about the prospect of collaborating with talented professionals at ABC Business to tackle challenging projects and make meaningful contributions to your objectives.
+
+Thank you for considering my application. I have attached my resume for your review, and I would welcome the opportunity to discuss how my background, skills, and enthusiasm align with the needs of your team in more detail.
+
+I am available for an interview at your earliest convenience and can be reached via email at email@gmail.com or by phone at (123) 456 7890.
+
+Thank you for your time and consideration.
+
+Warm regards,
+Mohamed
+`,
     });
 
     console.log(`Email ${info.messageId} sent!`);

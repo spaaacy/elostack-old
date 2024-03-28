@@ -70,19 +70,28 @@ const UserAccountNav = () => {
         }`}
         style={{ display: dropdownOpen ? "block" : "none" }}
       >
-        <Link href="/dashboard" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">
-          Dashboard
-        </Link>
-        {user && (
+        {user ? (
+          <>
+            <Link href="/dashboard" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">
+              Dashboard
+            </Link>
+            <Link
+              href={
+                user?.business
+                  ? `/business/${session?.data.session?.user.id}`
+                  : `/individual/${session?.data.session?.user.id}`
+              }
+              className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700"
+            >
+              Profile
+            </Link>
+          </>
+        ) : (
           <Link
-            href={
-              user?.business
-                ? `/business/${session?.data.session?.user.id}`
-                : `/individual/${session?.data.session?.user.id}`
-            }
+            href="/signup?complete-registration=true"
             className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700"
           >
-            Profile
+            Finish signing up
           </Link>
         )}
         <hr className="my-1 border-gray-700" />

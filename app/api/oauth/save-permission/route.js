@@ -26,8 +26,8 @@ export async function POST(req, res) {
     const { error } = await supabase
       .from("user")
       .update({
-        refresh_token: tokens.refresh_token,
-        access_token: tokens.access_token,
+        gmail_refresh_token: tokens.refresh_token,
+        gmail_access_token: tokens.access_token,
       })
       .eq("user_id", user_id);
     if (error) throw error;

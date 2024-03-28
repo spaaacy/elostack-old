@@ -6,10 +6,12 @@ import IndividualDashboard from "@/components/individual/IndividualDashboard";
 import Loader from "@/components/common/Loader";
 import { UserContext } from "@/context/UserContext";
 import { useEffect, useContext, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
   const { session, verifyLogin } = useContext(UserContext);
   const [user, setUser] = useState();
+  const router = useRouter();
 
   useEffect(() => {
     const loadData = async () => {
@@ -33,6 +35,8 @@ const Page = () => {
       if (response.status === 200) {
         const { user } = await response.json();
         setUser(user);
+      } else {
+        router.push("/signup?complete-registration=true");
       }
     }
   };

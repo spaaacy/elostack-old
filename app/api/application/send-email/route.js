@@ -17,11 +17,12 @@ export async function POST(req, res) {
 
     const { data, error } = await supabase
       .from("user")
-      .select("refresh_token, access_token")
+      .select("gmail_refresh_token, gmail_access_token")
       .eq("user_id", user_id)
       .single();
     if (error) throw error;
-    if (!data.refresh_token || !data.access_token) throw Error("Refresh token and/or access token not found!");
+    if (!data.gmail_refresh_token || !data.gmail_access_token)
+      throw Error("Refresh token and/or access token not found!");
 
     const transporter = nodeMailer.createTransport({
       service: "Gmail",
@@ -33,8 +34,8 @@ export async function POST(req, res) {
         clientId: process.env.GOOGLE_OAUTH_CLIENT_ID,
         clientSecret: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
         user: email,
-        refreshToken: data.refresh_token,
-        accessToken: data.access_token,
+        refreshToken: data.gmail_refresh_token,
+        accessToken: data.gmail_access_token,
       },
     });
 

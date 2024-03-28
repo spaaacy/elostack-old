@@ -48,7 +48,25 @@ const SignUpPage = () => {
     try {
       if (!session) return;
       console.log(session);
-      const response = await fetch("api/business/create", {
+      let response;
+
+      response = await fetch("api/user/create", {
+        method: "POST",
+        headers: {
+          "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
+        },
+        body: JSON.stringify({
+          email: session.data.session.user.email,
+          user_id: session.data.session.user.id,
+          business: true,
+        }),
+      });
+      if (response.status === 500) {
+        const { error } = await response.json();
+        throw error;
+      }
+
+      response = await fetch("api/business/create", {
         method: "POST",
         headers: {
           "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
@@ -75,8 +93,25 @@ const SignUpPage = () => {
     e?.preventDefault();
     try {
       if (!session) return;
-      console.log(session);
-      const response = await fetch("api/individual/create", {
+      let response;
+
+      response = await fetch("api/user/create", {
+        method: "POST",
+        headers: {
+          "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
+        },
+        body: JSON.stringify({
+          email: session.data.session.user.email,
+          user_id: session.data.session.user.id,
+          business: false,
+        }),
+      });
+      if (response.status === 500) {
+        const { error } = await response.json();
+        throw error;
+      }
+
+      response = await fetch("api/individual/create", {
         method: "POST",
         headers: {
           "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
@@ -100,31 +135,12 @@ const SignUpPage = () => {
     }
   };
 
-  const handleEmailConfirmed = async () => {
-    const userId = session?.data?.session?.user.id;
-    if (userId) {
-      const response = await fetch(`/api/user/${userId}`, {
-        method: "GET",
-      });
-      if (response.status === 200) {
-        const { user } = await response.json();
-        if (user.business) {
-          setIsBusiness(true);
-          registerBusiness();
-        } else {
-          registerIndividual();
-        }
-        setCompleteRegistration(true);
-        setLoading(false);
-      }
-    }
-  };
-
   useEffect(() => {
     if (confirmToast) toast.success("Please confirm your email", { icon: "🚀" });
     if (session?.data?.session) {
-      if (searchParams.has("email-confirmed")) {
-        handleEmailConfirmed();
+      if (searchParams.has("complete-registration")) {
+        setCompleteRegistration(true);
+        setLoading(false);
       } else {
         router.push("/dashboard");
       }
@@ -149,30 +165,36 @@ const SignUpPage = () => {
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/signup?email-confirmed=true`,
+          emailRedirectTo: `${window.location.origin}/signup?complete-registration=true`,
         },
       });
 
       if (error) throw error;
 
-      const response = await fetch("api/user/create", {
-        method: "POST",
-        body: JSON.stringify({
-          email,
-          user_id: data.user.id,
-          business: isBusiness,
-        }),
-      });
-
-      if (response.status === 500) {
-        const { error } = await response.json();
-        throw error;
-      }
       setConfirmToast(true);
     } catch (error) {
       console.error(error);
     } finally {
       setDisableSignUp(false);
+    }
+  };
+
+  const signInWithGoogle = async () => {
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: `${window.location.origin}/signup?google-oauth=true`,
+          queryParams: {
+            access_type: "offline",
+            prompt: "consent",
+          },
+        },
+      });
+
+      if (error) throw error;
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -204,6 +226,26 @@ const SignUpPage = () => {
               {completeRegistration ? (
                 <div className="p-8">
                   <form onSubmit={isBusiness ? registerBusiness : registerIndividual}>
+                    <div className="flex justify-center mb-4">
+                      <button
+                        type="button"
+                        onClick={() => setIsBusiness(false)}
+                        className={`font-bold py-2 px-4 rounded-l focus:outline-none focus:shadow-outline mx-2 ${
+                          isBusiness ? "bg-gray-700 text-white" : "bg-purpleprimary text-white"
+                        }`}
+                      >
+                        Individual Signup
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setIsBusiness(true)}
+                        className={`font-bold py-2 px-4 rounded-r focus:outline-none focus:shadow-outline mx-2 ${
+                          isBusiness ? "bg-purpleprimary text-white" : "bg-gray-700 text-white"
+                        }`}
+                      >
+                        Business Signup
+                      </button>
+                    </div>
                     {isBusiness ? (
                       <div className="mb-4">
                         <label htmlFor="businessName" className="block text-white text-sm font-bold mb-2">
@@ -342,6 +384,34 @@ const SignUpPage = () => {
                         Sign Up
                       </button>
                     </div>
+                    <button
+                      type="button"
+                      onClick={signInWithGoogle}
+                      className="flex items-center justify-start shadow-lg bg-gray-100 mb-6 hover:bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+                    >
+                      <Image src="/google.svg" alt="Google logo" width={23} height={23} className="ml-4" />
+                      <span className="ml-4">Sign In with Google</span>
+                    </button>
+                    <div
+                      id="g_id_onload"
+                      data-client_id="<client ID>"
+                      data-context="signin"
+                      data-ux_mode="popup"
+                      data-callback="handleSignInWithGoogle"
+                      data-nonce=""
+                      data-auto_select="true"
+                      data-itp_support="true"
+                    ></div>
+
+                    <div
+                      class="g_id_signin"
+                      data-type="standard"
+                      data-shape="pill"
+                      data-theme="outline"
+                      data-text="signin_with"
+                      data-size="large"
+                      data-logo_alignment="left"
+                    ></div>
                   </form>
                 </div>
               )}

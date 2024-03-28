@@ -95,7 +95,7 @@ const Page = () => {
   const handleEmailApply = async () => {
     const userId = session.data.session?.user.id;
     if (!userId || !user) return;
-    if (user.refresh_token && user.access_token) {
+    if (user.gmail_refresh_token && user.gmail_access_token) {
       const response = await fetch("/api/application/send-email", {
         method: "POST",
         headers: {

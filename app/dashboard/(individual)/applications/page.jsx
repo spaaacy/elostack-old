@@ -9,6 +9,7 @@ import Loader from "@/components/common/Loader";
 import formatDate from "@/utils/formatDate";
 import { profileStore } from "@/components/individual/profileStore";
 import Footer from "@/components/common/Footer";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
   const { session, verifyLogin } = useContext(UserContext);
@@ -16,6 +17,7 @@ const Page = () => {
   const [applications, setApplications] = useState();
   const [error, setError] = useState();
   const { profileData, setProfileData } = profileStore();
+  const router = useRouter();
 
   useEffect(() => {
     const loadData = async () => {

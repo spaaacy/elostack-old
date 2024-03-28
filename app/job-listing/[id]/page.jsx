@@ -163,6 +163,7 @@ const Page = () => {
                     Edit Listing
                   </Link>
                 ) : (
+                  user &&
                   !user?.business && (
                     <button
                       onClick={searchParams.has("c") ? handleEmailApply : handleApply}

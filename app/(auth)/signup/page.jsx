@@ -16,7 +16,7 @@ const Page = () => {
   return (
     <main className="flex flex-col min-h-screen text-white w-full bg-gradient-to-b from-[#0f0f1c] via-[#1b1b29] to-[#2e2536]">
       <NavBar />
-      // Suspense is used since the page uses search params
+      {/* Suspense is used since the page uses search params */}
       <Suspense>
         <SignUpPage />
       </Suspense>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useEffect, useState } from "react";
+import { Suspense, useContext, useEffect, useState } from "react";
 import NavBar from "@/components/common/NavBar";
 import { UserContext } from "@/context/UserContext";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -13,6 +13,20 @@ import Footer from "@/components/common/Footer";
 import toast, { Toaster } from "react-hot-toast";
 
 const Page = () => {
+  return (
+    <main className="flex flex-col min-h-screen text-white w-full bg-gradient-to-b from-[#0f0f1c] via-[#1b1b29] to-[#2e2536]">
+      <NavBar />
+      // Suspense is used since the page uses search params
+      <Suspense>
+        <SignUpPage />
+      </Suspense>
+    </main>
+  );
+};
+
+export default Page;
+
+const SignUpPage = () => {
   const { session } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
@@ -163,8 +177,7 @@ const Page = () => {
   };
 
   return (
-    <main className="flex flex-col min-h-screen text-white w-full bg-gradient-to-b from-[#0f0f1c] via-[#1b1b29] to-[#2e2536]">
-      <NavBar />
+    <div className="flex flex-col min-h-screen text-white w-full bg-gradient-to-b from-[#0f0f1c] via-[#1b1b29] to-[#2e2536]">
       <div>
         <main className="flex flex-col flex-1 min-h-screen">
           <Head>
@@ -329,8 +342,6 @@ const Page = () => {
       </div>
       <Footer />
       <Toaster />
-    </main>
+    </div>
   );
 };
-
-export default Page;

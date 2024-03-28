@@ -9,7 +9,7 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 import Footer from "@/components/common/Footer";
 
-const Page = ({}) => {
+const Page = () => {
   const { id: jobListingId } = useParams();
   const { session } = useContext(UserContext);
   const [jobListing, setJobListing] = useState();

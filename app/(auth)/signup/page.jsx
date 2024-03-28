@@ -11,6 +11,7 @@ import { createClient } from "@supabase/supabase-js";
 import Image from "next/image";
 import Footer from "@/components/common/Footer";
 import toast, { Toaster } from "react-hot-toast";
+import { supabase } from "@/utils/supabase";
 
 const Page = () => {
   return (
@@ -36,11 +37,11 @@ const SignUpPage = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [isBusiness, setIsBusiness] = useState(false);
-  const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const searchParams = useSearchParams();
   const [completeRegistration, setCompleteRegistration] = useState(false);
   const [confirmToast, setConfirmToast] = useState(false);
+  const [disableSignUp, setDisableSignUp] = useState(false);
 
   const registerBusiness = async (e) => {
     e?.preventDefault();
@@ -142,6 +143,7 @@ const SignUpPage = () => {
 
   const signUp = async (e) => {
     e.preventDefault();
+    setDisableSignUp(true);
     try {
       const { data, error } = await supabase.auth.signUp({
         email,
@@ -169,6 +171,8 @@ const SignUpPage = () => {
       setConfirmToast(true);
     } catch (error) {
       console.error(error);
+    } finally {
+      setDisableSignUp(false);
     }
   };
 
@@ -327,8 +331,13 @@ const SignUpPage = () => {
                         </p>
                       </div>
                       <button
+                        disabled={disableSignUp}
                         type="submit"
-                        className="bg-purpleprimary hover:bg-purple-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
+                        className={`${
+                          disableSignUp
+                            ? "bg-gray-800 cursor-not-allowed text-gray-400"
+                            : "bg-purpleprimary hover:bg-purple-700 text-white"
+                        }  font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out`}
                       >
                         Sign Up
                       </button>

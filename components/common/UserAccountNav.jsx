@@ -1,6 +1,7 @@
 "use client";
 
 import { UserContext } from "@/context/UserContext";
+import { supabase } from "@/utils/supabase";
 import { createClient } from "@supabase/supabase-js";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -16,7 +17,6 @@ const UserAccountNav = () => {
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
   const handleSignOut = async () => {
-    const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
     const { error } = await supabase.auth.signOut();
     if (error) {
       console.error(error);

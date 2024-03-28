@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
+import { supabase } from "@/utils/supabase";
 
 export const UserContext = React.createContext();
 
@@ -17,7 +18,6 @@ export const UserProvider = ({ children }) => {
   }, [session]);
 
   const fetchSession = async () => {
-    const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
     const session = await supabase.auth.getSession();
     setSession(session);
   };

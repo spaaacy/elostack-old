@@ -11,6 +11,7 @@ import { UserContext } from "@/context/UserContext";
 import Loader from "@/components/common/Loader";
 import Image from "next/image";
 import Footer from "@/components/common/Footer";
+import { supabase } from "@/utils/supabase";
 const Page = () => {
   const { session } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
@@ -32,7 +33,6 @@ const Page = () => {
       <>
         <NavBar />
         <Loader />
-        
       </>
     );
 
@@ -73,7 +73,6 @@ const Page = () => {
   };
 
   const onSubmit = async (values) => {
-    const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
     const { data, error } = await supabase.auth.signInWithPassword({
       email: values.email,
       password: values.password,
@@ -167,7 +166,6 @@ const Page = () => {
                     >
                       Sign In
                     </button>
-                    
                   </div>
                 </form>
               </div>

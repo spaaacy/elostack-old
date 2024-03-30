@@ -390,7 +390,7 @@ const SignUpPage = () => {
                       className="mt-4 gap-4 flex items-center justify-center shadow-lg bg-gray-200 mb-6 hover:bg-gray-300 text-gray-700 font-bold py-3 px-4 rounded focus:outline-none focus:shadow-outline"
                     >
                       <Image src="/google.svg" alt="Google logo" width={23} height={23} />
-                      <span>Sign Up with Google</span>
+                      <span>Sign up with Google</span>
                     </button>
                     <div
                       id="g_id_onload"

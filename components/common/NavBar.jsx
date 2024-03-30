@@ -108,51 +108,53 @@ const NavBar = () => {
           </>
         )}
       </div>
-      <div className="hidden lg:flex lg:items-center lg:space-x-8 lg:ml-40">
-        {user?.business || pathname === "/business/landing" ? (
-          <>
-            <Link
-              href="/dashboard/create-listing"
-              className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
-            >
-              Create Listing
-            </Link>
-            <Link
-              href="/dashboard/search-individuals"
-              className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
-            >
-              Find Candidates
-            </Link>
-            <Link
-              href="/dashboard/request-interview"
-              className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
-            >
-              Request Interview
-            </Link>
-          </>
-        ) : (
-          <>
-            <Link
-              href="/job-listing"
-              className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
-            >
-              Job Listings
-            </Link>
-            <Link
-              href="/dashboard/applications"
-              className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
-            >
-              Applications
-            </Link>
-            <Link
-              href="/dashboard"
-              className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
-            >
-              Schedule Interview
-            </Link>
-          </>
-        )}
-      </div>
+      <div className={`hidden lg:flex lg:items-center lg:justify-center lg:flex-grow ${session?.data.session ? "mr-20" : "lg:ml-32"}`}>
+  <div className="nav-center space-x-8">
+    {user?.business || pathname === "/business/landing" ? (
+      <>
+        <Link
+          href="/dashboard/create-listing"
+          className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
+        >
+          Create Listing
+        </Link>
+        <Link
+          href="/dashboard/search-individuals"
+          className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
+        >
+          Find Candidates
+        </Link>
+        <Link
+          href="/dashboard/request-interview"
+          className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
+        >
+          Request Interview
+        </Link>
+      </>
+    ) : (
+      <>
+        <Link
+          href="/job-listing"
+          className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
+        >
+          Job Listings
+        </Link>
+        <Link
+          href="/dashboard/applications"
+          className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
+        >
+          Applications
+        </Link>
+        <Link
+          href="/dashboard"
+          className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
+        >
+          Schedule Interview
+        </Link>
+      </>
+    )}
+  </div>
+</div>
       <div className="flex items-center justify-end lg:justify-start">
         <button
           className={`lg:hidden text-white text-2xl focus:outline-none mr-4`}

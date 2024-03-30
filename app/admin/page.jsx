@@ -9,7 +9,6 @@ import Head from "next/head";
 import Footer from "@/components/common/Footer";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import rehypeRaw from "rehype-raw";
 
 const Page = () => {
   const { session, verifyLogin } = useContext(UserContext);

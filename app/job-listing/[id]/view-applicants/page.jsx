@@ -10,6 +10,7 @@ import formatDate from "@/utils/formatDate";
 import NavBar from "@/components/common/NavBar";
 import { useParams, useRouter } from "next/navigation";
 import Footer from "@/components/common/Footer";
+
 const JobApplicants = () => {
   const { session, verifyLogin } = useContext(UserContext);
   const { id } = useParams();
@@ -69,16 +70,16 @@ const JobApplicants = () => {
       </>
     );
   return (
-    <main className="flex flex-col flex-1 min-h-screen">
+    <main className="flex flex-col min-h-screen text-white w-full bg-gradient-to-b from-[#0f0f1c] via-[#1b1b29] to-[#251b30]">
       <Head>
         <title>Job Applicants | EloStack</title>
       </Head>
 
-      <div className="container mx-auto p-4 bg-white rounded-lg shadow mt-8">
+      <div className="container mx-auto p-4 bg-[#1b1b29] rounded-lg shadow mt-8">
         <NavBar />
 
         {/* Applicants List */}
-        <section className="bg-white p-4 rounded-lg shadow-lg mb-6">
+        <section className="bg-[#1b1b29] p-4 rounded-lg shadow-lg mb-6">
           <h3 className="text-lg font-semibold mb-4">Filter Applicants</h3>
           <div className="grid grid-cols-4 gap-4">
             {/* Search by name */}
@@ -86,13 +87,13 @@ const JobApplicants = () => {
               type="text"
               placeholder="Search by name"
               onChange={(e) => setSearchFilter(e.target.value)}
-              className="p-2 border rounded"
+              className="p-2 border rounded bg-[#0f0f1c] text-white"
             />
             {/* Filter by position */}
             <select
               value={positionFilter}
               onChange={(e) => setPositionFilter(e.target.value)}
-              className="p-2 border rounded"
+              className="p-2 border rounded bg-[#0f0f1c] text-white"
             >
               <option value="all">All Positions</option>
               <option value="intern">Intern</option>
@@ -100,7 +101,7 @@ const JobApplicants = () => {
               <option value="senior">Senior</option>
             </select>
             {/* Filter by date */}
-            <select value={dateFilter} onChange={(e) => setDateFilter(e.target.value)} className="p-2 border rounded">
+            <select value={dateFilter} onChange={(e) => setDateFilter(e.target.value)} className="p-2 border rounded bg-[#0f0f1c] text-white">
               <option value="all">All Dates</option>
               <option value="last7days">Last 7 days</option>
               <option value="last30days">Last 30 days</option>
@@ -108,7 +109,7 @@ const JobApplicants = () => {
               <option value="lastyear">Last year</option>
             </select>
             {/* Filter by grade */}
-            <select value={gradeFilter} onChange={(e) => setGradeFilter(e.target.value)} className="p-2 border rounded">
+            <select value={gradeFilter} onChange={(e) => setGradeFilter(e.target.value)} className="p-2 border rounded bg-[#0f0f1c] text-white">
               <option value="all">All Grades</option>
               <option value="A">A</option>
               <option value="B">B</option>
@@ -119,17 +120,17 @@ const JobApplicants = () => {
           </div>
         </section>
         {/* Applicants */}
-        <section data-aos="fade-right" className="bg-center p-8 rounded-lg shadow-lg">
-          <div className="flex justify-between items-center -mt-[2rem] ">
+        <section data-aos="fade-right" className="bg-[#363650] p-8 rounded-lg shadow-lg">
+          <div className="flex justify-between items-center">
             <h2 className="text-3xl font-bold text-white">Applicants</h2>
           </div>
 
-          <div className="grid grid-cols-3 gap-4 space-y-6">
+          <div className="grid grid-cols-3 gap-4 space-y-6 mt-4">
             {filteredApplicants &&
               filteredApplicants.map((applicant) => (
                 <div
                   key={applicant.id}
-                  className="bg-gray-50 p-6 rounded-lg flex items-center hover:shadow-xl transition-shadow duration-300"
+                  className="bg-[#0f0f1c] p-6 rounded-lg flex items-center hover:shadow-lg transition-shadow duration-300"
                 >
                   <Avatar
                     src={applicant.profile_picture_url}
@@ -140,10 +141,10 @@ const JobApplicants = () => {
                   />
                   <div>
                     <h3 className="font-semibold text-lg">{applicant.name}</h3>
-                    <p className="text-sm text-gray-600">{formatDate(applicant.applied_at)}</p>
-                    <p className="text-sm text-gray-600">Position: {applicant.position}</p>
-                    <p className="text-sm text-gray-600">Grade: {applicant.grade}</p>
-                    <Link href={`/applicant/${applicant.id}`} className="text-blue-600 hover:underline">
+                    <p className="text-sm text-gray-400">{formatDate(applicant.applied_at)}</p>
+                    <p className="text-sm text-gray-400">Position: {applicant.position}</p>
+                    <p className="text-sm text-gray-400">Grade: {applicant.grade}</p>
+                    <Link href={`/applicant/${applicant.id}`} className="text-purple-500 font-bold hover:underline">
                       View Details
                     </Link>
                   </div>

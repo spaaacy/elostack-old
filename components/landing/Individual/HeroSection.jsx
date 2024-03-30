@@ -7,10 +7,11 @@ import { FaRocket } from "react-icons/fa";
 
 const gradientTextStyle = css`
   display: inline-block;
-  background: linear-gradient(to right, #6f2da8, #7266f2); // Darker gradient from blue to purple
+  background: linear-gradient(to right, #6f2da8, #7266f2);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 `;
+
 const containerStyle = css`
   position: relative;
   background: radial-gradient(
@@ -18,33 +19,27 @@ const containerStyle = css`
     #0f172a,
     #1a1b2f 60%,
     #0f0f1c 80%
-  ); // Darker purple in gradient
-  color: #fff; // Lighter than white for a darker look
+  );
+  color: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 120vh;
-  width: 100vw;
+  min-height: 100vh;
+  width: 100%;
   padding: 0 20px;
   text-align: center;
-
-  &::after {
-    content: "";
-    display: block;
-    height: 10vh;
-  }
 `;
 
 const buttonStyle = css`
-  background-color: #6f2da8; // Darker purple
+  background-color: #6f2da8;
   color: #fff;
   padding: 20px 30px;
   border-radius: 5px;
   border: none;
   font-weight: bold;
   margin-top: 0.5rem;
-  font-size: 1.2rem; // Increased font size
+  font-size: 1.2rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
   animation: jump 5s infinite;
@@ -62,26 +57,24 @@ const buttonStyle = css`
 
 export default function Home() {
   return (
-    <div css={containerStyle}>
+    <>
       <Head>
         <title>EloStack</title>
       </Head>
-
-      <div>
-        <h1 className="text-white text-5xl md:text-8xl mb-5 -mt-[50px]">
-          <FaRocket className="inline-block" color="#6f2da8" /> Your Software Engineering
-          <br />
+      <main css={containerStyle}>
+        <h1 className="text-white text-5xl md:text-8xl mb-5">
+          <FaRocket className="inline-block" color="#6f2da8" aria-hidden="true" />
+          Your Software Engineering <br />
           <span css={gradientTextStyle}>Job Connection Platform</span>
         </h1>
-        <h2 className="text-white text-xl md:text-2xl mb-[40px]">
-          Don't wait for employers to interview you.
-          <br />
+        <h2 className="text-white text-xl md:text-2xl mb-10">
+          Don't wait for employers to interview you. <br />
           Let your mock interview do the talking.
         </h2>
         <Link href={"/dashboard"}>
-          <button css={buttonStyle}> Get Started with EloStack</button>
+          <button css={buttonStyle}>Get Started with EloStack</button>
         </Link>
-      </div>
-    </div>
+      </main>
+    </>
   );
 }

@@ -6,8 +6,10 @@ import { UserContext } from "@/context/UserContext";
 import { useEffect, useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import Head from "next/head";
-import MarkdownInput from "@/components/admin/MarkdownInput";
 import Footer from "@/components/common/Footer";
+import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
 
 const Page = () => {
   const { session, verifyLogin } = useContext(UserContext);
@@ -173,7 +175,7 @@ const Page = () => {
               <div>
                 <label className="block font-semibold">Feedback</label>
                 <textarea
-                  rows={10}
+                  rows={20}
                   {...registerInterview("feedback", { required: true })}
                   className="w-full mt-1 p-2 border rounded bg-[#0f0f1c] text-white"
                 />
@@ -181,7 +183,18 @@ const Page = () => {
               </div>
               <div>
                 <label className="block font-semibold">Preview</label>
-                <MarkdownInput text={feedback} />
+                <Markdown
+                  components={{
+                    a(props) {
+                      const { node, ...rest } = props;
+                      return <a className="text-blue-600 dark:text-blue-500 hover:underline" {...rest} />;
+                    },
+                  }}
+                  className="markdown"
+                  remarkPlugins={[remarkGfm]}
+                >
+                  {feedback}
+                </Markdown>
               </div>
               <div>
                 <label className="block font-semibold">YouTube Video ID</label>

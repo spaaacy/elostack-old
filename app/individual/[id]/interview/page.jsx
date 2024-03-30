@@ -6,8 +6,9 @@ import { useParams, useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
-import MarkdownInput from "@/components/admin/MarkdownInput";
 import Footer from "@/components/common/Footer";
+import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 const Page = () => {
   const { id } = useParams();
@@ -80,7 +81,18 @@ const Page = () => {
               <div className="mb-8">
                 <h2 className="text-4xl font-semibold mb-6 text-purple-500 text-center">Score Card</h2>
                 <div className="bg-gray-800 hover:shadow-xl rounded-lg p-6 shadow-inner">
-                  <MarkdownInput text={individual.interview.feedback} />
+                  <Markdown
+                    components={{
+                      a(props) {
+                        const { node, ...rest } = props;
+                        return <a className="text-blue-600 dark:text-blue-500 hover:underline" {...rest} />;
+                      },
+                    }}
+                    className="markdown"
+                    remarkPlugins={[remarkGfm]}
+                  >
+                    {individual.interview.feedback}
+                  </Markdown>
                 </div>
               </div>
             </div>

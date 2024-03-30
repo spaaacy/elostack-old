@@ -23,6 +23,7 @@ export async function POST(req, res) {
     );
 
     const { tokens } = await oauth2Client.getToken(code);
+    console.log(tokens);
     const { error } = await supabase
       .from("user")
       .update({

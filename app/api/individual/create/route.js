@@ -10,11 +10,10 @@ export async function POST(req, res) {
     const auth = await supabase.auth.setSession({ access_token, refresh_token });
     if (auth.error) throw auth.error;
 
-    const user = await req.json();
-    console.log(user);
-    const { error } = await supabase.from("user").insert(user);
+    const individual = await req.json();
+    const { error } = await supabase.from("individual").upsert(individual);
     if (error) throw error;
-    return NextResponse.json({ message: "User created successfully!" }, { status: 201 });
+    return NextResponse.json({ message: "Individual created successfully!" }, { status: 201 });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error }, { status: 500 });

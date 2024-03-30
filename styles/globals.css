@@ -76,6 +76,10 @@
 }
 
 @layer utilities {
+  .markdown > * {
+    all: revert;
+  }
+
   .card-gradient {
     background: linear-gradient(135deg, #c56cd6 0%, #4d1f75 100%);
     /* background: linear-gradient(135deg, #7266f2 0%, #4d1f75 100%); */

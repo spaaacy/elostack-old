@@ -139,7 +139,7 @@ const Page = () => {
           <div className="grid grid-cols-3 gap-4 mt-4">
             {filteredJobs.map((job) => (
               <Link
-                href={`/job-listing/${job.id}`}
+                href={`/job-listing/${job.id}${job.custom ? `/?c=true` : ""}`}
                 key={job.id}
                 className="bg-gray-600 p-6 rounded-lg flex flex-col justify-between items-start hover:shadow-lg transition-shadow duration-300"
               >

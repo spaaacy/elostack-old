@@ -11,6 +11,7 @@ import { UserContext } from "@/context/UserContext";
 import Loader from "@/components/common/Loader";
 import Image from "next/image";
 import Footer from "@/components/common/Footer";
+import { supabase } from "@/utils/supabase";
 const Page = () => {
   const { session } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
@@ -32,7 +33,6 @@ const Page = () => {
       <>
         <NavBar />
         <Loader />
-        
       </>
     );
 
@@ -73,7 +73,6 @@ const Page = () => {
   };
 
   const onSubmit = async (values) => {
-    const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
     const { data, error } = await supabase.auth.signInWithPassword({
       email: values.email,
       password: values.password,
@@ -85,14 +84,6 @@ const Page = () => {
     } else {
       console.log(error);
     }
-  };
-
-  const signInWithGoogle = async () => {
-    const { error } = await supabase.auth.signIn({
-      provider: "google",
-    });
-
-    if (error) console.log(error);
   };
 
   return (
@@ -167,7 +158,6 @@ const Page = () => {
                     >
                       Sign In
                     </button>
-                    
                   </div>
                 </form>
               </div>
@@ -185,13 +175,4 @@ export default Page;
   /* <Link href="/forgot-password" className="text-blue-500 hover:text-blue-800 text-sm">
                         Forgot Password?
                       </Link> */
-}
-{
-  /* <button
-                    type="button"
-                    className="flex items-center justify-start shadow-lg bg-gray-100 mb-6 hover:bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded focus:outline-none focus:shadow-outline w-full"
-                  >
-                    <Image src="/google.svg" alt="Google logo" width={23} height={23} className="ml-4" />
-                    <span className="ml-4">Sign In with Google</span>
-                  </button> */
 }

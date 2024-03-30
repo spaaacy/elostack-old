@@ -12,9 +12,9 @@ export async function POST(req, res) {
 
     const listing = await req.json();
     console.log(listing);
-    const { error } = await supabase.from("job_listing").upsert(listing);
+    const { error } = await supabase.from("job_listing").update(listing).eq("id", listing.id);
     if (error) throw error;
-    return NextResponse.json({ message: "Job listed successfully!" }, { status: 201 });
+    return NextResponse.json({ message: "Job listed successfully!" }, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error }, { status: 500 });

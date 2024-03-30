@@ -12,4 +12,3 @@ const nextConfig = {
 };
 
 export default nextConfig;
-// https://behfmqoilcgpyoobcuck.supabase.co/storage/v1/object/public/profile-pictures/ba8a4ccd-8435-4b8b-ba4e-0e966aff085b/default

@@ -11,6 +11,7 @@ import formatDate from "@/utils/formatDate";
 import toast, { Toaster } from "react-hot-toast";
 import { v4 as uuidv4 } from "uuid";
 import Footer from "../common/Footer";
+import { loadStripe } from "@stripe/stripe-js";
 
 const IndividualDashboard = () => {
   const { session } = useContext(UserContext);
@@ -128,36 +129,37 @@ const IndividualDashboard = () => {
   const handlePayment = async () => {
     if (!profileData.user_id) return;
     try {
-      // const response = await fetch("/api/checkout", {
-      //   method: "POST",
-      //   body: JSON.stringify({ user_id: profileData.user_id }),
-      // });
-      // const result = await response.json();
-      // if (response.status !== 200) {
-      //   throw Error("Something went wrong");
-      // }
-      // const stripe = await loadStripe(
-      //   process.env.NODE_ENV === "production"
-      //     ? process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_LIVE_KEY
-      //     : process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_TEST_KEY
-      // );
-      // if (!stripe) {
-      //   throw Error("Something went wrong");
-      // }
-      // await stripe.redirectToCheckout({ sessionId: result.session.id });
-
-      const response = await fetch("/api/purchase/create", {
+      const response = await fetch("/api/checkout", {
         method: "POST",
-        body: JSON.stringify({
-          user_id: profileData.user_id,
-          payment_intent_id: uuidv4(),
-        }),
+        body: JSON.stringify({ user_id: profileData.user_id }),
       });
-      if (response.status === 201) {
-        router.push("https://calendly.com/elostack/mock-interview");
+      const result = await response.json();
+      if (response.status !== 200) {
+        throw Error("Something went wrong");
       }
+      const stripe = await loadStripe(
+        process.env.NODE_ENV === "production"
+          ? process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_LIVE_KEY
+          : process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_TEST_KEY
+      );
+      if (!stripe) {
+        throw Error("Something went wrong");
+      }
+      console.log(result);
+      await stripe.redirectToCheckout({ sessionId: result.session.id });
+      // Free purchase
+      // const response = await fetch("/api/purchase/create", {
+      //   method: "POST",
+      //   body: JSON.stringify({
+      //     user_id: profileData.user_id,
+      //     payment_intent_id: uuidv4(),
+      //   }),
+      // });
+      // if (response.status === 201) {
+      //   router.push("https://calendly.com/elostack/mock-interview");
+      // }
     } catch (error) {
-      toast.error(error);
+      console.error(error);
     }
   };
 

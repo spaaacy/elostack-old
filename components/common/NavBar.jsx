@@ -108,7 +108,7 @@ const NavBar = () => {
           </>
         )}
       </div>
-      <div className={`hidden lg:flex lg:items-center lg:justify-center lg:flex-grow ${session?.data.session ? "mr-10" : "lg:ml-40"}`}>
+      <div className={`hidden lg:flex lg:items-center lg:justify-center lg:flex-grow ${session?.data.session ? "mr-20" : "lg:ml-32"}`}>
   <div className="nav-center space-x-8">
     {user?.business || pathname === "/business/landing" ? (
       <>

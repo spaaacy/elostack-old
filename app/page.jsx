@@ -25,7 +25,7 @@ const Home = () => {
         {/* <PartneredCompanies /> */}
         <Benefits />
         <Discount />
-        <HowItWorks />
+        {/* <HowItWorks /> */}
         <FAQ />
       </main>
       <Footer />

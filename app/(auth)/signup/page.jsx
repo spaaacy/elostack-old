@@ -184,7 +184,7 @@ const SignUpPage = () => {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: `${window.location.origin}/signup?complete-registration=true`,
+          redirectTo: `${window.location.origin}/dashboard`,
           queryParams: {
             access_type: "offline",
             prompt: "consent",
@@ -390,28 +390,9 @@ const SignUpPage = () => {
                       className="mt-4 gap-4 flex items-center justify-center shadow-lg bg-gray-200 mb-6 hover:bg-gray-300 text-gray-700 font-bold py-3 px-4 rounded focus:outline-none focus:shadow-outline"
                     >
                       <Image src="/google.svg" alt="Google logo" width={23} height={23} />
-                      <span>Sign up with Google</span>
-                    </button>
-                    <div
-                      id="g_id_onload"
-                      data-client_id="<client ID>"
-                      data-context="signin"
-                      data-ux_mode="popup"
-                      data-callback="handleSignInWithGoogle"
-                      data-nonce=""
-                      data-auto_select="true"
-                      data-itp_support="true"
-                    ></div>
+                      <span>Continue with Google</span>
 
-                    <div
-                      class="g_id_signin"
-                      data-type="standard"
-                      data-shape="pill"
-                      data-theme="outline"
-                      data-text="signin_with"
-                      data-size="large"
-                      data-logo_alignment="left"
-                    ></div>
+                    </button>
                   </form>
                 </div>
               )}

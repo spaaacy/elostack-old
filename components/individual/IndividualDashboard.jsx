@@ -13,7 +13,7 @@ import { v4 as uuidv4 } from "uuid";
 import Footer from "../common/Footer";
 import { loadStripe } from "@stripe/stripe-js";
 
-const IndividualDashboard = () => {
+const IndividualDashboard = ({ user }) => {
   const { session } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
   const [applications, setApplications] = useState();
@@ -31,7 +31,7 @@ const IndividualDashboard = () => {
       } else if (searchParams.has("cancelled")) {
         toast.error("Purchase was unsuccessful!");
       } else if (searchParams.has("code") && searchParams.has("scope")) {
-        handleOAuth();
+        handleEmailGranted();
       }
 
       fetchIndividual();
@@ -39,7 +39,7 @@ const IndividualDashboard = () => {
     }
   }, [session]);
 
-  const handleOAuth = async () => {
+  const handleEmailGranted = async () => {
     const userId = session.data.session?.user.id;
     if (!session) return;
     const response = await fetch("/api/oauth/save-permission", {
@@ -163,6 +163,21 @@ const IndividualDashboard = () => {
     }
   };
 
+  const requestEmailPermissions = async () => {
+    const userId = session.data.session?.user.id;
+    if (!userId) return;
+    const response = await fetch("/api/oauth/request-permission", {
+      method: "POST",
+      headers: {
+        "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
+      },
+    });
+    if (response.status === 200) {
+      const { url } = await response.json();
+      router.push(url);
+    }
+  };
+
   if (loading) {
     return (
       <>
@@ -217,6 +232,14 @@ const IndividualDashboard = () => {
                 >
                   Schedule Interview
                 </Link>
+              )}
+              {user.admin && (
+                <button
+                  onClick={requestEmailPermissions}
+                  className="text-left inline-block bg-purpleprimary text-white px-6 py-3 rounded hover:bg-purple-700 transition duration-150 ease-in-out"
+                >
+                  Grant Permissions
+                </button>
               )}
             </div>
           </div>

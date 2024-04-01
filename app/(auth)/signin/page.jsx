@@ -86,6 +86,25 @@ const Page = () => {
     }
   };
 
+  const signInWithGoogle = async () => {
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: `${window.location.origin}/dashboard`,
+          queryParams: {
+            access_type: "offline",
+            prompt: "consent",
+          },
+        },
+      });
+
+      if (error) throw error;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <main className="flex flex-col min-h-screen text-white w-full bg-gradient-to-b from-[#0f0f1c] via-[#1b1b29] to-[#2e2536]">
       <NavBar />
@@ -159,6 +178,14 @@ const Page = () => {
                       Sign In
                     </button>
                   </div>
+                  <button
+                    type="button"
+                    onClick={signInWithGoogle}
+                    className="mt-4 gap-4 flex items-center justify-center shadow-lg bg-gray-200 mb-6 hover:bg-gray-300 text-gray-700 font-bold py-3 px-4 rounded focus:outline-none focus:shadow-outline"
+                  >
+                    <Image src="/google.svg" alt="Google logo" width={23} height={23} />
+                    <span>Continue with Google</span>
+                  </button>
                 </form>
               </div>
             </section>
@@ -171,8 +198,3 @@ const Page = () => {
 };
 
 export default Page;
-{
-  /* <Link href="/forgot-password" className="text-blue-500 hover:text-blue-800 text-sm">
-                        Forgot Password?
-                      </Link> */
-}

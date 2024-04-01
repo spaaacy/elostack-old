@@ -92,37 +92,6 @@ const Page = () => {
     }
   };
 
-  const handleEmailApply = async () => {
-    const userId = session.data.session?.user.id;
-    if (!userId || !user) return;
-    if (user.gmail_refresh_token && user.gmail_access_token) {
-      const response = await fetch("/api/application/send-email", {
-        method: "POST",
-        headers: {
-          "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
-        },
-        body: JSON.stringify({ user_id: userId, email: session.data.session.user.email }),
-      });
-      if (response.status === 201) {
-        console.log("Application made successfully!");
-      } else {
-        console.error("Application unsuccessful!");
-      }
-      window.location.reload();
-    } else {
-      const response = await fetch("/api/oauth/request-permission", {
-        method: "POST",
-        headers: {
-          "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
-        },
-      });
-      if (response.status === 200) {
-        const { url } = await response.json();
-        router.push(url);
-      }
-    }
-  };
-
   return (
     <main className="flex flex-col min-h-screen text-white w-full bg-gradient-to-b from-[#0f0f1c] via-[#1b1b29] to-[#251b30]">
       <NavBar />
@@ -166,7 +135,7 @@ const Page = () => {
                   user &&
                   !user?.business && (
                     <button
-                      onClick={searchParams.has("c") ? handleEmailApply : handleApply}
+                      onClick={handleApply}
                       className="bg-purpleprimary text-white px-6 py-3 rounded hover:bg-purple-700 transition duration-150 ease-in-out"
                     >
                       Apply

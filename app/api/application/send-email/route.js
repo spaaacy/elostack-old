@@ -50,11 +50,11 @@ export async function POST(req, res) {
 
     results = await supabase.from("subscriber").select("*, user(*, individual(*))");
 
-    // FIXME: This runs asynchronously
-    results.data.forEach(async (user) => {
+    for (const user of results.data) {
+      console.log("Starting for loop...");
       try {
         // Check if user's subscription is active
-        if (!user.active) return;
+        if (!user.active) continue;
         // Check if user's access & refresh token are available
         if (!user.refresh_token || !user.access_token) throw Error("Refresh token and/or access token not found!");
 
@@ -95,7 +95,16 @@ export async function POST(req, res) {
             continue;
           }
 
-          // TODO: Check if the user aleady email the receiver
+          // Check if the user aleady email the receiver
+          results = await supabase
+            .from("application")
+            .select("*", { count: "exact", head: true })
+            .match({ user_id: user.user_id, receiver_email: chosenLead.email });
+          if (results.error) throw results.error;
+          if (results.count > 0) {
+            console.log("Lead has already been previously contacted");
+            continue;
+          }
 
           // Ensure lead matches user's preferences
           if (
@@ -148,7 +157,8 @@ export async function POST(req, res) {
           } else {
             // Increment the send count if the record does exist
             console.log("Incrementing receiver send count.");
-            // TODO: Use rpc for incrementing send count
+            results = await supabase.rpc("increment_receiver_send_count", { receiver_email: chosenLead.email });
+            if (results.error) throw results.error;
           }
 
           const formattedTemplate = user.template
@@ -188,7 +198,7 @@ export async function POST(req, res) {
       } catch (error) {
         console.error(error);
       }
-    });
+    }
 
     return NextResponse.json({ message: "Applications made successfully!" }, { status: 201 });
   } catch (error) {

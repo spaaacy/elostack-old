@@ -88,10 +88,10 @@ const NavBar = () => {
         ) : (
           <>
             <Link
-              href="/job-listing"
+              href="/emailing"
               className="block text-gray-300 hover:text-white hover:bg-gray-800 px-2 py-1 rounded-sm text-sm font-medium"
             >
-              Job Listings
+              emailing
             </Link>
             <Link
               href="/dashboard/applications"
@@ -134,10 +134,10 @@ const NavBar = () => {
     ) : (
       <>
         <Link
-          href="/job-listing"
+          href="/emailing"
           className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
         >
-          Job Listings
+          Emailing
         </Link>
         <Link
           href="/dashboard/applications"

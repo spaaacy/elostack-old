@@ -32,6 +32,11 @@ const getLeads = (url) => {
 };
 
 export async function POST(req, res) {
+  // Ensures only Vercel server can call this endpoint
+  if (req.headers.get("Authorization") !== `Bearer ${process.env.CRON_SECRET}`) {
+    return res.status(401).end("Unauthorized");
+  }
+
   try {
     // Authentication
     const auth = await supabase.auth.signInWithPassword({

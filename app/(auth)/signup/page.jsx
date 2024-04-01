@@ -391,6 +391,7 @@ const SignUpPage = () => {
                     >
                       <Image src="/google.svg" alt="Google logo" width={23} height={23} />
                       <span>Continue with Google</span>
+
                     </button>
                   </form>
                 </div>

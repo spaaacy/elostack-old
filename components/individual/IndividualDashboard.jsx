@@ -227,7 +227,7 @@ const IndividualDashboard = ({ user }) => {
               {bookInterview && (
                 <Link
                   target="_blank"
-                  href={"https://calendly.com/elostack/mock-interview"}
+                  href={"https://calendly.com/elostack/paid-interview"}
                   className="text-left inline-block bg-purpleprimary text-white px-6 py-3 rounded hover:bg-purple-700 transition duration-150 ease-in-out"
                 >
                   Schedule Interview

@@ -50,8 +50,8 @@ export async function POST(req, res) {
 
     results = await supabase.from("subscriber").select("*, user(*, individual(*))");
 
+    console.log("Beginning email loop...");
     for (const user of results.data) {
-      console.log("Beginning email loop...");
       try {
         // Check if user's subscription is active
         if (!user.active) continue;
@@ -197,12 +197,11 @@ export async function POST(req, res) {
             .insert({ user_id: user.user_id, receiver_email: chosenLead.email });
           if (error) throw error;
         }
-
-        console.log("Emails sent successfully!");
       } catch (error) {
         console.error(error);
       }
     }
+    console.log("Emails sent successfully!");
 
     return NextResponse.json({ message: "Applications made successfully!" }, { status: 200 });
   } catch (error) {

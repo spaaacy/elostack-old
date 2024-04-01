@@ -13,7 +13,7 @@ import { v4 as uuidv4 } from "uuid";
 import Footer from "../common/Footer";
 import { loadStripe } from "@stripe/stripe-js";
 
-const IndividualDashboard = () => {
+const IndividualDashboard = ({ user }) => {
   const { session } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
   const [applications, setApplications] = useState();
@@ -233,12 +233,14 @@ const IndividualDashboard = () => {
                   Schedule Interview
                 </Link>
               )}
-              <button
-                onClick={requestEmailPermissions}
-                className="text-left inline-block bg-purpleprimary text-white px-6 py-3 rounded hover:bg-purple-700 transition duration-150 ease-in-out"
-              >
-                Grant Permissions
-              </button>
+              {user.admin && (
+                <button
+                  onClick={requestEmailPermissions}
+                  className="text-left inline-block bg-purpleprimary text-white px-6 py-3 rounded hover:bg-purple-700 transition duration-150 ease-in-out"
+                >
+                  Grant Permissions
+                </button>
+              )}
             </div>
           </div>
 

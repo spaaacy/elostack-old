@@ -45,7 +45,7 @@ const Page = () => {
     <main className="flex flex-1 flex-col">
       <NavBar />
       {user ? (
-        <div className="flex flex-1">{user.business ? <BusinessDashboard /> : <IndividualDashboard />}</div>
+        <div className="flex flex-1">{user.business ? <BusinessDashboard /> : <IndividualDashboard user={user} />}</div>
       ) : (
         <Loader />
       )}

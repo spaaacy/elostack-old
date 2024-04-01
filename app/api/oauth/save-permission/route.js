@@ -24,7 +24,7 @@ export async function POST(req, res) {
 
     const { tokens } = await oauth2Client.getToken(code);
     console.log(tokens);
-    const { error } = await supabase.from("subscribed_user").insert({
+    const { error } = await supabase.from("subscriber").insert({
       user_id,
       refresh_token: tokens.refresh_token,
       access_token: tokens.access_token,

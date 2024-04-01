@@ -51,7 +51,7 @@ export async function POST(req, res) {
     results = await supabase.from("subscriber").select("*, user(*, individual(*))");
 
     for (const user of results.data) {
-      console.log("Starting for loop...");
+      console.log("Beginning email loop...");
       try {
         // Check if user's subscription is active
         if (!user.active) continue;
@@ -88,7 +88,7 @@ export async function POST(req, res) {
           chosenLead = leads[index];
 
           // Check how many times the lead was used already by others
-          results = await supabase.from("receiver").select("send_count").eq("email", chosenLead.email).single();
+          results = await supabase.from("receiver").select("send_count").eq("email", chosenLead.email);
           if (results.error) throw results.error;
           if (results.data.send_count >= maxSendsPerReceiver) {
             console.log("Max sends already met for this lead");
@@ -181,13 +181,13 @@ export async function POST(req, res) {
             },
           });
 
-          // const info = await transporter.sendMail({
-          //   from: user.user.email,
-          //   to: chosenLead.email,
-          //   subject: "Interest in job opening",
-          //   text: formattedTemplate,
-          // });
-          // console.log(`Email ${info.messageId} sent!`);
+          const info = await transporter.sendMail({
+            from: user.user.email,
+            to: chosenLead.email,
+            subject: "Interest in job opening",
+            text: formattedTemplate,
+          });
+          console.log(`Email ${info.messageId} sent!`);
 
           // Create a record of the application if email succeeds
           const { error } = await supabase
@@ -195,12 +195,14 @@ export async function POST(req, res) {
             .insert({ user_id: user.user_id, receiver_email: chosenLead.email });
           if (error) throw error;
         }
+
+        console.log("Emails sent successfully!");
       } catch (error) {
         console.error(error);
       }
     }
 
-    return NextResponse.json({ message: "Applications made successfully!" }, { status: 201 });
+    return NextResponse.json({ message: "Applications made successfully!" }, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error }, { status: 500 });

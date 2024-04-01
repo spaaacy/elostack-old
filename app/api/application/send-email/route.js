@@ -166,6 +166,8 @@ export async function POST(req, res) {
             .replace(/{{RECEIVER_NAME}}/g, chosenLead.name)
             .replace(/{{COMPANY}}/g, chosenLead.organization_name);
 
+          const formattedSubject = user.subject.replace(/{{COMPANY}}/g, chosenLead.organization_name);
+
           const transporter = nodeMailer.createTransport({
             service: "Gmail",
             host: "smtp.gmail.com",
@@ -184,7 +186,7 @@ export async function POST(req, res) {
           const info = await transporter.sendMail({
             from: user.user.email,
             to: chosenLead.email,
-            subject: "Interest in job opening",
+            subject: formattedSubject,
             text: formattedTemplate,
           });
           console.log(`Email ${info.messageId} sent!`);

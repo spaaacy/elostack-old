@@ -1,9 +1,10 @@
 "use client";
 /** @jsxImportSource @emotion/react */
+
 import { css } from "@emotion/react";
 import Head from "next/head";
 import Link from "next/link";
-import { FaRocket } from "react-icons/fa";
+import { FaPaperPlane } from "react-icons/fa";
 
 const gradientTextStyle = css`
   display: inline-block;
@@ -62,17 +63,17 @@ export default function Home() {
         <title>EloStack</title>
       </Head>
       <main css={containerStyle}>
-        <h1 className="text-white text-5xl md:text-8xl mb-5">
-          <FaRocket className="inline-block" color="#6f2da8" aria-hidden="true" />
-          Your Software Engineering <br />
-          <span css={gradientTextStyle}>Job Connection Platform</span>
+        <h1 className="text-white text-5xl md:text-7xl mb-5">
+          <FaPaperPlane className="inline-block mr-4" color="#6f2da8" aria-hidden="true" />
+          Land Your Dream Job with <br />
+          <span css={gradientTextStyle}>Targeted Email Campaigns</span>
         </h1>
         <h2 className="text-white text-xl md:text-2xl mb-10">
-          Don't wait for employers to interview you. <br />
-          Let your mock interview do the talking.
+          Reach out directly to your favorite companies and get noticed by top recruiters<br />
+          boosting your chances of getting hired with EloStack.
         </h2>
         <Link href={"/dashboard"}>
-          <button css={buttonStyle}>Get Started with EloStack</button>
+          <button css={buttonStyle}>Start Your Job Search Now</button>
         </Link>
       </main>
     </>

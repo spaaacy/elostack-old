@@ -32,3 +32,6 @@ next-env.d.ts
 # enviroment variables
 .env
 .vercel
+
+#supabase
+supabase/functions/.env

@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { FaLightbulb, FaRocket, FaHandsHelping } from "react-icons/fa"; // Icons for steps
+import { FaEnvelope, FaCog, FaChartLine, FaSmile } from "react-icons/fa"; // Icons for steps
 
 const HowItWorks = () => {
   useEffect(() => {
@@ -16,58 +16,68 @@ const HowItWorks = () => {
 
   const steps = [
     {
-      title: "Create a Request",
+      title: "Create Email Templates",
       description:
-        "Start by creating a request for us to conduct a technical interview and booking any of the available opening.",
+        "Easily create professional and engaging email templates using our intuitive drag-and-drop editor.",
       aos: "fade-up-right",
+      icon: FaEnvelope,
     },
     {
-      title: "Conduct Mock Interview",
+      title: "Set Up Automation Rules",
       description:
-        "You will be connected with our talented engineers who will and carry out an unbiased mock interview as per your specifications, assessing your skill.",
+        "Define triggers and actions to automate your email campaigns based on subscriber behavior and preferences.",
       aos: "fade-up",
       delay: 100,
+      icon: FaCog,
     },
     {
-      title: "Connect With Companies",
+      title: "Monitor Campaign Performance",
       description:
-        "You will have access to the entire recording and breakdown of the mock interview with feedback and an overall grade. Using this, you can apply to jobs and companies can view your interview.",
+        "Track and analyze the performance of your email campaigns with detailed reports and insights.",
       aos: "fade-up-left",
       delay: 200,
+      icon: FaChartLine,
     },
-    // Add more steps as needed
+    {
+      title: "Engage Your Audience",
+      description:
+        "Build stronger relationships with your subscribers through personalized and targeted email communications.",
+      aos: "fade-up-right",
+      delay: 300,
+      icon: FaSmile,
+    },
   ];
 
   return (
-    <section className="bg-[#0f0f1c] w-screen body-font">
-      <div className="container px-4 sm:px-6 lg:px-8 mt-0 mb-[8rem] mx-auto">
+    <section className="bg-gradient-to-b from-gray-900 to-black py-20">
+      <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
         <div className="text-center mb-16 md:mb-20">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold title-font mb-4 text-white" data-aos="zoom-in">
-            How EloStack Works
-          </h1>
-          <p
-            className="leading-relaxed xl:w-2/4 text-white text-base sm:text-lg md:text-xl lg:w-3/4 mx-auto"
+          <h1
+            className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-4 text-white"
             data-aos="zoom-in"
           >
-            A step-by-step guide to our process, designed to ensure your success.
+            How Our Email Automation Works
+          </h1>
+          <p
+            className="text-xl sm:text-2xl text-gray-300 max-w-3xl mx-auto"
+            data-aos="zoom-in"
+          >
+            Streamline your email marketing efforts with our powerful automation tools.
           </p>
         </div>
-        <div className="flex flex-wrap -m-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {steps.map((step, index) => (
-            <div className="p-4 md:w-1/3" key={index} data-aos={step.aos} data-aos-delay={step.delay}>
-              <div className="h-full card-gradient rounded-lg overflow-hidden shadow-lg transition-all duration-200 ease-in-out transform hover:-translate-y-2 hover:scale-105">
-                <div className="p-4 sm:p-6">
-                  <div className="flex items-center space-x-3 mb-2 sm:mb-4">
-                    <h2 className="rounded-full px-2 sm:px-3 py-1 sm:py-2 text-xs sm:text-md bg-white font-[900] text-black">
-                      {index + 1}
-                    </h2>
-                    <h2 className="text-lg sm:text-xl font-bold text-white">{step.title}</h2>
-                  </div>
-                  <p className="leading-relaxed mb-3 font-semibold text-sm sm:text-base text-white">
-                    {step.description}
-                  </p>
-                </div>
+            <div
+              key={index}
+              data-aos={step.aos}
+              data-aos-delay={step.delay}
+              className="bg-white rounded-lg shadow-xl p-6 transition-all duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl"
+            >
+              <div className="flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white mb-6">
+                <step.icon className="text-3xl" />
               </div>
+              <h3 className="text-2xl font-bold mb-4">{step.title}</h3>
+              <p className="text-gray-600">{step.description}</p>
             </div>
           ))}
         </div>

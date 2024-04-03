@@ -12,27 +12,29 @@ const FAQContext = createContext();
 const FAQProvider = ({ children }) => {
   const [faqs, setFaqs] = useState([
     {
-      question: "How can EloStack help me as a candidate?",
+      question: "What is email automation?",
       answer:
-        "EloStack provides a platform for you to showcase your skills to potential employers. We conduct technical mock interviews which are then accessible to companies looking for engineers, increasing your visibility and chances of getting hired.",
+        "Email automation is the process of sending targeted, personalized emails to your subscribers based on their behavior, preferences, and interactions with your website or brand.",
     },
     {
-      question: "What is EloStack exactly?",
+      question: "How can email automation benefit my business?",
       answer:
-        "EloStack is a job listing website dedicated to software engineers. All candidates on our site are pre-vetted using technical mock interviews, which are accessible to companies looking for engineers.",
+        "Email automation can help you nurture leads, increase customer engagement, drive sales, and save time by automating repetitive email tasks. It allows you to send the right message to the right person at the right time.",
     },
     {
-      question: "What if I am unsatisfied with the interview?",
+      question: "Do I need technical skills to use your email automation platform?",
       answer:
-        "We strive to provide a fair assessment of your skills. If you're unsatisfied with the interview, please contact our support team and we'll do our best to address your concerns.",
+        "No, our email automation platform is designed to be user-friendly and intuitive. You can easily create and manage email campaigns without any coding or technical expertise.",
     },
     {
-      question: "How much do you charge?",
-      answer: "An hour long mock interview is $30.",
+      question: "Can I integrate your platform with my existing tools and systems?",
+      answer:
+        "Yes, our platform integrates seamlessly with popular tools and systems such as CRM, e-commerce platforms, and analytics tools. This allows you to streamline your workflows and leverage data from various sources.",
     },
     {
-      question: "Can I choose the topics for my interviews?",
-      answer: "Yes. When scheduling an interview, you can specify the topics you'd like to be interviewed on.",
+      question: "How do you ensure the deliverability of automated emails?",
+      answer:
+        "We follow best practices for email deliverability, including maintaining a good sender reputation, using proper authentication protocols, and providing guidance on creating engaging and spam-free content.",
     },
   ]);
 

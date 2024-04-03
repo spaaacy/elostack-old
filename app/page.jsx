@@ -6,7 +6,7 @@ import FAQ from "@/components/landing/Individual/FAQ";
 import Benefits from "@/components/landing/Individual/Benefits";
 import HowItWorks from "@/components/landing/Individual/HowItWorks";
 import Discount from "@/components/landing/Individual/Discount";
-
+import PartneredCompanies from "@/components/landing/PartneredCompanies";
 const Home = () => {
   return (
     <>
@@ -22,10 +22,10 @@ const Home = () => {
 
       <main className="flex flex-col items-center">
         <HeroSection />
-        {/* <PartneredCompanies /> */}
+        <PartneredCompanies />
         <Benefits />
         <Discount />
-        {/* <HowItWorks /> */}
+        <HowItWorks />
         <FAQ />
       </main>
       <Footer />

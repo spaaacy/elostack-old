@@ -4,55 +4,71 @@ import NavBar from "@/components/common/NavBar";
 import Footer from "@/components/common/Footer";
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import { FaEdit, FaEye, FaEyeSlash, FaTrash } from "react-icons/fa";
 
 const mockCompanies = [
-  { id: 1, name: "Company 1", location: "Location 1", logo: "/logo.png" },
-  { id: 2, name: "Company 2", location: "Location 2", logo: "/logo.png" },
-  { id: 3, name: "Company 3", location: "Location 3", logo: "/logo.png" },
+  { id: 1, name: "Company 1", state: "State 1", city: "City 1", logo: "/logo.png" },
+  { id: 2, name: "Company 2", state: "State 2", city: "City 2", logo: "/logo.png" },
+  { id: 3, name: "Company 3", state: "State 1", city: "City 3", logo: "/logo.png" },
   // Add more mock companies as needed
 ];
 
-const mockLocations = ["Location 1", "Location 2", "Location 3"];
-
-const defaultTemplate = {
-  name: "Default Template",
-  subject: "[Your Subject]",
-  content: `Dear [Hiring Manager],
-
-[Introduction]
-
-[Body Paragraph 1]
-
-[Body Paragraph 2]
-
-[Closing]
-
-Best regards,
-[Your Name]`,
-};
+const mockStates = ["State 1", "State 2"];
+const mockCities = ["City 1", "City 2", "City 3"];
 
 const Page = () => {
   const [companies, setCompanies] = useState([]);
   const [selectedCompanies, setSelectedCompanies] = useState([]);
   const [emailCount, setEmailCount] = useState(1);
-  const [templates, setTemplates] = useState([defaultTemplate]);
-  const [showAddTemplateModal, setShowAddTemplateModal] = useState(false);
-  const [editingTemplate, setEditingTemplate] = useState(null);
-  const [newTemplateName, setNewTemplateName] = useState("");
-  const [newTemplateSubject, setNewTemplateSubject] = useState("");
-  const [newTemplateContent, setNewTemplateContent] = useState("");
-  const [companyTemplates, setCompanyTemplates] = useState({});
-  const [expandedTemplates, setExpandedTemplates] = useState([]);
+  const [template, setTemplate] = useState({
+    subject: "",
+    content: "",
+  });
+  const [coverLetter, setCoverLetter] = useState("");
+  const [states, setStates] = useState([]);
+  const [cities, setCities] = useState([]);
   const [filters, setFilters] = useState({
-    location: "",
+    state: "",
+    city: "",
     company: "",
   });
+  const [showPreview, setShowPreview] = useState(false);
 
+  const togglePreview = () => {
+    setShowPreview(!showPreview);
+  };
+
+  
   useEffect(() => {
     setCompanies(mockCompanies);
+    setStates(mockStates);
+    setCities(mockCities);
   }, []);
-
+  const renderEmailPreview = () => {
+    return (
+      <div className="bg-gray-800 text-white rounded-lg shadow-lg overflow-hidden">
+        <div className="bg-gray-700 p-4">
+          <div className="flex justify-between items-center mb-2">
+            <h2 className="text-xl font-bold">{template.subject}</h2>
+            <div className="flex items-center space-x-2">
+              <button className="bg-purple-600 hover:bg-purple-700 text-white rounded-md px-3 py-1 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                Reply
+              </button>
+              <button className="bg-purple-600 hover:bg-purple-700 text-white rounded-md px-3 py-1 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                Forward
+              </button>
+            </div>
+          </div>
+          <div className="flex items-center space-x-2 text-sm text-gray-400">
+            <span>To: Recipient &lt;recipient@example.com&gt;</span>
+            <span className="border-l border-gray-500 pl-2">
+              From: Sender &lt;sender@example.com&gt;
+            </span>
+          </div>
+        </div>
+        <div className="p-4 bg-gray-900" dangerouslySetInnerHTML={{ __html: template.content }}></div>
+      </div>
+    );
+  };
   const handleFilterChange = (e, filterName) => {
     setFilters({ ...filters, [filterName]: e.target.value });
   };
@@ -65,71 +81,25 @@ const Page = () => {
     }
   };
 
-  const handleTemplateChange = (companyId, templateName) => {
-    setCompanyTemplates({ ...companyTemplates, [companyId]: templateName });
-  };
-
-  const handleAddTemplate = () => {
-    if (newTemplateName && newTemplateSubject && newTemplateContent) {
-      setTemplates([
-        ...templates,
-        { name: newTemplateName, subject: newTemplateSubject, content: newTemplateContent },
-      ]);
-      setNewTemplateName("");
-      setNewTemplateSubject("");
-      setNewTemplateContent("");
-      setShowAddTemplateModal(false);
-    }
-  };
-
-  const handleDeleteTemplate = (templateName) => {
-    setTemplates(templates.filter((template) => template.name !== templateName));
-  };
-
-  const handleEditTemplate = (template) => {
-    setEditingTemplate(template);
-    setNewTemplateName(template.name);
-    setNewTemplateSubject(template.subject);
-    setNewTemplateContent(template.content);
-  };
-
-  const handleSaveTemplate = () => {
-    if (editingTemplate) {
-      setTemplates(
-        templates.map((template) =>
-          template.name === editingTemplate.name
-            ? { ...template, name: newTemplateName, subject: newTemplateSubject, content: newTemplateContent }
-            : template
-        )
-      );
-      setEditingTemplate(null);
-      setNewTemplateName("");
-      setNewTemplateSubject("");
-      setNewTemplateContent("");
-    }
+  const handleTemplateChange = (e, field) => {
+    setTemplate({ ...template, [field]: e.target.value });
   };
 
   const handleSubmit = () => {
     // Simulate sending emails
     console.log("Selected Companies:", selectedCompanies);
     console.log("Email Count:", emailCount);
-    console.log("Company Templates:", companyTemplates);
+    console.log("Template:", template);
+    console.log("Cover Letter:", coverLetter);
     alert("Emails sent successfully!");
-  };
-
-  const toggleTemplateExpansion = (templateName) => {
-    if (expandedTemplates.includes(templateName)) {
-      setExpandedTemplates(expandedTemplates.filter((name) => name !== templateName));
-    } else {
-      setExpandedTemplates([...expandedTemplates, templateName]);
-    }
   };
 
   let filteredCompanies = [];
   if (companies) {
     filteredCompanies = companies.filter(
       (company) =>
-        (filters.location ? company.location === filters.location : true) &&
+        (filters.state ? company.state === filters.state : true) &&
+        (filters.city ? company.city === filters.city : true) &&
         (filters.company ? company.name.toLowerCase().includes(filters.company.toLowerCase()) : true)
     );
   }
@@ -140,27 +110,45 @@ const Page = () => {
       <Head>
         <title>Email Service</title>
       </Head>
-      <main className="container mx-auto p-4 bg-[#1b1b29] rounded-lg shadow mt-16">
+      <main className="container mx-auto p-8 bg-[#1b1b29] rounded-lg shadow mt-16">
         <section className="p-5 border-b border-gray-700">
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-white">Email Service</h2>
+            <h2 className="text-3xl font-bold text-white">Email Service</h2>
           </div>
         </section>
-        <div className="flex justify-center items-center bg-[#1b1b29] text-black p-4 rounded-lg">
-          <div className="flex space-x-4">
-            {/* Location Filter */}
+        <div className="flex justify-center items-center bg-[#1b1b29] text-black p-6 rounded-lg mt-8">
+          <div className="flex flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-8">
+            {/* State Filter */}
             <div className="flex items-center space-x-2">
-              <label htmlFor="location" className="text-white">Location:</label>
+              <label htmlFor="state" className="text-white font-semibold">State:</label>
               <select
-                id="location"
-                value={filters.location}
-                onChange={(e) => handleFilterChange(e, "location")}
-                className="p-2 border rounded-lg bg-gray-600 text-white"
+                id="state"
+                value={filters.state}
+                onChange={(e) => handleFilterChange(e, "state")}
+                className="p-2 border rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
               >
-                <option value="">All Locations</option>
-                {mockLocations.map((location) => (
-                  <option key={location} value={location}>
-                    {location}
+                <option value="">All States</option>
+                {states.map((state) => (
+                  <option key={state} value={state}>
+                    {state}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* City Filter */}
+            <div className="flex items-center space-x-2">
+              <label htmlFor="city" className="text-white font-semibold">City:</label>
+              <select
+                id="city"
+                value={filters.city}
+                onChange={(e) => handleFilterChange(e, "city")}
+                className="p-2 border rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+              >
+                <option value="">All Cities</option>
+                {cities.map((city) => (
+                  <option key={city} value={city}>
+                    {city}
                   </option>
                 ))}
               </select>
@@ -168,34 +156,34 @@ const Page = () => {
 
             {/* Company Filter */}
             <div className="flex items-center space-x-2">
-              <label htmlFor="company" className="text-white">Company:</label>
+              <label htmlFor="company" className="text-white font-semibold">Company:</label>
               <input
                 id="company"
                 value={filters.company}
                 onChange={(e) => handleFilterChange(e, "company")}
-                className="p-2 border rounded-lg bg-gray-600 text-white"
+                className="p-2 border rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 "
                 type="text"
               />
             </div>
           </div>
         </div>
         <section className="p-8 rounded-lg shadow-lg bg-[#1b1b29] mt-8">
-          <div className="grid grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredCompanies.map((company) => (
               <label
                 key={company.id}
-                className="flex items-center space-x-4 bg-gray-600 p-4 rounded-lg hover:shadow-lg transition-shadow duration-300"
+                className="flex items-center space-x-4 bg-gray-700 p-4 rounded-lg hover:shadow-lg transition-shadow duration-300 focus:ring-purple-500 "
               >
                 <input
                   type="checkbox"
                   checked={selectedCompanies.includes(company.id)}
                   onChange={() => handleCompanySelect(company.id)}
-                  className="form-checkbox h-5 w-5 text-purple-600"
+                  className="form-checkbox h-5 w-5 text-purple-500"
                 />
-                <img src={company.logo} alt={company.name} className="h-8 w-8 rounded-full" />
+                <img src={company.logo} alt={company.name} className="h-10 w-10 rounded-full" />
                 <div>
-                  <h3 className="font-semibold text-lg text-white">{company.name}</h3>
-                  <p className="text-sm text-gray-400">{company.location}</p>
+                  <h3 className="font-semibold text-xl text-white">{company.name}</h3>
+                  <p className="text-sm text-gray-400">{company.state}, {company.city}</p>
                 </div>
               </label>
             ))}
@@ -203,46 +191,29 @@ const Page = () => {
         </section>
         {selectedCompanies.length > 0 && (
           <section className="p-8 rounded-lg shadow-lg bg-[#1b1b29] mt-8">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-semibold text-lg text-white">Selected Companies</h3>
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6">
+              <h3 className="font-semibold text-2xl text-white mb-4 md:mb-0">Selected Companies</h3>
               <div className="flex items-center space-x-4">
-                <span className="text-white">Emails per Company:</span>
+                <span className="text-white text-lg">Emails per Company:</span>
                 <input
                   type="number"
                   value={emailCount}
                   onChange={(e) => setEmailCount(parseInt(e.target.value))}
-                  className="p-2 border rounded-lg bg-gray-600 text-white w-20"
+                  className="p-2 border rounded-lg bg-gray-700 text-white w-24 focus:outline-none focus:ring-2 focus:ring-purple-500"
                   min={1}
                 />
-                <span className="text-white">
+                <span className="text-white text-lg">
                   Total Emails: {emailCount * selectedCompanies.length}
                 </span>
               </div>
             </div>
-            <div className="grid grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {selectedCompanies.map((companyId) => {
                 const company = companies.find((c) => c.id === companyId);
                 return (
-                  <div key={companyId} className="flex flex-col items-start space-y-2">
-                    <div className="flex items-center space-x-2">
-                      <img src={company.logo} alt={company.name} className="h-8 w-8 rounded-full" />
-                      <span className="text-white">{company.name}</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <label htmlFor={`template-${companyId}`} className="text-white">Template:</label>
-                      <select
-                        id={`template-${companyId}`}
-                        value={companyTemplates[companyId] || "Default Template"}
-                        onChange={(e) => handleTemplateChange(companyId, e.target.value)}
-                        className="p-2 border rounded-lg bg-gray-600 text-white"
-                      >
-                        {templates.map((template) => (
-                          <option key={template.name} value={template.name}>
-                            {template.name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+                  <div key={companyId} className="flex items-center space-x-4">
+                    <img src={company.logo} alt={company.name} className="h-10 w-10 rounded-full" />
+                    <span className="text-white text-lg">{company.name}</span>
                   </div>
                 );
               })}
@@ -250,166 +221,66 @@ const Page = () => {
           </section>
         )}
         <section className="p-8 rounded-lg shadow-lg bg-[#1b1b29] mt-8">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold text-lg text-white">Email Templates</h3>
-            <button
-              onClick={() => setShowAddTemplateModal(true)}
-              className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 flex items-center space-x-2"
-            >
-              <span>Add Template</span>
-            </button>
+        <div className="mb-6 flex justify-between items-center">
+          <h3 className="font-semibold text-2xl text-white">Email Template</h3>
+          <button
+            onClick={togglePreview}
+            className="px-4 py-2 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300"
+          >
+            {showPreview ? "Hide Preview" : "Show Preview"}
+          </button>
+        </div>
+        <div className="mb-4">
+          <label htmlFor="templateSubject" className="block text-white text-lg font-semibold mb-2">Template Subject:</label>
+          <input
+            id="templateSubject"
+            value={template.subject}
+            onChange={(e) => handleTemplateChange(e, "subject")}
+            className="p-3 border rounded-lg bg-gray-700 text-white w-full focus:outline-none focus:ring-2 focus:ring-purple-500"
+            type="text"
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="templateContent" className="block text-white text-lg font-semibold mb-2">Template Content:</label>
+          <textarea
+            id="templateContent"
+            value={template.content}
+            onChange={(e) => handleTemplateChange(e, "content")}
+            className="w-full h-48 p-4 border rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+          ></textarea>
+        </div>
+        {showPreview && (
+          <div className="mt-8">
+            <h4 className="font-semibold text-xl text-white mb-4">Email Preview:</h4>
+            {renderEmailPreview()}
           </div>
-          <div className="space-y-4">
-            {templates.map((template) => (
-              <div key={template.name} className="bg-gray-600 p-4 rounded-lg">
-                <div className="flex items-center justify-between mb-2">
-                  <h4 className="font-semibold text-lg text-white">{template.name}</h4>
-                  <div className="flex space-x-2">
-                    <button
-                      onClick={() => toggleTemplateExpansion(template.name)}
-                      className="text-white hover:text-purple-400 text-xl p-1"
-                    >
-                      {expandedTemplates.includes(template.name) ? <FaEyeSlash /> : <FaEye />}
-                    </button>
-                    <button
-  onClick={() => handleEditTemplate(template)}
-  className="text-white hover:text-purple-400 text-xl p-1"
->
-  <FaEdit />
-</button>
-                    {template.name !== "Default Template" && (
-                      <button
-                        onClick={() => handleDeleteTemplate(template.name)}
-                        className="text-white hover:text-red-500 text-xl p-1"
-                      >
-                        <FaTrash />
-                      </button>
-                    )}
-                  </div>
-                </div>
-                {expandedTemplates.includes(template.name) && (
-                  <div>
-                    <p className="text-white">Subject: {template.subject}</p>
-                    <p className="text-white whitespace-pre-wrap mt-2">{template.content}</p>
-                  </div>
-                )}
-                {editingTemplate && editingTemplate.name === template.name && (
-                  <div>
-                    <div className="mb-2">
-                      <label htmlFor={`templateName-${template.name}`} className="text-white">
-                        Template Name:
-                      </label>
-                      <input
-                        id={`templateName-${template.name}`}
-                        value={newTemplateName}
-                        onChange={(e) => setNewTemplateName(e.target.value)}
-                        className="p-2 border rounded-lg bg-gray-600 text-white w-full mt-1"
-                        type="text"
-                      />
-                    </div>
-                    <div className="mb-2">
-                      <label htmlFor={`templateSubject-${template.name}`} className="text-white">
-                        Template Subject:
-                      </label>
-                      <input
-                        id={`templateSubject-${template.name}`}
-                        value={newTemplateSubject}
-                        onChange={(e) => setNewTemplateSubject(e.target.value)}
-                        className="p-2 border rounded-lg bg-gray-600 text-white w-full mt-1"
-                        type="text"
-                      />
-                    </div>
-                    <div className="mb-2">
-                      <label htmlFor={`templateContent-${template.name}`} className="text-white">
-                        Template Content:
-                      </label>
-                      <textarea
-                        id={`templateContent-${template.name}`}
-                        value={newTemplateContent}
-                        onChange={(e) => setNewTemplateContent(e.target.value)}
-                        className="w-full h-40 p-4 border rounded-lg bg-gray-600 text-white mt-1"
-                      ></textarea>
-                    </div>
-                    <div className="flex justify-end">
-                      <button
-                        onClick={handleSaveTemplate}
-                        className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
-                      >
-                        Save
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
-            ))}
+        )}
+      </section>
+        
+        <section className="p-8 rounded-lg shadow-lg bg-[#1b1b29] mt-8">
+          <div className="mb-6">
+            <h3 className="font-semibold text-2xl text-white">Cover Letter</h3>
+          </div>
+          <div className="mb-4">
+            <textarea
+              value={coverLetter}
+              onChange={(e) => setCoverLetter(e.target.value)}
+              className="w-full h-48 p-4 border rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+            ></textarea>
           </div>
         </section>
         <div className="flex justify-end mt-8">
           <button
             onClick={handleSubmit}
-            className="ml-auto px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
+            className="ml-auto px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300"
           >
             Send Emails
           </button>
         </div>
       </main>
       <Footer />
+    </main>
+  );
+};
 
-      {/* Add Template Modal */}
-      {showAddTemplateModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-[#1b1b29] p-8 rounded-lg shadow-lg w-1/2">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-2xl font-bold text-white">Add Template</h3>
-            </div>
-            <div className="mb-2">
-              <label htmlFor="templateName" className="text-white">Template Name:</label>
-              <input
-                id ="templateName"
-                value={newTemplateName}
-                onChange={(e) => setNewTemplateName(e.target.value)}
-                className="p-2 border rounded-lg bg-gray-600 text-white w-full mt-1"
-                type="text"
-                />
-                </div>
-                <div className="mb-2">
-                <label htmlFor="templateSubject" className="text-white">Template Subject:</label>
-                <input
-                id="templateSubject"
-                value={newTemplateSubject}
-                onChange={(e) => setNewTemplateSubject(e.target.value)}
-                className="p-2 border rounded-lg bg-gray-600 text-white w-full mt-1"
-                type="text"
-                />
-                </div>
-                <div className="mb-2">
-                <label htmlFor="templateContent" className="text-white">Template Content:</label>
-                <textarea
-                id="templateContent"
-                value={newTemplateContent}
-                onChange={(e) => setNewTemplateContent(e.target.value)}
-                className="w-full h-40 p-4 border rounded-lg bg-gray-600 text-white mt-1"
-                ></textarea>
-                </div>
-                <div className="flex justify-between">
-                <button
-                onClick={() => setShowAddTemplateModal(false)}
-                className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
-                >
-                Close
-                </button>
-                <button
-                             onClick={handleAddTemplate}
-                             className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
-                           >
-                Add Template
-                </button>
-                </div>
-                </div>
-                </div>
-                )}
-                </main>
-                );
-                };
-                
-                export default Page;
+export default Page;

@@ -6,20 +6,13 @@ import Head from "next/head";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "@/context/UserContext";
 import Loader from "@/components/common/Loader";
-import Link from "next/link";
 import { formatLink } from "@/utils/formatLink";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLinkedin, faGithub } from "@fortawesome/free-brands-svg-icons";
 import { parsePhoneNumber } from "libphonenumber-js";
 import { profileStore } from "@/components/individual/profileStore";
-import FeaturedCard from "@/components/individual/profile/FeaturedCard";
-import MediaSection from "@/components/individual/profile/MediaSection";
-import ExperienceSection from "@/components/individual/ExperienceSection";
-import { supabase } from "@/utils/supabase";
 import Image from "next/image";
 import checkFileExists from "@/utils/checkFileExists";
-import EducationSection from "@/components/individual/EducationSection";
-import { formatDate } from "@/utils/formatDate";
 import Footer from "@/components/common/Footer";
 
 const Page = () => {
@@ -134,17 +127,9 @@ const Page = () => {
               </div>
 
               <div className="ml-auto flex flex-1 justify-end gap-4">
-                {profileData.interview_id && (
-                  <Link
-                    href={`${id}/interview`}
-                    className="px-4 py-2 rounded text-white bg-purpleprimary hover:bg-purple-700 focus:outline-none"
-                  >
-                    View Interview
-                  </Link>
-                )}
                 {session?.data?.session?.user.id === id && (
                   <button
-                    onClick={() => router.push("/dashboard/edit-profile")}
+                    onClick={() => router.push("/edit-profile")}
                     className="px-4 py-2 rounded text-white bg-purpleprimary hover:bg-purple-700 focus:outline-none"
                   >
                     Edit Profile
@@ -221,10 +206,6 @@ const Page = () => {
               )}
             </div>
           )}
-          {/* Professional Information Section */}
-          {/* <MediaSection />
-          <EducationSection />
-          <ExperienceSection /> */}
         </div>
       </div>
       <Footer />

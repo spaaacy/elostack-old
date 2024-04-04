@@ -2,8 +2,11 @@
 import NavBar from "@/components/common/NavBar";
 import Footer from "@/components/common/Footer";
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FaSearch, FaFilter, FaPaperPlane, FaTrash, FaEye, FaEyeSlash } from "react-icons/fa";
+import { useRouter } from "next/navigation";
+import { UserContext } from "@/context/UserContext";
+import Loader from "@/components/common/Loader";
 
 const mockCompanies = [
   { id: 1, name: "Company 1", state: "State 1", city: "City 1", logo: "/logo.png" },
@@ -27,6 +30,9 @@ const mockStates = ["State 1", "State 2"];
 const mockCities = ["City 1", "City 2", "City 3"];
 
 const Page = () => {
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
+  const { session } = useContext(UserContext);
   const [companies, setCompanies] = useState([]);
   const [selectedCompanies, setSelectedCompanies] = useState([]);
   const [emailCount, setEmailCount] = useState(1);
@@ -44,11 +50,36 @@ const Page = () => {
   });
   const [showPreview, setShowPreview] = useState(false);
 
+  const fetchUser = async () => {
+    const userId = session?.data?.session?.user.id;
+    if (userId) {
+      const response = await fetch(`/api/user/${userId}`, {
+        method: "GET",
+      });
+      if (response.status === 200) {
+        setCompanies(mockCompanies);
+        setStates(mockStates);
+        setCities(mockCities);
+        setLoading(false);
+      } else {
+        router.push("/signup?complete-registration=true");
+      }
+    }
+  };
+
   useEffect(() => {
-    setCompanies(mockCompanies);
-    setStates(mockStates);
-    setCities(mockCities);
-  }, []);
+    const loadData = async () => {
+      if (session?.data?.session) {
+        await fetchUser();
+      } else {
+        router.push("/signin");
+      }
+    };
+
+    if (session) {
+      loadData();
+    }
+  }, [session]);
 
   const renderEmailPreview = () => {
     return (
@@ -67,9 +98,7 @@ const Page = () => {
           </div>
           <div className="flex items-center space-x-2 text-sm text-gray-200">
             <span>To: Recipient &lt;recipient@example.com&gt;</span>
-            <span className="border-l border-gray-400 pl-2">
-              From: Sender &lt;sender@example.com&gt;
-            </span>
+            <span className="border-l border-gray-400 pl-2">From: Sender &lt;sender@example.com&gt;</span>
           </div>
         </div>
         <div className="p-4 text-white" dangerouslySetInnerHTML={{ __html: template.content }}></div>
@@ -110,6 +139,14 @@ const Page = () => {
         (filters.company ? company.name.toLowerCase().includes(filters.company.toLowerCase()) : true)
     );
   }
+
+  if (loading)
+    return (
+      <>
+        <NavBar />
+        <Loader />
+      </>
+    );
 
   return (
     <main className="flex flex-col min-h-screen text-white w-full  ">
@@ -234,11 +271,11 @@ const Page = () => {
                         <img src={company.logo} alt={company.name} className="h-10 w-10 rounded-full mr-4" />
                         <span className="text-lg">{company.name}</span>
                         <button
-  onClick={() => handleCompanySelect(companyId)}
-  className="ml-auto bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-red-500"
->
-  <FaTrash />
-</button>
+                          onClick={() => handleCompanySelect(companyId)}
+                          className="ml-auto bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-red-500"
+                        >
+                          <FaTrash />
+                        </button>
                       </div>
                     );
                   })}

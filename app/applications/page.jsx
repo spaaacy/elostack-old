@@ -12,20 +12,20 @@ import Footer from "@/components/common/Footer";
 import { useRouter } from "next/navigation";
 
 const Page = () => {
-  const { session, verifyLogin } = useContext(UserContext);
+  const { session } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
   const [applications, setApplications] = useState();
-  const [error, setError] = useState();
   const { profileData, setProfileData } = profileStore();
   const router = useRouter();
 
   useEffect(() => {
     const loadData = async () => {
-      const success = await verifyLogin("individual");
-      if (success) {
-        await setLoading(false);
-        fetchIndividual();
-        fetchApplications();
+      if (session?.data?.session) {
+        await fetchIndividual();
+        await fetchApplications();
+        setLoading(false);
+      } else {
+        router.push("/signin");
       }
     };
 
@@ -88,10 +88,6 @@ const Page = () => {
       }
     }
   };
-
-  if (error) {
-    return <ErrorComponent message={error} />;
-  }
 
   if (loading)
     return (

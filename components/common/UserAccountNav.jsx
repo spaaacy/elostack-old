@@ -76,11 +76,7 @@ const UserAccountNav = () => {
               Dashboard
             </Link>
             <Link
-              href={
-                user?.business
-                  ? `/business/${session?.data.session?.user.id}`
-                  : `/individual/${session?.data.session?.user.id}`
-              }
+              href={`/individual/${session?.data.session?.user.id}`}
               className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700"
             >
               Profile

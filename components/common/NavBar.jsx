@@ -4,7 +4,7 @@ import Link from "next/link";
 import { UserContext } from "@/context/UserContext";
 import UserAccountNav from "./UserAccountNav";
 import Image from "next/image";
-import { usePathname } from 'next/navigation';
+import { usePathname } from "next/navigation";
 
 const NavBar = () => {
   const { session } = useContext(UserContext);
@@ -63,76 +63,31 @@ const NavBar = () => {
           <div className="ml-2">EloStack</div>
         </div>
       </Link>
-      <div className={`${isMenuOpen ? "block" : "hidden"} lg:hidden absolute top-full right-0 mt-4 bg-[#0f0f1c] text-white py-2 px-4 space-y-2 rounded-md shadow-lg`}>
-        {user?.business || pathname === "/business/landing" ? (
-          <>
-            <Link
-              href="/dashboard/create-listing"
-              className="block text-gray-300 hover:text-white hover:bg-gray-800 px-2 py-1 rounded-sm text-sm font-medium"
-            >
-              Create Listing
-            </Link>
-            <Link
-              href="/dashboard/search-individuals"
-              className="block text-gray-300 hover:text-white hover:bg-gray-800 px-2 py-1 rounded-sm text-sm font-medium"
-            >
-              Find Candidates
-            </Link>
-            <Link
-              href="/dashboard/request-interview"
-              className="block text-gray-300 hover:text-white hover:bg-gray-800 px-2 py-1 rounded-sm text-sm font-medium"
-            >
-              Request Interview
-            </Link>
-          </>
-        ) : (
-          <>
-            <Link
-              href="/emailing"
-              className="block text-gray-300 hover:text-white hover:bg-gray-800 px-2 py-1 rounded-sm text-sm font-medium"
-            >
-              emailing
-            </Link>
-            <Link
-              href="/dashboard/applications"
-              className="block text-gray-300 hover:text-white hover:bg-gray-800 px-2 py-1 rounded-sm text-sm font-medium"
-            >
-              Applications
-            </Link>
-            <Link
-              href="/dashboard"
-              className="block text-gray-300 hover:text-white hover:bg-gray-800 px-2 py-1 rounded-sm text-sm font-medium"
-            >
-              Schedule Interview
-            </Link>
-          </>
-        )}
+      <div
+        className={`${
+          isMenuOpen ? "block" : "hidden"
+        } lg:hidden absolute top-full right-0 mt-4 bg-[#0f0f1c] text-white py-2 px-4 space-y-2 rounded-md shadow-lg`}
+      >
+        <Link
+          href="/emailing"
+          className="block text-gray-300 hover:text-white hover:bg-gray-800 px-2 py-1 rounded-sm text-sm font-medium"
+        >
+          Emailing
+        </Link>
+        <Link
+          href="/applications"
+          className="block text-gray-300 hover:text-white hover:bg-gray-800 px-2 py-1 rounded-sm text-sm font-medium"
+        >
+          Applications
+        </Link>
+        <Link
+          href="/dashboard"
+          className="block text-gray-300 hover:text-white hover:bg-gray-800 px-2 py-1 rounded-sm text-sm font-medium"
+        >
+          Applications
+        </Link>
       </div>
-      <div className={`hidden lg:flex lg:items-center lg:justify-center lg:flex-grow ${session?.data.session ? "mr-20" : "lg:ml-32"}`}>
-  <div className="nav-center space-x-8">
-    {user?.business || pathname === "/business/landing" ? (
-      <>
-        <Link
-          href="/dashboard/create-listing"
-          className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
-        >
-          Create Listing
-        </Link>
-        <Link
-          href="/dashboard/search-individuals"
-          className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
-        >
-          Find Candidates
-        </Link>
-        <Link
-          href="/dashboard/request-interview"
-          className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
-        >
-          Request Interview
-        </Link>
-      </>
-    ) : (
-      <>
+      <div className={`hidden lg:flex lg:items-center lg:justify-center lg:flex-grow gap-8`}>
         <Link
           href="/emailing"
           className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
@@ -140,7 +95,7 @@ const NavBar = () => {
           Emailing
         </Link>
         <Link
-          href="/dashboard/plans"
+          href="/plans"
           className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
         >
           Plans
@@ -149,12 +104,9 @@ const NavBar = () => {
           href="/dashboard"
           className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
         >
-          Schedule Interview
+          Applications
         </Link>
-      </>
-    )}
-  </div>
-</div>
+      </div>
       <div className="flex items-center justify-end lg:justify-start">
         <button
           className={`lg:hidden text-white text-2xl focus:outline-none mr-4`}
@@ -165,20 +117,12 @@ const NavBar = () => {
         {session?.data.session ? (
           <UserAccountNav />
         ) : (
-          <>
-            <Link
-              href={pathname === "/business/landing" ? "/" : "/business/landing"}
-              className="text-gray-300 bg-purpleprimary hover:bg-purple-700 hover:text-white px-2 py-1 lg:px-4 lg:py-2 rounded-sm text-sm lg:text-base font-medium mr-2 lg:mr-4"
-            >
-              {pathname === "/business/landing" ? "For Individuals" : "For Companies"}
-            </Link>
-            <Link
-              href="/signin"
-              className="text-gray-300 bg-purpleprimary hover:bg-purple-700 hover:text-white px-2 py-1 lg:px-4 lg:py-2 rounded-sm text-sm lg:text-base font-medium"
-            >
-              Sign In
-            </Link>
-          </>
+          <Link
+            href="/signin"
+            className="text-gray-300 bg-purpleprimary hover:bg-purple-700 hover:text-white px-2 py-1 lg:px-4 lg:py-2 rounded-sm text-sm lg:text-base font-medium"
+          >
+            Sign In
+          </Link>
         )}
       </div>
     </nav>

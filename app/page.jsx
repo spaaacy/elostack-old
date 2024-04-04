@@ -22,9 +22,10 @@ const Home = () => {
 
       <main className="flex flex-col items-center">
         <HeroSection />
-        <PartneredCompanies />
+        
         <Benefits />
-        <Discount />
+        <PartneredCompanies />
+        {/* <Discount /> */}
         <HowItWorks />
         <FAQ />
       </main>

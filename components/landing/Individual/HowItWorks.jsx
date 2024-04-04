@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { FaEnvelope, FaCog, FaChartLine, FaSmile } from "react-icons/fa"; // Icons for steps
+import { FaEnvelope, FaCog, FaChartLine, FaSmile } from "react-icons/fa";
 
 const HowItWorks = () => {
   useEffect(() => {
@@ -17,67 +17,51 @@ const HowItWorks = () => {
   const steps = [
     {
       title: "Create Email Templates",
-      description:
-        "Easily create professional and engaging email templates using our intuitive drag-and-drop editor.",
-      aos: "fade-up-right",
+      description: "Easily create professional and engaging email templates using our intuitive drag-and-drop editor.",
       icon: FaEnvelope,
     },
     {
       title: "Set Up Automation Rules",
-      description:
-        "Define triggers and actions to automate your email campaigns based on subscriber behavior and preferences.",
-      aos: "fade-up",
-      delay: 100,
+      description: "Define triggers and actions to automate your email campaigns based on subscriber behavior and preferences.",
       icon: FaCog,
     },
     {
       title: "Monitor Campaign Performance",
-      description:
-        "Track and analyze the performance of your email campaigns with detailed reports and insights.",
-      aos: "fade-up-left",
-      delay: 200,
+      description: "Track and analyze the performance of your email campaigns with detailed reports and insights.",
       icon: FaChartLine,
     },
     {
       title: "Engage Your Audience",
-      description:
-        "Build stronger relationships with your subscribers through personalized and targeted email communications.",
-      aos: "fade-up-right",
-      delay: 300,
+      description: "Build stronger relationships with your subscribers through personalized and targeted email communications.",
       icon: FaSmile,
     },
   ];
 
   return (
-    <section className="bg-gradient-to-b from-gray-900 to-black py-20">
-      <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
-        <div className="text-center mb-16 md:mb-20">
-          <h1
-            className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-4 text-white"
-            data-aos="zoom-in"
-          >
+    <section className=" py-24">
+      <div className="container px-4 sm:px-6 lg:px-8  mx-auto max-w-8xl max-h-8xl">
+        <div className="text-center mb-16">
+          <h1 className="text-4xl sm:text-5xl font-bold mb-4 text-white" data-aos="fade-down">
             How Our Email Automation Works
           </h1>
-          <p
-            className="text-xl sm:text-2xl text-gray-300 max-w-3xl mx-auto"
-            data-aos="zoom-in"
-          >
+          <p className="text-xl sm:text-2xl text-gray-300 max-w-4xl mx-auto" data-aos="fade-down" data-aos-delay="200">
             Streamline your email marketing efforts with our powerful automation tools.
           </p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
           {steps.map((step, index) => (
-            <div
-              key={index}
-              data-aos={step.aos}
-              data-aos-delay={step.delay}
-              className="bg-white rounded-lg shadow-xl p-6 transition-all duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl"
-            >
-              <div className="flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white mb-6">
-                <step.icon className="text-3xl" />
+            <div key={index} className="relative" data-aos="flip-left" data-aos-delay={index * 100}>
+              <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-purple-500 to-indigo-600 rounded-lg transform -rotate-6 shadow-lg"></div>
+              <div className="relative bg-gray-800 rounded-lg p-8 overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-purple-500 to-indigo-600"></div>
+                <div className="flex items-center mb-6">
+                  <div className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white p-3 rounded-full mr-4">
+                    <step.icon className="text-2xl" />
+                  </div>
+                  <h3 className="text-xl font-bold text-white">{step.title}</h3>
+                </div>
+                <p className="text-gray-300">{step.description}</p>
               </div>
-              <h3 className="text-2xl font-bold mb-4">{step.title}</h3>
-              <p className="text-gray-600">{step.description}</p>
             </div>
           ))}
         </div>

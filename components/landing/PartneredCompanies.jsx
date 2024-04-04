@@ -25,9 +25,9 @@ const PartneredCompanies = () => {
   companies = [...companies, ...companies, ...companies];
 
   return (
-    <section className="text-gray-500 body-font  w-[200rem] py-24">
+    <section className="text-gray-500 body-font  w-[200rem] py-4 pb-16">
       <div className="container px-5 mx-auto h-full flex items-center flex-col w-full">
-        <p className="text-xl font-bold text-gray-300 mb-10">Partnered with</p>
+        <p className="text-xl font-bold text-gray-300 mb-10"></p>
         <Carousel
           showThumbs={false}
           infiniteLoop

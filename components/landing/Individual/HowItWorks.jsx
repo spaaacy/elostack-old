@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { FaLightbulb, FaRocket, FaHandsHelping } from "react-icons/fa"; // Icons for steps
+import { FaEnvelope, FaCog, FaChartLine, FaSmile } from "react-icons/fa";
 
 const HowItWorks = () => {
   useEffect(() => {
@@ -16,57 +16,51 @@ const HowItWorks = () => {
 
   const steps = [
     {
-      title: "Create a Request",
-      description:
-        "Start by creating a request for us to conduct a technical interview and booking any of the available opening.",
-      aos: "fade-up-right",
+      title: "Create Email Templates",
+      description: "Easily create professional and engaging email templates using our intuitive drag-and-drop editor.",
+      icon: FaEnvelope,
     },
     {
-      title: "Conduct Mock Interview",
-      description:
-        "You will be connected with our talented engineers who will and carry out an unbiased mock interview as per your specifications, assessing your skill.",
-      aos: "fade-up",
-      delay: 100,
+      title: "Set Up Automation Rules",
+      description: "Define triggers and actions to automate your email campaigns based on subscriber behavior and preferences.",
+      icon: FaCog,
     },
     {
-      title: "Connect With Companies",
-      description:
-        "You will have access to the entire recording and breakdown of the mock interview with feedback and an overall grade. Using this, you can apply to jobs and companies can view your interview.",
-      aos: "fade-up-left",
-      delay: 200,
+      title: "Monitor Campaign Performance",
+      description: "Track and analyze the performance of your email campaigns with detailed reports and insights.",
+      icon: FaChartLine,
     },
-    // Add more steps as needed
+    {
+      title: "Engage Your Audience",
+      description: "Build stronger relationships with your subscribers through personalized and targeted email communications.",
+      icon: FaSmile,
+    },
   ];
 
   return (
-    <section className="bg-[#0f0f1c] w-screen body-font">
-      <div className="container px-4 sm:px-6 lg:px-8 mt-0 mb-[8rem] mx-auto">
-        <div className="text-center mb-16 md:mb-20">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold title-font mb-4 text-white" data-aos="zoom-in">
-            How EloStack Works
+    <section className=" py-24">
+      <div className="container px-4 sm:px-6 lg:px-8  mx-auto max-w-8xl max-h-8xl">
+        <div className="text-center mb-16">
+          <h1 className="text-4xl sm:text-5xl font-bold mb-4 text-white" data-aos="fade-down">
+            How Our Email Automation Works
           </h1>
-          <p
-            className="leading-relaxed xl:w-2/4 text-white text-base sm:text-lg md:text-xl lg:w-3/4 mx-auto"
-            data-aos="zoom-in"
-          >
-            A step-by-step guide to our process, designed to ensure your success.
+          <p className="text-xl sm:text-2xl text-gray-300 max-w-4xl mx-auto" data-aos="fade-down" data-aos-delay="200">
+            Streamline your email marketing efforts with our powerful automation tools.
           </p>
         </div>
-        <div className="flex flex-wrap -m-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
           {steps.map((step, index) => (
-            <div className="p-4 md:w-1/3" key={index} data-aos={step.aos} data-aos-delay={step.delay}>
-              <div className="h-full card-gradient rounded-lg overflow-hidden shadow-lg transition-all duration-200 ease-in-out transform hover:-translate-y-2 hover:scale-105">
-                <div className="p-4 sm:p-6">
-                  <div className="flex items-center space-x-3 mb-2 sm:mb-4">
-                    <h2 className="rounded-full px-2 sm:px-3 py-1 sm:py-2 text-xs sm:text-md bg-white font-[900] text-black">
-                      {index + 1}
-                    </h2>
-                    <h2 className="text-lg sm:text-xl font-bold text-white">{step.title}</h2>
+            <div key={index} className="relative" data-aos="flip-left" data-aos-delay={index * 100}>
+              <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-purple-500 to-indigo-600 rounded-lg transform -rotate-6 shadow-lg"></div>
+              <div className="relative bg-gray-800 rounded-lg p-8 overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-purple-500 to-indigo-600"></div>
+                <div className="flex items-center mb-6">
+                  <div className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white p-3 rounded-full mr-4">
+                    <step.icon className="text-2xl" />
                   </div>
-                  <p className="leading-relaxed mb-3 font-semibold text-sm sm:text-base text-white">
-                    {step.description}
-                  </p>
+                  <h3 className="text-xl font-bold text-white">{step.title}</h3>
                 </div>
+                <p className="text-gray-300">{step.description}</p>
               </div>
             </div>
           ))}

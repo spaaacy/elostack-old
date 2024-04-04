@@ -22,17 +22,30 @@ const PartneredCompanies = () => {
   ];
 
   // Duplicate the companies array multiple times to create a longer loop
-  companies = [...companies];
+  companies = [...companies, ...companies, ...companies];
 
   return (
-    <section className="text-gray-500 body-font bg-[#0f0f1c] w-full">
-      <div className="container pl-10 px-5 mx-auto h-full flex items-center flex-col w-full">
-        <p className="text-xl font-bold text-gray-500 mb-10 mt-20">Partnered with</p>
-        <Carousel showThumbs={false} infiniteLoop useKeyboardArrows autoPlay interval={2000} transitionTime={1000} showArrows={false} showStatus={false} centerMode centerSlidePercentage={16.666} showIndicators={false}>
+    <section className="text-gray-500 body-font  w-[200rem] py-4 pb-16">
+      <div className="container px-5 mx-auto h-full flex items-center flex-col w-full">
+        <p className="text-xl font-bold text-gray-300 mb-10"></p>
+        <Carousel
+          showThumbs={false}
+          infiniteLoop
+          useKeyboardArrows
+          autoPlay
+          interval={2000}
+          transitionTime={1000}
+          showArrows={false}
+          showStatus={false}
+          centerMode
+          centerSlidePercentage={20}
+          showIndicators={false}
+          className="w-full"
+        >
           {companies.map((company, index) => (
-            <div key={index} className="px-4 flex items-center space-x-4 mr-10">
-              <AiFillHome size="2em" />
-              <h2 className="text-sm font-semibold text-gray-500">{company.name}</h2>
+            <div key={index} className="px-8 flex items-center space-x-4">
+              <AiFillHome size="2em" className="text-purple-500" />
+              <h2 className="text-lg font-semibold text-white">{company.name}</h2>
             </div>
           ))}
         </Carousel>

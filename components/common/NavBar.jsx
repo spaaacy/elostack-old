@@ -81,7 +81,7 @@ const NavBar = () => {
           Applications
         </Link>
         <Link
-          href="/dashboard"
+          href="/applications"
           className="block text-gray-300 hover:text-white hover:bg-gray-800 px-2 py-1 rounded-sm text-sm font-medium"
         >
           Applications
@@ -101,7 +101,7 @@ const NavBar = () => {
           Plans
         </Link>
         <Link
-          href="/dashboard"
+          href="/applications"
           className="text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-sm text-base font-medium"
         >
           Applications
@@ -115,7 +115,7 @@ const NavBar = () => {
           {isMenuOpen ? <>&#10005;</> : <>&#9776;</>}
         </button>
         {session?.data.session ? (
-          <UserAccountNav />
+          <UserAccountNav user={user} />
         ) : (
           <Link
             href="/signin"

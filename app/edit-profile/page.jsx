@@ -17,7 +17,7 @@ const Page = () => {
   useEffect(() => {
     const loadData = async () => {
       if (session?.data?.session) {
-        await fetchUser();
+        fetchIndividual();
       } else {
         router.push("/signin");
       }
@@ -89,20 +89,6 @@ const Page = () => {
       router.push(`/individual/${userId}`);
     } catch (error) {
       console.error("Error updating profile:", error.message);
-    }
-  };
-
-  const fetchUser = async () => {
-    const userId = session?.data?.session?.user.id;
-    if (userId) {
-      const response = await fetch(`/api/user/${userId}`, {
-        method: "GET",
-      });
-      if (response.status === 200) {
-        fetchIndividual();
-      }
-    } else {
-      router.push("/signin");
     }
   };
 

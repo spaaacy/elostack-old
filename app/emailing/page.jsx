@@ -50,27 +50,13 @@ const Page = () => {
   });
   const [showPreview, setShowPreview] = useState(false);
 
-  const fetchUser = async () => {
-    const userId = session?.data?.session?.user.id;
-    if (userId) {
-      const response = await fetch(`/api/user/${userId}`, {
-        method: "GET",
-      });
-      if (response.status === 200) {
+  useEffect(() => {
+    const loadData = async () => {
+      if (session?.data?.session) {
         setCompanies(mockCompanies);
         setStates(mockStates);
         setCities(mockCities);
         setLoading(false);
-      } else {
-        router.push("/signup?complete-registration=true");
-      }
-    }
-  };
-
-  useEffect(() => {
-    const loadData = async () => {
-      if (session?.data?.session) {
-        await fetchUser();
       } else {
         router.push("/signin");
       }

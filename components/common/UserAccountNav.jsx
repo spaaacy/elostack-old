@@ -7,10 +7,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useContext, useState, useEffect, useRef } from "react";
 
-const UserAccountNav = () => {
+const UserAccountNav = ({ user }) => {
   const { session } = useContext(UserContext);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [user, setUser] = useState();
   const dropdownRef = useRef(null);
   const router = useRouter();
 
@@ -28,10 +27,6 @@ const UserAccountNav = () => {
 
   // Close dropdown when clicking outside
   useEffect(() => {
-    if (session) {
-      fetchUser();
-    }
-
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setDropdownOpen(false);
@@ -40,19 +35,6 @@ const UserAccountNav = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [dropdownRef]);
-
-  const fetchUser = async () => {
-    const userId = session?.data?.session?.user.id;
-    if (userId) {
-      const response = await fetch(`/api/user/${userId}`, {
-        method: "GET",
-      });
-      if (response.status === 200) {
-        const { user } = await response.json();
-        setUser(user);
-      }
-    }
-  };
 
   return (
     <div className="relative bg-gray-900 text-white" ref={dropdownRef}>
@@ -71,17 +53,12 @@ const UserAccountNav = () => {
         style={{ display: dropdownOpen ? "block" : "none" }}
       >
         {user ? (
-          <>
-            <Link href="/dashboard" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">
-              Dashboard
-            </Link>
-            <Link
-              href={`/individual/${session?.data.session?.user.id}`}
-              className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700"
-            >
-              Profile
-            </Link>
-          </>
+          <Link
+            href={`/individual/${session?.data.session?.user.id}`}
+            className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700"
+          >
+            Profile
+          </Link>
         ) : (
           <Link
             href="/signup?complete-registration=true"

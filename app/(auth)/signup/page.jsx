@@ -89,7 +89,7 @@ const SignUpPage = () => {
         throw error;
       }
       if (firstName || lastName) {
-        router.push("/dashboard");
+        router.push("/");
       }
     } catch (error) {
       console.error(error);
@@ -97,14 +97,13 @@ const SignUpPage = () => {
   };
 
   useEffect(() => {
-    toast.success("ADAS");
     if (confirmToast) toast.success("Please confirm your email", { icon: "🚀" });
     if (session?.data?.session) {
       if (searchParams.has("complete-registration")) {
-        // setCompleteRegistration(true);
+        setCompleteRegistration(true);
         setLoading(false);
       } else {
-        router.push("/dashboard");
+        router.push("/");
       }
     } else if (session) {
       setLoading(false);
@@ -146,7 +145,7 @@ const SignUpPage = () => {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: `${window.location.origin}/dashboard`,
+          redirectTo: `${window.location.origin}/`,
           queryParams: {
             access_type: "offline",
             prompt: "consent",

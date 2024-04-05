@@ -19,6 +19,7 @@ export async function POST(req, res) {
       metadata: {
         user_id,
       },
+      // FIXME: Dashboard page deprecated
       success_url: `${req.nextUrl.origin}/dashboard?success=true`,
       cancel_url: `${req.nextUrl.origin}/dashboard?cancelled=true`,
     });

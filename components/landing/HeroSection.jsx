@@ -15,12 +15,7 @@ const gradientTextStyle = css`
 
 const containerStyle = css`
   position: relative;
-  background: radial-gradient(
-    ellipse 60% 60% at 52% 49%,
-    #0f172a,
-    #1a1b2f 60%,
-    #0f0f1c 80%
-  );
+  background: radial-gradient(ellipse 60% 60% at 52% 49%, #0f172a, #1a1b2f 60%, #0f0f1c 80%);
   color: #fff;
   display: flex;
   flex-direction: column;
@@ -69,10 +64,11 @@ export default function Home() {
           <span css={gradientTextStyle}>Targeted Email Campaigns</span>
         </h1>
         <h2 className="text-white text-xl md:text-2xl mb-10">
-          Reach out directly to your favorite companies and get noticed by top recruiters<br />
+          Reach out directly to your favorite companies and get noticed by top recruiters
+          <br />
           boosting your chances of getting hired with EloStack.
         </h2>
-        <Link href={"/dashboard"}>
+        <Link href={"/emailing"}>
           <button css={buttonStyle}>Start Your Job Search Now</button>
         </Link>
       </main>

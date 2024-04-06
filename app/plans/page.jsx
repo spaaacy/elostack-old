@@ -3,12 +3,15 @@
 import NavBar from "@/components/common/NavBar";
 import Footer from "@/components/common/Footer";
 import Head from "next/head";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { FaEnvelope, FaChartBar, FaUserTie, FaCheckCircle } from "react-icons/fa";
+import { UserContext } from "@/context/UserContext";
+import { loadStripe } from "@stripe/stripe-js";
 
 const plans = [
   {
     name: "2 Weeks",
+    weeks: 2,
     price: "5.50",
     features: [
       "336 total credits",
@@ -25,6 +28,7 @@ const plans = [
   },
   {
     name: "4 Weeks",
+    weeks: 4,
     price: "5.00",
     features: [
       "672 total credits",
@@ -41,6 +45,7 @@ const plans = [
   },
   {
     name: "8 Weeks",
+    weeks: 8,
     price: "4.50",
     features: [
       "1,344 total credits",
@@ -58,19 +63,49 @@ const plans = [
 ];
 
 const PlansPage = () => {
+  const { session } = useContext(UserContext);
   const purchaseRef = useRef();
   const [selectedPlan, setSelectedPlan] = useState(null);
 
-  const handlePlanSelect = (plan) => {
+  const handlePlanSelect = async (plan) => {
+    await setSelectedPlan(plan);
     purchaseRef.current.scrollIntoView();
-    setSelectedPlan(plan);
   };
 
   const handleSubscribe = () => {
-    if (selectedPlan) {
-      // Handle the subscription process
-      console.log(`Subscribing to ${selectedPlan.name} plan`);
-      // Redirect to payment or registration page
+    if (!selectedPlan) {
+      return;
+    } else if (session.data.session) {
+      initiatePurchase(selectedPlan);
+    } else {
+      router.push("/signin");
+    }
+  };
+
+  const initiatePurchase = async (selectedPlan) => {
+    const userId = session.data.session.user.id;
+    if (!userId) return;
+    try {
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+        body: JSON.stringify({ user_id: userId, weeks: selectedPlan.weeks }),
+      });
+      const result = await response.json();
+      if (response.status !== 200) {
+        throw Error("Something went wrong");
+      }
+      const stripe = await loadStripe(
+        process.env.NODE_ENV === "production"
+          ? process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_LIVE_KEY
+          : process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_TEST_KEY
+      );
+      if (!stripe) {
+        throw Error("Something went wrong");
+      }
+      console.log(result);
+      await stripe.redirectToCheckout({ sessionId: result.session.id });
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -116,7 +151,7 @@ const PlansPage = () => {
           ))}
         </section>
         <section className="mt-16"></section>
-        <div ref={purchaseRef} className="flex justify-center mt-12">
+        <div ref={purchaseRef} className={` ${selectedPlan ? "flex" : "hidden"} justify-center mt-12`}>
           <button
             onClick={handleSubscribe}
             className={`px-12 py-4 text-2xl font-semibold rounded-full transition-colors duration-300 shadow-lg ${

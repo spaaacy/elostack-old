@@ -189,11 +189,16 @@ Deno.serve(async (req, res) => {
           });
           console.log(`Email ${info.messageId} sent!`);
 
+          results = await supabase.rpc("decrement_subscriber_credits", {
+            subscriber_user_id: user.user_id,
+          });
+          if (results.error) throw results.error;
+
           // Create a record of the application if email succeeds
-          const { error } = await supabase
+          results = await supabase
             .from("application")
             .insert({ user_id: user.user_id, receiver_email: chosenLead.email });
-          if (error) throw error;
+          if (results.error) throw results.error;
         }
       } catch (error) {
         console.error(error);

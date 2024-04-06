@@ -7,24 +7,7 @@ import { FaSearch, FaFilter, FaPaperPlane, FaTrash, FaEye, FaEyeSlash } from "re
 import { useRouter } from "next/navigation";
 import { UserContext } from "@/context/UserContext";
 import Loader from "@/components/common/Loader";
-
-const mockCompanies = [
-  { name: "company 1", logo: "/logo.png" }, // TODO: Logo must be a url
-  { name: "company 2", logo: "/logo.png" },
-  { name: "company 3", logo: "/logo.png" },
-  { name: "company 4", logo: "/logo.png" },
-  { name: "company 5", logo: "/logo.png" },
-  { name: "company 6", logo: "/logo.png" },
-  { name: "company 7", logo: "/logo.png" },
-  { name: "company 8", logo: "/logo.png" },
-  { name: "company 9", logo: "/logo.png" },
-  { name: "company 10", logo: "/logo.png" },
-  { name: "company 11", logo: "/logo.png" },
-  { name: "company 12", logo: "/logo.png" },
-  { name: "company 13", logo: "/logo.png" },
-  { name: "company 14", logo: "/logo.png" },
-  { name: "company 15", logo: "/logo.png" },
-];
+import toast, { Toaster } from "react-hot-toast";
 
 const mockStates = ["State 1", "State 2"];
 const mockCities = ["City 1", "City 2", "City 3"];
@@ -37,7 +20,7 @@ const Page = () => {
   const [selectedCompanies, setSelectedCompanies] = useState([]);
   const [template, setTemplate] = useState({
     subject: "",
-    content: "",
+    body: "",
   });
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
@@ -85,7 +68,7 @@ const Page = () => {
             <span className="border-l border-gray-400 pl-2">From: Sender &lt;sender@example.com&gt;</span>
           </div>
         </div>
-        <div className="p-4 text-white" dangerouslySetInnerHTML={{ __html: template.content }}></div>
+        <div className="p-4 text-white" dangerouslySetInnerHTML={{ __html: template.body }}></div>
       </div>
     );
   };
@@ -106,10 +89,33 @@ const Page = () => {
     setTemplate({ ...template, [field]: e.target.value });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     console.log("Selected Companies:", selectedCompanies);
     console.log("Template:", template);
-    alert("Emails sent successfully!");
+    const userId = session.data.session.user.id;
+    if (userId && template.subject && template.body) {
+      const response = await fetch("/api/subscriber/create", {
+        method: "POST",
+        headers: {
+          "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
+        },
+        body: JSON.stringify({
+          user_id: userId,
+          email_body: template.body,
+          email_subject: template.subject,
+          active: false,
+          // options: { companies: selectedCompanies.length > 0 ? selectedCompanies : [], cities: [], states: [] },
+          options: { companies: selectedCompanies.length > 0 ? [] : [], cities: [], states: [] },
+        }),
+      });
+      if (response.status === 201) {
+        toast.success("Preferences saved!");
+      } else {
+        toast.error("Something went wrong...");
+      }
+    } else {
+      toast.error("Subject/body cannot be left blank!");
+    }
   };
 
   let filteredCompanies = [];
@@ -272,13 +278,13 @@ const Page = () => {
                 />
               </div>
               <div className="mb-4">
-                <label htmlFor="templateContent" className="block text-lg font-semibold mb-1">
-                  Content:
+                <label htmlFor="templateBody" className="block text-lg font-semibold mb-1">
+                  Body:
                 </label>
                 <textarea
-                  id="templateContent"
-                  value={template.content}
-                  onChange={(e) => handleTemplateChange(e, "content")}
+                  id="templateBody"
+                  value={template.body}
+                  onChange={(e) => handleTemplateChange(e, "body")}
                   className="w-full h-48 p-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                 ></textarea>
               </div>
@@ -299,8 +305,113 @@ const Page = () => {
         </button>
       </main>
       <Footer />
+      <Toaster />
     </main>
   );
 };
 
 export default Page;
+
+const mockCompanies = [
+  // TODO: Logo must be a url
+  { name: "company 1", logo: "/logo.png" },
+  { name: "company 2", logo: "/logo.png" },
+  { name: "company 3", logo: "/logo.png" },
+  { name: "company 4", logo: "/logo.png" },
+  { name: "company 5", logo: "/logo.png" },
+  { name: "company 6", logo: "/logo.png" },
+  { name: "company 7", logo: "/logo.png" },
+  { name: "company 8", logo: "/logo.png" },
+  { name: "company 9", logo: "/logo.png" },
+  { name: "company 10", logo: "/logo.png" },
+  { name: "company 11", logo: "/logo.png" },
+  { name: "company 12", logo: "/logo.png" },
+  { name: "company 13", logo: "/logo.png" },
+  { name: "company 14", logo: "/logo.png" },
+  { name: "company 15", logo: "/logo.png" },
+  { name: "company 16", logo: "/logo.png" },
+  { name: "company 17", logo: "/logo.png" },
+  { name: "company 18", logo: "/logo.png" },
+  { name: "company 19", logo: "/logo.png" },
+  { name: "company 20", logo: "/logo.png" },
+  { name: "company 21", logo: "/logo.png" },
+  { name: "company 22", logo: "/logo.png" },
+  { name: "company 23", logo: "/logo.png" },
+  { name: "company 24", logo: "/logo.png" },
+  { name: "company 25", logo: "/logo.png" },
+  { name: "company 26", logo: "/logo.png" },
+  { name: "company 27", logo: "/logo.png" },
+  { name: "company 28", logo: "/logo.png" },
+  { name: "company 29", logo: "/logo.png" },
+  { name: "company 30", logo: "/logo.png" },
+  { name: "company 31", logo: "/logo.png" },
+  { name: "company 32", logo: "/logo.png" },
+  { name: "company 33", logo: "/logo.png" },
+  { name: "company 34", logo: "/logo.png" },
+  { name: "company 35", logo: "/logo.png" },
+  { name: "company 36", logo: "/logo.png" },
+  { name: "company 37", logo: "/logo.png" },
+  { name: "company 38", logo: "/logo.png" },
+  { name: "company 39", logo: "/logo.png" },
+  { name: "company 40", logo: "/logo.png" },
+  { name: "company 41", logo: "/logo.png" },
+  { name: "company 42", logo: "/logo.png" },
+  { name: "company 43", logo: "/logo.png" },
+  { name: "company 44", logo: "/logo.png" },
+  { name: "company 45", logo: "/logo.png" },
+  { name: "company 46", logo: "/logo.png" },
+  { name: "company 47", logo: "/logo.png" },
+  { name: "company 48", logo: "/logo.png" },
+  { name: "company 49", logo: "/logo.png" },
+  { name: "company 50", logo: "/logo.png" },
+  { name: "company 51", logo: "/logo.png" },
+  { name: "company 52", logo: "/logo.png" },
+  { name: "company 53", logo: "/logo.png" },
+  { name: "company 54", logo: "/logo.png" },
+  { name: "company 55", logo: "/logo.png" },
+  { name: "company 56", logo: "/logo.png" },
+  { name: "company 57", logo: "/logo.png" },
+  { name: "company 58", logo: "/logo.png" },
+  { name: "company 59", logo: "/logo.png" },
+  { name: "company 60", logo: "/logo.png" },
+  { name: "company 61", logo: "/logo.png" },
+  { name: "company 62", logo: "/logo.png" },
+  { name: "company 63", logo: "/logo.png" },
+  { name: "company 64", logo: "/logo.png" },
+  { name: "company 65", logo: "/logo.png" },
+  { name: "company 66", logo: "/logo.png" },
+  { name: "company 67", logo: "/logo.png" },
+  { name: "company 68", logo: "/logo.png" },
+  { name: "company 69", logo: "/logo.png" },
+  { name: "company 70", logo: "/logo.png" },
+  { name: "company 71", logo: "/logo.png" },
+  { name: "company 72", logo: "/logo.png" },
+  { name: "company 73", logo: "/logo.png" },
+  { name: "company 74", logo: "/logo.png" },
+  { name: "company 75", logo: "/logo.png" },
+  { name: "company 76", logo: "/logo.png" },
+  { name: "company 77", logo: "/logo.png" },
+  { name: "company 78", logo: "/logo.png" },
+  { name: "company 79", logo: "/logo.png" },
+  { name: "company 80", logo: "/logo.png" },
+  { name: "company 81", logo: "/logo.png" },
+  { name: "company 82", logo: "/logo.png" },
+  { name: "company 83", logo: "/logo.png" },
+  { name: "company 84", logo: "/logo.png" },
+  { name: "company 85", logo: "/logo.png" },
+  { name: "company 86", logo: "/logo.png" },
+  { name: "company 87", logo: "/logo.png" },
+  { name: "company 88", logo: "/logo.png" },
+  { name: "company 89", logo: "/logo.png" },
+  { name: "company 90", logo: "/logo.png" },
+  { name: "company 91", logo: "/logo.png" },
+  { name: "company 92", logo: "/logo.png" },
+  { name: "company 93", logo: "/logo.png" },
+  { name: "company 94", logo: "/logo.png" },
+  { name: "company 95", logo: "/logo.png" },
+  { name: "company 96", logo: "/logo.png" },
+  { name: "company 97", logo: "/logo.png" },
+  { name: "company 98", logo: "/logo.png" },
+  { name: "company 99", logo: "/logo.png" },
+  { name: "company 100", logo: "/logo.png" },
+];

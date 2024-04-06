@@ -3,48 +3,53 @@
 import NavBar from "@/components/common/NavBar";
 import Footer from "@/components/common/Footer";
 import Head from "next/head";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { FaEnvelope, FaChartBar, FaUserTie, FaCheckCircle } from "react-icons/fa";
 
 const plans = [
   {
-    name: "Basic",
-    price: 4.99,
+    name: "2 Weeks",
+    price: "5.50",
     features: [
-      "100 emails per month",
-      "Basic templates",
-      "Limited support",
-      "Email tracking",
-      "Customizable branding",
+      "336 total credits",
+      "168 emails sent week",
+      "Fully-automated outgoing email",
+      "Customizable templates",
+      "Email attachments",
+      "100 companies",
+      "Specifiable locations",
     ],
     icon: FaEnvelope,
     iconColor: "text-blue-500",
     bgColor: "bg-gradient-to-r from-blue-500 to-blue-600",
   },
   {
-    name: "Pro",
-    price: 9.99,
+    name: "4 Weeks",
+    price: "5.00",
     features: [
-      "500 emails per month",
-      "Advanced templates",
-      "Priority support",
-      "AI Cover Letter Generator",
-      "A/B testing",
+      "672 total credits",
+      "168 emails sent week",
+      "Fully-automated outgoing email",
+      "Customizable templates",
+      "Email attachments",
+      "100 companies",
+      "Specifiable locations",
     ],
     icon: FaChartBar,
     iconColor: "text-green-500",
     bgColor: "bg-gradient-to-r from-green-500 to-green-600",
   },
   {
-    name: "Premium",
-    price: 19.99,
+    name: "8 Weeks",
+    price: "4.50",
     features: [
-      "750 emails per month",
-      "Custom templates",
-      "Dedicated account manager",
-      "AI Cover Letter Generator",
-      "Advanced security",
-      "Detailed analytics",
+      "1,344 total credits",
+      "168 emails sent week",
+      "Fully-automated outgoing email",
+      "Customizable templates",
+      "Email attachments",
+      "100 companies",
+      "Specifiable locations",
     ],
     icon: FaUserTie,
     iconColor: "text-purple-500",
@@ -53,9 +58,11 @@ const plans = [
 ];
 
 const PlansPage = () => {
+  const purchaseRef = useRef();
   const [selectedPlan, setSelectedPlan] = useState(null);
 
   const handlePlanSelect = (plan) => {
+    purchaseRef.current.scrollIntoView();
     setSelectedPlan(plan);
   };
 
@@ -73,32 +80,28 @@ const PlansPage = () => {
       <Head>
         <title>Plans</title>
       </Head>
-      <main className="container mx-auto p-8 mt-8">
-        <section className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-white mb-4">Subscription Plans</h2>
-          <p className="text-xl text-gray-400">Choose a plan that suits your needs</p>
-        </section>
+      <main className="container mx-auto p-8">
+        <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-8 rounded-lg shadow-lg text-center my-8">
+          <h3 className="text-2xl font-bold mb-4 text-white">Free Credits for Your First Week</h3>
+          <p className="text-xl text-white">New users get 168 free credits. Equivalent to a week's worth of emails.</p>
+        </div>
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {plans.map((plan, index) => (
             <div
               key={index}
-              className={`rounded-lg shadow-lg transform transition-transform duration-300 hover:scale-105 ${
-                selectedPlan === plan
-                  ? "ring-4 ring-purple-500 bg-gray-800"
-                  : "bg-gray-900"
+              className={` hover:cursor-pointer rounded-lg shadow-lg transform transition-transform duration-300 hover:scale-105 ${
+                selectedPlan === plan ? "ring-4 ring-purple-500 bg-gray-800" : "bg-gray-900"
               }`}
               onClick={() => handlePlanSelect(plan)}
             >
-              <div
-                className={`flex items-center justify-center h-48 ${plan.bgColor} rounded-t-lg`}
-              >
+              <div className={`flex items-center justify-center h-32 ${plan.bgColor} rounded-t-lg`}>
                 <plan.icon className={`text-6xl ${plan.iconColor}`} />
               </div>
               <div className="p-8">
                 <h3 className="text-3xl font-bold mb-4">{plan.name}</h3>
                 <div className="flex items-baseline mb-6">
                   <span className="text-5xl font-bold">${plan.price}</span>
-                  <span className="ml-1 text-xl text-gray-400">/ month</span>
+                  <span className="ml-1 text-xl text-gray-400">/ week</span>
                 </div>
                 <ul className="space-y-4">
                   {plan.features.map((feature, index) => (
@@ -112,33 +115,20 @@ const PlansPage = () => {
             </div>
           ))}
         </section>
-        <section className="mt-16">
-  <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-10 rounded-lg shadow-lg text-center">
-    <h3 className="text-4xl font-bold mb-6 text-white">One-Week Free Trial</h3>
-    <p className="text-xl text-white mb-8">
-      Try our service for free for one week. No credit card required.
-    </p>
-    <button
-      className="bg-white text-purple-600 font-bold py-4 px-12 rounded-full transition-colors duration-300 hover:bg-purple-100 hover:text-purple-700 shadow-lg"
-      onClick={handleSubscribe}
-    >
-      Start Free Trial
-    </button>
-  </div>
-</section>
-<div className="flex justify-center mt-12">
-  <button
-    onClick={handleSubscribe}
-    className={`px-12 py-4 text-2xl font-semibold rounded-full transition-colors duration-300 shadow-lg ${
-      selectedPlan
-        ? "bg-purple-600 hover:bg-purple-700 text-white"
-        : "bg-gray-700 text-gray-400 cursor-not-allowed"
-    }`}
-    disabled={!selectedPlan}
-  >
-    Subscribe
-  </button>
-</div>
+        <section className="mt-16"></section>
+        <div ref={purchaseRef} className="flex justify-center mt-12">
+          <button
+            onClick={handleSubscribe}
+            className={`px-12 py-4 text-2xl font-semibold rounded-full transition-colors duration-300 shadow-lg ${
+              selectedPlan
+                ? "bg-purple-600 hover:bg-purple-700 text-white"
+                : "bg-gray-700 text-gray-400 cursor-not-allowed"
+            }`}
+            disabled={!selectedPlan}
+          >
+            Purchase
+          </button>
+        </div>
       </main>
       <Footer />
     </main>

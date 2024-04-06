@@ -147,6 +147,10 @@ html {
   z-index: 2;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 .control-btn.left-0 {
   left: 25px;
 }

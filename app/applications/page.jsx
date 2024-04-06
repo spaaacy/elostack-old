@@ -104,12 +104,6 @@ const Page = () => {
         <title>Track Applications | EloStack</title>
       </Head>
       <main className="container mx-auto p-4 bg-[#1b1b29] rounded-lg shadow mt-8">
-        <section className="p-5 border-b border-gray-700">
-          <div className="text-center">
-            <h2 className="text-2xl font-bold">{`Welcome back, ${profileData.first_name}`}</h2>
-            <p className="text-md text-gray-400 capitalize">{profileData.position}</p>
-          </div>
-        </section>
         <section className="p-8 rounded-lg shadow-lg">
           <div className="flex justify-between items-center">
             <h2 className="text-3xl font-bold text-white">Your Applications</h2>

@@ -13,7 +13,7 @@ export async function GET(req, res) {
     const { userId } = res.params;
     const results = await supabase
       .from("application")
-      .select(`* , job_listing("*", business(*))`)
+      .select(`* , receiver(*))`)
       .eq("user_id", userId)
       .order("created_at", { ascending: false });
     if (results.error) throw results.error;

@@ -50,6 +50,7 @@ Deno.serve(async (req, res) => {
 
     console.log("Beginning email loop...");
     for (const user of results.data) {
+      console.log("Going to next user...");
       try {
         // Check if user's subscription is active
         if (!user.active) continue;
@@ -181,6 +182,17 @@ Deno.serve(async (req, res) => {
             },
           });
 
+          // Check if user has sufficient credits and decrement if true, otherwise go to next user
+          results = await supabase.rpc("decrement_subscriber_credits", {
+            subscriber_user_id: user.user_id,
+          });
+          if (results.error) throw results.error;
+          if (!results.data) {
+            console.error("Insufficient credits!");
+            continue;
+          }
+          console.log("Credits decremented successfully!");
+
           const info = await transporter.sendMail({
             from: user.user.email,
             to: chosenLead.email,
@@ -188,11 +200,6 @@ Deno.serve(async (req, res) => {
             text: formattedTemplate,
           });
           console.log(`Email ${info.messageId} sent!`);
-
-          results = await supabase.rpc("decrement_subscriber_credits", {
-            subscriber_user_id: user.user_id,
-          });
-          if (results.error) throw results.error;
 
           // Create a record of the application if email succeeds
           results = await supabase

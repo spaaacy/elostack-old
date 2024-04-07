@@ -35,7 +35,6 @@ export async function POST(req, res) {
       return { city: city.city.toLowerCase(), state: city.state.toLowerCase() };
     });
 
-    console.log({ companiesLower, statesLower, citiesLower });
     let count = 0;
     leads.forEach((lead) => {
       // Check if the object matches the input criteria

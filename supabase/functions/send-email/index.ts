@@ -107,25 +107,21 @@ Deno.serve(async (req, res) => {
 
           // Ensure lead matches user's preferences
           if (
-            (user.options.companies.length > 0 &&
-              user.options.companies.includes(chosenLead.organization_name.toLowerCase())) || // User specified a company & matches lead's company
-            user.options.companies.length === 0 // Or user didn't specify any companies
+            (user.options.companies.includes(chosenLead.organization_name.toLowerCase()) || // User specified a company & matches lead's company
+              user.options.companies.length === 0) && // Or user didn't specify any companies
+            chosenLead.country === "united states"
           ) {
             if (user.options.cities.length === 0 && user.options.states.length === 0) {
               found = true;
               console.log("Match found!");
             } else if (
-              user.options.cities.length > 0 && // User specified cities & lead's city matches specified city
               user.options.cities.some((city) => {
                 return city.city === chosenLead.city.toLowerCase() && city.state === chosenLead.state.toLowerCase();
               })
             ) {
               found = true;
               console.log("Match found!");
-            } else if (
-              user.options.states.length > 0 && // User specified states & lead's state matches specified state
-              user.options.states.includes(chosenLead.state.toLowerCase())
-            ) {
+            } else if (user.options.states.includes(chosenLead.state.toLowerCase())) {
               found = true;
               console.log("Match found!");
             }

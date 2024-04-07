@@ -3,7 +3,7 @@ import NavBar from "@/components/common/NavBar";
 import Footer from "@/components/common/Footer";
 import Head from "next/head";
 import { Suspense, useContext, useEffect, useState } from "react";
-import { FaSearch, FaFilter, FaPaperPlane, FaTrash, FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaSearch, FaFilter, FaPaperPlane, FaTrash, FaEye, FaEyeSlash, FaPlus } from "react-icons/fa";
 import { useRouter, useSearchParams } from "next/navigation";
 import { UserContext } from "@/context/UserContext";
 import Loader from "@/components/common/Loader";
@@ -45,43 +45,54 @@ const Emailing = () => {
     body: "",
   });
   const [loaded, setLoaded] = useState(false);
-  const [locations, setLocations] = useState({
-    state: "",
-    city: "",
-  });
   const [companySearch, setCompanySearch] = useState("");
   const [showPreview, setShowPreview] = useState(false);
+  const [stateInput, setStateInput] = useState("");
+  const [cityInput, setCityInput] = useState({ city: "", state: "" });
+  const [selectedStates, setSelectedStates] = useState([]);
+  const [selectedCities, setSelectedCities] = useState([]);
 
   useEffect(() => {
     const loadData = async () => {
       if (session?.data?.session) {
-        setCompanies(mockCompanies);
+        await fetchCompanies();
         setLoading(false);
       } else {
         router.push("/signin");
       }
     };
 
-    if (session && !loaded) {
-      if (searchParams.has("success")) {
-        toast.success("Purchase made successfully!");
-      } else if (searchParams.has("cancelled")) {
-        toast.error("Something went wrong...");
+    if (session) {
+      if (!loaded) {
+        if (searchParams.has("success")) {
+          toast.success("Purchase made successfully!");
+        } else if (searchParams.has("cancelled")) {
+          toast.error("Something went wrong...");
+        }
+        loadData();
+        setLoaded(true);
       }
-      loadData();
-      setLoaded(true);
-    } else if (loaded) {
       fetchMatches();
     }
-  }, [session, selectedCompanies, locations]);
+  }, [session, selectedCompanies, selectedStates, selectedCities]);
+
+  const fetchCompanies = async () => {
+    const response = await fetch("/api/receiver/list-companies", {
+      method: "POST",
+    });
+    if (response.status === 200) {
+      const results = await response.json();
+      setCompanies(results.companyNames);
+    }
+  };
 
   const fetchMatches = async () => {
     const response = await fetch("/api/receiver/count-match", {
       method: "POST",
       body: JSON.stringify({
         companies: selectedCompanies,
-        states: locations.state,
-        cities: locations.city,
+        states: selectedStates,
+        cities: selectedCities,
       }),
     });
     if (response.status === 200) {
@@ -113,10 +124,6 @@ const Emailing = () => {
         <div className="p-4 text-white" dangerouslySetInnerHTML={{ __html: template.body }}></div>
       </div>
     );
-  };
-
-  const handleFilterChange = (e, filterName) => {
-    setLocations({ ...locations, [filterName]: e.target.value });
   };
 
   const handleCompanySelect = (name) => {
@@ -161,7 +168,7 @@ const Emailing = () => {
   let filteredCompanies = [];
   if (companies) {
     filteredCompanies = companies.filter((company) =>
-      companySearch ? company.name.toLowerCase().includes(companySearch.toLowerCase()) : true
+      companySearch ? company.toLowerCase().includes(companySearch.toLowerCase()) : true
     );
   }
 
@@ -202,18 +209,17 @@ const Emailing = () => {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                 {filteredCompanies.map((company) => (
                   <label
-                    key={company.name}
+                    key={company}
                     className="flex items-center bg-gray-700 p-4 rounded-lg shadow-md cursor-pointer transition-colors duration-300 hover:bg-gray-600"
                   >
                     <input
                       type="checkbox"
-                      checked={selectedCompanies.includes(company.name)}
-                      onChange={() => handleCompanySelect(company.name)}
+                      checked={selectedCompanies.includes(company)}
+                      onChange={() => handleCompanySelect(company)}
                       className="capitalize mr-4 h-5 w-5 text-purple-500 focus:ring-purple-500 rounded"
                     />
-                    <img src={company.logo} alt={company.name} className="h-10 w-10 rounded-full mr-4" />
                     <div>
-                      <h4 className="capitalize text-lg font-semibold">{company.name}</h4>
+                      <h4 className="capitalize text-lg font-semibold">{company}</h4>
                     </div>
                   </label>
                 ))}
@@ -227,11 +233,10 @@ const Emailing = () => {
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
                 {selectedCompanies.map((companyName) => {
-                  const company = companies.find((c) => c.name === companyName);
+                  const company = companies.find((c) => c === companyName);
                   return (
                     <div key={companyName} className="flex items-center">
-                      <img src={company.logo} alt={company.name} className="h-10 w-10 rounded-full mr-4" />
-                      <span className="text-lg capitalize">{company.name}</span>
+                      <span className="text-lg capitalize">{company}</span>
                       <button
                         onClick={() => handleCompanySelect(companyName)}
                         className="ml-auto text-white font-semibold rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-red-500"
@@ -245,45 +250,100 @@ const Emailing = () => {
             </section>
           )}
           <div className="bg-gray-800 p-6 rounded-lg shadow-lg mb-8 w-full">
-            <h3 className="text-2xl font-bold mb-4 flex items-center text-purple-400">Locations</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div>
-                <label htmlFor="state" className="block text-lg font-semibold mb-1">
-                  State:
-                </label>
-                <select
-                  id="state"
-                  value={locations.state}
-                  onChange={(e) => handleFilterChange(e, "state")}
-                  className="w-full p-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-                >
-                  <option value="">All States</option>
-                  {mockStates.map((state) => (
-                    <option key={state} value={state}>
-                      {state}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label htmlFor="city" className="block text-lg font-semibold mb-1">
-                  City:
-                </label>
-                <select
-                  id="city"
-                  value={locations.city}
-                  onChange={(e) => handleFilterChange(e, "city")}
-                  className="w-full p-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-                >
-                  <option value="">All Cities</option>
-                  {mockCities.map((city) => (
-                    <option key={city} value={city}>
-                      {city}
-                    </option>
-                  ))}
-                </select>
-              </div>
+            <h3 className="text-2xl font-bold mb-2 flex items-center text-purple-400">Locations</h3>
+            <div className="flex gap-2 justify-start" onSubmit={() => {}}>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  setSelectedStates([...selectedStates, stateInput]);
+                }}
+                className="flex flex-col items-start justify-center w-1/2"
+              >
+                <label className="text-lg font-semibold">State: </label>
+                <div className="flex gap-2 justify-start">
+                  <input
+                    onChange={(e) => setStateInput(e.target.value)}
+                    value={stateInput}
+                    placeholder="(e.g., California, Florida, New York)"
+                    className="flex-1 p-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  />
+                  <button type="submit" className="bg-purple-600 hover:bg-purple-700 rounded-lg px-4 py-2 ">
+                    <FaPlus />
+                  </button>
+                </div>
+              </form>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  setSelectedCities([...selectedCities, cityInput]);
+                }}
+                className="flex flex-col items-start justify-center w-1/2"
+              >
+                <label className="text-lg font-semibold">City: </label>
+                <div className="flex gap-2 justify-start">
+                  <input
+                    onChange={(e) => setCityInput({ ...cityInput, city: e.target.value })}
+                    value={cityInput.city}
+                    placeholder="City (e.g., Miami)"
+                    className="w-full p-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  />
+
+                  <input
+                    onChange={(e) => setCityInput({ ...cityInput, state: e.target.value })}
+                    value={cityInput.state}
+                    placeholder="State (e.g., Florida)"
+                    className="w-full p-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  />
+                  <button type="submit" className="bg-purple-600 hover:bg-purple-700 rounded-lg px-4 py-2 ">
+                    <FaPlus />
+                  </button>
+                </div>
+              </form>
             </div>
+            {selectedStates.length > 0 && (
+              <section className="mt-8 w-full">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-2xl font-bold text-purple-400">Selected States</h3>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                  {selectedStates.map((state) => {
+                    return (
+                      <div key={state} className="flex items-center">
+                        <span className="text-lg capitalize">{state}</span>
+                        <button
+                          onClick={() => setSelectedStates(selectedStates.filter((state) => state !== deletedState))}
+                          className="ml-auto text-white font-semibold rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-red-500"
+                        >
+                          <FaTrash color="#DC1C1C" />
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+              </section>
+            )}
+            {selectedCities.length > 0 && (
+              <section className="mt-8 w-full">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-2xl font-bold text-purple-400">Selected Cities</h3>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                  {selectedCities.map((city) => {
+                    return (
+                      <div key={city} className="flex items-center">
+                        <span className="text-lg capitalize">{city.city + ", " + city.state}</span>
+                        <button
+                          onClick={() => setSelectedCities(selectedCities.filter((city) => city !== deletedCity))}
+                          className="ml-auto text-white font-semibold rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-red-500"
+                        >
+                          <FaTrash color="#DC1C1C" />
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+              </section>
+            )}
           </div>
           <section className="bg-gray-800 p-6 rounded-lg shadow-lg mb-8 w-full">
             <div className="flex items-center justify-between mb-6">

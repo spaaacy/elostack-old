@@ -5,23 +5,31 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req, res) {
   try {
-    const { user_id } = await req.json();
+    const { user_id, weeks } = await req.json();
+    if (!user_id || !weeks) throw Error("User ID/weeks not provided!");
     const checkoutSession = await stripe.checkout.sessions.create({
       line_items: [
         {
           // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
           price:
-            process.env.NODE_ENV === "production" ? "price_1P04XdJipfpKYmm3Ep0YO1Ne" : "price_1OvAYeJipfpKYmm3vCwBfvfM",
+            weeks === 2
+              ? process.env.STRIPE_TWO_WEEK_PRICE_ID
+              : weeks === 4
+              ? process.env.STRIPE_FOUR_WEEK_PRICE_ID
+              : weeks === 8
+              ? process.env.STRIPE_EIGHT_WEEK_PRICE_ID
+              : "",
           quantity: 1,
         },
       ],
       mode: "payment",
       metadata: {
         user_id,
+        weeks,
       },
       // FIXME: Dashboard page deprecated
-      success_url: `${req.nextUrl.origin}/dashboard?success=true`,
-      cancel_url: `${req.nextUrl.origin}/dashboard?cancelled=true`,
+      success_url: `${req.nextUrl.origin}/emailing?success=true`,
+      cancel_url: `${req.nextUrl.origin}/emailing?cancelled=true`,
     });
 
     return NextResponse.json({ session: checkoutSession }, { status: 200 });

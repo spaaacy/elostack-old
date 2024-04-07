@@ -50,6 +50,7 @@ Deno.serve(async (req, res) => {
 
     console.log("Beginning email loop...");
     for (const user of results.data) {
+      console.log("Going to next user...");
       try {
         // Check if user's subscription is active
         if (!user.active) continue;
@@ -106,25 +107,21 @@ Deno.serve(async (req, res) => {
 
           // Ensure lead matches user's preferences
           if (
-            (user.options.companies.length > 0 &&
-              user.options.companies.includes(chosenLead.organization_name.toLowerCase())) || // User specified a company & matches lead's company
-            user.options.companies.length === 0 // Or user didn't specify any companies
+            (user.options.companies.includes(chosenLead.organization_name.toLowerCase()) || // User specified a company & matches lead's company
+              user.options.companies.length === 0) && // Or user didn't specify any companies
+            chosenLead.country === "united states"
           ) {
             if (user.options.cities.length === 0 && user.options.states.length === 0) {
               found = true;
               console.log("Match found!");
             } else if (
-              user.options.cities.length > 0 && // User specified cities & lead's city matches specified city
               user.options.cities.some((city) => {
                 return city.city === chosenLead.city.toLowerCase() && city.state === chosenLead.state.toLowerCase();
               })
             ) {
               found = true;
               console.log("Match found!");
-            } else if (
-              user.options.states.length > 0 && // User specified states & lead's state matches specified state
-              user.options.states.includes(chosenLead.state.toLowerCase())
-            ) {
+            } else if (user.options.states.includes(chosenLead.state.toLowerCase())) {
               found = true;
               console.log("Match found!");
             }
@@ -181,6 +178,17 @@ Deno.serve(async (req, res) => {
             },
           });
 
+          // Check if user has sufficient credits and decrement if true, otherwise go to next user
+          results = await supabase.rpc("decrement_subscriber_credits", {
+            subscriber_user_id: user.user_id,
+          });
+          if (results.error) throw results.error;
+          if (!results.data) {
+            console.error("Insufficient credits!");
+            continue;
+          }
+          console.log("Credits decremented successfully!");
+
           const info = await transporter.sendMail({
             from: user.user.email,
             to: chosenLead.email,
@@ -190,10 +198,10 @@ Deno.serve(async (req, res) => {
           console.log(`Email ${info.messageId} sent!`);
 
           // Create a record of the application if email succeeds
-          const { error } = await supabase
+          results = await supabase
             .from("application")
             .insert({ user_id: user.user_id, receiver_email: chosenLead.email });
-          if (error) throw error;
+          if (results.error) throw results.error;
         }
       } catch (error) {
         console.error(error);

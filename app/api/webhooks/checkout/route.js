@@ -26,7 +26,8 @@ export async function POST(req) {
 
     if (event.type === "checkout.session.completed") {
       const user_id = event.data.object.metadata.user_id;
-      if (!user_id) throw Error("User ID missing from metadata!");
+      const weeks = event.data.object.metadata.weeks;
+      if (!user_id || !weeks) throw Error("User ID/weeks missing from metadata!");
 
       const auth = await supabase.auth.signInWithPassword({
         email: process.env.SUPABASE_ADMIN_EMAIL,
@@ -34,9 +35,10 @@ export async function POST(req) {
       });
       if (auth.error) throw auth.error;
 
-      const { error } = await supabase
-        .from("purchase")
-        .insert({ payment_intent_id: event.data.object.payment_intent, user_id });
+      const { error } = await supabase.rpc("increment_subscriber_credits", {
+        subscriber_user_id: user_id,
+        amount: weeks * 168,
+      });
       if (error) throw error;
     }
 

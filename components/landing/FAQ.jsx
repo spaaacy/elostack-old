@@ -27,9 +27,9 @@ const FAQProvider = ({ children }) => {
         "No, our email automation platform is designed to be user-friendly and intuitive. You can easily create and manage email campaigns without any coding or technical expertise.",
     },
     {
-      question: "Can I integrate your platform with my existing tools and systems?",
+      question: "Will I get marked as spam?",
       answer:
-        "Yes, our platform integrates seamlessly with popular tools and systems such as CRM, e-commerce platforms, and analytics tools. This allows you to streamline your workflows and leverage data from various sources.",
+        "No. We take precautions to ensure your emails are not spammed to the receiver. Emails are sent every 30 minutes from 8 AM EDT to 8 PM EDT one at a time, with a maximum of 24 emails sent a day.",
     },
     {
       question: "How do you ensure the deliverability of automated emails?",

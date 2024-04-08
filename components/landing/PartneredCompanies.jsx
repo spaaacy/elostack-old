@@ -23,7 +23,7 @@ const PartneredCompanies = () => {
   companies = [...companies, ...companies, ...companies];
 
   return (
-    <section className="text-gray-500 body-font  w-[200rem] py-4 pb-16">
+    <section className="text-gray-500 body-font w-full py-4 pb-16 bg-">
       <div className="container px-5 mx-auto h-full flex items-center flex-col w-full">
         <p className="text-xl font-bold text-gray-300 mb-10"></p>
         <Carousel
@@ -41,12 +41,12 @@ const PartneredCompanies = () => {
           className="w-full"
         >
           {companies.map((company, index) => (
-            <div key={index} className="px-8 flex items-center space-x-4 h-[75px] w-[150px]">
+            <div key={index} className=" flex items-center space-x-4 h-[100px] w-[150px] p-2">
               <Image
-                className="object-contain"
+                className="object-contain filter backdrop-grayscale-0"
                 alt={company.name}
                 width={150}
-                height={75}
+                height={100}
                 src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/${
                   process.env.NEXT_PUBLIC_STORAGE_PATH
                 }/company-logos/${company.name.toLowerCase()}.png`}
@@ -54,6 +54,10 @@ const PartneredCompanies = () => {
             </div>
           ))}
         </Carousel>
+        <p className="text-xs mt-4">
+          * We are not directly affiliated with these companies. These only represent a few of the companies we have on
+          our database
+        </p>
       </div>
     </section>
   );

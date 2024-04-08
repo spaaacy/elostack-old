@@ -118,10 +118,10 @@ const PlansPage = () => {
         <title>Plans</title>
       </Head>
       <main className="container mx-auto p-8">
-        <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-8 rounded-lg shadow-lg text-center my-8">
+      {/* <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-8 rounded-lg shadow-lg text-center my-8">
           <h3 className="text-2xl font-bold mb-4 text-white">Free Credits for Your First Week</h3>
           <p className="text-xl text-white">New users get 168 free credits. Equivalent to a week's worth of emails.</p>
-        </div>
+        </div> */}
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {plans.map((plan, index) => (
             <div

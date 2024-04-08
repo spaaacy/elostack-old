@@ -11,6 +11,7 @@ const gradientTextStyle = css`
   background: linear-gradient(to right, #6f2da8, #7266f2);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  height: 90px;
 `;
 
 const containerStyle = css`

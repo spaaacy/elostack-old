@@ -492,6 +492,7 @@ const Emailing = () => {
                 id="templateBody"
                 value={template.body}
                 onChange={(e) => handleTemplateChange(e, "body")}
+                rows={15}
                 className="w-full h-48 p-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
               ></textarea>
             </div>

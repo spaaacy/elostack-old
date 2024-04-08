@@ -1,23 +1,21 @@
 "use client";
 import React from "react";
-import { Carousel } from 'react-responsive-carousel';
+import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { AiFillHome } from 'react-icons/ai';
+import { AiFillHome } from "react-icons/ai";
+import Image from "next/image";
 
 const PartneredCompanies = () => {
   let companies = [
     { name: "Google" },
     { name: "Microsoft" },
-    { name: "Apple" },
     { name: "Amazon" },
-    { name: "Facebook" },
-    { name: "Tesla" },
+    { name: "Meta" },
     { name: "Netflix" },
-    { name: "Adobe" },
-    { name: "Salesforce" },
-    { name: "Oracle" },
-    { name: "IBM" },
-    { name: "Intel" },
+    { name: "Coinbase" },
+    { name: "Uber" },
+    { name: "Nvidia" },
+    { name: "LinkedIn" },
     // Add more companies as needed
   ];
 
@@ -43,9 +41,16 @@ const PartneredCompanies = () => {
           className="w-full"
         >
           {companies.map((company, index) => (
-            <div key={index} className="px-8 flex items-center space-x-4">
-              <AiFillHome size="2em" className="text-purple-500" />
-              <h2 className="text-lg font-semibold text-white">{company.name}</h2>
+            <div key={index} className="px-8 flex items-center space-x-4 h-[75px] w-[150px]">
+              <Image
+                className="object-contain"
+                alt={company.name}
+                width={150}
+                height={75}
+                src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/${
+                  process.env.NEXT_PUBLIC_STORAGE_PATH
+                }/company-logos/${company.name.toLowerCase()}.png`}
+              />
             </div>
           ))}
         </Carousel>

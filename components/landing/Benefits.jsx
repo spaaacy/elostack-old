@@ -20,15 +20,16 @@ const Benefits = () => {
       description: "Craft personalized email campaigns that resonate with your audience and drive engagement.",
       aos: "fade-right",
       icon: <FaEnvelope className="text-4xl text-blue-500 mr-4" />,
-      image: "/emailservice.png",
+      image: "/template.png",
     },
     {
       title: "Workflow Automation",
-      description: "Streamline your email marketing efforts with automated workflows that nurture leads and keep subscribers engaged.",
+      description:
+        "Streamline your email marketing efforts with automated workflows that nurture leads and keep subscribers engaged.",
       aos: "fade-up",
       delay: 200,
       icon: <FaCog className="text-4xl text-green-500 mr-4" />,
-      image: "/emailservice.png",
+      image: "emailing.png",
     },
     {
       title: "Insightful Analytics",
@@ -36,7 +37,7 @@ const Benefits = () => {
       aos: "fade-left",
       delay: 400,
       icon: <FaChartLine className="text-4xl text-yellow-500 mr-4" />,
-      image: "/emailservice.png",
+      image: "/applications.png",
     },
   ];
 
@@ -48,7 +49,8 @@ const Benefits = () => {
             Unlock the Power of Email Automation
           </h2>
           <p className="text-xl text-gray-300" data-aos="fade-down" data-aos-delay="200">
-            Elevate your email marketing game and achieve remarkable results with our cutting-edge email automation platform.
+            Elevate your email marketing game and achieve remarkable results with our cutting-edge email automation
+            platform.
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
@@ -60,7 +62,11 @@ const Benefits = () => {
               data-aos-delay={step.delay}
             >
               <div className="relative">
-                <img src={step.image} alt={step.title} className="w-full h-64 object-cover rounded-t-lg transition-transform duration-500 ease-in-out transform hover:scale-110" />
+                <img
+                  src={step.image}
+                  alt={step.title}
+                  className="w-full h-64 object-cover object-left rounded-t-lg transition-transform duration-500 ease-in-out transform hover:scale-110"
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div>
               </div>
               <div className="p-8">

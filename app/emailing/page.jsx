@@ -503,14 +503,24 @@ const Emailing = () => {
           </section>
         </div>
       </div>
-      {(subscriber || user?.credits > 0) && (
-        <button
-          onClick={handleSubmit}
-          className="ml-auto px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300 flex items-center"
-        >
-          Save Preferences
-        </button>
-      )}
+      {subscriber ||
+        (user?.credits > 0 && (
+          <button
+            onClick={handleSubmit}
+            className="ml-auto px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300 flex items-center"
+          >
+            Save Preferences
+          </button>
+        ))}
+      {user?.credits ===
+        0(
+          <Link
+            href={"/plans"}
+            className="ml-auto px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300 flex items-center"
+          >
+            Purchase credits
+          </Link>
+        )}
     </main>
   );
 };

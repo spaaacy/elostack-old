@@ -27,7 +27,6 @@ export async function POST(req, res) {
         user_id,
         weeks,
       },
-      // FIXME: Dashboard page deprecated
       success_url: `${req.nextUrl.origin}/emailing?success=true`,
       cancel_url: `${req.nextUrl.origin}/emailing?cancelled=true`,
     });

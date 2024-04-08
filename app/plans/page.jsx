@@ -7,6 +7,7 @@ import { useContext, useRef, useState } from "react";
 import { FaEnvelope, FaChartBar, FaUserTie, FaCheckCircle } from "react-icons/fa";
 import { UserContext } from "@/context/UserContext";
 import { loadStripe } from "@stripe/stripe-js";
+import { useRouter } from "next/navigation";
 
 const plans = [
   {
@@ -66,6 +67,7 @@ const PlansPage = () => {
   const { session } = useContext(UserContext);
   const purchaseRef = useRef();
   const [selectedPlan, setSelectedPlan] = useState(null);
+  const router = useRouter();
 
   const handlePlanSelect = async (plan) => {
     await setSelectedPlan(plan);
@@ -84,7 +86,7 @@ const PlansPage = () => {
 
   const initiatePurchase = async (selectedPlan) => {
     const userId = session.data.session.user.id;
-    if (!userId) return;
+    if (!userId) router.push("/signin");
     try {
       const response = await fetch("/api/checkout", {
         method: "POST",

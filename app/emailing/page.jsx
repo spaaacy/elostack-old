@@ -52,11 +52,15 @@ const Emailing = () => {
   const [selectedStates, setSelectedStates] = useState([]);
   const [selectedCities, setSelectedCities] = useState([]);
   const [delayedCall, setDelayedCall] = useState();
+  const [subscriber, setSubscriber] = useState();
+  const [user, setUser] = useState();
 
   useEffect(() => {
     const loadData = async () => {
       if (session?.data?.session) {
         await fetchCompanies();
+        await fetchSubscriber();
+        await fetchUser();
         setLoading(false);
       } else {
         router.push("/signin");
@@ -108,6 +112,21 @@ const Emailing = () => {
     );
   };
 
+  const requestEmailPermissions = async () => {
+    const userId = session.data.session?.user.id;
+    if (!userId) return;
+    const response = await fetch("/api/oauth/request-permission", {
+      method: "POST",
+      headers: {
+        "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
+      },
+    });
+    if (response.status === 200) {
+      const { url } = await response.json();
+      router.push(url);
+    }
+  };
+
   const renderEmailPreview = () => {
     return (
       <div className="bg-gray-600 rounded-lg shadow-lg overflow-hidden">
@@ -133,6 +152,29 @@ const Emailing = () => {
     );
   };
 
+  const fetchSubscriber = async () => {
+    const userId = session.data.session?.user.id;
+    if (!userId) return;
+    try {
+      const response = await fetch(`/api/subscriber/${userId}`, {
+        method: "GET",
+        headers: {
+          "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
+        },
+      });
+      if (response.status === 200) {
+        const results = await response.json();
+        setSubscriber(results.subscriber);
+        setSelectedCompanies(results.subscriber.options.companies);
+        setSelectedCities(results.subscriber.options.cities);
+        setSelectedStates(results.subscriber.options.states);
+        setTemplate({ body: results.subscriber.email_body, subject: results.subscriber.email_subject });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleCompanySelect = (name) => {
     if (selectedCompanies.includes(name)) {
       setSelectedCompanies(selectedCompanies.filter((selectedName) => selectedName !== name));
@@ -145,10 +187,23 @@ const Emailing = () => {
     setTemplate({ ...template, [field]: e.target.value });
   };
 
+  const fetchUser = async () => {
+    const userId = session?.data?.session?.user.id;
+    if (userId) {
+      const response = await fetch(`/api/user/${userId}`, {
+        method: "GET",
+      });
+      if (response.status === 200) {
+        const results = await response.json();
+        setUser(results.user);
+      }
+    }
+  };
+
   const handleSubmit = async () => {
     const userId = session.data.session.user.id;
     if (userId && template.subject && template.body) {
-      const response = await fetch("/api/subscriber/create", {
+      const response = await fetch(`/api/subscriber/${subscriber ? "update" : "create"}`, {
         method: "POST",
         headers: {
           "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
@@ -158,12 +213,17 @@ const Emailing = () => {
           email_body: template.body,
           email_subject: template.subject,
           active: false,
-          // options: { companies: selectedCompanies.length > 0 ? selectedCompanies : [], cities: [], states: [] },
-          options: { companies: selectedCompanies.length > 0 ? [] : [], cities: [], states: [] },
+          options: {
+            companies: selectedCompanies.length > 0 ? selectedCompanies : [],
+            cities: selectedCities.length > 0 ? selectedCities : [],
+            states: selectedStates.length > 0 ? selectedStates : [],
+          },
         }),
       });
-      if (response.status === 201) {
-        toast.success("Preferences saved!");
+      if (response.status === 201 || response.status === 200) {
+        if (!subscriber || !subscriber.refresh_token) {
+          requestEmailPermissions();
+        }
       } else {
         toast.error("Something went wrong...");
       }
@@ -179,6 +239,26 @@ const Emailing = () => {
     );
   }
 
+  const toggleCampaignStatus = async () => {
+    if (subscriber && !subscriber.active && (!subscriber.access_token || !subscriber.refresh_token)) {
+      requestEmailPermissions();
+    } else if (user && user.credits > 0 && subscriber) {
+      const response = await fetch(`/api/subscriber/toggle-active`, {
+        method: "POST",
+        headers: {
+          "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
+        },
+        body: JSON.stringify({
+          user_id: user.user_id,
+          active: !subscriber.active,
+        }),
+      });
+      if (response.status === 200) {
+        window.location.reload();
+      }
+    }
+  };
+
   if (loading)
     return (
       <>
@@ -190,7 +270,17 @@ const Emailing = () => {
   return (
     <main className="container mx-auto p-8">
       <section className="text-center mt-2 mb-10">
-        <h2 className="text-3xl font-bold text-white">Preferences</h2>
+        <div className="flex justify-between items-center">
+          <h2 className="text-3xl font-bold text-white">Preferences</h2>
+          {subscriber && user.credits > 0 && (
+            <button
+              onClick={toggleCampaignStatus}
+              className="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300"
+            >
+              {subscriber.active ? "Pause Campaign" : "Start Campaign"}
+            </button>
+          )}
+        </div>
       </section>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 w-[126rem]">
         <div className="lg:col-span-2">
@@ -413,12 +503,14 @@ const Emailing = () => {
           </section>
         </div>
       </div>
-      <button
-        onClick={handleSubmit}
-        className="px-6 py-3 ml-auto bg-purple-600 text-white text-lg font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300 flex items-center"
-      >
-        Save
-      </button>
+      {(subscriber || user?.credits > 0) && (
+        <button
+          onClick={handleSubmit}
+          className="ml-auto px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300 flex items-center"
+        >
+          Save Preferences
+        </button>
+      )}
     </main>
   );
 };

@@ -55,7 +55,7 @@ const Emailing = () => {
   const [delayedCall, setDelayedCall] = useState();
   const [subscriber, setSubscriber] = useState();
   const [user, setUser] = useState();
-
+  const [attachments, setAttachments] = useState([]);
   useEffect(() => {
     const loadData = async () => {
       if (session?.data?.session) {
@@ -91,7 +91,16 @@ const Emailing = () => {
       setCompanies(results.companyNames);
     }
   };
+  const handleAttachmentChange = (e) => {
+    const selectedFiles = Array.from(e.target.files);
+    setAttachments([...attachments, ...selectedFiles]);
+  };
 
+  const handleAttachmentRemove = (index) => {
+    const updatedAttachments = [...attachments];
+    updatedAttachments.splice(index, 1);
+    setAttachments(updatedAttachments);
+  };
   const fetchMatches = () => {
     if (delayedCall) clearTimeout(delayedCall);
     setDelayedCall(
@@ -447,57 +456,101 @@ const Emailing = () => {
               </div>
               </section>
         )}
-        <section className="bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
-          <div className="flex items-center justify-between mb-6">
-              <h3 className="text-2xl font-bold text-purple-400">Email Template</h3>
-              <button
-                onClick={() => setShowPreview(!showPreview)}
-                className="px-4 py-2 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300 flex items-center"
-              >
-                {showPreview ? (
-                  <>
-                    <FaEyeSlash className="mr-2" />
-                    Hide Preview
-                  </>
-                ) : (
-                  <>
-                    <FaEye className="mr-2" />
-                    Show Preview
-                  </>
-                )}
-              </button>
-            </div>
-            <div className="mb-4">
-              <label htmlFor="templateSubject" className="block text-lg font-semibold mb-1">
-                Subject:
-              </label>
-              <input
-                id="templateSubject"
-                value={template.subject}
-                onChange={(e) => handleTemplateChange(e, "subject")}
-                className="w-full p-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-                type="text"
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="templateBody" className="block text-lg font-semibold mb-1">
-                Body:
-              </label>
-              <textarea
-                id="templateBody"
-                value={template.body}
-                onChange={(e) => handleTemplateChange(e, "body")}
-                rows={15}
-                className="w-full h-48 p-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-              ></textarea>
-            </div>
-            {showPreview && (
-              <div className="mt-8">
-                <h4 className="text-xl font-semibold mb-4 text-purple-400">Preview:</h4>
-                {renderEmailPreview()}
-              </div>
+<section className="bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-2xl font-bold text-purple-400">Email Template</h3>
+          <button
+            onClick={() => setShowPreview(!showPreview)}
+            className="px-4 py-2 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300 flex items-center"
+          >
+            {showPreview ? (
+              <>
+                <FaEyeSlash className="mr-2" />
+                Hide Preview
+              </>
+            ) : (
+              <>
+                <FaEye className="mr-2" />
+                Show Preview
+              </>
             )}
-       </section>
+          </button>
+        </div>
+        <div className="mb-4">
+          <label htmlFor="templateSubject" className="block text-lg font-semibold mb-1">
+            Subject:
+          </label>
+          <input
+            id="templateSubject"
+            value={template.subject}
+            onChange={(e) => handleTemplateChange(e, "subject")}
+            className="w-full p-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+            type="text"
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="templateBody" className="block text-lg font-semibold mb-1">
+            Body:
+          </label>
+          <textarea
+            id="templateBody"
+            value={template.body}
+            onChange={(e) => handleTemplateChange(e, "body")}
+            rows={15}
+            className="w-full h-48 p-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+          ></textarea>
+        </div>
+        <div className="mb-4">
+  <label htmlFor="attachments" className="block text-lg font-semibold mb-1">
+    Attachments:
+  </label>
+  <div className="flex items-center space-x-4">
+    <div
+      className="flex items-center justify-center w-48 h-48 bg-gray-700 rounded-lg cursor-pointer"
+      onClick={() => document.getElementById("attachmentInput").click()}
+    >
+      <FaPlus className="text-4xl text-purple-500" />
+    </div>
+    <input
+      id="attachmentInput"
+      type="file"
+      multiple
+      onChange={handleAttachmentChange}
+      className="hidden"
+    />
+    {attachments.length > 0 && (
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        {attachments.map((attachment, index) => (
+          <div
+            key={index}
+            className="flex items-center justify-between bg-gray-700 rounded-lg p-2"
+          >
+            <span className="text-sm truncate">{attachment.name}</span>
+            <button
+              onClick={() => handleAttachmentRemove(index)}
+              className="ml-2 text-red-500 hover:text-red-700 focus:outline-none"
+            >
+              <FaTrash />
+            </button>
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+  {attachments.length === 0 && (
+    <p className="mt-2 text-sm text-gray-400">
+      Click the "+" icon to add attachments
+    </p>
+  )}
+
+        </div>
+        {showPreview && (
+          <div className="mt-8">
+            <h4 className="text-xl font-semibold mb-4 text-purple-400">Preview:</h4>
+            {renderEmailPreview()}
+          </div>
+        )}
+      </section>
       </div>
     </div>
     {subscriber ||

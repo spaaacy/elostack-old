@@ -295,104 +295,99 @@ const Emailing = () => {
             </div>
 
             <div className="mb-8 w-full">
-              <div className="flex gap-2 justify-start" onSubmit={() => {}}>
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    setSelectedStates([...selectedStates, stateInput]);
-                  }}
-                  className="flex flex-col items-start justify-center w-1/2"
-                >
-                  <label className="text-lg font-semibold">State: </label>
-                  <div className="flex gap-2 justify-start">
-                    <input
-                      onChange={(e) => setStateInput(e.target.value)}
-                      value={stateInput}
-                      placeholder="(e.g., California, Florida, New York)"
-                      className="flex-1 p-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-                    />
-                    <button type="submit" className="bg-purple-600 hover:bg-purple-700 rounded-lg px-4 py-2 ">
-                      <FaPlus />
-                    </button>
-                  </div>
-                </form>
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    setSelectedCities([...selectedCities, cityInput]);
-                  }}
-                  className="flex flex-col items-start justify-center w-1/2"
-                >
-                  <label className="text-lg font-semibold">City: </label>
-                  <div className="flex gap-2 justify-start">
-                    <input
-                      onChange={(e) => setCityInput({ ...cityInput, city: e.target.value })}
-                      value={cityInput.city}
-                      placeholder="City (e.g., Miami)"
-                      className="w-full p-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-                    />
-
-                    <input
-                      onChange={(e) => setCityInput({ ...cityInput, state: e.target.value })}
-                      value={cityInput.state}
-                      placeholder="State (e.g., Florida)"
-                      className="w-full p-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-                    />
-                    <button type="submit" className="bg-purple-600 hover:bg-purple-700 rounded-lg px-4 py-2 ">
-                      <FaPlus />
-                    </button>
-                  </div>
-                </form>
-              </div>
-              {selectedStates.length > 0 && (
-                <section className="mt-8 w-full">
-                  <div className="flex items-center justify-between mb-6">
-                    <h3 className="text-2xl font-bold text-purple-400">Selected States</h3>
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-                    {selectedStates.map((state) => {
-                      return (
-                        <div key={state} className="flex items-center">
-                          <span className="text-lg capitalize">{state}</span>
-                          <button
-                            onClick={() =>
-                              setSelectedStates(selectedStates.filter((selectedState) => selectedState !== state))
-                            }
-                            className="ml-auto text-white font-semibold rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-red-500"
-                          >
-                            <FaTrash color="#DC1C1C" />
-                          </button>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </section>
-              )}
-              {selectedCities.length > 0 && (
-                <section className="mt-8 w-full">
-                  <div className="flex items-center justify-between mb-6">
-                    <h3 className="text-2xl font-bold text-purple-400">Selected Cities</h3>
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-                    {selectedCities.map((city) => {
-                      return (
-                        <div key={city} className="flex items-center">
-                          <span className="text-lg capitalize">{city.city + ", " + city.state}</span>
-                          <button
-                            onClick={() =>
-                              setSelectedCities(selectedCities.filter((selectedCity) => selectedCity !== city))
-                            }
-                            className="ml-auto text-white font-semibold rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-red-500"
-                          >
-                            <FaTrash color="#DC1C1C" />
-                          </button>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </section>
-              )}
-            </div>
+  <div className="flex flex-wrap gap-4 justify-between">
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        setSelectedStates([...selectedStates, stateInput]);
+        setStateInput("");
+      }}
+      className="flex flex-col items-start justify-center w-full sm:w-auto"
+    >
+      <label className="text-lg font-semibold">State: </label>
+      <div className="flex gap-2 justify-start w-full sm:w-auto">
+        <input
+          onChange={(e) => setStateInput(e.target.value)}
+          value={stateInput}
+          placeholder="(e.g., California, Florida, New York)"
+          className="flex-1 p-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+        />
+        <button type="submit" className="bg-purple-600 hover:bg-purple-700 rounded-lg px-4 py-2">
+          <FaPlus />
+        </button>
+      </div>
+    </form>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        setSelectedCities([...selectedCities, cityInput]);
+        setCityInput({ city: "", state: "" });
+      }}
+      className="flex flex-col items-start justify-center w-full sm:w-auto sm:ml-4"
+    >
+      <label className="text-lg font-semibold">City: </label>
+      <div className="flex flex-col sm:flex-row gap-2 justify-start w-full sm:w-auto">
+        <input
+          onChange={(e) => setCityInput({ ...cityInput, city: e.target.value })}
+          value={cityInput.city}
+          placeholder="City (e.g., Miami)"
+          className="w-full sm:w-40 p-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+        />
+        <input
+          onChange={(e) => setCityInput({ ...cityInput, state: e.target.value })}
+          value={cityInput.state}
+          placeholder="State (e.g., Florida)"
+          className="w-full sm:w-40 p-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+        />
+        <button type="submit" className="bg-purple-600 hover:bg-purple-700 rounded-lg px-4 py-2">
+          <FaPlus />
+        </button>
+      </div>
+    </form>
+  </div>
+  {selectedStates.length > 0 && (
+    <section className="mt-8">
+      <div className="flex items-center justify-between mb-6">
+        <h3 className="text-2xl font-bold text-purple-400">Selected States</h3>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {selectedStates.map((state) => (
+          <div key={state} className="flex items-center">
+            <span className="text-lg capitalize">{state}</span>
+            <button
+              onClick={() => setSelectedStates(selectedStates.filter((selectedState) => selectedState !== state))}
+              className="ml-auto text-white font-semibold rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-red-500"
+            >
+              <FaTrash color="#DC1C1C" />
+            </button>
+          </div>
+        ))}
+      </div>
+    </section>
+  )}
+  {selectedCities.length > 0 && (
+    <section className="mt-8">
+      <div className="flex items-center justify-between mb-6">
+        <h3 className="text-2xl font-bold text-purple-400">Selected Cities</h3>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {selectedCities.map((city) => (
+          <div key={city.city} className="flex items-center">
+            <span className="text-lg capitalize">{city.city + ", " + city.state}</span>
+            <button
+              onClick={() =>
+                setSelectedCities(selectedCities.filter((selectedCity) => selectedCity.city !== city.city))
+              }
+              className="ml-auto text-white font-semibold rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-red-500"
+            >
+              <FaTrash color="#DC1C1C" />
+            </button>
+          </div>
+        ))}
+      </div>
+    </section>
+  )}
+</div>
 
             <div className="relative my-4">
               <input

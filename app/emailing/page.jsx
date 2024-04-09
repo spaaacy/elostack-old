@@ -268,24 +268,25 @@ const Emailing = () => {
       </>
     );
 
-  return (
-    <main className="container mx-auto p-8">
-      <section className="text-center mt-2 mb-10">
-        <div className="flex justify-between items-center">
-          <h2 className="text-3xl font-bold text-white">Preferences</h2>
-          {subscriber && user.credits > 0 && (
-            <button
-              onClick={toggleCampaignStatus}
-              className="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300"
-            >
-              {subscriber.active ? "Pause Campaign" : "Start Campaign"}
-            </button>
-          )}
-        </div>
-      </section>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 w-[126rem]">
-        <div className="lg:col-span-2">
-          <div className="bg-gray-800 p-6 rounded-lg shadow-lg mb-8 w-full">
+    return (
+      <main className="container mx-auto p-8">
+        <section className="text-center mt-2 mb-10">
+          <div className="flex justify-between items-center">
+            <h2 className="text-3xl font-bold text-white">Preferences</h2>
+            {subscriber && user.credits > 0 && (
+              <button
+                onClick={toggleCampaignStatus}
+                className="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300"
+              >
+                {subscriber.active ? "Pause Campaign" : "Start Campaign"}
+              </button>
+            )}
+          </div>
+        </section>
+        <div className="flex flex-wrap gap-8">
+          <div className="flex-grow">
+            <div className="bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
+              
             <div className="flex justify-between items-center">
               <h3 className="text-2xl font-bold mb-4 text-purple-400">Companies</h3>
               {matchesFound !== null && matchesFound !== undefined && matchesFound !== "" && (
@@ -427,10 +428,10 @@ const Emailing = () => {
                 })}
               </div>
             </div>
-          </div>
-          {selectedCompanies.length > 0 && (
-            <section className="bg-gray-800 p-6 rounded-lg shadow-lg mb-8 w-full">
-              <div className="flex items-center justify-between mb-6">
+            </div>
+        {selectedCompanies.length > 0 && (
+          <section className="bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
+           <div className="flex items-center justify-between mb-6">
                 <h3 className="text-2xl font-bold text-purple-400">Selected Companies</h3>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
@@ -449,11 +450,10 @@ const Emailing = () => {
                   );
                 })}
               </div>
-            </section>
-          )}
-
-          <section className="bg-gray-800 p-6 rounded-lg shadow-lg mb-8 w-full">
-            <div className="flex items-center justify-between mb-6">
+              </section>
+        )}
+        <section className="bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
+          <div className="flex items-center justify-between mb-6">
               <h3 className="text-2xl font-bold text-purple-400">Email Template</h3>
               <button
                 onClick={() => setShowPreview(!showPreview)}
@@ -502,18 +502,18 @@ const Emailing = () => {
                 {renderEmailPreview()}
               </div>
             )}
-          </section>
-        </div>
+       </section>
       </div>
-      {subscriber ||
-        (user?.credits > 0 && (
-          <button
-            onClick={handleSubmit}
-            className="ml-auto px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300 flex items-center"
-          >
-            Save Preferences
-          </button>
-        ))}
-    </main>
-  );
+    </div>
+    {subscriber ||
+      (user?.credits > 0 && (
+        <button
+          onClick={handleSubmit}
+          className="ml-auto px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300 flex items-center"
+        >
+          Save Preferences
+        </button>
+      ))}
+  </main>
+);
 };

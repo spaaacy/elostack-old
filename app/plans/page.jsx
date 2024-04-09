@@ -118,11 +118,17 @@ const PlansPage = () => {
         <title>Plans</title>
       </Head>
       <main className="container mx-auto p-8">
+        <section className="bg-gradient-to-r from-purple-600 to-indigo-600 p-8 rounded-lg shadow-lg text-center mb-12">
+          <h1 className="text-4xl font-bold mb-4 text-white">Choose Your Plan</h1>
+          <p className="text-xl text-white">Select a plan that best suits your needs and start your email outreach journey.</p>
+        </section>
+  
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          
       {/* <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-8 rounded-lg shadow-lg text-center my-8">
           <h3 className="text-2xl font-bold mb-4 text-white">Free Credits for Your First Week</h3>
           <p className="text-xl text-white">New users get 168 free credits. Equivalent to a week's worth of emails.</p>
         </div> */}
-        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {plans.map((plan, index) => (
             <div
               key={index}
@@ -152,8 +158,12 @@ const PlansPage = () => {
             </div>
           ))}
         </section>
-        <section className="mt-16"></section>
-        <div ref={purchaseRef} className={` ${selectedPlan ? "flex" : "hidden"} justify-center mt-12`}>
+ 
+
+
+
+      <div ref={purchaseRef} className={` ${selectedPlan ? "flex" : "hidden"} justify-center mt-12`}>
+        
           <button
             onClick={handleSubscribe}
             className={`px-12 py-4 text-2xl font-semibold rounded-full transition-colors duration-300 shadow-lg ${

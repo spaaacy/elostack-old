@@ -9,19 +9,16 @@ import { UserContext } from "@/context/UserContext";
 import Loader from "@/components/common/Loader";
 import toast, { Toaster } from "react-hot-toast";
 
-const mockStates = ["Florida", "State 2"];
-const mockCities = ["Saint Petersburg", "City 2", "City 3"];
-
 import React from "react";
 import Link from "next/link";
 
 const Page = () => {
   return (
-    <div className="flex flex-col min-h-screen text-white w-full  ">
-      <NavBar />
+    <div className="flex flex-col min-h-screen text-white w-full">
       <Head>
         <title>Email Service</title>
       </Head>
+      <NavBar />
       <Suspense>
         <Emailing />
       </Suspense>
@@ -38,7 +35,8 @@ const Emailing = () => {
   const [matchesFound, setMatchesFound] = useState();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
-  const { session } = useContext(UserContext);
+  const userContext = useContext(UserContext);
+  const session = userContext?.session;
   const [companies, setCompanies] = useState([]);
   const [selectedCompanies, setSelectedCompanies] = useState([]);
   const [template, setTemplate] = useState({

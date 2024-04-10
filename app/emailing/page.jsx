@@ -3,7 +3,7 @@ import NavBar from "@/components/common/NavBar";
 import Footer from "@/components/common/Footer";
 import Head from "next/head";
 import { Suspense, useContext, useEffect, useState } from "react";
-import { FaSearch, FaFilter, FaPaperPlane, FaTrash, FaEye, FaEyeSlash, FaPlus } from "react-icons/fa";
+import { FaSearch, FaFilter, FaPaperPlane, FaTrash, FaEye, FaEyeSlash, FaPlus, FaQuestionCircle } from "react-icons/fa";
 import { useRouter, useSearchParams } from "next/navigation";
 import { UserContext } from "@/context/UserContext";
 import Loader from "@/components/common/Loader";
@@ -276,7 +276,18 @@ const Emailing = () => {
         <Loader />
       </>
     );
-
+    const HelpIcon = ({ text }) => {
+      return (
+        <div className="relative inline-block group ml-2">
+          <div className="bg-purple-500 text-white rounded-full w-6 h-6 flex items-center justify-center cursor-pointer">
+            <span className="text-sm">i</span>
+          </div>
+          <div className="absolute left-1/2 bottom-full transform -translate-x-1/2 bg-gray-900 text-white text-base px-4 py-2 rounded opacity-0 pointer-events-none transition-opacity duration-200 group-hover:opacity-100 w-64 text-center">
+            {text}
+          </div>
+        </div>
+      );
+    };
     return (
       <main className="container mx-auto p-8">
         <section className="text-center mt-2 mb-10">
@@ -293,16 +304,15 @@ const Emailing = () => {
           </div>
         </section>
         <div className="flex flex-wrap gap-8">
-          <div className="flex-grow">
-            <div className="bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
-              
-            <div className="flex justify-between items-center">
-              <h3 className="text-2xl font-bold mb-4 text-purple-400">Companies</h3>
-              {matchesFound !== null && matchesFound !== undefined && matchesFound !== "" && (
-                <p className="font-semibold text-lg">{`${matchesFound} leads found`}</p>
-              )}
-            </div>
-
+        <div className="flex-grow">
+  <div className="bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
+    <div className="flex items-center mb-4">
+      <h3 className="text-2xl font-bold text-purple-400 mr-0">Companies</h3>
+      <HelpIcon text="Choose the companies to target in your email campaign. Filter by just the state or the city and state" />
+      {matchesFound !== null && matchesFound !== undefined && matchesFound !== "" && (
+        <p className="font-semibold text-lg ml-auto">{`${matchesFound} leads found`}</p>
+      )}
+    </div>
             <div className="mb-8 w-full">
   <div className="flex flex-wrap gap-4 justify-between">
     <form
@@ -355,47 +365,55 @@ const Emailing = () => {
     </form>
   </div>
   {selectedStates.length > 0 && (
-    <section className="mt-8">
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="text-2xl font-bold text-purple-400">Selected States</h3>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {selectedStates.map((state) => (
-          <div key={state} className="flex items-center">
-            <span className="text-lg capitalize">{state}</span>
-            <button
-              onClick={() => setSelectedStates(selectedStates.filter((selectedState) => selectedState !== state))}
-              className="ml-auto text-white font-semibold rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-red-500"
-            >
-              <FaTrash color="#DC1C1C" />
-            </button>
-          </div>
-        ))}
-      </div>
-    </section>
-  )}
-  {selectedCities.length > 0 && (
-    <section className="mt-8">
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="text-2xl font-bold text-purple-400">Selected Cities</h3>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {selectedCities.map((city) => (
-          <div key={city.city} className="flex items-center">
-            <span className="text-lg capitalize">{city.city + ", " + city.state}</span>
-            <button
-              onClick={() =>
-                setSelectedCities(selectedCities.filter((selectedCity) => selectedCity.city !== city.city))
-              }
-              className="ml-auto text-white font-semibold rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-red-500"
-            >
-              <FaTrash color="#DC1C1C" />
-            </button>
-          </div>
-        ))}
-      </div>
-    </section>
-  )}
+  <section className="mt-8">
+    <div className="flex items-center justify-between mb-6">
+      <h3 className="text-2xl font-bold text-purple-400">Selected States</h3>
+
+    </div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      {selectedStates.map((state) => (
+        <div
+          key={state}
+          className="flex items-center justify-between bg-gray-700 rounded-lg px-4 py-2 shadow-md"
+        >
+          <span className="text-lg capitalize">{state}</span>
+          <button
+            onClick={() => setSelectedStates(selectedStates.filter((selectedState) => selectedState !== state))}
+            className="text-red-500 hover:text-red-700 focus:outline-none"
+          >
+            <FaTrash />
+          </button>
+        </div>
+      ))}
+    </div>
+  </section>
+)}
+{selectedCities.length > 0 && (
+  <section className="mt-8">
+    <div className="flex items-center justify-between mb-6">
+      <h3 className="text-2xl font-bold text-purple-400">Selected Cities</h3>
+
+    </div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      {selectedCities.map((city) => (
+        <div
+          key={city.city}
+          className="flex items-center justify-between bg-gray-700 rounded-lg px-4 py-2 shadow-md"
+        >
+          <span className="text-lg capitalize">{city.city + ", " + city.state}</span>
+          <button
+            onClick={() =>
+              setSelectedCities(selectedCities.filter((selectedCity) => selectedCity.city !== city.city))
+            }
+            className="text-red-500 hover:text-red-700 focus:outline-none"
+          >
+            <FaTrash />
+          </button>
+        </div>
+      ))}
+    </div>
+  </section>
+)}
 </div>
 
             <div className="relative my-4">
@@ -456,12 +474,13 @@ const Emailing = () => {
               </div>
               </section>
         )}
-<section className="bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
-        <div className="flex items-center justify-between mb-6">
+  <section className="bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
+        <div className="flex items-center mb-6">
           <h3 className="text-2xl font-bold text-purple-400">Email Template</h3>
+          <HelpIcon text="Customize the subject line and body of your email template. Optionally, attach files like your resume or cover letter." />
           <button
             onClick={() => setShowPreview(!showPreview)}
-            className="px-4 py-2 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300 flex items-center"
+            className="px-4 py-2 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300 flex items-center ml-auto"
           >
             {showPreview ? (
               <>
@@ -501,9 +520,12 @@ const Emailing = () => {
           ></textarea>
         </div>
         <div className="mb-4">
-  <label htmlFor="attachments" className="block text-lg font-semibold mb-1">
-    Attachments:
-  </label>
+          <div className="flex items-center">
+            <label htmlFor="attachments" className="block text-lg font-semibold mb-1">
+              Attachments:
+            </label>
+            
+          </div>
   <div className="flex items-center space-x-4">
     <div
       className="flex items-center justify-center w-48 h-48 bg-gray-700 rounded-lg cursor-pointer"

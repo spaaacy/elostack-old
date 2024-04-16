@@ -5,12 +5,12 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req, res) {
   try {
-    const { user_id, weeks } = await req.json();
-    if (!user_id || !weeks) throw Error("User ID/weeks not provided!");
+    const { user_id, weeks, customer_id } = await req.json();
+    if (!user_id || !weeks || !customer_id) throw Error("Required request parameters not provided!");
     const checkoutSession = await stripe.checkout.sessions.create({
+      billing_address_collection: "auto",
       line_items: [
         {
-          // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
           price:
             weeks === 2
               ? process.env.STRIPE_TWO_WEEK_PRICE_ID
@@ -22,7 +22,11 @@ export async function POST(req, res) {
           quantity: 1,
         },
       ],
-      mode: "payment",
+      customer: customer_id,
+      mode: "subscription",
+      subscription_data: {
+        trial_period_days: 7,
+      },
       metadata: {
         user_id,
         weeks,

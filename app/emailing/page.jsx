@@ -310,6 +310,7 @@ const Emailing = () => {
             <div className="flex items-center mb-4">
               <h3 className="text-2xl font-bold text-purple-400 mr-0">Companies</h3>
               <HelpIcon text="Choose the companies to target in your email campaign. Filter by just the state or the city and state" />
+              <p className="font-semibold text-sm ml-4">{"Credits left: " + user.credits}</p>
               {matchesFound !== null && matchesFound !== undefined && matchesFound !== "" && (
                 <p className="font-semibold text-lg ml-auto">{`${matchesFound} leads found`}</p>
               )}

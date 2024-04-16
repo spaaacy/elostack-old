@@ -34,30 +34,21 @@ const PlansPage = () => {
     const userId = session.data.session.user.id;
     if (!userId) router.push("/signin");
     try {
-      let response;
-      response = await fetch(`/api/user/${userId}`, {
-        method: "GET",
+      const response = await fetch("/api/checkout", {
+        method: "POST",
         headers: {
           "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
         },
+        body: JSON.stringify({
+          user_id: userId,
+          weeks: selectedPlan.weeks,
+        }),
       });
-      let result = await response.json();
+      const result = await response.json();
       if (response.status !== 200) {
         throw Error("Something went wrong");
       }
 
-      response = await fetch("/api/checkout", {
-        method: "POST",
-        body: JSON.stringify({
-          user_id: userId,
-          weeks: selectedPlan.weeks,
-          customer_id: result.user.stripe_customer_id,
-        }),
-      });
-      result = await response.json();
-      if (response.status !== 200) {
-        throw Error("Something went wrong");
-      }
       const stripe = await loadStripe(
         process.env.NODE_ENV === "production"
           ? process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_LIVE_KEY

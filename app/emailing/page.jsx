@@ -199,6 +199,9 @@ const Emailing = () => {
     const userId = session?.data?.session?.user.id;
     if (userId) {
       const response = await fetch(`/api/user/${userId}`, {
+        headers: {
+          "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
+        },
         method: "GET",
       });
       if (response.status === 200) {
@@ -274,145 +277,145 @@ const Emailing = () => {
         <Loader />
       </>
     );
-    const HelpIcon = ({ text }) => {
-      return (
-        <div className="relative inline-block group ml-2">
-          <div className="bg-purple-500 text-white rounded-full w-6 h-6 flex items-center justify-center cursor-pointer">
-            <span className="text-sm">i</span>
-          </div>
-          <div className="absolute left-1/2 bottom-full transform -translate-x-1/2 bg-gray-900 text-white text-base px-4 py-2 rounded opacity-0 pointer-events-none transition-opacity duration-200 group-hover:opacity-100 w-64 text-center">
-            {text}
-          </div>
-        </div>
-      );
-    };
+  const HelpIcon = ({ text }) => {
     return (
-      <main className="container mx-auto p-8">
-        <section className="text-center mt-2 mb-10">
-          <div className="flex justify-between items-center">
-            <h2 className="text-3xl font-bold text-white">Preferences</h2>
-            {subscriber && user.credits > 0 && (
-              <button
-                onClick={toggleCampaignStatus}
-                className="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300"
-              >
-                {subscriber.active ? "Pause Campaign" : "Start Campaign"}
-              </button>
-            )}
-          </div>
-        </section>
-        <div className="flex flex-wrap gap-8">
+      <div className="relative inline-block group ml-2">
+        <div className="bg-purple-500 text-white rounded-full w-6 h-6 flex items-center justify-center cursor-pointer">
+          <span className="text-sm">i</span>
+        </div>
+        <div className="absolute left-1/2 bottom-full transform -translate-x-1/2 bg-gray-900 text-white text-base px-4 py-2 rounded opacity-0 pointer-events-none transition-opacity duration-200 group-hover:opacity-100 w-64 text-center">
+          {text}
+        </div>
+      </div>
+    );
+  };
+  return (
+    <main className="container mx-auto p-8">
+      <section className="text-center mt-2 mb-10">
+        <div className="flex justify-between items-center">
+          <h2 className="text-3xl font-bold text-white">Preferences</h2>
+          {subscriber && user.credits > 0 && (
+            <button
+              onClick={toggleCampaignStatus}
+              className="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300"
+            >
+              {subscriber.active ? "Pause Campaign" : "Start Campaign"}
+            </button>
+          )}
+        </div>
+      </section>
+      <div className="flex flex-wrap gap-8">
         <div className="flex-grow">
-  <div className="bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
-    <div className="flex items-center mb-4">
-      <h3 className="text-2xl font-bold text-purple-400 mr-0">Companies</h3>
-      <HelpIcon text="Choose the companies to target in your email campaign. Filter by just the state or the city and state" />
-      {matchesFound !== null && matchesFound !== undefined && matchesFound !== "" && (
-        <p className="font-semibold text-lg ml-auto">{`${matchesFound} leads found`}</p>
-      )}
-    </div>
+          <div className="bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
+            <div className="flex items-center mb-4">
+              <h3 className="text-2xl font-bold text-purple-400 mr-0">Companies</h3>
+              <HelpIcon text="Choose the companies to target in your email campaign. Filter by just the state or the city and state" />
+              {matchesFound !== null && matchesFound !== undefined && matchesFound !== "" && (
+                <p className="font-semibold text-lg ml-auto">{`${matchesFound} leads found`}</p>
+              )}
+            </div>
             <div className="mb-8 w-full">
-  <div className="flex flex-wrap gap-4 justify-between">
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        setSelectedStates([...selectedStates, stateInput]);
-        setStateInput("");
-      }}
-      className="flex flex-col items-start justify-center w-full sm:w-auto"
-    >
-      <label className="text-lg font-semibold">State: </label>
-      <div className="flex gap-2 justify-start w-full sm:w-auto">
-        <input
-          onChange={(e) => setStateInput(e.target.value)}
-          value={stateInput}
-          placeholder="(e.g., California, Florida, New York)"
-          className="flex-1 p-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-        />
-        <button type="submit" className="bg-purple-600 hover:bg-purple-700 rounded-lg px-4 py-2">
-          <FaPlus />
-        </button>
-      </div>
-    </form>
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        setSelectedCities([...selectedCities, cityInput]);
-        setCityInput({ city: "", state: "" });
-      }}
-      className="flex flex-col items-start justify-center w-full sm:w-auto sm:ml-4"
-    >
-      <label className="text-lg font-semibold">City: </label>
-      <div className="flex flex-col sm:flex-row gap-2 justify-start w-full sm:w-auto">
-        <input
-          onChange={(e) => setCityInput({ ...cityInput, city: e.target.value })}
-          value={cityInput.city}
-          placeholder="City (e.g., Miami)"
-          className="w-full sm:w-40 p-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-        />
-        <input
-          onChange={(e) => setCityInput({ ...cityInput, state: e.target.value })}
-          value={cityInput.state}
-          placeholder="State (e.g., Florida)"
-          className="w-full sm:w-40 p-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-        />
-        <button type="submit" className="bg-purple-600 hover:bg-purple-700 rounded-lg px-4 py-2">
-          <FaPlus />
-        </button>
-      </div>
-    </form>
-  </div>
-  {selectedStates.length > 0 && (
-  <section className="mt-8">
-    <div className="flex items-center justify-between mb-6">
-      <h3 className="text-2xl font-bold text-purple-400">Selected States</h3>
-
-    </div>
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      {selectedStates.map((state) => (
-        <div
-          key={state}
-          className="flex items-center justify-between bg-gray-700 rounded-lg px-4 py-2 shadow-md"
-        >
-          <span className="text-lg capitalize">{state}</span>
-          <button
-            onClick={() => setSelectedStates(selectedStates.filter((selectedState) => selectedState !== state))}
-            className="text-red-500 hover:text-red-700 focus:outline-none"
-          >
-            <FaTrash />
-          </button>
-        </div>
-      ))}
-    </div>
-  </section>
-)}
-{selectedCities.length > 0 && (
-  <section className="mt-8">
-    <div className="flex items-center justify-between mb-6">
-      <h3 className="text-2xl font-bold text-purple-400">Selected Cities</h3>
-
-    </div>
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      {selectedCities.map((city) => (
-        <div
-          key={city.city}
-          className="flex items-center justify-between bg-gray-700 rounded-lg px-4 py-2 shadow-md"
-        >
-          <span className="text-lg capitalize">{city.city + ", " + city.state}</span>
-          <button
-            onClick={() =>
-              setSelectedCities(selectedCities.filter((selectedCity) => selectedCity.city !== city.city))
-            }
-            className="text-red-500 hover:text-red-700 focus:outline-none"
-          >
-            <FaTrash />
-          </button>
-        </div>
-      ))}
-    </div>
-  </section>
-)}
-</div>
+              <div className="flex flex-wrap gap-4 justify-between">
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    setSelectedStates([...selectedStates, stateInput]);
+                    setStateInput("");
+                  }}
+                  className="flex flex-col items-start justify-center w-full sm:w-auto"
+                >
+                  <label className="text-lg font-semibold">State: </label>
+                  <div className="flex gap-2 justify-start w-full sm:w-auto">
+                    <input
+                      onChange={(e) => setStateInput(e.target.value)}
+                      value={stateInput}
+                      placeholder="(e.g., California, Florida, New York)"
+                      className="flex-1 p-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    />
+                    <button type="submit" className="bg-purple-600 hover:bg-purple-700 rounded-lg px-4 py-2">
+                      <FaPlus />
+                    </button>
+                  </div>
+                </form>
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    setSelectedCities([...selectedCities, cityInput]);
+                    setCityInput({ city: "", state: "" });
+                  }}
+                  className="flex flex-col items-start justify-center w-full sm:w-auto sm:ml-4"
+                >
+                  <label className="text-lg font-semibold">City: </label>
+                  <div className="flex flex-col sm:flex-row gap-2 justify-start w-full sm:w-auto">
+                    <input
+                      onChange={(e) => setCityInput({ ...cityInput, city: e.target.value })}
+                      value={cityInput.city}
+                      placeholder="City (e.g., Miami)"
+                      className="w-full sm:w-40 p-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    />
+                    <input
+                      onChange={(e) => setCityInput({ ...cityInput, state: e.target.value })}
+                      value={cityInput.state}
+                      placeholder="State (e.g., Florida)"
+                      className="w-full sm:w-40 p-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    />
+                    <button type="submit" className="bg-purple-600 hover:bg-purple-700 rounded-lg px-4 py-2">
+                      <FaPlus />
+                    </button>
+                  </div>
+                </form>
+              </div>
+              {selectedStates.length > 0 && (
+                <section className="mt-8">
+                  <div className="flex items-center justify-between mb-6">
+                    <h3 className="text-2xl font-bold text-purple-400">Selected States</h3>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    {selectedStates.map((state) => (
+                      <div
+                        key={state}
+                        className="flex items-center justify-between bg-gray-700 rounded-lg px-4 py-2 shadow-md"
+                      >
+                        <span className="text-lg capitalize">{state}</span>
+                        <button
+                          onClick={() =>
+                            setSelectedStates(selectedStates.filter((selectedState) => selectedState !== state))
+                          }
+                          className="text-red-500 hover:text-red-700 focus:outline-none"
+                        >
+                          <FaTrash />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              )}
+              {selectedCities.length > 0 && (
+                <section className="mt-8">
+                  <div className="flex items-center justify-between mb-6">
+                    <h3 className="text-2xl font-bold text-purple-400">Selected Cities</h3>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    {selectedCities.map((city) => (
+                      <div
+                        key={city.city}
+                        className="flex items-center justify-between bg-gray-700 rounded-lg px-4 py-2 shadow-md"
+                      >
+                        <span className="text-lg capitalize">{city.city + ", " + city.state}</span>
+                        <button
+                          onClick={() =>
+                            setSelectedCities(selectedCities.filter((selectedCity) => selectedCity.city !== city.city))
+                          }
+                          className="text-red-500 hover:text-red-700 focus:outline-none"
+                        >
+                          <FaTrash />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              )}
+            </div>
 
             <div className="relative my-4">
               <input
@@ -448,10 +451,10 @@ const Emailing = () => {
                 })}
               </div>
             </div>
-            </div>
-        {selectedCompanies.length > 0 && (
-          <section className="bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
-           <div className="flex items-center justify-between mb-6">
+          </div>
+          {selectedCompanies.length > 0 && (
+            <section className="bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
+              <div className="flex items-center justify-between mb-6">
                 <h3 className="text-2xl font-bold text-purple-400">Selected Companies</h3>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
@@ -470,118 +473,104 @@ const Emailing = () => {
                   );
                 })}
               </div>
-              </section>
-        )}
-  <section className="bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
-        <div className="flex items-center mb-6">
-          <h3 className="text-2xl font-bold text-purple-400">Email Template</h3>
-          <HelpIcon text="Customize the subject line and body of your email template. Optionally, attach files like your resume or cover letter." />
-          <button
-            onClick={() => setShowPreview(!showPreview)}
-            className="px-4 py-2 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300 flex items-center ml-auto"
-          >
-            {showPreview ? (
-              <>
-                <FaEyeSlash className="mr-2" />
-                Hide Preview
-              </>
-            ) : (
-              <>
-                <FaEye className="mr-2" />
-                Show Preview
-              </>
+            </section>
+          )}
+          <section className="bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
+            <div className="flex items-center mb-6">
+              <h3 className="text-2xl font-bold text-purple-400">Email Template</h3>
+              <HelpIcon text="Customize the subject line and body of your email template. Optionally, attach files like your resume or cover letter." />
+              <button
+                onClick={() => setShowPreview(!showPreview)}
+                className="px-4 py-2 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300 flex items-center ml-auto"
+              >
+                {showPreview ? (
+                  <>
+                    <FaEyeSlash className="mr-2" />
+                    Hide Preview
+                  </>
+                ) : (
+                  <>
+                    <FaEye className="mr-2" />
+                    Show Preview
+                  </>
+                )}
+              </button>
+            </div>
+            <div className="mb-4">
+              <label htmlFor="templateSubject" className="block text-lg font-semibold mb-1">
+                Subject:
+              </label>
+              <input
+                id="templateSubject"
+                value={template.subject}
+                onChange={(e) => handleTemplateChange(e, "subject")}
+                className="w-full p-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                type="text"
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="templateBody" className="block text-lg font-semibold mb-1">
+                Body:
+              </label>
+              <textarea
+                id="templateBody"
+                value={template.body}
+                onChange={(e) => handleTemplateChange(e, "body")}
+                rows={15}
+                className="w-full h-48 p-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              ></textarea>
+            </div>
+            <div className="mb-4">
+              <div className="flex items-center">
+                <label htmlFor="attachments" className="block text-lg font-semibold mb-1">
+                  Attachments:
+                </label>
+              </div>
+              <div className="flex items-center space-x-4">
+                <div
+                  className="flex items-center justify-center w-48 h-48 bg-gray-700 rounded-lg cursor-pointer"
+                  onClick={() => document.getElementById("attachmentInput").click()}
+                >
+                  <FaPlus className="text-4xl text-purple-500" />
+                </div>
+                <input id="attachmentInput" type="file" multiple onChange={handleAttachmentChange} className="hidden" />
+                {attachments.length > 0 && (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    {attachments.map((attachment, index) => (
+                      <div key={index} className="flex items-center justify-between bg-gray-700 rounded-lg p-2">
+                        <span className="text-sm truncate">{attachment.name}</span>
+                        <button
+                          onClick={() => handleAttachmentRemove(index)}
+                          className="ml-2 text-red-500 hover:text-red-700 focus:outline-none"
+                        >
+                          <FaTrash />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+              {attachments.length === 0 && (
+                <p className="mt-2 text-sm text-gray-400">Click the "+" icon to add attachments</p>
+              )}
+            </div>
+            {showPreview && (
+              <div className="mt-8">
+                <h4 className="text-xl font-semibold mb-4 text-purple-400">Preview:</h4>
+                {renderEmailPreview()}
+              </div>
             )}
-          </button>
+          </section>
         </div>
-        <div className="mb-4">
-          <label htmlFor="templateSubject" className="block text-lg font-semibold mb-1">
-            Subject:
-          </label>
-          <input
-            id="templateSubject"
-            value={template.subject}
-            onChange={(e) => handleTemplateChange(e, "subject")}
-            className="w-full p-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-            type="text"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="templateBody" className="block text-lg font-semibold mb-1">
-            Body:
-          </label>
-          <textarea
-            id="templateBody"
-            value={template.body}
-            onChange={(e) => handleTemplateChange(e, "body")}
-            rows={15}
-            className="w-full h-48 p-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-          ></textarea>
-        </div>
-        <div className="mb-4">
-          <div className="flex items-center">
-            <label htmlFor="attachments" className="block text-lg font-semibold mb-1">
-              Attachments:
-            </label>
-            
-          </div>
-  <div className="flex items-center space-x-4">
-    <div
-      className="flex items-center justify-center w-48 h-48 bg-gray-700 rounded-lg cursor-pointer"
-      onClick={() => document.getElementById("attachmentInput").click()}
-    >
-      <FaPlus className="text-4xl text-purple-500" />
-    </div>
-    <input
-      id="attachmentInput"
-      type="file"
-      multiple
-      onChange={handleAttachmentChange}
-      className="hidden"
-    />
-    {attachments.length > 0 && (
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {attachments.map((attachment, index) => (
-          <div
-            key={index}
-            className="flex items-center justify-between bg-gray-700 rounded-lg p-2"
-          >
-            <span className="text-sm truncate">{attachment.name}</span>
-            <button
-              onClick={() => handleAttachmentRemove(index)}
-              className="ml-2 text-red-500 hover:text-red-700 focus:outline-none"
-            >
-              <FaTrash />
-            </button>
-          </div>
-        ))}
       </div>
-    )}
-  </div>
-  {attachments.length === 0 && (
-    <p className="mt-2 text-sm text-gray-400">
-      Click the "+" icon to add attachments
-    </p>
-  )}
-
-        </div>
-        {showPreview && (
-          <div className="mt-8">
-            <h4 className="text-xl font-semibold mb-4 text-purple-400">Preview:</h4>
-            {renderEmailPreview()}
-          </div>
-        )}
-      </section>
-      </div>
-    </div>
-    {subscriber ||
-      (user?.credits > 0 && (
+      {(subscriber || user?.credits > 0) && (
         <button
           onClick={handleSubmit}
           className="ml-auto px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300 flex items-center"
         >
           Save Preferences
         </button>
-      ))}
-  </main>
-);
+      )}
+    </main>
+  );
 };

@@ -9,7 +9,7 @@ import Benefits from "@/components/landing/Benefits";
 import HowItWorks from "@/components/landing/HowItWorks";
 import PartneredCompanies from "@/components/landing/PartneredCompanies";
 import React, { Suspense, useContext, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
 import { UserContext } from "@/context/UserContext";
 
@@ -36,21 +36,13 @@ const Page = () => {
 
 const Home = () => {
   const { session } = useContext(UserContext);
-  const router = useRouter();
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    const loadData = async () => {
-      if (session.data?.session) {
-        await fetchUser();
-      }
-    };
-
     if (session) {
       if (searchParams.has("code") && searchParams.has("scope")) {
         handleEmailGranted();
       }
-      loadData();
     }
   }, [session]);
 
@@ -69,19 +61,6 @@ const Home = () => {
     });
     if (response.status === 201) {
       toast.success("Permission granted!");
-    }
-  };
-
-  const fetchUser = async () => {
-    const userId = session?.data?.session?.user.id;
-    if (userId) {
-      const response = await fetch(`/api/user/${userId}`, {
-        method: "GET",
-      });
-      console.log(response);
-      if (response.status !== 200) {
-        router.push("/signup?complete-registration=true");
-      }
     }
   };
 

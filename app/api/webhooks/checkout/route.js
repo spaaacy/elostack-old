@@ -24,9 +24,9 @@ export async function POST(req) {
 
     const event = stripe.webhooks.constructEvent(body, signature, secret);
 
-    if (event.type === "checkout.session.completed") {
-      const user_id = event.data.object.metadata.user_id;
-      const weeks = event.data.object.metadata.weeks;
+    if (event.type === "invoice.paid") {
+      const user_id = event.data.object.subscription_details.metadata.user_id;
+      const weeks = event.data.object.subscription_details.metadata.weeks;
       if (!user_id || !weeks) throw Error("User ID/weeks missing from metadata!");
 
       const auth = await supabase.auth.signInWithPassword({
@@ -35,9 +35,10 @@ export async function POST(req) {
       });
       if (auth.error) throw auth.error;
 
+      const trial = event.data.object.amount_due === 0;
       const { error } = await supabase.rpc("increment_subscriber_credits", {
         subscriber_user_id: user_id,
-        amount: weeks * 168,
+        amount: trial ? 168 : weeks * 168,
       });
       if (error) throw error;
     }

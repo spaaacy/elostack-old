@@ -4,7 +4,7 @@ import Link from "next/link";
 import { UserContext } from "@/context/UserContext";
 import UserAccountNav from "./UserAccountNav";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const NavBar = () => {
   const { session } = useContext(UserContext);
@@ -12,7 +12,7 @@ const NavBar = () => {
   const [navBarVisible, setNavBarVisible] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [user, setUser] = useState();
-  const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -37,11 +37,16 @@ const NavBar = () => {
       const userId = session?.data?.session?.user.id;
       if (userId) {
         const response = await fetch(`/api/user/${userId}`, {
+          headers: {
+            "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
+          },
           method: "GET",
         });
         if (response.status === 200) {
           const { user } = await response.json();
           setUser(user);
+        } else {
+          router.push("/signup?complete-registration=true");
         }
       }
     };

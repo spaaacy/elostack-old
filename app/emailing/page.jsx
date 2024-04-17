@@ -13,13 +13,12 @@ import {
   FaPlus,
   FaQuestionCircle,
   FaLinkedin,
-  FaChevronDown, // Add this import statement
+  FaChevronDown,
 } from "react-icons/fa";
 import { useRouter, useSearchParams } from "next/navigation";
 import { UserContext } from "@/context/UserContext";
 import Loader from "@/components/common/Loader";
 import toast, { Toaster } from "react-hot-toast";
-
 import React from "react";
 import Link from "next/link";
 
@@ -40,6 +39,7 @@ const Page = () => {
 };
 
 export default Page;
+
 const commonIndustries = [
   "Technology",
   "E-commerce",
@@ -52,6 +52,7 @@ const commonIndustries = [
   "Real Estate",
   "Hospitality",
 ];
+
 const Emailing = () => {
   const searchParams = useSearchParams();
   const [matchesFound, setMatchesFound] = useState();
@@ -75,27 +76,16 @@ const Emailing = () => {
   const [user, setUser] = useState();
   const [attachments, setAttachments] = useState([]);
   const [currentStep, setCurrentStep] = useState(1);
-
   const [allPeople, setAllPeople] = useState([]);
   const [selectedJobTitles, setSelectedJobTitles] = useState([]);
   const [selectedLocations, setSelectedLocations] = useState([]);
   const [showJobTitleDropdown, setShowJobTitleDropdown] = useState(false);
-  const [showIndustryDropdown, setShowIndustryDropdown] = useState(false); // Add this line
+  const [showIndustryDropdown, setShowIndustryDropdown] = useState(false);
   const [selectedIndustries, setSelectedIndustries] = useState([]);
   const [selectedCompanies, setSelectedCompanies] = useState([]);
-
-
-
-
-
-
   const [allSelected, setAllSelected] = useState(true);
-
-
-
   const [companyDropdownVisible, setCompanyDropdownVisible] = useState(false);
   const [locationDropdownVisible, setLocationDropdownVisible] = useState(false);
-
 
   const fillerPeople = [
     {
@@ -215,7 +205,6 @@ const Emailing = () => {
       industry: "E-commerce",
       linkedin: "https://www.linkedin.com/in/janesmith",
     },
-    // Add more filler people here
   ];
 
   useEffect(() => {
@@ -244,59 +233,82 @@ const Emailing = () => {
   }, [session, selectedJobTitles, selectedCompanies, selectedLocations, selectedIndustries]);
 
   const filterPeople = () => {
-    const filteredPeople = fillerPeople.filter((person) => {
-      const jobTitleMatch = selectedJobTitles.length === 0 || selectedJobTitles.includes(person.position);
-      const companyMatch = selectedCompanies.length === 0 || selectedCompanies.includes(person.company);
-      const locationMatch = selectedLocations.length === 0 || selectedLocations.includes(person.location);
-      const industryMatch = selectedIndustries.length === 0 || selectedIndustries.includes(person.industry);
-
-      return jobTitleMatch && companyMatch && locationMatch && industryMatch;
-    });
-
+    let filteredPeople = [];
+    if (selectedJobTitles.length > 0) {
+      filteredPeople = fillerPeople.filter((person) =>
+        selectedJobTitles.includes(person.position)
+      );
+    }
+    if (selectedCompanies.length > 0) {
+      filteredPeople = (selectedJobTitles.length > 0 ? filteredPeople : fillerPeople).filter((person) =>
+        selectedCompanies.includes(person.company)
+      );
+    }
+    if (selectedLocations.length > 0) {
+      filteredPeople = (selectedJobTitles.length > 0 || selectedCompanies.length > 0 ? filteredPeople : fillerPeople).filter((person) =>
+        selectedLocations.includes(person.location)
+      );
+    }
+    if (selectedIndustries.length > 0) {
+      filteredPeople = (selectedJobTitles.length > 0 || selectedCompanies.length > 0 || selectedLocations.length > 0 ? filteredPeople : fillerPeople).filter((person) =>
+        selectedIndustries.includes(person.industry)
+      );
+    }
     setSelectedPeople(filteredPeople);
     setMatchesFound(filteredPeople.length);
   };
 
   const handleJobTitleSelect = (jobTitle) => {
-    if (selectedJobTitles.includes(jobTitle)) {
-      setSelectedJobTitles(selectedJobTitles.filter((title) => title !== jobTitle));
-    } else {
-      setSelectedJobTitles([...selectedJobTitles, jobTitle]);
-    }
+    setSelectedJobTitles((prevJobTitles) => {
+      if (prevJobTitles.includes(jobTitle)) {
+        return prevJobTitles.filter((title) => title !== jobTitle);
+      } else {
+        return [...prevJobTitles, jobTitle];
+      }
+    });
   };
 
   const handleCompanySelect = (company) => {
-    if (selectedCompanies.includes(company)) {
-      setSelectedCompanies(selectedCompanies.filter((c) => c !== company));
-    } else {
-      setSelectedCompanies([...selectedCompanies, company]);
-    }
+    setSelectedCompanies((prevCompanies) => {
+      if (prevCompanies.includes(company)) {
+        return prevCompanies.filter((c) => c !== company);
+      } else {
+        return [...prevCompanies, company];
+      }
+    });
   };
 
   const handleLocationSelect = (location) => {
-    if (selectedLocations.includes(location)) {
-      setSelectedLocations(selectedLocations.filter((l) => l !== location));
-    } else {
-      setSelectedLocations([...selectedLocations, location]);
-    }
+    setSelectedLocations((prevLocations) => {
+      if (prevLocations.includes(location)) {
+        return prevLocations.filter((l) => l !== location);
+      } else {
+        return [...prevLocations, location];
+      }
+    });
   };
 
   const handleIndustrySelect = (industry) => {
-    if (selectedIndustries.includes(industry)) {
-      setSelectedIndustries(selectedIndustries.filter((i) => i !== industry));
-    } else {
-      setSelectedIndustries([...selectedIndustries, industry]);
-    }
+    setSelectedIndustries((prevIndustries) => {
+      if (prevIndustries.includes(industry)) {
+        return prevIndustries.filter((i) => i !== industry);
+      } else {
+        return [...prevIndustries, industry];
+      }
+    });
   };
+
   const handleAttachmentChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
-    setAttachments([...attachments, ...selectedFiles]);
+    setAttachments((prevAttachments) => [...prevAttachments, ...selectedFiles]);
   };
 
   const handleAttachmentRemove = (index) => {
-    const updatedAttachments = [...attachments];
-    updatedAttachments.splice(index, 1);
-    setAttachments(updatedAttachments);
+    setAttachments((prevAttachments) => {
+      const updatedAttachments = [...prevAttachments];
+      updatedAttachments.splice(index, 1);
+      return updatedAttachments;
+    });
   };
 
   const fetchMatches = () => {
@@ -384,32 +396,31 @@ const Emailing = () => {
       }
     }
   };
+
   const renderEmailPreview = () => {
     return (
-      <div className="bg-gray-600 rounded-lg shadow-lg overflow-hidden">
-        <div className="bg-gray-700 p-4">
-          <div className="flex justify-between items-center mb-2">
-            <h2 className="text-xl font-bold text-white">
-              {template.subject}
-            </h2>
-            <div className="flex items-center space-x-2">
-              <button className="bg-white text-purple-600 rounded-md px-3 py-1 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+      <div className="bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+        <div className="bg-gray-900 p-6">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-2xl font-bold text-white">{template.subject}</h2>
+            <div className="flex items-center space-x-4">
+              <button className="bg-purple-600 hover:bg-purple-700 text-white rounded-md px-4 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
                 Reply
               </button>
-              <button className="bg-white text-purple-600 rounded-md px-3 py-1 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+              <button className="bg-purple-600 hover:bg-purple-700 text-white rounded-md px-4 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
                 Forward
               </button>
             </div>
           </div>
-          <div className="flex items-center space-x-2 text-sm text-gray-200">
+          <div className="flex items-center space-x-2 text-sm text-gray-400">
             <span>To: Recipient &lt;recipient@example.com&gt;</span>
-            <span className="border-l border-gray-400 pl-2">
+            <span className="border-l border-gray-600 pl-2">
               From: Sender &lt;sender@example.com&gt;
             </span>
           </div>
         </div>
         <div
-          className="p-4 text-white"
+          className="p-6 text-white"
           dangerouslySetInnerHTML={{ __html: template.body }}
         ></div>
       </div>
@@ -429,8 +440,7 @@ const Emailing = () => {
             session.data.session.refresh_token,
         },
       });
-      if (response.status === 200) {
-        const results = await response.json();
+      if (response.status === 200) { const results = await response.json();
         setSubscriber(results.subscriber);
         setTemplate({
           body: results.subscriber.email_body,
@@ -550,7 +560,7 @@ const Emailing = () => {
     <main className="container mx-auto py-8 px-4 sm:px-8">
       <section className="text-center mt-2 mb-10">
         <div className="flex flex-col sm:flex-row justify-between items-center">
-          <h2 className="text-3xl font-bold text-white mb-4 sm:mb-0">
+          <h2 className="text-4xl font-bold text-white mb-4 sm:mb-0">
             Preferences
           </h2>
           {subscriber && user.credits > 0 && (
@@ -566,10 +576,10 @@ const Emailing = () => {
       {currentStep === 1 && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-1">
-            <div className="bg-gray-800 p-8 rounded-lg shadow-lg mb-8">
+            <div className="bg-gray-800 p-8 rounded-lg shadow-lg mb-8 w-full">
               <h3 className="text-3xl font-bold text-purple-400 mb-6">Filters</h3>
               <div className="space-y-8">
-              <div>
+                <div>
                   <label htmlFor="jobTitle" className="block text-lg font-semibold mb-2">
                     Job Title
                   </label>
@@ -577,7 +587,7 @@ const Emailing = () => {
                     <button
                       id="jobTitle"
                       type="button"
-                      className="w-full p-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 flex justify-between items-center"
+                      className="w-full p-4 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 flex justify-between items-center"
                       onClick={() => setShowJobTitleDropdown(!showJobTitleDropdown)}
                       aria-haspopup="true"
                       aria-expanded={showJobTitleDropdown}
@@ -654,7 +664,7 @@ const Emailing = () => {
                         setCompanyInput(e.target.value);
                         setCompanyDropdownVisible(e.target.value !== "");
                       }}
-                      className="w-full p-3 text-lg bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      className="w-full p-4 text-lg bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                     />
                     {companyDropdownVisible && (
                       <div className="absolute mt-2 w-full bg-gray-700 rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto">
@@ -704,7 +714,7 @@ const Emailing = () => {
                         setLocationInput(e.target.value);
                         setLocationDropdownVisible(e.target.value !== "");
                       }}
-                      className="w-full p-3 text-lg bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      className="w-full p-4 text-lg bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                     />
                     {locationDropdownVisible && (
                       <div className="absolute mt-2 w-full bg-gray-700 rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto">
@@ -748,7 +758,7 @@ const Emailing = () => {
                     <button
                       id="industry"
                       type="button"
-                      className="w-full p-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 flex justify-between items-center"
+                      className="w-full p-4 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 flex justify-between items-center"
                       onClick={() => setShowIndustryDropdown(!showIndustryDropdown)}
                       aria-haspopup="true"
                       aria-expanded={showIndustryDropdown}
@@ -794,28 +804,17 @@ const Emailing = () => {
             </div>
           </div>
           <div className="lg:col-span-2">
-            <div className="bg-gray-800 p-8 rounded-lg shadow-lg">
+            <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-full">
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-3xl font-bold text-purple-400">Selected People</h3>
                 {matchesFound !== null && matchesFound !== undefined && matchesFound !== "" && (
                   <p className="font-semibold text-xl">{`${matchesFound} leads found`}</p>
                 )}
               </div>
-              <div className={`overflow-x-auto ${selectedPeople.length > 12 ? "max-h-[60vh] overflow-y-auto" : ""}`}>
+              <div className={`overflow-x-auto ${selectedPeople.length > 12 ? "max-h-[70vh] overflow-y-auto" : ""}`}>
                 <table className="w-full">
                   <thead>
                     <tr>
-                      <th className="px-4 py-2 text-left border-b border-gray-600 text-lg">
-                        <label>
-                          <input
-                            type="checkbox"
-                            checked={allSelected}
-                            onChange={handleSelectAll}
-                            className="mr-2"
-                          />
-                          Select All
-                        </label>
-                      </th>
                       <th className="px-4 py-2 text-left border-b border-gray-600 text-lg">Name</th>
                       <th className="px-4 py-2 text-left border-b border-gray-600 text-lg">Company</th>
                       <th className="px-4 py-2 text-left border-b border-gray-600 text-lg">Location</th>
@@ -824,32 +823,32 @@ const Emailing = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {fillerPeople.map((person) => (
-                      <tr key={person.id}>
-                        <td className="px-4 py-2 border-b border-gray-600 text-lg">
-                          <input
-                            type="checkbox"
-                            checked={selectedPeople.some((p) => p.id === person.id)}
-                            onChange={() => handleSelectPerson(person)}
-                            className="mr-2"
-                          />
+                    {selectedPeople.length === 0 ? (
+                      <tr>
+                        <td colSpan="5" className="px-4 py-2 text-center text-lg">
+                          No filters applied. Showing all people.
                         </td>
-                        <td className="px-4 py-2 border-b border-gray-600 text-lg">{person.name}</td>
-                        <td className="px-4 py-2 border-b border-gray-600 text-lg">{person.company}</td>
-                        <td className="px-4 py-2 border-b border-gray-600 text-lg">{person.location}</td>
-                        <td className="px-4 py-2 border-b border-gray-600 text-lg">
-                          <a
-                            href={person.linkedin}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-purple-400 hover:text-purple-500 transition-colors duration-300"
-                          >
-                            <FaLinkedin size={24} />
-                          </a>
-                        </td>
-                        <td className="px-4 py-2 border-b border-gray-600 text-lg">{person.position}</td>
                       </tr>
-                    ))}
+                    ) : (
+                      selectedPeople.map((person) => (
+                        <tr key={person.id}>
+                          <td className="px-4 py-2 border-b border-gray-600 text-lg">{person.name}</td>
+                          <td className="px-4 py-2 border-b border-gray-600 text-lg">{person.company}</td>
+                          <td className="px-4 py-2 border-b border-gray-600 text-lg">{person.location}</td>
+                          <td className="px-4 py-2 border-b border-gray-600 text-lg">
+                            <a
+                              href={person.linkedin}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-purple-400 hover:text-purple-500 transition-colors duration-300"
+                            >
+                              <FaLinkedin size={24} />
+                            </a>
+                          </td>
+                          <td className="px-4 py-2 border-b border-gray-600 text-lg">{person.position}</td>
+                        </tr>
+                      ))
+                    )}
                   </tbody>
                 </table>
               </div>
@@ -857,208 +856,208 @@ const Emailing = () => {
           </div>
         </div>
       )}
-      {currentStep === 1 && (
-        <div className="flex justify-end mt-8">
-          <button
-            onClick={() => setCurrentStep(2)}
-            className="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300"
-          >
-            Next
-          </button>
-        </div>
-      )}
-      {currentStep === 2 && (
-        <section className="bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
-          <div className="flex flex-col sm:flex-row items-center mb-6">
-            <h3 className="text-2xl font-bold text-purple-400 mb-4 sm:mb-0 sm:mr-4">
-              Email Template
-            </h3>
-            <HelpIcon text="Customize the subject line and body of your email template. Optionally, attach files like your resume or cover letter." />
-            <button
-              onClick={() => setShowPreview(!showPreview)}
-              className="ml-auto px-4 py-2 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300 flex items-center"
-            >
-              {showPreview ? (
-                <>
-                  <FaEyeSlash className="mr-2" />
-                  Hide Preview
-                </>
-              ) : (
-                <>
-                  <FaEye className="mr-2" />
-                  Show Preview
-                </>
-              )}
-            </button>
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="templateSubject"
-              className="block text-lg font-semibold mb-1"
-            >
-              Subject:
-            </label>
-            <input
-              id="templateSubject"
-              value={template.subject}
-              onChange={(e) => handleTemplateChange(e, "subject")}
-              className="w-full p-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-              type="text"
-            />
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="templateBody"
-              className="block text-lg font-semibold mb-1"
-            >
-              Body:
-            </label>
-            <textarea
-              id="templateBody"
-              value={template.body}
-              onChange={(e) => handleTemplateChange(e, "body")}
-              rows={12}
-              className="w-full p-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-            ></textarea>
-          </div>
-          <div className="mb-4">
-            <div className="flex items-center">
-              <label
-                htmlFor="attachments"
-                className="block text-lg font-semibold mb-1"
-              >
-                Attachments:
-              </label>
-            </div>
-            <div className="flex flex-wrap items-center gap-4">
-              <div
-                className="flex items-center justify-center w-32 h-32 bg-gray-700 rounded-lg cursor-pointer"
-                onClick={() => document.getElementById("attachmentInput").click()}
-              >
-                <FaPlus className="text-3xl text-purple-500" />
-              </div>
-              <input
-                id="attachmentInput"
-                type="file"
-                multiple
-                onChange={handleAttachmentChange}
-                className="hidden"
-              />
-              {attachments.length > 0 && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                  {attachments.map((attachment, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center justify-between bg-gray-700 rounded-lg p-2"
-                    >
-                      <span className="text-sm truncate">
-                        {attachment.name}
-                      </span>
-                      <button
-                        onClick={() => handleAttachmentRemove(index)}
-                        className="ml-2 text-red-500 hover:text-red-700 focus:outline-none"
-                      >
-                        <FaTrash />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-            {attachments.length === 0 && (
-              <p className="mt-2 text-sm text-gray-400">
-                Click the "+" icon to add attachments
-              </p>
-            )}
-          </div>
-          {showPreview && (
-            <div className="mt-8">
-              <h4 className="text-xl font-semibold mb-4 text-purple-400">
-                Preview:
-              </h4>
-              {renderEmailPreview()}
-            </div>
-          )}
-        </section>
-      )}
-      {currentStep === 2 && (
-        <div className="flex justify-between mt-8">
-          <button
-            onClick={() => setCurrentStep(1)}
-            className="px-6 py-3 bg-gray-600 text-white text-lg font-semibold rounded-lg hover:bg-gray-700 transition-colors duration-300"
-          >
-            Back
-          </button>
-          <button
-            onClick={() => setCurrentStep(3)}
-            className="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300"
-          >
-            Review
-          </button>
-        </div>
-      )}
-      {currentStep === 3 && (
-        <section className="bg-gray-800 p-8 rounded-lg shadow-lg mb-8">
-          <h3 className="text-3xl font-bold text-purple-400 mb-6">Review Campaign</h3>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div>
-              <h4 className="text-2xl font-semibold mb-4">Selected People:</h4>
-              <div className="bg-gray-700 p-4 rounded-lg">
-                <ul className="list-disc list-inside text-lg">
-                  {selectedPeople.map((person) => (
-                    <li key={person.id} className="mb-2">
-                      <span className="font-semibold">{person.name}</span>
-                      <span className="text-gray-400 ml-2">{person.position} at {person.company}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-            <div>
-              <h4 className="text-2xl font-semibold mb-4">Email Template:</h4>
-              <div className="bg-gray-700 p-4 rounded-lg">
-                <p className="text-lg mb-2">
-                  <span className="font-semibold">Subject:</span> {template.subject}
-                </p>
-                <p className="text-lg">
-                  <span className="font-semibold">Body:</span> {template.body}
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="mt-8">
-            <div className="bg-gray-700 p-4 rounded-lg">
-              <p className="text-xl mb-2">
-                <span className="font-semibold">Total Leads:</span> {selectedPeople.length}
-              </p>
-              <p className="text-xl mb-2">
-                <span className="font-semibold">Credits Required:</span> {selectedPeople.length}
-              </p>
-              <p className="text-xl">
-                <span className="font-semibold">Credits Available:</span> {user?.credits || 0}
-              </p>
-            </div>
-          </div>
-        </section>
-      )}
-      {currentStep === 3 && (
-        <div className="flex justify-between mt-8">
-          <button
-            onClick={() => setCurrentStep(2)}
-            className="px-6 py-3 bg-gray-600 text-white text-xl font-semibold rounded-lg hover:bg-gray-700 transition-colors duration-300"
-          >
-            Back
-          </button>
-          {subscriber || (user?.credits > 0 && (
-            <button
-              onClick={handleSubmit}
-              className="px-6 py-3 bg-purple-600 text-white text-xl font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300"
-            >
-              Launch Campaign
-            </button>
-          ))}
-        </div>
-      )}
-    </main>
-  );
-};
+{currentStep === 1 && (
+<div className="flex justify-end mt-8">
+<button
+onClick={() => setCurrentStep(2)}
+className="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300"
+>
+Next
+</button>
+</div>
+)}
+{currentStep === 2 && (
+<section className="bg-gray-800 p-8 rounded-lg shadow-lg mb-8">
+<div className="flex flex-col sm:flex-row items-center mb-6">
+<h3 className="text-3xl font-bold text-purple-400 mb-4 sm:mb-0 sm:mr-4">
+Email Template
+</h3>
+<HelpIcon text="Customize the subject line and body of your email template. Optionally, attach files like your resume or cover letter." />
+<button
+onClick={() => setShowPreview(!showPreview)}
+className="ml-auto px-4 py-2 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300 flex items-center"
+>
+{showPreview ? (
+<>
+<FaEyeSlash className="mr-2" />
+Hide Preview
+</>
+) : (
+<>
+<FaEye className="mr-2" />
+Show Preview
+</>
+)}
+</button>
+</div>
+<div className="mb-4">
+<label
+           htmlFor="templateSubject"
+           className="block text-lg font-semibold mb-1"
+         >
+Subject:
+</label>
+<input
+id="templateSubject"
+value={template.subject}
+onChange={(e) => handleTemplateChange(e, "subject")}
+className="w-full p-3 bg-gray-700 text-white text-lg rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+type="text"
+/>
+</div>
+<div className="mb-4">
+<label
+           htmlFor="templateBody"
+           className="block text-lg font-semibold mb-1"
+         >
+Body:
+</label>
+<textarea
+id="templateBody"
+value={template.body}
+onChange={(e) => handleTemplateChange(e, "body")}
+rows={12}
+className="w-full p-3 bg-gray-700 text-white text-lg rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+></textarea>
+</div>
+<div className="mb-4">
+<div className="flex items-center">
+<label
+             htmlFor="attachments"
+             className="block text-lg font-semibold mb-1"
+           >
+Attachments:
+</label>
+</div>
+<div className="flex flex-wrap items-center gap-4">
+<div
+className="flex items-center justify-center w-32 h-32 bg-gray-700 rounded-lg cursor-pointer"
+onClick={() => document.getElementById("attachmentInput").click()}
+>
+<FaPlus className="text-3xl text-purple-500" />
+</div>
+<input
+             id="attachmentInput"
+             type="file"
+             multiple
+             onChange={handleAttachmentChange}
+             className="hidden"
+           />
+{attachments.length > 0 && (
+<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+{attachments.map((attachment, index) => (
+<div
+                   key={index}
+                   className="flex items-center justify-between bg-gray-700 rounded-lg p-4"
+                 >
+<span className="text-lg truncate">
+{attachment.name}
+</span>
+<button
+onClick={() => handleAttachmentRemove(index)}
+className="ml-4 text-red-500 hover:text-red-700 focus:outline-none"
+>
+<FaTrash size={20} />
+</button>
+</div>
+))}
+</div>
+)}
+</div>
+{attachments.length === 0 && (
+<p className="mt-2 text-sm text-gray-400">
+Click the "+" icon to add attachments
+</p>
+)}
+</div>
+{showPreview && (
+<div className="mt-8">
+<h4 className="text-2xl font-semibold mb-4 text-purple-400">
+Preview:
+</h4>
+{renderEmailPreview()}
+</div>
+)}
+</section>
+)}
+{currentStep === 2 && (
+<div className="flex justify-between mt-8">
+<button
+onClick={() => setCurrentStep(1)}
+className="px-6 py-3 bg-gray-600 text-white text-lg font-semibold rounded-lg hover:bg-gray-700 transition-colors duration-300"
+>
+Back
+</button>
+<button
+onClick={() => setCurrentStep(3)}
+className="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300"
+>
+Review
+</button>
+</div>
+)}
+{currentStep === 3 && (
+<section className="bg-gray-800 p-8 rounded-lg shadow-lg mb-8">
+<h3 className="text-4xl font-bold text-purple-400 mb-8">Review Campaign</h3>
+<div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+  <div>
+    <h4 className="text-3xl font-semibold mb-6 text-purple-400">Selected People:</h4>
+    <div className="bg-gray-700 p-6 rounded-lg shadow-lg">
+      <ul className="list-disc list-inside text-xl text-white space-y-4">
+        {selectedPeople.map((person) => (
+          <li key={person.id}>
+            <span className="font-semibold">{person.name}</span>
+            <span className="text-gray-300 ml-2">{person.position} at {person.company}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+  <div>
+    <h4 className="text-3xl font-semibold mb-6 text-purple-400">Email Template:</h4>
+    <div className="bg-gray-700 p-6 rounded-lg shadow-lg">
+      <p className="text-xl mb-4 text-white">
+        <span className="font-semibold">Subject:</span> {template.subject}
+      </p>
+      <p className="text-xl text-white">
+        <span className="font-semibold">Body:</span> {template.body}
+      </p>
+    </div>
+  </div>
+</div>
+<div className="mt-12">
+  <div className="bg-gray-700 p-6 rounded-lg shadow-lg border-2 border-purple-500">
+    <p className="text-2xl mb-4 text-white">
+      <span className="font-semibold text-purple-400">Total Leads:</span> {selectedPeople.length}
+    </p>
+    <p className="text-2xl mb-4 text-white">
+      <span className="font-semibold text-purple-400">Credits Required:</span> {selectedPeople.length}
+    </p>
+    <p className="text-2xl text-white">
+      <span className="font-semibold text-purple-400">Credits Available:</span> {user?.credits || 0}
+    </p>
+  </div>
+</div>
+</section>
+)}
+{currentStep === 3 && (
+  <div className="flex justify-between mt-8">
+  <button
+    onClick={() => setCurrentStep(2)}
+    className="px-6 py-3 bg-gray-600 text-white text-xl font-semibold rounded-lg hover:bg-gray-700 transition-colors duration-300"
+  >
+    Back
+  </button>
+  {subscriber || (user?.credits > 0 && (
+    <button
+      onClick={handleSubmit}
+      className="px-6 py-3 bg-purple-600 text-white text-xl font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300"
+    >
+      Launch Campaign
+    </button>
+  ))}
+</div>
+)}
+</main>
+);
+}

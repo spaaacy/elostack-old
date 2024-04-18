@@ -69,7 +69,7 @@ const Emailing = () => {
   const [showPreview, setShowPreview] = useState(false);
   const [jobTitleInput, setJobTitleInput] = useState("");
   const [companyInput, setCompanyInput] = useState("");
-  const [locationInput, setLocationInput] = useState("");
+
   const [industryInput, setIndustryInput] = useState("");
   const [delayedCall, setDelayedCall] = useState();
   const [subscriber, setSubscriber] = useState();
@@ -78,14 +78,20 @@ const Emailing = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [allPeople, setAllPeople] = useState([]);
   const [selectedJobTitles, setSelectedJobTitles] = useState([]);
-  const [selectedLocations, setSelectedLocations] = useState([]);
+
   const [showJobTitleDropdown, setShowJobTitleDropdown] = useState(false);
   const [showIndustryDropdown, setShowIndustryDropdown] = useState(false);
   const [selectedIndustries, setSelectedIndustries] = useState([]);
   const [selectedCompanies, setSelectedCompanies] = useState([]);
   const [allSelected, setAllSelected] = useState(true);
   const [companyDropdownVisible, setCompanyDropdownVisible] = useState(false);
+  const [locationInput, setLocationInput] = useState("");
+  const [selectedLocations, setSelectedLocations] = useState([]);
   const [locationDropdownVisible, setLocationDropdownVisible] = useState(false);
+  const [stateInput, setStateInput] = useState("");
+  const [selectedStates, setSelectedStates] = useState([]);
+  const [stateDropdownVisible, setStateDropdownVisible] = useState(false);
+
 
   const fillerPeople = [
     {
@@ -288,14 +294,34 @@ const Emailing = () => {
     });
   };
 
-  const handleIndustrySelect = (industry) => {
-    setSelectedIndustries((prevIndustries) => {
-      if (prevIndustries.includes(industry)) {
-        return prevIndustries.filter((i) => i !== industry);
+  const handleStateSelect = (state) => {
+    setSelectedStates((prevStates) => {
+      if (prevStates.includes(state)) {
+        return prevStates.filter((s) => s !== state);
       } else {
-        return [...prevIndustries, industry];
+        return [...prevStates, state];
       }
     });
+  };
+
+  const handleLocationInputKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      if (locationInput.trim() !== "") {
+        setSelectedLocations([...selectedLocations, locationInput.trim()]);
+        setLocationInput("");
+      }
+    }
+  };
+
+  const handleStateInputKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      if (stateInput.trim() !== "") {
+        setSelectedStates([...selectedStates, stateInput.trim()]);
+        setStateInput("");
+      }
+    }
   };
 
   const handleAttachmentChange = (e) => {
@@ -387,15 +413,7 @@ const Emailing = () => {
     }
   };
 
-  const handleLocationInputKeyDown = (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      if (locationInput.trim() !== "") {
-        setSelectedLocations([...selectedLocations, locationInput.trim()]);
-        setLocationInput("");
-      }
-    }
-  };
+
 
   const renderEmailPreview = () => {
     return (
@@ -701,56 +719,106 @@ const Emailing = () => {
                   </div>
                 </div>
                 <div>
-                  <label htmlFor="location" className="block text-xl font-semibold mb-2">
-                    Location
-                  </label>
-                  <div className="relative">
-                    <input
-                      id="location"
-                      type="text"
-                      placeholder="Search locations..."
-                      value={locationInput}
-                      onChange={(e) => {
-                        setLocationInput(e.target.value);
-                        setLocationDropdownVisible(e.target.value !== "");
-                      }}
-                      className="w-full p-4 text-lg bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-                    />
-                    {locationDropdownVisible && (
-                      <div className="absolute mt-2 w-full bg-gray-700 rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto">
-                        {fillerPeople
-                          .map((person) => person.location)
-                          .filter((location, index, self) => self.indexOf(location) === index)
-                          .filter((location) => location.toLowerCase().includes(locationInput.toLowerCase()))
-                          .map((location) => (
-                            <div
-                              key={location}
-                              className={`px-4 py-2 text-lg cursor-pointer ${
-                                selectedLocations.includes(location) ? "bg-purple-600" : "hover:bg-gray-600"
-                              }`}
-                              onClick={() => handleLocationSelect(location)}
-                            >
-                              {location}
-                            </div>
-                          ))}
-                      </div>
-                    )}
-                  </div>
-                  <div className="mt-2 flex flex-wrap gap-2">
-                    {selectedLocations.map((location) => (
-                      <div key={location} className="flex items-center mb-1 bg-purple-600 text-white px-2 py-1 rounded-lg text-lg">
-                        <span>{location}</span>
-                        <button
-                          className="ml-2 text-white hover:text-red-500 focus:outline-none"
-                          onClick={() => handleLocationSelect(location)}
-                        >
-                          <FaTrash />
-                        </button>
-                      </div>
-                    ))}
-                  </div>
+      <label htmlFor="location" className="block text-xl font-semibold mb-2">
+        City
+      </label>
+      <div className="relative">
+        <input
+          id="location"
+          type="text"
+          placeholder="Search cities..."
+          value={locationInput}
+          onChange={(e) => {
+            setLocationInput(e.target.value);
+            setLocationDropdownVisible(e.target.value !== "");
+          }}
+          onKeyDown={handleLocationInputKeyDown}
+          className="w-full p-4 text-lg bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+        />
+        {locationDropdownVisible && (
+          <div className="absolute mt-2 w-full bg-gray-700 rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto">
+            {fillerPeople
+              .map((person) => person.location)
+              .filter((location, index, self) => self.indexOf(location) === index)
+              .filter((location) => location.toLowerCase().includes(locationInput.toLowerCase()))
+              .map((location) => (
+                <div
+                  key={location}
+                  className={`px-4 py-2 text-lg cursor-pointer ${
+                    selectedLocations.includes(location) ? "bg-purple-600" : "hover:bg-gray-600"
+                  }`}
+                  onClick={() => handleLocationSelect(location)}
+                >
+                  {location}
                 </div>
-                <div>
+              ))}
+          </div>
+        )}
+      </div>
+      <div className="mt-2 flex flex-wrap gap-2">
+        {selectedLocations.map((location) => (
+          <div key={location} className="flex items-center mb-1 bg-purple-600 text-white px-2 py-1 rounded-lg text-lg">
+            <span>{location}</span>
+            <button
+              className="ml-2 text-white hover:text-red-500 focus:outline-none"
+              onClick={() => handleLocationSelect(location)}
+            >
+              <FaTrash />
+            </button>
+          </div>
+        ))}
+      </div>
+      <div className="mt-4">
+        <label htmlFor="state" className="block text-xl font-semibold mb-2">
+          State
+        </label>
+        <div className="relative">
+          <input
+            id="state"
+            type="text"
+            placeholder="Search states..."
+            value={stateInput}
+            onChange={(e) => {
+              setStateInput(e.target.value);
+              setStateDropdownVisible(e.target.value !== "");
+            }}
+            onKeyDown={handleStateInputKeyDown}
+            className="w-full p-4 text-lg bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+          />
+          {stateDropdownVisible && (
+            <div className="absolute mt-2 w-full bg-gray-700 rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto">
+              {["California", "New York", "Texas", "Florida", "Illinois"]
+                .filter((state) => state.toLowerCase().includes(stateInput.toLowerCase()))
+                .map((state) => (
+                  <div
+                    key={state}
+                    className={`px-4 py-2 text-lg cursor-pointer ${
+                      selectedStates.includes(state) ? "bg-purple-600" : "hover:bg-gray-600"
+                    }`}
+                    onClick={() => handleStateSelect(state)}
+                  >
+                    {state}
+                  </div>
+                ))}
+            </div>
+          )}
+        </div>
+        <div className="mt-2 flex flex-wrap gap-2">
+          {selectedStates.map((state) => (
+            <div key={state} className="flex items-center mb-1 bg-purple-600 text-white px-2 py-1 rounded-lg text-lg">
+              <span>{state}</span>
+              <button
+                className="ml-2 text-white hover:text-red-500 focus:outline-none"
+                onClick={() => handleStateSelect(state)}
+              >
+                <FaTrash />
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+                {/* <div>
                   <label htmlFor="industry" className="block text-lg font-semibold mb-2">
                     Industry
                   </label>
@@ -798,8 +866,8 @@ const Emailing = () => {
                         </button>
                       </div>
                     ))}
-                  </div>
-                </div>
+                  </div> 
+                </div>*/}
               </div>
             </div>
           </div>

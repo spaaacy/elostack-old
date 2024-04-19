@@ -88,10 +88,13 @@ const Emailing = () => {
   const [locationInput, setLocationInput] = useState("");
   const [selectedLocations, setSelectedLocations] = useState([]);
   const [locationDropdownVisible, setLocationDropdownVisible] = useState(false);
+  
+  const [cityInput, setCityInput] = useState("");
+  const [selectedCities, setSelectedCities] = useState([]);
+  const [cityDropdownVisible, setCityDropdownVisible] = useState(false);
   const [stateInput, setStateInput] = useState("");
   const [selectedStates, setSelectedStates] = useState([]);
   const [stateDropdownVisible, setStateDropdownVisible] = useState(false);
-
 
   const fillerPeople = [
     {
@@ -112,106 +115,37 @@ const Emailing = () => {
       industry: "E-commerce",
       linkedin: "https://www.linkedin.com/in/janesmith",
     },
-    {
-      id: 1,
-      name: "John Doe",
-      position: "Manager",
-      company: "Google",
-      location: "San Francisco, CA",
-      industry: "Technology",
-      linkedin: "https://www.linkedin.com/in/johndoe",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      position: "Director",
-      company: "Amazon",
-      location: "Seattle, WA",
-      industry: "E-commerce",
-      linkedin: "https://www.linkedin.com/in/janesmith",
-    },
-    {
-      id: 1,
-      name: "John Doe",
-      position: "Manager",
-      company: "Google",
-      location: "San Francisco, CA",
-      industry: "Technology",
-      linkedin: "https://www.linkedin.com/in/johndoe",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      position: "Director",
-      company: "Amazon",
-      location: "Seattle, WA",
-      industry: "E-commerce",
-      linkedin: "https://www.linkedin.com/in/janesmith",
-    },
-    {
-      id: 1,
-      name: "John Doe",
-      position: "Manager",
-      company: "Google",
-      location: "San Francisco, CA",
-      industry: "Technology",
-      linkedin: "https://www.linkedin.com/in/johndoe",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      position: "Director",
-      company: "Amazon",
-      location: "Seattle, WA",
-      industry: "E-commerce",
-      linkedin: "https://www.linkedin.com/in/janesmith",
-    },
-    {
-      id: 1,
-      name: "John Doe",
-      position: "Manager",
-      company: "Google",
-      location: "San Francisco, CA",
-      industry: "Technology",
-      linkedin: "https://www.linkedin.com/in/johndoe",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      position: "Director",
-      company: "Amazon",
-      location: "Seattle, WA",
-      industry: "E-commerce",
-      linkedin: "https://www.linkedin.com/in/janesmith",
-    },
-    {
-      id: 1,
-      name: "John Doe",
-      position: "Manager",
-      company: "Google",
-      location: "San Francisco, CA",
-      industry: "Technology",
-      linkedin: "https://www.linkedin.com/in/johndoe",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      position: "Director",
-      company: "Amazon",
-      location: "Seattle, WA",
-      industry: "E-commerce",
-      linkedin: "https://www.linkedin.com/in/janesmith",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      position: "Director",
-      company: "Amazon",
-      location: "Seattle, WA",
-      industry: "E-commerce",
-      linkedin: "https://www.linkedin.com/in/janesmith",
-    },
-  ];
+    
+      {
+        id: 3,
+        name: "Alice Johnson",
+        position: "Senior Manager",
+        company: "Microsoft",
+        location: "New York, NY",
+        industry: "Technology",
+        linkedin: "https://www.linkedin.com/in/alicejohnson",
+      },
+      {
+        id: 4,
+        name: "Bob Williams",
+        position: "Director",
+        company: "Walmart",
+        location: "Los Angeles, CA",
+        industry: "Retail",
+        linkedin: "https://www.linkedin.com/in/bobwilliams",
+      },
+      {
+        id: 5,
+        name: "Carol Davis",
+        position: "Head of Department",
+        company: "Tesla",
+        location: "Houston, TX",
+        industry: "Automotive",
+        linkedin: "https://www.linkedin.com/in/caroldavis",
+      },
+      
+    ];
+  
 
   useEffect(() => {
     const loadData = async () => {
@@ -219,11 +153,12 @@ const Emailing = () => {
         await fetchSubscriber();
         await fetchUser();
         setLoading(false);
+        setSelectedPeople(fillerPeople); // Set all people as selected by default
       } else {
         router.push("/signin");
       }
     };
-
+  
     if (session) {
       if (!loaded) {
         if (searchParams.has("success")) {
@@ -237,29 +172,33 @@ const Emailing = () => {
       filterPeople();
     }
   }, [session, selectedJobTitles, selectedCompanies, selectedLocations, selectedIndustries]);
-
   const filterPeople = () => {
-    let filteredPeople = [];
+    let filteredPeople = fillerPeople;
+  
     if (selectedJobTitles.length > 0) {
-      filteredPeople = fillerPeople.filter((person) =>
+      filteredPeople = filteredPeople.filter((person) =>
         selectedJobTitles.includes(person.position)
       );
     }
+  
     if (selectedCompanies.length > 0) {
-      filteredPeople = (selectedJobTitles.length > 0 ? filteredPeople : fillerPeople).filter((person) =>
+      filteredPeople = filteredPeople.filter((person) =>
         selectedCompanies.includes(person.company)
       );
     }
+  
     if (selectedLocations.length > 0) {
-      filteredPeople = (selectedJobTitles.length > 0 || selectedCompanies.length > 0 ? filteredPeople : fillerPeople).filter((person) =>
+      filteredPeople = filteredPeople.filter((person) =>
         selectedLocations.includes(person.location)
       );
     }
+  
     if (selectedIndustries.length > 0) {
-      filteredPeople = (selectedJobTitles.length > 0 || selectedCompanies.length > 0 || selectedLocations.length > 0 ? filteredPeople : fillerPeople).filter((person) =>
+      filteredPeople = filteredPeople.filter((person) =>
         selectedIndustries.includes(person.industry)
       );
     }
+  
     setSelectedPeople(filteredPeople);
     setMatchesFound(filteredPeople.length);
   };
@@ -294,15 +233,28 @@ const Emailing = () => {
     });
   };
 
-  const handleStateSelect = (state) => {
-    setSelectedStates((prevStates) => {
-      if (prevStates.includes(state)) {
-        return prevStates.filter((s) => s !== state);
+  const handleCitySelect = (city) => {
+    setSelectedCities((prevCities) => {
+      if (prevCities.includes(city)) {
+        return prevCities.filter((c) => c !== city);
       } else {
-        return [...prevStates, state];
+        return [...prevCities, city];
       }
     });
   };
+
+
+
+  const handleCityInputKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      if (cityInput.trim() !== "") {
+        setSelectedCities([...selectedCities, cityInput.trim()]);
+        setCityInput("");
+      }
+    }
+  };
+
 
   const handleLocationInputKeyDown = (e) => {
     if (e.key === "Enter") {
@@ -314,14 +266,14 @@ const Emailing = () => {
     }
   };
 
-  const handleStateInputKeyDown = (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      if (stateInput.trim() !== "") {
-        setSelectedStates([...selectedStates, stateInput.trim()]);
-        setStateInput("");
+  const handleStateSelect = (state) => {
+    setSelectedStates((prevStates) => {
+      if (prevStates.includes(state)) {
+        return prevStates.filter((s) => s !== state);
+      } else {
+        return [...prevStates, state];
       }
-    }
+    });
   };
 
   const handleAttachmentChange = (e) => {
@@ -335,6 +287,15 @@ const Emailing = () => {
       updatedAttachments.splice(index, 1);
       return updatedAttachments;
     });
+  };
+  const handleStateInputKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      if (stateInput.trim() !== "") {
+        setSelectedStates([...selectedStates, stateInput.trim()]);
+        setStateInput("");
+      }
+    }
   };
 
   const fetchMatches = () => {
@@ -719,105 +680,106 @@ const Emailing = () => {
                   </div>
                 </div>
                 <div>
-      <label htmlFor="location" className="block text-xl font-semibold mb-2">
-        City
-      </label>
-      <div className="relative">
-        <input
-          id="location"
-          type="text"
-          placeholder="Search cities..."
-          value={locationInput}
-          onChange={(e) => {
-            setLocationInput(e.target.value);
-            setLocationDropdownVisible(e.target.value !== "");
-          }}
-          onKeyDown={handleLocationInputKeyDown}
-          className="w-full p-4 text-lg bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-        />
-        {locationDropdownVisible && (
-          <div className="absolute mt-2 w-full bg-gray-700 rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto">
-            {fillerPeople
-              .map((person) => person.location)
-              .filter((location, index, self) => self.indexOf(location) === index)
-              .filter((location) => location.toLowerCase().includes(locationInput.toLowerCase()))
-              .map((location) => (
-                <div
-                  key={location}
-                  className={`px-4 py-2 text-lg cursor-pointer ${
-                    selectedLocations.includes(location) ? "bg-purple-600" : "hover:bg-gray-600"
-                  }`}
-                  onClick={() => handleLocationSelect(location)}
-                >
-                  {location}
+            <label htmlFor="city" className="block text-xl font-semibold mb-2">
+              City
+            </label>
+            <div className="relative">
+              <input
+                id="city"
+                type="text"
+                placeholder="Search cities..."
+                value={cityInput}
+                onChange={(e) => {
+                  setCityInput(e.target.value);
+                  setCityDropdownVisible(e.target.value !== "");
+                }}
+                onKeyDown={handleCityInputKeyDown}
+                className="w-full p-4 text-lg bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              />
+              {cityDropdownVisible && (
+  <div className="absolute mt-2 w-full bg-gray-700 rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto">
+    {fillerPeople
+      .map((person) => person.location.split(",")[0].trim())
+      .filter((city, index, self) => self.indexOf(city) === index)
+      .filter((city) => city.includes(cityInput))
+      .map((city) => (
+        <div
+          key={city}
+          className={`px-4 py-2 text-lg cursor-pointer ${
+            selectedCities.includes(city) ? "bg-purple-600" : "hover:bg-gray-600"
+          }`}
+          onClick={() => handleCitySelect(city)}
+        >
+          {city}
+        </div>
+      ))}
+  </div>
+)}
+            </div>
+            <div className="mt-2 flex flex-wrap gap-2">
+              {selectedCities.map((city) => (
+                <div key={city} className="flex items-center mb-1 bg-purple-600 text-white px-2 py-1 rounded-lg text-lg">
+                  <span>{city}</span>
+                  <button
+                    className="ml-2 text-white hover:text-red-500 focus:outline-none"
+                    onClick={() => handleCitySelect(city)}
+                  >
+                    <FaTrash />
+                  </button>
                 </div>
               ))}
+            </div>
           </div>
-        )}
-      </div>
-      <div className="mt-2 flex flex-wrap gap-2">
-        {selectedLocations.map((location) => (
-          <div key={location} className="flex items-center mb-1 bg-purple-600 text-white px-2 py-1 rounded-lg text-lg">
-            <span>{location}</span>
-            <button
-              className="ml-2 text-white hover:text-red-500 focus:outline-none"
-              onClick={() => handleLocationSelect(location)}
-            >
-              <FaTrash />
-            </button>
-          </div>
-        ))}
-      </div>
-      <div className="mt-4">
-        <label htmlFor="state" className="block text-xl font-semibold mb-2">
-          State
-        </label>
-        <div className="relative">
-          <input
-            id="state"
-            type="text"
-            placeholder="Search states..."
-            value={stateInput}
-            onChange={(e) => {
-              setStateInput(e.target.value);
-              setStateDropdownVisible(e.target.value !== "");
-            }}
-            onKeyDown={handleStateInputKeyDown}
-            className="w-full p-4 text-lg bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-          />
-          {stateDropdownVisible && (
-            <div className="absolute mt-2 w-full bg-gray-700 rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto">
-              {["California", "New York", "Texas", "Florida", "Illinois"]
-                .filter((state) => state.toLowerCase().includes(stateInput.toLowerCase()))
-                .map((state) => (
-                  <div
-                    key={state}
-                    className={`px-4 py-2 text-lg cursor-pointer ${
-                      selectedStates.includes(state) ? "bg-purple-600" : "hover:bg-gray-600"
-                    }`}
+          <div>
+            <label htmlFor="state" className="block text-xl font-semibold mb-2">
+              State
+            </label>
+            <div className="relative">
+              <input
+                id="state"
+                type="text"
+                placeholder="Search states..."
+                value={stateInput}
+                onChange={(e) => {
+                  setStateInput(e.target.value);
+                  setStateDropdownVisible(e.target.value !== "");
+                }}
+                onKeyDown={handleStateInputKeyDown}
+                className="w-full p-4 text-lg bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              />
+              {stateDropdownVisible && (
+                <div className="absolute mt-2 w-full bg-gray-700 rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto">
+                  {["California", "New York", "Texas", "Florida", "Illinois"]
+                    .filter((state) => state.toLowerCase().includes(stateInput.toLowerCase()))
+                    .map((state) => (
+                      <div
+                        key={state}
+                        className={`px-4 py-2 text-lg cursor-pointer ${
+                          selectedStates.includes(state) ? "bg-purple-600" : "hover:bg-gray-600"
+                        }`}
+                        onClick={() => handleStateSelect(state)}
+                      >
+                        {state}
+                      </div>
+                    ))}
+                </div>
+              )}
+            </div>
+            <div className="mt-2 flex flex-wrap gap-2">
+              {selectedStates.map((state) => (
+                <div key={state} className="flex items-center mb-1 bg-purple-600 text-white px-2 py-1 rounded-lg text-lg">
+                  <span>{state}</span>
+                  <button
+                    className="ml-2 text-white hover:text-red-500 focus:outline-none"
                     onClick={() => handleStateSelect(state)}
                   >
-                    {state}
-                  </div>
-                ))}
+                    <FaTrash />
+                  </button>
+                </div>
+              ))}
             </div>
-          )}
-        </div>
-        <div className="mt-2 flex flex-wrap gap-2">
-          {selectedStates.map((state) => (
-            <div key={state} className="flex items-center mb-1 bg-purple-600 text-white px-2 py-1 rounded-lg text-lg">
-              <span>{state}</span>
-              <button
-                className="ml-2 text-white hover:text-red-500 focus:outline-none"
-                onClick={() => handleStateSelect(state)}
-              >
-                <FaTrash />
-              </button>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
+          </div>
+    
                 {/* <div>
                   <label htmlFor="industry" className="block text-lg font-semibold mb-2">
                     Industry

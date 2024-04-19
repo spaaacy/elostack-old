@@ -51,7 +51,7 @@ const SignUpPage = () => {
   const [confirmToast, setConfirmToast] = useState(false);
   const [disableSignUp, setDisableSignUp] = useState(false);
 
-  const registerIndividual = async (e) => {
+  const register = async (e) => {
     e?.preventDefault();
     try {
       if (!session) return;
@@ -63,6 +63,7 @@ const SignUpPage = () => {
           "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
         },
         body: JSON.stringify({
+          name: firstName + " " + lastName,
           email: session.data.session.user.email,
           user_id: session.data.session.user.id,
         }),
@@ -176,7 +177,7 @@ const SignUpPage = () => {
 
         {completeRegistration ? (
           <div className="p-8">
-            <form onSubmit={registerIndividual}>
+            <form onSubmit={register}>
               <div className="mb-4">
                 <label htmlFor="firstName" className="block text-white text-sm font-bold mb-2">
                   First Name:

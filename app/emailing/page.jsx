@@ -273,6 +273,9 @@ const Emailing = () => {
     const userId = session?.data?.session?.user.id;
     if (userId) {
       const response = await fetch(`/api/user/${userId}`, {
+        headers: {
+          "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
+        },
         method: "GET",
       });
       if (response.status === 200) {

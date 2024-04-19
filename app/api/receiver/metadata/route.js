@@ -4,8 +4,6 @@ import Papa from "papaparse";
 
 export async function POST(req, res) {
   try {
-    const { companies, cities, states } = await req.json();
-
     // Authentication
     const auth = await supabase.auth.signInWithPassword({
       email: process.env.SUPABASE_ADMIN_EMAIL,
@@ -28,33 +26,36 @@ export async function POST(req, res) {
     const csvString = await response.text();
     const leads = Papa.parse(csvString, { header: true, skipEmptyLines: "greedy" }).data;
 
-    // Convert all options to lower case
-    const companiesLower = companies.map((company) => company.toLowerCase());
-    const statesLower = states.map((state) => state.toLowerCase());
-    const citiesLower = cities.map((city) => {
-      return { city: city.city.toLowerCase(), state: city.state.toLowerCase() };
-    });
-
-    let count = 0;
+    const companies = [],
+      cities = [],
+      states = [],
+      seniorities = [];
     leads.forEach((lead) => {
-      // Check if the object matches the input criteria
+      if (lead.organization_name !== "" && !companies.includes(lead.organization_name.toLowerCase())) {
+        companies.push(lead.organization_name.toLowerCase());
+      }
+
       if (
-        (companiesLower.length === 0 || companiesLower.includes(lead.organization_name.toLowerCase())) &&
-        lead.country.toLowerCase() === "united states"
+        !cities.some(
+          (city) =>
+            (city.city !== "" || city.state !== "") &&
+            lead.city.trim().toLowerCase() === city.city &&
+            lead.state.trim().toLowerCase() == city.state
+        )
       ) {
-        if (citiesLower.length === 0 && statesLower.length === 0) {
-          count++;
-        } else if (statesLower.includes(lead.state.toLowerCase())) {
-          count++;
-        } else if (
-          citiesLower.some((city) => city.state === lead.state.toLowerCase() && city.city === lead.city.toLowerCase())
-        ) {
-          count++;
-        }
+        cities.push({ city: lead.city.trim().toLowerCase(), state: lead.state.trim().toLowerCase() });
+      }
+
+      if (lead.state !== "" && !states.includes(lead.state.toLowerCase())) {
+        states.push(lead.state.toLowerCase());
+      }
+
+      if (lead.seniority !== "" && !seniorities.includes(lead.seniority.toLowerCase())) {
+        seniorities.push(lead.seniority.toLowerCase());
       }
     });
 
-    return NextResponse.json({ count }, { status: 200 });
+    return NextResponse.json({ metadata: { companies, cities, states, seniorities } }, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error }, { status: 500 });

@@ -10,6 +10,7 @@ import Loader from "@/components/common/Loader";
 import toast, { Toaster } from "react-hot-toast";
 import React from "react";
 import Link from "next/link";
+import PopupBox from "@/components/common/PopUp";
 
 const Page = () => {
   return (
@@ -26,7 +27,6 @@ const Page = () => {
     </div>
   );
 };
-
 export default Page;
 
 const Emailing = () => {
@@ -57,7 +57,7 @@ const Emailing = () => {
   const [cityInput, setCityInput] = useState("");
   const [stateInput, setStateInput] = useState("");
   const [companyInput, setCompanyInput] = useState("");
-
+  const [isOpen, setIsOpen] = useState(false);
   const [selectedSeniorities, setSelectedSeniorities] = useState([]);
   const [selectedCompanies, setSelectedCompanies] = useState([]);
   const [selectedCities, setSelectedCities] = useState([]);
@@ -307,6 +307,7 @@ const Emailing = () => {
         if (!subscriber || !subscriber.refresh_token) {
           requestEmailPermissions();
         }
+        setIsOpen(true); // Show the pop-up box
       } else {
         toast.error("Something went wrong...");
       }
@@ -878,6 +879,7 @@ const Emailing = () => {
           )}
         </div>
       )}
+    {isOpen && <PopupBox setIsOpen={setIsOpen} />}
     </main>
   );
 };

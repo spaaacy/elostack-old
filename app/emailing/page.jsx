@@ -360,7 +360,7 @@ const Emailing = () => {
     <main className="container mx-auto py-8 px-4 sm:px-8">
       <section className="text-center mt-2 mb-10">
         <div className="flex flex-col sm:flex-row justify-between items-center">
-          <h2 className="text-4xl font-bold text-white mb-4 sm:mb-0">Preferences</h2>
+          <h2 className="text-4xl font-bold text-white mb-4 ml-28 sm:mb-0">Preferences</h2>
           {subscriber && user.credits > 0 && (
             <button
               onClick={toggleCampaignStatus}
@@ -697,7 +697,7 @@ const Emailing = () => {
         </div>
       )}
       {currentStep === 2 && (
-        <section className="bg-gray-800 p-8 rounded-lg shadow-lg mb-8">
+        <section className="bg-gray-800 p-8 rounded-lg shadow-lg mb-8 mx-28">
           <div className="flex flex-col sm:flex-row items-center mb-6">
             <h3 className="text-2xl font-bold text-purple-400 mb-4 sm:mb-0 sm:mr-4">Email Template</h3>
             <HelpIcon text="Customize the subject line and body of your email template. Optionally, attach files like your resume or cover letter." />
@@ -790,20 +790,20 @@ const Emailing = () => {
         <div className="flex justify-between mt-8">
           <button
             onClick={() => setCurrentStep(1)}
-            className="px-6 py-3 bg-gray-600 text-white text-lg font-semibold rounded-lg hover:bg-gray-700 transition-colors duration-300"
+            className="px-6 py-3 ml-28 bg-gray-600 text-white text-lg font-semibold rounded-lg hover:bg-gray-700 transition-colors duration-300"
           >
             Back
           </button>
           <button
             onClick={() => setCurrentStep(3)}
-            className="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300"
+            className="px-6 py-3 mr-28 bg-purple-600 text-white text-lg font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300"
           >
             Review
           </button>
         </div>
       )}
       {currentStep === 3 && (
-        <section className="bg-gray-800 p-8 rounded-lg shadow-lg mb-8">
+        <section className="bg-gray-800 p-8 rounded-lg shadow-lg mb-8 mx-28">
           <h3 className="text-2xl font-bold text-purple-400 mb-6">Review Campaign</h3>
           <div className="bg-gray-700 p-6 rounded-lg shadow-lg mb-6">
             <p className="text-white">
@@ -857,21 +857,21 @@ const Emailing = () => {
         <div className="flex justify-between mt-8">
           <button
             onClick={() => setCurrentStep(2)}
-            className="px-6 py-3 bg-gray-600 text-white text-xl font-semibold rounded-lg hover:bg-gray-700 transition-colors duration-300"
+            className="px-6 py-3 ml-28 bg-gray-600  text-white text-xl font-semibold rounded-lg hover:bg-gray-700 transition-colors duration-300"
           >
             Back
           </button>
           {subscriber || user?.credits > 0 ? (
             <button
               onClick={handleSubmit}
-              className="px-6 py-3 bg-purple-600 text-white text-xl font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300"
+              className="px-6 py-3  bg-purple-600 text-white text-xl font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300"
             >
               Launch Campaign
             </button>
           ) : (
             <Link
               href={"/plans"}
-              className="px-6 py-3 bg-purple-600 text-white text-xl font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300"
+              className="px-6 py-3 mr-28 bg-purple-600 text-white text-xl font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300"
             >
               Launch Campaign
             </Link>

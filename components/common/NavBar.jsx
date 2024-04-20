@@ -8,29 +8,10 @@ import { useRouter } from "next/navigation";
 
 const NavBar = () => {
   const { session } = useContext(UserContext);
-  const [lastScrollY, setLastScrollY] = useState(0);
-  const [navBarVisible, setNavBarVisible] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [user, setUser] = useState();
   const router = useRouter();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      if (currentScrollY > lastScrollY) {
-        setNavBarVisible(false);
-      } else {
-        setNavBarVisible(true);
-      }
-      setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [lastScrollY]);
+  const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -56,10 +37,23 @@ const NavBar = () => {
     }
   }, [session]);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      setIsVisible(scrollPosition === 0);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <nav
       className={`fixed top-0 left-0 w-full z-50 px-2 lg:px-[9rem] py-4 flex justify-between items-center bg-[#0f0f1c] text-white transition-transform duration-300 ${
-        navBarVisible ? "" : "-translate-y-full"
+        isVisible ? "" : "-translate-y-full"
       }`}
     >
       <Link href="/" className="text-[1.5rem] font-bold text-white transition-colors hover:text-gray-300">

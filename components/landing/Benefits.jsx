@@ -20,23 +20,23 @@ const Benefits = () => {
       description: "Connect with our exclusive network of the most reliable and influential tech recruiters from top companies. Our extensive vetting process ensures you reach the best professionals for successful placements.",
       aos: "fade-right",
       icon: <FaUsers className="text-4xl text-blue-500 mr-4" />,
-      image: "/recruiters.png",
+      image: "/TopRecruiters.png",
     },
     {
       title: "Targeted Emails",
       description: "Leverage our advanced email technology to deliver personalized messages directly to key decision-makers. Our targeting algorithms ensure your attachments reach the most relevant recruiters.",
       aos: "fade-up",
-      delay: 200,
+
       icon: <FaEnvelope className="text-4xl text-green-500 mr-4" />,
-      image: "email-campaign.png",
+      image: "Emailings.png",
     },
     {
       title: "High Volume Sending",
       description: "Send up to 672 emails per month with our unparalleled email sending capacity. Cast a wide net and maximize your chances of connecting with the right recruiters at the right time.",
       aos: "fade-left",
-      delay: 400,
+
       icon: <FaPaperPlane className="text-4xl text-yellow-500 mr-4" />,
-      image: "/email-volume.png",
+      image: "/applications.png",
     },
   ];
 
@@ -47,7 +47,7 @@ const Benefits = () => {
           <h2 className="text-4xl sm:text-5xl font-bold mb-4" data-aos="fade-down">
             Unlock the Power of Email Automation
           </h2>
-          <p className="text-xl text-gray-300" data-aos="fade-down" data-aos-delay="200">
+          <p className="text-xl text-gray-300" data-aos="fade-down" >
             Elevate your email marketing game and achieve remarkable results with our cutting-edge email automation
             platform.
           </p>

@@ -52,26 +52,16 @@ const UserAccountNav = ({ user }) => {
         }`}
         style={{ display: dropdownOpen ? "block" : "none" }}
       >
-        {user ? (
-          <>
-            <Link href={`/edit-profile`} className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">
-              Edit Profile
-            </Link>
-            <Link
-              href={process.env.NEXT_PUBLIC_STRIPE_CUSTOMER_PORTAL_URL}
-              className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700"
-            >
-              Manage Subscription
-            </Link>
-          </>
-        ) : (
-          <Link
-            href="/signup?complete-registration=true"
-            className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700"
-          >
-            Finish signing up
-          </Link>
-        )}
+        <Link href={`/edit-profile`} className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">
+          Edit Profile
+        </Link>
+        <Link
+          href={process.env.NEXT_PUBLIC_STRIPE_CUSTOMER_PORTAL_URL}
+          className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700"
+        >
+          Manage Subscription
+        </Link>
+
         <hr className="my-1 border-gray-700" />
         <button
           onClick={handleSignOut}

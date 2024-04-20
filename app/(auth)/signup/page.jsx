@@ -46,26 +46,39 @@ const SignUpPage = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const searchParams = useSearchParams();
-  const [completeRegistration, setCompleteRegistration] = useState(false);
-  const [confirmToast, setConfirmToast] = useState(false);
   const [disableSignUp, setDisableSignUp] = useState(false);
 
   const register = async (e) => {
     e?.preventDefault();
+    setDisableSignUp(true);
     try {
       if (!session) return;
-      let response;
+      if (!firstName || !lastName || !email || !password) {
+        toast.error("Fields cannot be left blank!");
+        return;
+      }
 
-      response = await fetch("api/user/create", {
-        method: "POST",
-        headers: {
-          "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: `${window.location.origin}`,
+          data: {
+            first_name: firstName,
+            last_name: lastName,
+          },
         },
+      });
+      if (error) throw error;
+
+      console.log(data);
+
+      const response = await fetch("api/user/create", {
+        method: "POST",
         body: JSON.stringify({
           name: firstName + " " + lastName,
-          email: session.data.session.user.email,
-          user_id: session.data.session.user.id,
+          email,
+          user_id: data.user.id,
         }),
       });
       if (response.status === 500) {
@@ -73,43 +86,19 @@ const SignUpPage = () => {
         throw error;
       }
 
-      response = await fetch("api/individual/create", {
-        method: "POST",
-        headers: {
-          "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
-        },
-        body: JSON.stringify({
-          first_name: firstName ? firstName : "",
-          last_name: lastName ? lastName : "",
-          user_id: session.data.session.user.id,
-        }),
-      });
-
-      if (response.status === 500) {
-        const { error } = await response.json();
-        throw error;
-      }
-      if (firstName || lastName) {
-        router.push("/");
-      }
+      toast.success("Please confirm your email", { icon: "🚀" });
     } catch (error) {
       console.error(error);
     }
   };
 
   useEffect(() => {
-    if (confirmToast) toast.success("Please confirm your email", { icon: "🚀" });
     if (session?.data?.session) {
-      if (searchParams.has("complete-registration")) {
-        setCompleteRegistration(true);
-        setLoading(false);
-      } else {
-        router.push("/");
-      }
+      router.push("/");
     } else if (session) {
       setLoading(false);
     }
-  }, [session, confirmToast]);
+  }, [session]);
 
   if (loading)
     return (
@@ -118,28 +107,6 @@ const SignUpPage = () => {
         <Loader />
       </>
     );
-
-  const signUp = async (e) => {
-    e.preventDefault();
-    setDisableSignUp(true);
-    try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: `${window.location.origin}/signup?complete-registration=true`,
-        },
-      });
-
-      if (error) throw error;
-
-      setConfirmToast(true);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setDisableSignUp(false);
-    }
-  };
 
   const signInWithGoogle = async () => {
     try {
@@ -175,120 +142,107 @@ const SignUpPage = () => {
           </p>
         </div>
 
-        {completeRegistration ? (
-          <div className="p-8">
-            <form onSubmit={register}>
-              <div className="mb-4">
-                <label htmlFor="firstName" className="block text-white text-sm font-bold mb-2">
-                  First Name:
-                </label>
-                <input
-                  type="text"
-                  id="firstName"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 bg-gray-800 text-white leading-tight focus:outline-none focus:shadow-outline"
-                />
-              </div>
-              <div className="mb-4">
-                <label htmlFor="lastName" className="block text-white text-sm font-bold mb-2">
-                  Last Name:
-                </label>
-                <input
-                  type="text"
-                  id="lastName"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 bg-gray-800 text-white leading-tight focus:outline-none focus:shadow-outline"
-                />
-              </div>
-              <button
-                type="submit"
-                className="bg-purpleprimary hover:bg-purple-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
-              >
-                Complete Registration
+        <div className="p-8">
+          <form onSubmit={register}>
+            <div className="mb-4">
+              <label htmlFor="firstName" className="block text-white text-sm font-bold mb-2">
+                First Name:
+              </label>
+              <input
+                type="text"
+                id="firstName"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                className="shadow appearance-none border rounded w-full py-2 px-3 bg-gray-800 text-white leading-tight focus:outline-none focus:shadow-outline"
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="lastName" className="block text-white text-sm font-bold mb-2">
+                Last Name:
+              </label>
+              <input
+                type="text"
+                id="lastName"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                className="shadow appearance-none border rounded w-full py-2 px-3 bg-gray-800 text-white leading-tight focus:outline-none focus:shadow-outline"
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="email" className="block text-white text-sm font-bold mb-2">
+                Email:
+              </label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="shadow appearance-none border rounded w-full py-2 px-3 bg-gray-800 text-white leading-tight focus:outline-none focus:shadow-outline"
+              />
+            </div>
+            <div className="mb-6 relative">
+              <label htmlFor="password" className="block text-white text-sm font-bold mb-2">
+                Password:
+              </label>
+              <input
+                type={passwordVisible ? "text" : "password"}
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="shadow appearance-none border rounded w-full py-2 px-3 bg-gray-800 text-white leading-tight focus:outline-none focus:shadow-outline"
+              />
+              <button onClick={togglePasswordVisibility} className="absolute right-3 top-[1.6rem] mt-2">
+                {passwordVisible ? (
+                  <Image src="/hide.svg" alt="unhide password" width={25} height={25} />
+                ) : (
+                  <Image src="/unhide.png" alt="hide password" width={25} height={25} />
+                )}
               </button>
-            </form>
-          </div>
-        ) : (
-          <div className="p-8">
-            <form onSubmit={signUp}>
-              <div className="mb-4">
-                <label htmlFor="email" className="block text-white text-sm font-bold mb-2">
-                  Email:
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 bg-gray-800 text-white leading-tight focus:outline-none focus:shadow-outline"
-                />
-              </div>
-              <div className="mb-6 relative">
-                <label htmlFor="password" className="block text-white text-sm font-bold mb-2">
-                  Password:
-                </label>
-                <input
-                  type={passwordVisible ? "text" : "password"}
-                  id="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 bg-gray-800 text-white leading-tight focus:outline-none focus:shadow-outline"
-                />
-                <button onClick={togglePasswordVisibility} className="absolute right-3 top-[1.6rem] mt-2">
-                  {passwordVisible ? (
-                    <Image src="/hide.svg" alt="unhide password" width={25} height={25} />
-                  ) : (
-                    <Image src="/unhide.png" alt="hide password" width={25} height={25} />
-                  )}
-                </button>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex flex-col gap-2">
-                  <Link href="/signin" className="inline-block align-baseline font-bold text-sm text-white">
-                    Already have an account? <span className="text-purple-500 hover:text-purple-500">Sign In</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <div className="flex flex-col gap-2">
+                <Link href="/signin" className="inline-block align-baseline font-bold text-sm text-white">
+                  Already have an account? <span className="text-purple-500 hover:text-purple-500">Sign In</span>
+                </Link>
+                <p className="inline-block align-baseline text-sm text-gray-400">
+                  By signing up, you agree to our{" "}
+                  <Link
+                    href="/terms-and-conditions.html"
+                    className="font-bold text-purple-500 hover:text-purple-500 hover:underline"
+                  >
+                    Terms & Conditions
                   </Link>
-                  <p className="inline-block align-baseline text-sm text-gray-400">
-                    By signing up, you agree to our{" "}
-                    <Link
-                      href="/terms-and-conditions.html"
-                      className="font-bold text-purple-500 hover:text-purple-500 hover:underline"
-                    >
-                      Terms & Conditions
-                    </Link>
-                    {" and "}
-                    <Link
-                      href="/privacy-notice.html"
-                      className="font-bold text-purple-500 hover:text-purple-500 hover:underline"
-                    >
-                      Privacy Notice.
-                    </Link>
-                  </p>
-                </div>
-                <button
-                  disabled={disableSignUp}
-                  type="submit"
-                  className={`${
-                    disableSignUp
-                      ? "bg-gray-800 cursor-not-allowed text-gray-400"
-                      : "bg-purpleprimary hover:bg-purple-700 text-white"
-                  }  font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out`}
-                >
-                  Sign Up
-                </button>
+                  {" and "}
+                  <Link
+                    href="/privacy-notice.html"
+                    className="font-bold text-purple-500 hover:text-purple-500 hover:underline"
+                  >
+                    Privacy Notice.
+                  </Link>
+                </p>
               </div>
               <button
-                type="button"
-                onClick={signInWithGoogle}
-                className="mt-4 gap-4 flex items-center justify-center shadow-lg bg-gray-200 mb-6 hover:bg-gray-300 text-gray-700 font-bold py-3 px-4 rounded focus:outline-none focus:shadow-outline"
+                disabled={disableSignUp}
+                type="submit"
+                className={`${
+                  disableSignUp
+                    ? "bg-gray-800 cursor-not-allowed text-gray-400"
+                    : "bg-purpleprimary hover:bg-purple-700 text-white"
+                }  font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out`}
               >
-                <Image src="/google.svg" alt="Google logo" width={23} height={23} />
-                <span>Continue with Google</span>
+                Sign Up
               </button>
-            </form>
-          </div>
-        )}
+            </div>
+            <button
+              type="button"
+              onClick={signInWithGoogle}
+              className="mt-4 gap-4 flex items-center justify-center shadow-lg bg-gray-200 mb-6 hover:bg-gray-300 text-gray-700 font-bold py-3 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              <Image src="/google.svg" alt="Google logo" width={23} height={23} />
+              <span>Continue with Google</span>
+            </button>
+          </form>
+        </div>
       </section>
     </main>
   );

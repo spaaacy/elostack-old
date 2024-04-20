@@ -87,7 +87,7 @@ Deno.serve(async (req, res) => {
           chosenLead = leads[index];
 
           // Check how many times the lead was used already by others
-          results = await supabase.from("receiver").select("send_count").eq("email", chosenLead.email);
+          results = await supabase.from("leads").select("monthly_send_count").eq("email", chosenLead.email);
           if (results.error) throw results.error;
           if (results.data.send_count >= maxSendsPerReceiver) {
             console.log("Max sends already met for this lead");
@@ -98,7 +98,7 @@ Deno.serve(async (req, res) => {
           results = await supabase
             .from("application")
             .select("*", { count: "exact", head: true })
-            .match({ user_id: user.user_id, receiver_email: chosenLead.email });
+            .match({ user_id: user.user_id, lead_id: chosenLead.id });
           if (results.error) throw results.error;
           if (results.count > 0) {
             console.log("Lead has already been previously contacted");
@@ -130,31 +130,10 @@ Deno.serve(async (req, res) => {
 
         // If lead is found start emailing process
         if (found) {
-          // Check if receiver record exists in receiver table
-          results = await supabase
-            .from("receiver")
-            .select("*", { count: "exact", head: true })
-            .eq("email", chosenLead.email);
+          // Increment the send count if the record does exist
+          console.log("Incrementing receiver send count.");
+          results = await supabase.rpc("increment_monthly_send_count", { lead_email: chosenLead.email });
           if (results.error) throw results.error;
-
-          // Create receiver record if it doesn't exist
-          if (results.count === 0) {
-            console.log("Creating new receiver record.");
-            const { error } = await supabase.from("receiver").insert({
-              email: chosenLead.email,
-              first_name: chosenLead.first_name,
-              last_name: chosenLead.last_name,
-              city: chosenLead.city,
-              state: chosenLead.state,
-              company: chosenLead.organization_name,
-            });
-            if (error) throw error;
-          } else {
-            // Increment the send count if the record does exist
-            console.log("Incrementing receiver send count.");
-            results = await supabase.rpc("increment_receiver_send_count", { receiver_email: chosenLead.email });
-            if (results.error) throw results.error;
-          }
 
           const formattedTemplate = user.template
             .replace(/{{SENDER_NAME}}/g, user.user.individual.first_name + " " + user.user.individual.last_name)
@@ -198,9 +177,7 @@ Deno.serve(async (req, res) => {
           console.log(`Email ${info.messageId} sent!`);
 
           // Create a record of the application if email succeeds
-          results = await supabase
-            .from("application")
-            .insert({ user_id: user.user_id, receiver_email: chosenLead.email });
+          results = await supabase.from("application").insert({ user_id: user.user_id, lead_id: chosenLead.id });
           if (results.error) throw results.error;
         }
       } catch (error) {

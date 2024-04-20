@@ -1,6 +1,5 @@
 import { supabase } from "@/utils/supabase";
 import { NextRequest, NextResponse } from "next/server";
-import Papa from "papaparse";
 
 export async function POST(req, res) {
   try {
@@ -11,51 +10,23 @@ export async function POST(req, res) {
     });
     if (auth.error) throw auth.error;
 
-    // Fetch authorized URL for leads from private bucket
-    const results = await supabase.storage.from("leads").createSignedUrl("leads_1.csv", 3600);
+    let results = await supabase.from("unique_lead_states").select("state");
     if (results.error) throw results.error;
+    const states = results.data.filter((item) => item.state !== null);
 
-    // Use URL to get convert CSV file to JSON
-    const response = await fetch(results.data.signedUrl);
+    results = await supabase.from("unique_lead_companies").select();
+    if (results.error) throw results.error;
+    const companies = results.data.filter((item) => item.organization_name !== null);
 
-    if (!response.ok) {
-      console.error(`Request Failed. Status Code: ${response.status}`);
-      return;
-    }
+    results = await supabase.from("unique_lead_cities").select();
+    if (results.error) throw results.error;
+    const cities = results.data.filter((item) => item.city !== null && item.state !== null);
 
-    const csvString = await response.text();
-    const leads = Papa.parse(csvString, { header: true, skipEmptyLines: "greedy" }).data;
+    results = await supabase.from("unique_lead_seniorities").select();
+    if (results.error) throw results.error;
+    const seniorities = results.data.filter((item) => item.seniority !== null);
 
-    const companies = [],
-      cities = [],
-      states = [],
-      seniorities = [];
-    leads.forEach((lead) => {
-      if (lead.organization_name !== "" && !companies.includes(lead.organization_name.toLowerCase())) {
-        companies.push(lead.organization_name.toLowerCase());
-      }
-
-      if (
-        !cities.some(
-          (city) =>
-            (city.city !== "" || city.state !== "") &&
-            lead.city.trim().toLowerCase() === city.city &&
-            lead.state.trim().toLowerCase() == city.state
-        )
-      ) {
-        cities.push({ city: lead.city.trim().toLowerCase(), state: lead.state.trim().toLowerCase() });
-      }
-
-      if (lead.state !== "" && !states.includes(lead.state.toLowerCase())) {
-        states.push(lead.state.toLowerCase());
-      }
-
-      if (lead.seniority !== "" && !seniorities.includes(lead.seniority.toLowerCase())) {
-        seniorities.push(lead.seniority.toLowerCase());
-      }
-    });
-
-    return NextResponse.json({ metadata: { companies, cities, states, seniorities } }, { status: 200 });
+    return NextResponse.json({ companies, cities, states, seniorities }, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error }, { status: 500 });

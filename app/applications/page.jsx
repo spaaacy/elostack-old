@@ -1,5 +1,4 @@
 "use client";
-
 import NavBar from "@/components/common/NavBar";
 import { UserContext } from "@/context/UserContext";
 import { useEffect, useContext, useState } from "react";
@@ -57,37 +56,39 @@ const Page = () => {
     );
 
   return (
-    <main className="flex flex-col min-h-screen text-white w-full bg-gradient-to-b from-[#0f0f1c] via-[#1b1b29] to-[#251b30]">
+    <main className="flex flex-col min-h-screen text-white mx-28 ">
       <NavBar />
       <Head>
         <title>Track Applications | EloStack</title>
       </Head>
-      <main className="container mx-auto p-4 bg-[#1b1b29] rounded-lg shadow mt-8">
-        <section className="p-8 rounded-lg shadow-lg">
-          <div className="flex justify-between items-center">
-            <h2 className="text-3xl font-bold text-white">Your Applications</h2>
+      <main className="container  px-4 sm:px-8 py-8 ">
+        <section className="bg-gray-800 p-8 rounded-lg shadow-lg">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-bold text-purple-400">Your Applications</h2>
           </div>
-          <div className="space-y-6 mt-4">
+          <div className="space-y-6">
             {console.log(applications)}
             {applications?.length > 0 ? (
               applications.map((app, i) => (
                 <div
                   key={i}
-                  className="bg-[#0f0f1c] p-6 rounded-lg flex justify-between items-center hover:shadow-lg transition-shadow duration-300"
+                  className="bg-gray-700 p-6 rounded-lg flex justify-between items-center hover:bg-gray-600 transition-colors duration-300"
                 >
                   <div>
-                    <h3 className="font-semibold text-lg">
+                    <h3 className="font-semibold text-lg text-white">
                       {app.receiver.first_name + " " + app.receiver.last_name} at {app.receiver.company}
                     </h3>
                     <p className="text-sm text-gray-400">Applied on {formatDate(app.created_at)}</p>
                   </div>
                   <div className="flex">
-                    <p className="capitalize font-light">{app.receiver.city + ", " + app.receiver.state}</p>
+                    <p className="capitalize font-light text-white">
+                      {app.receiver.city + ", " + app.receiver.state}
+                    </p>
                   </div>
                 </div>
               ))
             ) : (
-              <p className="font-bold">You have made no applications</p>
+              <p className="font-bold text-white">You have made no applications</p>
             )}
           </div>
         </section>

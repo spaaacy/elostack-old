@@ -360,7 +360,7 @@ const Emailing = () => {
     <main className="container mx-auto py-8 px-4 sm:px-8">
       <section className="text-center mt-2 mb-10">
         <div className="flex flex-col sm:flex-row justify-between items-center">
-          <h2 className="text-4xl font-bold text-white mb-4 ml-28 sm:mb-0">Preferences</h2>
+         
           {subscriber && user.credits > 0 && (
             <button
               onClick={toggleCampaignStatus}

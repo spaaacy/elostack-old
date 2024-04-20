@@ -70,21 +70,21 @@ const PlansPage = () => {
       <Head>
         <title>Plans</title>
       </Head>
-      <main className="container mx-auto p-8">
-        <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-8 rounded-lg shadow-lg text-center my-8">
+      <main className="container  p-8 ">
+        <div className="bg-gradient-to-r  from-purple-600 to-indigo-600 p-8 rounded-lg shadow-lg text-center my-8 mx-20">
           <h3 className="text-2xl font-bold mb-4 text-white">Free Credits for Your First Week</h3>
           <p className="text-xl text-white">New users get 168 free credits. Equivalent to a week's worth of emails.</p>
         </div>
-        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mx-20">
           {plans.map((plan, index) => (
             <div
               key={index}
-              className={` hover:cursor-pointer rounded-lg shadow-lg transform transition-transform duration-300 hover:scale-105 ${
+              className={` hover:cursor-pointer rounded-lg shadow-lg transform transition-transform duration-300  hover:scale-105 ${
                 selectedPlan === plan ? "ring-4 ring-purple-500 bg-gray-800" : "bg-gray-900"
               }`}
               onClick={() => handlePlanSelect(plan)}
             >
-              <div className={`flex items-center justify-center h-32 ${plan.bgColor} rounded-t-lg`}>
+              <div className={`flex items-center justify-center h-32 ${plan.bgColor} rounded-t-lg `}>
                 <plan.icon className={`text-6xl ${plan.iconColor}`} />
               </div>
               <div className="p-8">

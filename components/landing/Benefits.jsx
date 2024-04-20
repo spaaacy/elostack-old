@@ -2,12 +2,12 @@
 import React, { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { FaEnvelope, FaCog, FaChartLine } from "react-icons/fa";
+import { FaEnvelope, FaUsers, FaPaperPlane } from "react-icons/fa";
 
 const Benefits = () => {
   useEffect(() => {
     AOS.init({
-      duration: 800,
+      duration: 500,
       easing: "ease-in-out",
       once: true,
       mirror: false,
@@ -16,34 +16,33 @@ const Benefits = () => {
 
   const steps = [
     {
-      title: "Tailored Campaigns",
-      description: "Craft personalized email campaigns that resonate with your audience and drive engagement.",
+      title: "Top Recruiters",
+      description: "Connect with our exclusive network of the most reliable and influential tech recruiters from top companies. Our extensive vetting process ensures you reach the best professionals for successful placements.",
       aos: "fade-right",
-      icon: <FaEnvelope className="text-4xl text-blue-500 mr-4" />,
-      image: "/template.png",
+      icon: <FaUsers className="text-4xl text-blue-500 mr-4" />,
+      image: "/recruiters.png",
     },
     {
-      title: "Workflow Automation",
-      description:
-        "Streamline your email marketing efforts with automated workflows that nurture leads and keep subscribers engaged.",
+      title: "Targeted Emails",
+      description: "Leverage our advanced email technology to deliver personalized messages directly to key decision-makers. Our targeting algorithms ensure your attachments reach the most relevant recruiters.",
       aos: "fade-up",
       delay: 200,
-      icon: <FaCog className="text-4xl text-green-500 mr-4" />,
-      image: "emailing.png",
+      icon: <FaEnvelope className="text-4xl text-green-500 mr-4" />,
+      image: "email-campaign.png",
     },
     {
-      title: "Insightful Analytics",
-      description: "Gain valuable insights into your email campaign performance and make data-driven decisions.",
+      title: "High Volume Sending",
+      description: "Send up to 672 emails per month with our unparalleled email sending capacity. Cast a wide net and maximize your chances of connecting with the right recruiters at the right time.",
       aos: "fade-left",
       delay: 400,
-      icon: <FaChartLine className="text-4xl text-yellow-500 mr-4" />,
-      image: "/applications.png",
+      icon: <FaPaperPlane className="text-4xl text-yellow-500 mr-4" />,
+      image: "/email-volume.png",
     },
   ];
 
   return (
     <section className="text-white body-font py-20 ">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto px-2 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl sm:text-5xl font-bold mb-4" data-aos="fade-down">
             Unlock the Power of Email Automation
@@ -53,7 +52,7 @@ const Benefits = () => {
             platform.
           </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+        <div className="grid grid-cols-1 mx-20   md:grid-cols-2 lg:grid-cols-3 gap-8">
           {steps.map((step, index) => (
             <div
               key={index}
@@ -70,9 +69,9 @@ const Benefits = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div>
               </div>
               <div className="p-8">
-                <div className="flex items-center mb-4">
-                  <div className="bg-gray-700 rounded-full pl-4 py-2 mr-4">{step.icon}</div>
-                  <h3 className="text-2xl font-bold">{step.title}</h3>
+                <div className="flex items-center mb-2">
+                  <div className="bg-gray-700 rounded-full pl-4 py-2  mr-3">{step.icon}</div>
+                  <h3 className="text-xl font-bold">{step.title}</h3>
                 </div>
                 <p className="text-gray-300">{step.description}</p>
               </div>

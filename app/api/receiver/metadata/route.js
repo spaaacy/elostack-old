@@ -18,15 +18,11 @@ export async function POST(req, res) {
     if (results.error) throw results.error;
     const companies = results.data.filter((item) => item.organization_name !== null);
 
-    results = await supabase.from("unique_lead_cities").select();
-    if (results.error) throw results.error;
-    const cities = results.data.filter((item) => item.city !== null && item.state !== null);
-
     results = await supabase.from("unique_lead_seniorities").select();
     if (results.error) throw results.error;
     const seniorities = results.data.filter((item) => item.seniority !== null);
 
-    return NextResponse.json({ companies, cities, states, seniorities }, { status: 200 });
+    return NextResponse.json({ companies, states, seniorities }, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error }, { status: 500 });

@@ -36,6 +36,7 @@ const Emailing = () => {
   const userContext = useContext(UserContext);
   const session = userContext?.session;
   const [selectedPeople, setSelectedPeople] = useState([]);
+  const [leadCount, setLeadCount] = useState();
   const [template, setTemplate] = useState({
     subject: "",
     body: "",
@@ -51,20 +52,16 @@ const Emailing = () => {
 
   const [companies, setCompanies] = useState([]);
   const [states, setStates] = useState([]);
-  const [cities, setCities] = useState([]);
   const [seniorities, setSeniorities] = useState([]);
 
-  const [cityInput, setCityInput] = useState("");
   const [stateInput, setStateInput] = useState("");
   const [companyInput, setCompanyInput] = useState("");
 
   const [selectedSeniorities, setSelectedSeniorities] = useState([]);
   const [selectedCompanies, setSelectedCompanies] = useState([]);
-  const [selectedCities, setSelectedCities] = useState([]);
   const [selectedStates, setSelectedStates] = useState([]);
 
   const [companyDropdownVisible, setCompanyDropdownVisible] = useState(false);
-  const [cityDropdownVisible, setCityDropdownVisible] = useState(false);
   const [showJobTitleDropdown, setShowJobTitleDropdown] = useState(false);
   const [stateDropdownVisible, setStateDropdownVisible] = useState(false);
 
@@ -92,7 +89,7 @@ const Emailing = () => {
       }
       fetchMatches();
     }
-  }, [session, selectedSeniorities, selectedCompanies, selectedStates, selectedCities]);
+  }, [session, selectedSeniorities, selectedCompanies, selectedStates]);
 
   const fetchMetadata = async () => {
     const response = await fetch("/api/receiver/metadata", {
@@ -102,7 +99,6 @@ const Emailing = () => {
       const results = await response.json();
       setCompanies(results.companies);
       setStates(results.states);
-      setCities(results.cities);
       setSeniorities(results.seniorities);
       console.log(results);
     }
@@ -113,18 +109,23 @@ const Emailing = () => {
     setDelayedCall(
       setTimeout(async () => {
         console.log("Now fetching");
+        console.log({
+          companies: selectedCompanies.length > 0 ? selectedCompanies : companies,
+          states: selectedStates.length > 0 ? selectedStates : states,
+          seniority: selectedSeniorities.length > 0 ? selectedSeniorities : seniorities,
+        });
         const response = await fetch("/api/receiver/find-leads", {
           method: "POST",
           body: JSON.stringify({
             companies: selectedCompanies,
             states: selectedStates,
-            cities: selectedCities,
             seniority: selectedSeniorities,
           }),
         });
         if (response.status === 200) {
           const results = await response.json();
           setSelectedPeople(results.leads);
+          setLeadCount(results.count);
         }
       }, 1000)
     );
@@ -150,18 +151,6 @@ const Emailing = () => {
     });
     setCompanyDropdownVisible(false);
     setCompanyInput("");
-  };
-
-  const handleCitySelect = (city) => {
-    setSelectedCities((prevCities) => {
-      if (prevCities.includes(city)) {
-        return prevCities.filter((c) => c !== city);
-      } else {
-        return [...prevCities, city];
-      }
-    });
-    setCityInput("");
-    setCityDropdownVisible(false);
   };
 
   const handleStateSelect = (state) => {
@@ -301,7 +290,6 @@ const Emailing = () => {
           active: true,
           options: {
             companies: selectedCompanies.length > 0 ? selectedCompanies : [],
-            cities: selectedCities.length > 0 ? selectedCities : [],
             states: selectedStates.length > 0 ? selectedStates : [],
             seniorities: selectedSeniorities.length > 0 ? selectedSeniorities : [],
           },
@@ -468,61 +456,6 @@ const Emailing = () => {
                   </div>
                 </div>
                 <div>
-                  <label htmlFor="city" className="block font-semibold mb-2">
-                    City
-                  </label>
-                  <div className="relative">
-                    <input
-                      id="city"
-                      type="text"
-                      placeholder="Search cities..."
-                      value={cityInput}
-                      onChange={(e) => {
-                        setCityInput(e.target.value);
-                        setCityDropdownVisible(e.target.value !== "");
-                      }}
-                      className="w-full p-2 text-sm bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-                    />
-                    {cityDropdownVisible && (
-                      <div className="absolute mt-2 w-full bg-gray-700 rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto">
-                        {console.log(cities)}
-                        {cities
-                          .filter((city) => city.city.toLowerCase().includes(cityInput.toLowerCase()))
-                          .map((city, i) => {
-                            if (i < 100)
-                              return (
-                                <div
-                                  key={i}
-                                  className={`capitalize px-4 py-2 text-sm cursor-pointer ${
-                                    selectedCities.includes(city) ? "bg-purple-600" : "hover:bg-gray-600"
-                                  }`}
-                                  onClick={() => handleCitySelect(city)}
-                                >
-                                  {city.city + ", " + city.state}
-                                </div>
-                              );
-                          })}
-                      </div>
-                    )}
-                  </div>
-                  <div className="mt-2 flex flex-wrap gap-2">
-                    {selectedCities.map((city, i) => (
-                      <div
-                        key={i}
-                        className="capitalize flex items-center mb-1 bg-purple-600 text-white px-2 py-1 rounded-lg text-sm"
-                      >
-                        <span>{city.city + ", " + city.state}</span>
-                        <button
-                          className="ml-2 text-white hover:text-red-500 focus:outline-none"
-                          onClick={() => handleCitySelect(city)}
-                        >
-                          <FaTrash />
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div>
                   <label htmlFor="state" className="block font-semibold mb-2">
                     State
                   </label>
@@ -589,9 +522,9 @@ const Emailing = () => {
             <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-full">
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-xl font-bold text-purple-400">Selected Leads</h3>
-                {selectedPeople && <p className="font-semibold">{`${selectedPeople.length} leads found`}</p>}
+                {selectedPeople && <p className="font-semibold">{`${leadCount} leads found`}</p>}
               </div>
-              <div className={`overflow-x-auto ${selectedPeople.length > 12 ? "max-h-[70vh] overflow-y-auto" : ""}`}>
+              <div className={`overflow-x-auto ${leadCount > 12 ? "max-h-[70vh] overflow-y-auto" : ""}`}>
                 <table className="w-full">
                   <thead>
                     <tr>
@@ -603,7 +536,7 @@ const Emailing = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {selectedPeople.length === 0 ? (
+                    {leadCount === 0 ? (
                       <tr>
                         <td colSpan="5" className="px-4 py-2 text-center text-lg">
                           No filters applied. Showing all people.
@@ -764,7 +697,7 @@ const Emailing = () => {
           <h3 className="text-2xl font-bold text-purple-400 mb-6">Review Campaign</h3>
           <div className="bg-gray-700 p-6 rounded-lg shadow-lg mb-6">
             <p className="text-white">
-              <span className="font-semibold text-purple-400">Total Leads Found:</span> {selectedPeople.length}
+              <span className="font-semibold text-purple-400">Total Leads Found:</span> {leadCount}
             </p>
             <p className="text-white">
               <span className="font-semibold text-purple-400">Credits Available:</span> {user?.credits || 0}
@@ -779,14 +712,6 @@ const Emailing = () => {
               Selected Companies:{" "}
               <span className="capitalize text-white font-normal">
                 {selectedCompanies.map((company, index) => (index === 0 ? company : `, ${company}`))}
-              </span>
-            </p>
-            <p className="font-semibold text-purple-400">
-              Selected Cities:{" "}
-              <span className="capitalize text-white font-normal">
-                {selectedCities.map((city, index) =>
-                  index === 0 ? city.city + ", " + city.state : "; " + city.city + ", " + city.state
-                )}
               </span>
             </p>
             <p className="font-semibold text-purple-400">

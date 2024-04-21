@@ -1,6 +1,5 @@
 import { supabase } from "@/utils/supabase";
 import { NextRequest, NextResponse } from "next/server";
-import Papa from "papaparse";
 
 export async function POST(req, res) {
   try {

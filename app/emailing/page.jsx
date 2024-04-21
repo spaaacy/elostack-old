@@ -62,9 +62,12 @@ const Emailing = () => {
   const [selectedCompanies, setSelectedCompanies] = useState([]);
   const [selectedStates, setSelectedStates] = useState([]);
 
+  const [showJobTitleDropdown, setShowSeniorityDropdown] = useState(false);
   const [companyDropdownVisible, setCompanyDropdownVisible] = useState(false);
-  const [showJobTitleDropdown, setShowJobTitleDropdown] = useState(false);
   const [stateDropdownVisible, setStateDropdownVisible] = useState(false);
+  const [senioritySelectAll, setSenioritySelectAll] = useState(false);
+  const [companySelectAll, setCompanySelectAll] = useState(false);
+  const [stateSelectAll, setStateSelectAll] = useState(false);
 
   useEffect(() => {
     const loadData = async () => {
@@ -403,15 +406,33 @@ const Emailing = () => {
               <h3 className="text-xl font-bold text-purple-400 mb-6">Filters</h3>
               <div className="space-y-4">
                 <div>
-                  <label htmlFor="jobTitle" className="block font-semibold mb-2">
-                    Seniority
-                  </label>
+                  <div className="flex justify-between items-center">
+                    <label htmlFor="jobTitle" className="block font-semibold mb-2">
+                      Seniority
+                    </label>
+                    <label className="ml-auto mr-2 text-sm" htmlFor="senioritySelectAll">
+                      Select All
+                    </label>
+                    <input
+                      id="senioritySelectAll"
+                      type="checkbox"
+                      checked={senioritySelectAll}
+                      onChange={(e) => {
+                        setSenioritySelectAll(!senioritySelectAll);
+                        setShowSeniorityDropdown(false);
+                        setSelectedSeniorities([]);
+                      }}
+                    />
+                  </div>
                   <div className="relative">
                     <button
                       id="jobTitle"
                       type="button"
-                      className="w-full p-2  bg-gray-700 text-sm text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 flex justify-between items-center"
-                      onClick={() => setShowJobTitleDropdown(!showJobTitleDropdown)}
+                      disabled={senioritySelectAll}
+                      className={`${
+                        senioritySelectAll ? "bg-gray-900 text-gray-500" : "bg-gray-700 text-white"
+                      } w-full p-2 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 flex justify-between items-center`}
+                      onClick={() => setShowSeniorityDropdown(!showJobTitleDropdown)}
                       aria-haspopup="true"
                       aria-expanded={showJobTitleDropdown}
                     >
@@ -442,9 +463,25 @@ const Emailing = () => {
                   </div>
                 </div>
                 <div>
-                  <label htmlFor="company" className="block font-semibold mb-2">
-                    Company
-                  </label>
+                  <div className="flex justify-between items-center">
+                    <label htmlFor="company" className="block font-semibold mb-2">
+                      Company
+                    </label>
+                    <label className="ml-auto mr-2 text-sm" htmlFor="companySelectAll">
+                      Select All
+                    </label>
+                    <input
+                      id="companySelectAll"
+                      type="checkbox"
+                      checked={companySelectAll}
+                      onChange={(e) => {
+                        setCompanySelectAll(!companySelectAll);
+                        setCompanyDropdownVisible(false);
+                        setCompanyInput("");
+                        setSelectedCompanies([]);
+                      }}
+                    />
+                  </div>
                   <div className="relative">
                     <input
                       id="company"
@@ -455,7 +492,10 @@ const Emailing = () => {
                         setCompanyInput(e.target.value);
                         setCompanyDropdownVisible(e.target.value !== "");
                       }}
-                      className="w-full p-2 text-sm bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      disabled={companySelectAll}
+                      className={`${
+                        companySelectAll ? "text-gray-500 bg-gray-900  " : "bg-gray-700 text-white"
+                      }  w-full p-2 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500`}
                     />
                     {companyDropdownVisible && (
                       <div className="absolute mt-2 w-full bg-gray-700 rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto">
@@ -497,9 +537,25 @@ const Emailing = () => {
                   </div>
                 </div>
                 <div>
-                  <label htmlFor="state" className="block font-semibold mb-2">
-                    State
-                  </label>
+                  <div className="flex justify-between items-center">
+                    <label htmlFor="state" className="block font-semibold mb-2">
+                      State
+                    </label>
+                    <label className="ml-auto mr-2 text-sm" htmlFor="stateSelectAll">
+                      Select All
+                    </label>
+                    <input
+                      id="stateSelectAll"
+                      type="checkbox"
+                      checked={stateSelectAll}
+                      onChange={(e) => {
+                        setStateSelectAll(!stateSelectAll);
+                        setStateDropdownVisible(false);
+                        setStateInput("");
+                        setSelectedStates([]);
+                      }}
+                    />
+                  </div>
                   <div className="relative">
                     <input
                       id="state"
@@ -510,7 +566,10 @@ const Emailing = () => {
                         setStateInput(e.target.value);
                         setStateDropdownVisible(e.target.value !== "");
                       }}
-                      className="w-full p-2 text-sm bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      disabled={stateSelectAll}
+                      className={`${
+                        stateSelectAll ? "text-gray-500 bg-gray-900  " : "bg-gray-700 text-white"
+                      }  w-full p-2 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500`}
                     />
                     {stateDropdownVisible && (
                       <div className="absolute mt-2 w-full bg-gray-700 rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto">
@@ -749,7 +808,7 @@ const Emailing = () => {
               <span className="capitalize text-white font-normal">
                 {selectedSeniorities.length > 0
                   ? selectedSeniorities.map((seniority, index) => (index === 0 ? seniority : `, ${seniority}`))
-                  : "All"}
+                  : "All Selected"}
               </span>
             </p>
             <p className="font-semibold text-purple-400">
@@ -757,7 +816,7 @@ const Emailing = () => {
               <span className="capitalize text-white font-normal">
                 {selectedCompanies.length > 0
                   ? selectedCompanies.map((company, index) => (index === 0 ? company : `, ${company}`))
-                  : "All"}
+                  : "All Selected"}
               </span>
             </p>
             <p className="font-semibold text-purple-400">
@@ -765,7 +824,7 @@ const Emailing = () => {
               <span className="capitalize text-white font-normal">
                 {selectedStates.length > 0
                   ? selectedStates.map((state, index) => (index === 0 ? state : `, ${state}`))
-                  : "All"}
+                  : "All Selected"}
               </span>
             </p>
           </div>

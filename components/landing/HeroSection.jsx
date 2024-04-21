@@ -41,15 +41,7 @@ const buttonStyle = css`
   transition: background-color 0.3s ease;
   animation: jump 5s infinite;
 
-  @keyframes jump {
-    0%,
-    100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-20px);
-    }
-  }
+}
 `;
 
 export default function Home() {

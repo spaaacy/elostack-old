@@ -10,6 +10,7 @@ import Loader from "@/components/common/Loader";
 import toast, { Toaster } from "react-hot-toast";
 import React from "react";
 import Link from "next/link";
+import PopupBox from "@/components/common/PopUp";
 
 const Page = () => {
   return (
@@ -26,7 +27,6 @@ const Page = () => {
     </div>
   );
 };
-
 export default Page;
 
 const Emailing = () => {
@@ -56,7 +56,7 @@ const Emailing = () => {
 
   const [stateInput, setStateInput] = useState("");
   const [companyInput, setCompanyInput] = useState("");
-
+  const [isOpen, setIsOpen] = useState(false);
   const [selectedSeniorities, setSelectedSeniorities] = useState([]);
   const [selectedCompanies, setSelectedCompanies] = useState([]);
   const [selectedStates, setSelectedStates] = useState([]);
@@ -299,6 +299,7 @@ const Emailing = () => {
         if (!subscriber || !subscriber.refresh_token) {
           requestEmailPermissions();
         }
+        setIsOpen(true); // Show the pop-up box
       } else {
         toast.error("Something went wrong...");
       }
@@ -587,7 +588,7 @@ const Emailing = () => {
         </div>
       )}
       {currentStep === 2 && (
-        <section className="bg-gray-800 p-8 rounded-lg shadow-lg mb-8">
+        <section className="bg-gray-800 p-8 rounded-lg shadow-lg mb-8 mx-28">
           <div className="flex flex-col sm:flex-row items-center mb-6">
             <h3 className="text-2xl font-bold text-purple-400 mb-4 sm:mb-0 sm:mr-4">Email Template</h3>
             <HelpIcon text="Customize the subject line and body of your email template. Optionally, attach files like your resume or cover letter." />
@@ -693,7 +694,7 @@ const Emailing = () => {
         </div>
       )}
       {currentStep === 3 && (
-        <section className="bg-gray-800 p-8 rounded-lg shadow-lg mb-8">
+        <section className="bg-gray-800 p-8 rounded-lg shadow-lg mb-8 mx-28">
           <h3 className="text-2xl font-bold text-purple-400 mb-6">Review Campaign</h3>
           <div className="bg-gray-700 p-6 rounded-lg shadow-lg mb-6">
             <p className="text-white">
@@ -705,19 +706,25 @@ const Emailing = () => {
             <p className="font-semibold text-purple-400">
               Selected Seniorities:{" "}
               <span className="capitalize text-white font-normal">
-                {selectedSeniorities.map((seniority, index) => (index === 0 ? seniority : `, ${seniority}`))}
+                {selectedSeniorities.length > 0
+                  ? selectedSeniorities.map((seniority, index) => (index === 0 ? seniority : `, ${seniority}`))
+                  : "All"}
               </span>
             </p>
             <p className="font-semibold text-purple-400">
               Selected Companies:{" "}
               <span className="capitalize text-white font-normal">
-                {selectedCompanies.map((company, index) => (index === 0 ? company : `, ${company}`))}
+                {selectedCompanies.length > 0
+                  ? selectedCompanies.map((company, index) => (index === 0 ? company : `, ${company}`))
+                  : "All"}
               </span>
             </p>
             <p className="font-semibold text-purple-400">
               Selected States:{" "}
               <span className="capitalize text-white font-normal">
-                {selectedStates.map((state, index) => (index === 0 ? state : `, ${state}`))}
+                {selectedStates.length > 0
+                  ? selectedStates.map((state, index) => (index === 0 ? state : `, ${state}`))
+                  : "All"}
               </span>
             </p>
           </div>
@@ -759,13 +766,14 @@ const Emailing = () => {
           ) : (
             <Link
               href={"/plans"}
-              className="px-6 py-3 bg-purple-600 text-white text-xl font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300"
+              className="px-6 py-3 mr-28 bg-purple-600 text-white text-xl font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300"
             >
               Launch Campaign
             </Link>
           )}
         </div>
       )}
+      {isOpen && <PopupBox setIsOpen={setIsOpen} />}
     </main>
   );
 };

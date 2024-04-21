@@ -26,8 +26,6 @@ const NavBar = () => {
         if (response.status === 200) {
           const { user } = await response.json();
           setUser(user);
-        } else {
-          router.push("/signup?complete-registration=true");
         }
       }
     };

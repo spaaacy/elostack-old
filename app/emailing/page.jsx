@@ -36,6 +36,7 @@ const Emailing = () => {
   const userContext = useContext(UserContext);
   const session = userContext?.session;
   const [selectedPeople, setSelectedPeople] = useState([]);
+  const [leadCount, setLeadCount] = useState();
   const [template, setTemplate] = useState({
     subject: "",
     body: "",
@@ -51,20 +52,16 @@ const Emailing = () => {
 
   const [companies, setCompanies] = useState([]);
   const [states, setStates] = useState([]);
-  const [cities, setCities] = useState([]);
   const [seniorities, setSeniorities] = useState([]);
 
-  const [cityInput, setCityInput] = useState("");
   const [stateInput, setStateInput] = useState("");
   const [companyInput, setCompanyInput] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [selectedSeniorities, setSelectedSeniorities] = useState([]);
   const [selectedCompanies, setSelectedCompanies] = useState([]);
-  const [selectedCities, setSelectedCities] = useState([]);
   const [selectedStates, setSelectedStates] = useState([]);
 
   const [companyDropdownVisible, setCompanyDropdownVisible] = useState(false);
-  const [cityDropdownVisible, setCityDropdownVisible] = useState(false);
   const [showJobTitleDropdown, setShowJobTitleDropdown] = useState(false);
   const [stateDropdownVisible, setStateDropdownVisible] = useState(false);
 
@@ -92,7 +89,7 @@ const Emailing = () => {
       }
       fetchMatches();
     }
-  }, [session, selectedSeniorities, selectedCompanies, selectedStates, selectedCities]);
+  }, [session, selectedSeniorities, selectedCompanies, selectedStates]);
 
   const fetchMetadata = async () => {
     const response = await fetch("/api/receiver/metadata", {
@@ -100,10 +97,10 @@ const Emailing = () => {
     });
     if (response.status === 200) {
       const results = await response.json();
-      setCompanies(results.metadata.companies);
-      setStates(results.metadata.states);
-      setCities(results.metadata.cities);
-      setSeniorities(results.metadata.seniorities);
+      setCompanies(results.companies);
+      setStates(results.states);
+      setSeniorities(results.seniorities);
+      console.log(results);
     }
   };
 
@@ -112,18 +109,23 @@ const Emailing = () => {
     setDelayedCall(
       setTimeout(async () => {
         console.log("Now fetching");
+        console.log({
+          companies: selectedCompanies.length > 0 ? selectedCompanies : companies,
+          states: selectedStates.length > 0 ? selectedStates : states,
+          seniority: selectedSeniorities.length > 0 ? selectedSeniorities : seniorities,
+        });
         const response = await fetch("/api/receiver/find-leads", {
           method: "POST",
           body: JSON.stringify({
             companies: selectedCompanies,
             states: selectedStates,
-            cities: selectedCities,
             seniority: selectedSeniorities,
           }),
         });
         if (response.status === 200) {
           const results = await response.json();
           setSelectedPeople(results.leads);
+          setLeadCount(results.count);
         }
       }, 1000)
     );
@@ -149,18 +151,6 @@ const Emailing = () => {
     });
     setCompanyDropdownVisible(false);
     setCompanyInput("");
-  };
-
-  const handleCitySelect = (city) => {
-    setSelectedCities((prevCities) => {
-      if (prevCities.includes(city)) {
-        return prevCities.filter((c) => c !== city);
-      } else {
-        return [...prevCities, city];
-      }
-    });
-    setCityInput("");
-    setCityDropdownVisible(false);
   };
 
   const handleStateSelect = (state) => {
@@ -297,9 +287,11 @@ const Emailing = () => {
           user_id: userId,
           email_body: template.body,
           email_subject: template.subject,
-          active: false,
+          active: true,
           options: {
-            // TODO: Fix this...
+            companies: selectedCompanies.length > 0 ? selectedCompanies : [],
+            states: selectedStates.length > 0 ? selectedStates : [],
+            seniorities: selectedSeniorities.length > 0 ? selectedSeniorities : [],
           },
         }),
       });
@@ -361,21 +353,13 @@ const Emailing = () => {
     <main className="container mx-auto py-8 px-4 sm:px-8">
       <section className="text-center mt-2 mb-10">
         <div className="flex flex-col sm:flex-row justify-between items-center">
-         
-          {subscriber && user.credits > 0 && (
-            <button
-              onClick={toggleCampaignStatus}
-              className="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300"
-            >
-              {subscriber.active ? "Pause Campaign" : "Start Campaign"}
-            </button>
-          )}
+          <h2 className="text-3xl font-bold text-white mb-4 sm:mb-0">Preferences</h2>
         </div>
       </section>
       {currentStep === 1 && (
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           <div className="lg:col-span-1">
-            <div className="bg-gray-800 p-8 rounded-lg shadow-lg mb-8 w-full">
+            <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-full">
               <h3 className="text-xl font-bold text-purple-400 mb-6">Filters</h3>
               <div className="space-y-4">
                 <div>
@@ -406,11 +390,11 @@ const Emailing = () => {
                           <label className="capitalize flex items-center px-4 py-2 text-sm hover:bg-gray-600">
                             <input
                               type="checkbox"
-                              checked={selectedSeniorities.includes(seniority.toLowerCase())}
-                              onChange={() => handleJobTitleSelect(seniority)}
+                              checked={selectedSeniorities.includes(seniority.seniority.toLowerCase())}
+                              onChange={() => handleJobTitleSelect(seniority.seniority)}
                               className="mr-2"
                             />
-                            <span>{seniority}</span>
+                            <span>{seniority.seniority}</span>
                           </label>
                         ))}
                       </div>
@@ -436,16 +420,20 @@ const Emailing = () => {
                     {companyDropdownVisible && (
                       <div className="absolute mt-2 w-full bg-gray-700 rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto">
                         {companies
-                          .filter((company) => company.toLowerCase().includes(companyInput.toLowerCase()))
+                          .filter((company) =>
+                            company.organization_name.toLowerCase().includes(companyInput.toLowerCase())
+                          )
                           .map((company) => (
                             <div
-                              key={company}
+                              key={company.organization_name}
                               className={`capitalize px-4 py-2 text-sm cursor-pointer ${
-                                selectedCompanies.includes(company) ? "bg-purple-600" : "hover:bg-gray-600"
+                                selectedCompanies.includes(company.organization_name)
+                                  ? "bg-purple-600"
+                                  : "hover:bg-gray-600"
                               }`}
-                              onClick={() => handleCompanySelect(company)}
+                              onClick={() => handleCompanySelect(company.organization_name)}
                             >
-                              {company}
+                              {company.organization_name}
                             </div>
                           ))}
                       </div>
@@ -461,61 +449,6 @@ const Emailing = () => {
                         <button
                           className="ml-2 text-white hover:text-red-500 focus:outline-none"
                           onClick={() => handleCompanySelect(company)}
-                        >
-                          <FaTrash />
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <label htmlFor="city" className="block font-semibold mb-2">
-                    City
-                  </label>
-                  <div className="relative">
-                    <input
-                      id="city"
-                      type="text"
-                      placeholder="Search cities..."
-                      value={cityInput}
-                      onChange={(e) => {
-                        setCityInput(e.target.value);
-                        setCityDropdownVisible(e.target.value !== "");
-                      }}
-                      className="w-full p-2 text-sm bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-                    />
-                    {cityDropdownVisible && (
-                      <div className="absolute mt-2 w-full bg-gray-700 rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto">
-                        {console.log(cities)}
-                        {cities
-                          .filter((city) => city.city.includes(cityInput.toLowerCase()))
-                          .map((city, i) => {
-                            if (i < 100)
-                              return (
-                                <div
-                                  key={i}
-                                  className={`capitalize px-4 py-2 text-sm cursor-pointer ${
-                                    selectedCities.includes(city) ? "bg-purple-600" : "hover:bg-gray-600"
-                                  }`}
-                                  onClick={() => handleCitySelect(city)}
-                                >
-                                  {city.city + ", " + city.state}
-                                </div>
-                              );
-                          })}
-                      </div>
-                    )}
-                  </div>
-                  <div className="mt-2 flex flex-wrap gap-2">
-                    {selectedCities.map((city, i) => (
-                      <div
-                        key={i}
-                        className="capitalize flex items-center mb-1 bg-purple-600 text-white px-2 py-1 rounded-lg text-sm"
-                      >
-                        <span>{city.city + ", " + city.state}</span>
-                        <button
-                          className="ml-2 text-white hover:text-red-500 focus:outline-none"
-                          onClick={() => handleCitySelect(city)}
                         >
                           <FaTrash />
                         </button>
@@ -543,16 +476,16 @@ const Emailing = () => {
                       <div className="absolute mt-2 w-full bg-gray-700 rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto">
                         {states &&
                           states
-                            .filter((state) => state.toLowerCase().includes(stateInput.toLowerCase()))
+                            .filter((state) => state.state.toLowerCase().includes(stateInput.toLowerCase()))
                             .map((state) => (
                               <div
-                                key={state}
+                                key={state.state}
                                 className={`capitalize px-4 py-2 text-sm cursor-pointer ${
-                                  selectedStates.includes(state) ? "bg-purple-600" : "hover:bg-gray-600"
+                                  selectedStates.includes(state.state) ? "bg-purple-600" : "hover:bg-gray-600"
                                 }`}
-                                onClick={() => handleStateSelect(state)}
+                                onClick={() => handleStateSelect(state.state)}
                               >
-                                {state}
+                                {state.state}
                               </div>
                             ))}
                       </div>
@@ -575,67 +508,24 @@ const Emailing = () => {
                     ))}
                   </div>
                 </div>
-
-                {/* <div>
-                  <label htmlFor="industry" className="block text-lg font-semibold mb-2">
-                    Industry
-                  </label>
-                  <div className="relative">
-                    <button
-                      id="industry"
-                      type="button"
-                      className="w-full p-4 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 flex justify-between items-center"
-                      onClick={() => setShowIndustryDropdown(!showIndustryDropdown)}
-                      aria-haspopup="true"
-                      aria-expanded={showIndustryDropdown}
-                    >
-                      <span>{selectedIndustries.length > 0 ? selectedIndustries.join(", ") : "Select industries"}</span>
-                      <FaChevronDown className="ml-2" />
-                    </button>
-                    {showIndustryDropdown && (
-                      <div
-                        className="absolute mt-2 w-full bg-gray-700 rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto"
-                        role="menu"
-                        aria-labelledby="industry"
-                      >
-                        {commonIndustries.map((industry) => (
-                          <label key={industry} className="flex items-center px-4 py-2 hover:bg-gray-600">
-                            <input
-                              type="checkbox"
-                              checked={selectedIndustries.includes(industry)}
-                              onChange={() => handleIndustrySelect(industry)}
-                              className="mr-2"
-                            />
-                            <span>{industry}</span>
-                          </label>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                  <div className="mt-2 flex flex-wrap gap-2">
-                    {selectedIndustries.map((industry) => (
-                      <div key={industry} className="flex items-center mb-1 bg-purple-600 text-white px-2 py-1 rounded-lg">
-                        <span>{industry}</span>
-                        <button
-                          className="ml-2 text-white hover:text-red-500 focus:outline-none"
-                          onClick={() => handleIndustrySelect(industry)}
-                        >
-                          <FaTrash />
-                        </button>
-                      </div>
-                    ))}
-                  </div> 
-                </div>*/}
               </div>
             </div>
+            {(subscriber || user?.credits > 0) && (
+              <button
+                onClick={toggleCampaignStatus}
+                className="mt-4 py-2 px-4 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300"
+              >
+                {subscriber.active ? "Pause Campaign" : "Resume Campaign"}
+              </button>
+            )}
           </div>
           <div className="lg:col-span-3">
             <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-full">
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-xl font-bold text-purple-400">Selected Leads</h3>
-                {selectedPeople && <p className="font-semibold">{`${selectedPeople.length} leads found`}</p>}
+                {selectedPeople && <p className="font-semibold">{`${leadCount} leads found`}</p>}
               </div>
-              <div className={`overflow-x-auto ${selectedPeople.length > 12 ? "max-h-[70vh] overflow-y-auto" : ""}`}>
+              <div className={`overflow-x-auto ${leadCount > 12 ? "max-h-[70vh] overflow-y-auto" : ""}`}>
                 <table className="w-full">
                   <thead>
                     <tr>
@@ -647,7 +537,7 @@ const Emailing = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {selectedPeople.length === 0 ? (
+                    {leadCount === 0 ? (
                       <tr>
                         <td colSpan="5" className="px-4 py-2 text-center text-lg">
                           No filters applied. Showing all people.
@@ -691,7 +581,7 @@ const Emailing = () => {
         <div className="flex justify-end mt-8">
           <button
             onClick={() => setCurrentStep(2)}
-            className="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300"
+            className="px-4 py-2 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300"
           >
             Next
           </button>
@@ -791,13 +681,13 @@ const Emailing = () => {
         <div className="flex justify-between mt-8">
           <button
             onClick={() => setCurrentStep(1)}
-            className="px-6 py-3 ml-28 bg-gray-600 text-white text-lg font-semibold rounded-lg hover:bg-gray-700 transition-colors duration-300"
+            className="px-4 py-2 bg-gray-600 text-white font-semibold rounded-lg hover:bg-gray-700 transition-colors duration-300"
           >
             Back
           </button>
           <button
             onClick={() => setCurrentStep(3)}
-            className="px-6 py-3 mr-28 bg-purple-600 text-white text-lg font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300"
+            className="px-4 py-2 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300"
           >
             Review
           </button>
@@ -808,43 +698,47 @@ const Emailing = () => {
           <h3 className="text-2xl font-bold text-purple-400 mb-6">Review Campaign</h3>
           <div className="bg-gray-700 p-6 rounded-lg shadow-lg mb-6">
             <p className="text-white">
-              <span className="font-semibold text-purple-400">Total Leads Found:</span> {selectedPeople.length}
+              <span className="font-semibold text-purple-400">Total Leads Found:</span> {leadCount}
             </p>
             <p className="text-white">
               <span className="font-semibold text-purple-400">Credits Available:</span> {user?.credits || 0}
             </p>
             <p className="font-semibold text-purple-400">
-              Selected Companies:{" "}
+              Selected Seniorities:{" "}
               <span className="capitalize text-white font-normal">
-                {selectedCompanies.map((company, index) => (index === 0 ? company : `, ${company}`))}
+                {selectedSeniorities.length > 0
+                  ? selectedSeniorities.map((seniority, index) => (index === 0 ? seniority : `, ${seniority}`))
+                  : "All"}
               </span>
             </p>
             <p className="font-semibold text-purple-400">
-              Selected Cities:{" "}
+              Selected Companies:{" "}
               <span className="capitalize text-white font-normal">
-                {selectedCities.map((city, index) =>
-                  index === 0 ? city.city + ", " + city.state : "; " + city.city + ", " + city.state
-                )}
+                {selectedCompanies.length > 0
+                  ? selectedCompanies.map((company, index) => (index === 0 ? company : `, ${company}`))
+                  : "All"}
               </span>
             </p>
             <p className="font-semibold text-purple-400">
               Selected States:{" "}
               <span className="capitalize text-white font-normal">
-                {selectedStates.map((state, index) => (index === 0 ? state : `, ${state}`))}
+                {selectedStates.length > 0
+                  ? selectedStates.map((state, index) => (index === 0 ? state : `, ${state}`))
+                  : "All"}
               </span>
             </p>
           </div>
           <div>
-            <h4 className="text-2xl font-semibold mb-6 text-purple-400">Email Template:</h4>
+            <h4 className="text-lg font-semibold mb-6 text-purple-400">Email Template:</h4>
             <div className="bg-gray-700 p-6 rounded-lg shadow-lg">
-              <p className="text-lg text-white">
+              <p className="text-white">
                 {template.subject
                   .replace(/{{SENDER_NAME}}/g, "Your Name")
                   .replace(/{{RECEIVER_NAME}}/g, "John Doe")
                   .replace(/{{COMPANY}}/g, "Google")}
               </p>
               <hr className="mt-4 text-black" />
-              <p className="text-lg text-white mt-4 whitespace-pre-line">
+              <p className="text-white mt-4 whitespace-pre-line">
                 {template.body
                   .replace(/{{SENDER_NAME}}/g, "Your Name")
                   .replace(/{{RECEIVER_NAME}}/g, "John Doe")
@@ -855,19 +749,19 @@ const Emailing = () => {
         </section>
       )}
       {currentStep === 3 && (
-        <div className="flex justify-between mt-8">
+        <div className="flex justify-between items-center">
           <button
             onClick={() => setCurrentStep(2)}
-            className="px-6 py-3 ml-28 bg-gray-600  text-white text-xl font-semibold rounded-lg hover:bg-gray-700 transition-colors duration-300"
+            className="px-4 py-2 bg-gray-600 text-white font-semibold rounded-lg hover:bg-gray-700 transition-colors duration-300"
           >
             Back
           </button>
           {subscriber || user?.credits > 0 ? (
             <button
               onClick={handleSubmit}
-              className="px-6 py-3  bg-purple-600 text-white text-xl font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300"
+              className="px-4 py-2 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300"
             >
-              Launch Campaign
+              {subscriber ? "Save Preferences" : "Launch Campaign"}
             </button>
           ) : (
             <Link
@@ -879,7 +773,7 @@ const Emailing = () => {
           )}
         </div>
       )}
-    {isOpen && <PopupBox setIsOpen={setIsOpen} />}
+      {isOpen && <PopupBox setIsOpen={setIsOpen} />}
     </main>
   );
 };

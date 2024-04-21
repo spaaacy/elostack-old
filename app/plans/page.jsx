@@ -71,9 +71,9 @@ const PlansPage = () => {
         <title>Plans</title>
       </Head>
       <main className="container  p-8 ">
-        <div className="bg-gradient-to-r  from-purple-600 to-indigo-600 p-8 rounded-lg shadow-lg text-center my-8 mx-20">
-          <h3 className="text-2xl font-bold mb-4 text-white">Free Credits for Your First Week</h3>
-          <p className="text-xl text-white">New users get 168 free credits. Equivalent to a week's worth of emails.</p>
+        <div className="bg-gradient-to-r  from-purple-600 to-indigo-600 p-6 rounded-lg shadow-lg text-center my-8 mx-20">
+          <h3 className="text-xl font-bold mb-4 text-white">Free Credits for Your First Week</h3>
+          <p className="text-lg text-white">New users get 168 free credits. Equivalent to a week's worth of emails.</p>
         </div>
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mx-20">
           {plans.map((plan, index) => (
@@ -85,17 +85,17 @@ const PlansPage = () => {
               onClick={() => handlePlanSelect(plan)}
             >
               <div className={`flex items-center justify-center h-32 ${plan.bgColor} rounded-t-lg `}>
-                <plan.icon className={`text-6xl ${plan.iconColor}`} />
+                <plan.icon className={`text-5xl ${plan.iconColor}`} />
               </div>
               <div className="p-8">
-                <h3 className="text-3xl font-bold mb-4">{plan.name}</h3>
+                <h3 className="text-2xl font-bold mb-4">{plan.name}</h3>
                 <div className="flex items-baseline mb-6">
-                  <span className="text-5xl font-bold">${plan.price}</span>
-                  <span className="ml-1 text-xl text-gray-400">/ week</span>
+                  <span className="text-4xl font-bold">${plan.price}</span>
+                  <span className="ml-1 text-lg text-gray-400">/ week</span>
                 </div>
                 <ul className="space-y-4">
                   {plan.features.map((feature, index) => (
-                    <li key={index} className="flex items-center">
+                    <li key={index} className="flex items-center text-sm">
                       <FaCheckCircle className="text-green-500 mr-2" />
                       <span>{feature}</span>
                     </li>
@@ -105,11 +105,11 @@ const PlansPage = () => {
             </div>
           ))}
         </section>
-        <section className="mt-16"></section>
-        <div ref={purchaseRef} className={` ${selectedPlan ? "flex" : "hidden"} justify-center mt-12`}>
+        <section className="mt-4"></section>
+        <div ref={purchaseRef} className={` ${selectedPlan ? "flex" : "hidden"} justify-center mt-4`}>
           <button
             onClick={handleSubscribe}
-            className={`px-12 py-4 text-2xl font-semibold rounded-full transition-colors duration-300 shadow-lg ${
+            className={`px-4 py-2 rounded-lg transition-colors duration-300 shadow-lg ${
               selectedPlan
                 ? "bg-purple-600 hover:bg-purple-700 text-white"
                 : "bg-gray-700 text-gray-400 cursor-not-allowed"
@@ -140,6 +140,7 @@ const plans = [
       "Email attachments",
       "100 companies",
       "Specifiable locations",
+      "Billed bi-weekly",
     ],
     icon: FaEnvelope,
     iconColor: "text-blue-500",
@@ -157,6 +158,7 @@ const plans = [
       "Email attachments",
       "100 companies",
       "Specifiable locations",
+      "Billed every 4 weeks",
     ],
     icon: FaChartBar,
     iconColor: "text-green-500",
@@ -174,6 +176,7 @@ const plans = [
       "Email attachments",
       "100 companies",
       "Specifiable locations",
+      "Billed every 8 weeks",
     ],
     icon: FaUserTie,
     iconColor: "text-purple-500",

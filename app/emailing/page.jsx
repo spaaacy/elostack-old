@@ -36,7 +36,7 @@ const Emailing = () => {
   const userContext = useContext(UserContext);
   const session = userContext?.session;
   const [selectedPeople, setSelectedPeople] = useState([]);
-  const [leadCount, setLeadCount] = useState();
+  const [leadCount, setLeadCount] = useState(0);
   const [template, setTemplate] = useState({
     subject: "",
     body: "",
@@ -102,7 +102,6 @@ const Emailing = () => {
       setCompanies(results.companies);
       setStates(results.states);
       setSeniorities(results.seniorities);
-      console.log(results);
     }
   };
 
@@ -110,12 +109,6 @@ const Emailing = () => {
     if (delayedCall) clearTimeout(delayedCall);
     setDelayedCall(
       setTimeout(async () => {
-        console.log("Now fetching");
-        console.log({
-          companies: selectedCompanies.length > 0 ? selectedCompanies : companies,
-          states: selectedStates.length > 0 ? selectedStates : states,
-          seniority: selectedSeniorities.length > 0 ? selectedSeniorities : seniorities,
-        });
         const response = await fetch("/api/receiver/find-leads", {
           method: "POST",
           body: JSON.stringify({
@@ -217,10 +210,7 @@ const Emailing = () => {
         <div className="bg-gray-900 p-6">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold text-white">
-              {template.subject
-                .replace(/{{SENDER_NAME}}/g, "Your Name")
-                .replace(/{{RECEIVER_NAME}}/g, "John Doe")
-                .replace(/{{COMPANY}}/g, "Google")}
+              {template.subject.replace(/{{RECEIVER_NAME}}/g, "John Doe").replace(/{{COMPANY}}/g, "Google")}
             </h2>
             <div className="flex items-center space-x-4">
               <button className="bg-purple-600 hover:bg-purple-700 text-white rounded-md px-4 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
@@ -236,14 +226,10 @@ const Emailing = () => {
             <span className="border-l border-gray-600 pl-2">From: Your Name &lt;yourname@gmail.com&gt;</span>
           </div>
         </div>
-        {console.log(user)}
         <div
           className="p-6 text-white whitespace-pre-line"
           dangerouslySetInnerHTML={{
-            __html: template.body
-              .replace(/{{SENDER_NAME}}/g, "Your Name")
-              .replace(/{{RECEIVER_NAME}}/g, "John Doe")
-              .replace(/{{COMPANY}}/g, "Google"),
+            __html: template.body.replace(/{{RECEIVER_NAME}}/g, "John Doe").replace(/{{COMPANY}}/g, "Google"),
           }}
         ></div>
       </div>
@@ -263,6 +249,10 @@ const Emailing = () => {
       if (response.status === 200) {
         const results = await response.json();
         setSubscriber(results.subscriber);
+        console.log(results.subscriber);
+        setSelectedCompanies(results.subscriber.options.companies);
+        setSelectedStates(results.subscriber.options.states);
+        setSelectedSeniorities(results.subscriber.options.seniorities);
         setTemplate({
           body: results.subscriber.email_body,
           subject: results.subscriber.email_subject,
@@ -573,7 +563,7 @@ const Emailing = () => {
             <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-full">
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-xl font-bold text-purple-400">Selected Leads</h3>
-                {selectedPeople && <p className="font-semibold">{`${leadCount} leads found`}</p>}
+                {leadCount > 0 && <p className="font-semibold">{`${leadCount} leads found`}</p>}
               </div>
               <div className={`overflow-x-auto ${leadCount > 12 ? "max-h-[70vh] overflow-y-auto" : ""}`}>
                 <table className="w-full">
@@ -589,8 +579,8 @@ const Emailing = () => {
                   <tbody>
                     {leadCount === 0 ? (
                       <tr>
-                        <td colSpan="5" className="px-4 py-2 text-center text-lg">
-                          No filters applied. Showing all people.
+                        <td colSpan="5" className="px-4 py-2 text-center text-sm">
+                          No matches found.
                         </td>
                       </tr>
                     ) : (
@@ -659,6 +649,7 @@ const Emailing = () => {
               )}
             </button>
           </div>
+          <p className="mb-2 text-xs text-gray-400">{`* Hint: User {{RECEIVER_NAME}} and {{COMPANY}} as placeholders for subject/body`}</p>
           <div className="mb-4">
             <label htmlFor="templateSubject" className="block text-lg font-semibold mb-1">
               Subject:
@@ -682,7 +673,7 @@ const Emailing = () => {
               onChange={(e) => handleTemplateChange(e, "body")}
               rows={12}
               className="w-full p-3 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder={`Dear {{RECEIVER_NAME}},\n\nI am a highly skilled software developer with 5 years of experience in Web Development. I am interested in exploring opportunities with at {{COMPANY}}. Please find my resume attached.\n\nRegards,\n{{SENDER_NAME}}`}
+              placeholder={`Dear {{RECEIVER_NAME}},\n\nI am a highly skilled software developer with 5 years of experience in Web Development. I am interested in exploring opportunities with at {{COMPANY}}. Please find my resume attached.\n\nRegards,\nYour Name`}
             ></textarea>
           </div>
           <div className="mb-4">
@@ -782,17 +773,11 @@ const Emailing = () => {
             <h4 className="text-lg font-semibold mb-6 text-purple-400">Email Template:</h4>
             <div className="bg-gray-700 p-6 rounded-lg shadow-lg">
               <p className="text-white">
-                {template.subject
-                  .replace(/{{SENDER_NAME}}/g, "Your Name")
-                  .replace(/{{RECEIVER_NAME}}/g, "John Doe")
-                  .replace(/{{COMPANY}}/g, "Google")}
+                {template.subject.replace(/{{RECEIVER_NAME}}/g, "John Doe").replace(/{{COMPANY}}/g, "Google")}
               </p>
               <hr className="mt-4 text-black" />
               <p className="text-white mt-4 whitespace-pre-line">
-                {template.body
-                  .replace(/{{SENDER_NAME}}/g, "Your Name")
-                  .replace(/{{RECEIVER_NAME}}/g, "John Doe")
-                  .replace(/{{COMPANY}}/g, "Google")}
+                {template.body.replace(/{{RECEIVER_NAME}}/g, "John Doe").replace(/{{COMPANY}}/g, "Google")}
               </p>
             </div>
           </div>

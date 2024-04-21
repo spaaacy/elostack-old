@@ -81,9 +81,7 @@ const Page = () => {
                     <p className="text-sm text-gray-400">Applied on {formatDate(app.created_at)}</p>
                   </div>
                   <div className="flex">
-                    <p className="capitalize font-light text-white">
-                      {app.receiver.city + ", " + app.receiver.state}
-                    </p>
+                    <p className="capitalize font-light text-white">{app.receiver.city + ", " + app.receiver.state}</p>
                   </div>
                 </div>
               ))

@@ -1,10 +1,8 @@
 import { createClient } from "npm:@supabase/supabase-js@2.41.1";
 import nodeMailer from "npm:nodemailer@6.9.13";
-import Papa from "npm:papaparse@5.4.1";
+import { Buffer } from "https://deno.land/std@0.136.0/node/buffer.ts";
 
 const supabase = createClient(Deno.env.get("SUPABASE_URL"), Deno.env.get("SUPABASE_ANON_KEY"));
-
-const maxSendsPerReceiver = 10;
 
 Deno.serve(async (req, res) => {
   if (req.method !== "POST") {
@@ -30,26 +28,10 @@ Deno.serve(async (req, res) => {
     });
     if (auth.error) throw auth.error;
 
-    // Fetch authorized URL for leads from private bucket
-    let results;
-    results = await supabase.storage.from("leads").createSignedUrl("test.csv", 3600);
-    if (results.error) throw results.error;
-
-    // Use URL to get convert CSV file to JSON
-    const response = await fetch(results.data.signedUrl);
-
-    if (!response.ok) {
-      console.error(`Request Failed. Status Code: ${response.status}`);
-      return;
-    }
-
-    const csvString = await response.text();
-    const leads = Papa.parse(csvString, { header: true, skipEmptyLines: "greedy" }).data;
-
-    results = await supabase.from("subscriber").select("*, user(*, individual(*))");
+    const subscriber = await supabase.from("subscriber").select("*, user(*)");
 
     console.log("Beginning email loop...");
-    for (const user of results.data) {
+    for (const user of subscriber.data) {
       console.log("Going to next user...");
       try {
         // Check if user's subscription is active
@@ -57,90 +39,65 @@ Deno.serve(async (req, res) => {
         // Check if user's access & refresh token are available
         if (!user.refresh_token || !user.access_token) throw Error("Refresh token and/or access token not found!");
 
-        // Convert all options to lower case
-        user.options.companies = user.options.companies.map((company) => company.toLowerCase());
-        user.options.states = user.options.states.map((state) => state.toLowerCase());
-        user.options.cities = user.options.cities.map((city) => {
-          return { city: city.city.toLowerCase(), state: city.state.toLowerCase() };
+        const { data: lead, error: leadError } = await supabase.rpc("find_matching_lead", {
+          subscriber_user_id: user.user_id,
+          states: user.options.states,
+          companies: user.options.companies,
+          seniorities: user.options.seniorities,
         });
-
-        let chosenLead = null,
-          found = false,
-          visits = 0,
-          visitedLeads = [];
-        while (!found) {
-          // Choose random index with the range of leads available
-          const index = Math.floor(Math.random() * leads.length);
-          // Check if lead was already visited and restart while loop if true
-          if (visitedLeads.includes(index) && visitedLeads.length < leads.length) {
-            console.log("Lead already checked.");
-            continue;
-          }
-          visitedLeads.push(index);
-          // Limit visits to 10, if lead still isn't found, exit while loop
-          if (++visits === 10) {
-            // Exit after ten attempts made to find match
-            console.log("No matches found!");
-            break;
-          }
-
-          chosenLead = leads[index];
-
-          // Check how many times the lead was used already by others
-          results = await supabase.from("leads").select("monthly_send_count").eq("email", chosenLead.email);
-          if (results.error) throw results.error;
-          if (results.data.send_count >= maxSendsPerReceiver) {
-            console.log("Max sends already met for this lead");
-            continue;
-          }
-
-          // Check if the user aleady email the receiver
-          results = await supabase
-            .from("application")
-            .select("*", { count: "exact", head: true })
-            .match({ user_id: user.user_id, lead_id: chosenLead.id });
-          if (results.error) throw results.error;
-          if (results.count > 0) {
-            console.log("Lead has already been previously contacted");
-            continue;
-          }
-
-          // Ensure lead matches user's preferences
-          if (
-            (user.options.companies.includes(chosenLead.organization_name.toLowerCase()) || // User specified a company & matches lead's company
-              user.options.companies.length === 0) && // Or user didn't specify any companies
-            chosenLead.country === "united states"
-          ) {
-            if (user.options.cities.length === 0 && user.options.states.length === 0) {
-              found = true;
-              console.log("Match found!");
-            } else if (
-              user.options.cities.some((city) => {
-                return city.city === chosenLead.city.toLowerCase() && city.state === chosenLead.state.toLowerCase();
-              })
-            ) {
-              found = true;
-              console.log("Match found!");
-            } else if (user.options.states.includes(chosenLead.state.toLowerCase())) {
-              found = true;
-              console.log("Match found!");
-            }
-          }
-        }
+        if (leadError) throw leadError;
 
         // If lead is found start emailing process
-        if (found) {
-          // Increment the send count if the record does exist
-          console.log("Incrementing receiver send count.");
-          results = await supabase.rpc("increment_monthly_send_count", { lead_email: chosenLead.email });
+        if (lead.length > 0) {
+          // Fetch attachments
+          let results = await supabase.storage.from("attachments").list(user.user_id, {
+            limit: 100,
+            offset: 0,
+            sortBy: { column: "name", order: "asc" },
+          });
           if (results.error) throw results.error;
 
-          const formattedTemplate = user.template
-            .replace(/{{SENDER_NAME}}/g, user.user.individual.first_name + " " + user.user.individual.last_name)
-            .replace(/{{RECEIVER_NAME}}/g, chosenLead.name)
-            .replace(/{{COMPANY}}/g, chosenLead.organization_name);
+          // Fetch attachments and store as Buffer in attachments[]
+          const attachments = [];
+          for (let attachment of results.data) {
+            results = await supabase.storage.from("attachments").download(`${user.user_id}/${attachment.name}`);
+            const arrayBuffer = await results.data.arrayBuffer();
+            const buffer = Buffer.from(arrayBuffer);
+            attachments.push({ filename: attachment.name, content: buffer });
+          }
 
-          const formattedSubject = user.subject.replace(/{{COMPANY}}/g, chosenLead.organization_name);
+          // Increment the send count if the record does exist
+          results = await supabase.rpc("increment_monthly_send_count", { lead_id: lead[0].id });
+          if (results.error) throw results.error;
+          if (!results.data) {
+            console.error("Lead has already met their monthly limit!");
+            continue;
+          }
+          console.log("Lead monthly send count incremented!");
+
+          // Check if user has sufficient credits and decrement if true, otherwise go to next user
+          results = await supabase.rpc("decrement_subscriber_credits", {
+            subscriber_user_id: user.user_id,
+          });
+          if (results.error) throw results.error;
+          if (!results.data) {
+            console.error("Insufficient credits!");
+            continue;
+          }
+          console.log("Credits decremented successfully!");
+
+          // Create a record of the application if email succeeds
+          results = await supabase.from("application").insert({ user_id: user.user_id, lead_id: lead[0].id });
+          if (results.error) throw results.error;
+          console.log("Application record created!");
+
+          // Format the email subject/body
+          const formattedTemplate = user.email_body
+            .replace(/{{RECEIVER_NAME}}/g, lead[0].name)
+            .replace(/{{COMPANY}}/g, lead[0].organization_name);
+          const formattedSubject = user.email_subject
+            .replace(/{{COMPANY}}/g, lead[0].organization_name)
+            .replace(/{{RECEIVER_NAME}}/g, lead[0].name);
 
           const transporter = nodeMailer.createTransport({
             service: "Gmail",
@@ -157,28 +114,26 @@ Deno.serve(async (req, res) => {
             },
           });
 
-          // Check if user has sufficient credits and decrement if true, otherwise go to next user
-          results = await supabase.rpc("decrement_subscriber_credits", {
+          // Send out email
+          await transporter.sendMail(
+            {
+              from: user.user.email,
+              to: lead[0].email,
+              subject: formattedSubject,
+              text: formattedTemplate,
+              attachments,
+            },
+            (error, info) => {
+              if (error) console.error(error);
+              else console.log(`Email sent: ${info.messageId}`);
+            }
+          );
+        } else {
+          console.log("No lead was found!");
+          const { error } = await supabase.rpc("subscriber_leads_exhausted", {
             subscriber_user_id: user.user_id,
           });
-          if (results.error) throw results.error;
-          if (!results.data) {
-            console.error("Insufficient credits!");
-            continue;
-          }
-          console.log("Credits decremented successfully!");
-
-          const info = await transporter.sendMail({
-            from: user.user.email,
-            to: chosenLead.email,
-            subject: formattedSubject,
-            text: formattedTemplate,
-          });
-          console.log(`Email ${info.messageId} sent!`);
-
-          // Create a record of the application if email succeeds
-          results = await supabase.from("application").insert({ user_id: user.user_id, lead_id: chosenLead.id });
-          if (results.error) throw results.error;
+          if (error) throw error;
         }
       } catch (error) {
         console.error(error);

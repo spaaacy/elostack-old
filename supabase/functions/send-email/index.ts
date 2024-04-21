@@ -37,7 +37,13 @@ Deno.serve(async (req, res) => {
         // Check if user's subscription is active
         if (!user.active) continue;
         // Check if user's access & refresh token are available
-        if (!user.refresh_token || !user.access_token) throw Error("Refresh token and/or access token not found!");
+        if (!user.refresh_token || !user.access_token) {
+          const { error } = await supabase.rpc("subscriber_leads_exhausted", {
+            subscriber_user_id: user.user_id,
+          });
+          if (error) throw error;
+          throw Error("Refresh and access token not found!");
+        }
 
         const { data: lead, error: leadError } = await supabase.rpc("find_matching_lead", {
           subscriber_user_id: user.user_id,

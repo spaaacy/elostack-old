@@ -11,7 +11,7 @@ import Loader from "@/components/common/Loader";
 import toast, { Toaster } from "react-hot-toast";
 import React from "react";
 import Link from "next/link";
-import PopupBox from "@/components/common/PopUp";
+import PopupBox from "@/components/emailing/PopUp";
 
 const Page = () => {
   return (
@@ -331,7 +331,7 @@ const Emailing = () => {
           user_id: userId,
           email_body: template.body,
           email_subject: template.subject,
-          active: true,
+          active: false,
           leads_exhausted: false,
           options: {
             companies: selectedCompanies.length > 0 ? selectedCompanies : [],
@@ -348,11 +348,14 @@ const Emailing = () => {
         },
         body: formData,
       });
-      if (response.status === 201 || response.status === 200) {
-        if (!subscriber || !subscriber.refresh_token) {
-          // requestEmailPermissions();
-        }
-        // setShowPopup(true); // Show the pop-up box
+      if (response.status === 201) {
+        if (user.credits > 0) setShowPopup(true);
+        else router.push("/plans");
+      } else if (response.status === 200) {
+        if (!subscriber.waitlist_granted) setShowPopup(true);
+        else if (subscriber.waitlist_granted && !subscriber.access_token && !subscriber.refresh_token)
+          requestEmailPermissions();
+        else window.location.reload();
       } else {
         toast.error("Something went wrong...");
       }
@@ -363,7 +366,7 @@ const Emailing = () => {
   };
 
   const toggleCampaignStatus = async () => {
-    if (subscriber && !subscriber.active && (!subscriber.access_token || !subscriber.refresh_token)) {
+    if (subscriber && subscriber.waitlist_granted && (!subscriber.access_token || !subscriber.refresh_token)) {
       requestEmailPermissions();
     } else if (user && user.credits > 0 && subscriber) {
       const response = await fetch(`/api/subscriber/toggle-active`, {
@@ -630,10 +633,15 @@ const Emailing = () => {
             </div>
             {(subscriber || user?.credits > 0) && (
               <button
+                disabled={subscriber && !subscriber.waitlist_granted && !subscriber.active}
                 onClick={toggleCampaignStatus}
-                className="mt-4 py-2 px-4 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300"
+                className={`${
+                  subscriber && !subscriber.waitlist_granted && !subscriber.active
+                    ? "bg-gray-800 text-gray-500"
+                    : "bg-purple-600 hover:bg-purple-700"
+                } mt-4 py-2 px-4   font-semibold rounded-lg  transition-colors duration-300`}
               >
-                {subscriber.active ? "Pause Campaign" : "Resume Campaign"}
+                {subscriber && subscriber.active ? "Pause Campaign" : "Resume Campaign"}
               </button>
             )}
           </div>
@@ -875,21 +883,12 @@ const Emailing = () => {
           >
             Back
           </button>
-          {subscriber || user?.credits > 0 ? (
-            <button
-              onClick={handleSubmit}
-              className="px-4 py-2 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300"
-            >
-              {subscriber ? "Save Preferences" : "Launch Campaign"}
-            </button>
-          ) : (
-            <Link
-              href={"/plans"}
-              className="px-6 py-3 mr-28 bg-purple-600 text-white text-xl font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300"
-            >
-              Launch Campaign
-            </Link>
-          )}
+          <button
+            onClick={handleSubmit}
+            className="px-4 py-2 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300"
+          >
+            {subscriber ? "Save Preferences" : "Launch Campaign"}
+          </button>
         </div>
       )}
       {showPopup && <PopupBox setIsOpen={setShowPopup} />}

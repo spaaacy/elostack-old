@@ -93,8 +93,35 @@ const SignUpPage = () => {
   };
 
   useEffect(() => {
+    const handleSearchParams = async () => {
+      // Email permissions granted
+      if (searchParams.has("code") && searchParams.has("scope")) handleEmailGranted();
+      // Google OAuth Signup
+      else if (
+        searchParams.has("access_token") &&
+        searchParams.has("expires_at") &&
+        searchParams.has("expires_in") &&
+        searchParams.has("provider_refresh_token") &&
+        searchParams.has("provider_token") &&
+        searchParams.has("token_type") &&
+        searchParams.has("refresh_token")
+      ) {
+        const response = await fetch("api/user/create", {
+          method: "POST",
+          body: JSON.stringify({
+            name: session.data.session.user.user_metadata.full_name,
+            email: session.data.session.user.email,
+            user_id: session.data.session.user.id,
+          }),
+        });
+        if (response.status === 200) toast.success("Register successful!");
+      } else {
+        router.push("/");
+      }
+    };
+
     if (session?.data?.session) {
-      router.push("/");
+      handleSearchParams();
     } else if (session) {
       setLoading(false);
     }
@@ -110,10 +137,10 @@ const SignUpPage = () => {
 
   const signInWithGoogle = async () => {
     try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
+      const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: `${window.location.origin}/`,
+          redirectTo: `${window.location.origin}/signup`,
           queryParams: {
             access_type: "offline",
             prompt: "consent",

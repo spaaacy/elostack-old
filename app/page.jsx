@@ -39,11 +39,8 @@ const Home = () => {
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    if (session) {
-      if (searchParams.has("code") && searchParams.has("scope")) {
-        handleEmailGranted();
-      }
-    }
+    // Email permissions granted
+    if (session && searchParams.has("code") && searchParams.has("scope")) handleEmailGranted();
   }, [session]);
 
   const handleEmailGranted = async () => {

@@ -10,9 +10,27 @@ export async function POST(req, res) {
     const auth = await supabase.auth.setSession({ access_token, refresh_token });
     if (auth.error) throw auth.error;
 
-    const subscriber = await req.json();
+    const formData = await req.formData();
+    const subscriber = JSON.parse(formData.get("subscriber"));
+
     const { error } = await supabase.from("subscriber").update(subscriber).eq("user_id", subscriber.user_id);
     if (error) throw error;
+
+    // Iterate over the entries in the formData object
+    for (const [key, value] of formData.entries()) {
+      if (key === "subscriber") {
+        continue;
+      }
+
+      if (value instanceof File) {
+        // Upload files
+        const { error } = await supabase.storage
+          .from("attachments")
+          .upload(`${subscriber.user_id}/${key}`, value, { cacheControl: 3600, upsert: true });
+        if (error) throw error;
+      }
+    }
+
     return NextResponse.json({ message: "Subscriber created successfully!" }, { status: 200 });
   } catch (error) {
     console.error(error);

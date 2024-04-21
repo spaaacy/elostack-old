@@ -47,7 +47,6 @@ const Emailing = () => {
   const [delayedCall, setDelayedCall] = useState();
   const [subscriber, setSubscriber] = useState();
   const [user, setUser] = useState();
-  const [attachments, setAttachments] = useState([]);
   const [currentStep, setCurrentStep] = useState(1);
 
   const [companies, setCompanies] = useState([]);
@@ -56,7 +55,9 @@ const Emailing = () => {
 
   const [stateInput, setStateInput] = useState("");
   const [companyInput, setCompanyInput] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const [attachments, setAttachments] = useState([]);
+
   const [selectedSeniorities, setSelectedSeniorities] = useState([]);
   const [selectedCompanies, setSelectedCompanies] = useState([]);
   const [selectedStates, setSelectedStates] = useState([]);
@@ -70,6 +71,7 @@ const Emailing = () => {
       if (session?.data?.session) {
         await fetchMetadata();
         await fetchSubscriber();
+        await fetchAttachments();
         await fetchUser();
         setLoading(false);
       } else {
@@ -170,7 +172,23 @@ const Emailing = () => {
     setAttachments((prevAttachments) => [...prevAttachments, ...selectedFiles]);
   };
 
-  const handleAttachmentRemove = (index) => {
+  const handleAttachmentRemove = async (attachment, index) => {
+    const userId = session.data.session?.user.id;
+    if (!(attachment instanceof File) && userId) {
+      const loadingToast = toast.loading("Removing attachment...");
+      const response = await fetch("/api/attachments/delete", {
+        method: "DELETE",
+        headers: {
+          "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
+        },
+        body: JSON.stringify({ userId, attachment }),
+      });
+      if (response.status !== 200) {
+        toast.error("There was an error deleting the attachment");
+      } else {
+        toast.success("Attachment removed", { id: loadingToast });
+      }
+    }
     setAttachments((prevAttachments) => {
       const updatedAttachments = [...prevAttachments];
       updatedAttachments.splice(index, 1);
@@ -255,6 +273,25 @@ const Emailing = () => {
     }
   };
 
+  const fetchAttachments = async () => {
+    const userId = session.data.session?.user.id;
+    if (!userId) return;
+    try {
+      const response = await fetch(`/api/attachments/${userId}`, {
+        method: "GET",
+        headers: {
+          "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
+        },
+      });
+      if (response.status === 200) {
+        const results = await response.json();
+        setAttachments((prevAttachments) => [...prevAttachments, ...results.attachments]);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleTemplateChange = (e, field) => {
     setTemplate({ ...template, [field]: e.target.value });
   };
@@ -278,12 +315,16 @@ const Emailing = () => {
   const handleSubmit = async () => {
     const userId = session.data.session.user.id;
     if (userId && template.subject && template.body) {
-      const response = await fetch(`/api/subscriber/${subscriber ? "update" : "create"}`, {
-        method: "POST",
-        headers: {
-          "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
-        },
-        body: JSON.stringify({
+      setLoading(true);
+      const formData = new FormData();
+
+      attachments.forEach((attachment) => {
+        if (attachment instanceof File) formData.append(attachment.name, attachment);
+      });
+
+      formData.append(
+        "subscriber",
+        JSON.stringify({
           user_id: userId,
           email_body: template.body,
           email_subject: template.subject,
@@ -293,16 +334,25 @@ const Emailing = () => {
             states: selectedStates.length > 0 ? selectedStates : [],
             seniorities: selectedSeniorities.length > 0 ? selectedSeniorities : [],
           },
-        }),
+        })
+      );
+
+      const response = await fetch(`/api/subscriber/${subscriber ? "update" : "create"}`, {
+        method: "POST",
+        headers: {
+          "X-Supabase-Auth": session.data.session.access_token + " " + session.data.session.refresh_token,
+        },
+        body: formData,
       });
       if (response.status === 201 || response.status === 200) {
         if (!subscriber || !subscriber.refresh_token) {
-          requestEmailPermissions();
+          // requestEmailPermissions();
         }
-        setIsOpen(true); // Show the pop-up box
+        // setShowPopup(true); // Show the pop-up box
       } else {
         toast.error("Something went wrong...");
       }
+      setLoading(false);
     } else {
       toast.error("Subject/body cannot be left blank!");
     }
@@ -655,7 +705,7 @@ const Emailing = () => {
                     <div key={index} className="flex items-center justify-between bg-gray-700 rounded-lg p-4">
                       <span className="truncate">{attachment.name}</span>
                       <button
-                        onClick={() => handleAttachmentRemove(index)}
+                        onClick={() => handleAttachmentRemove(attachment, index)}
                         className="ml-4 text-red-500 hover:text-red-700 focus:outline-none"
                       >
                         <FaTrash size={15} />
@@ -773,7 +823,7 @@ const Emailing = () => {
           )}
         </div>
       )}
-      {isOpen && <PopupBox setIsOpen={setIsOpen} />}
+      {showPopup && <PopupBox setIsOpen={setShowPopup} />}
     </main>
   );
 };

@@ -93,11 +93,13 @@ Deno.serve(async (req, res) => {
 
           // Format the email subject/body
           const formattedTemplate = user.email_body
-            .replace(/{{RECEIVER_NAME}}/g, lead[0].name)
+            .replace(/{{LEAD_FIRST_NAME}}/g, lead[0].first_name)
+            .replace(/{{LEAD_LAST_NAME}}/g, lead[0].last_name)
             .replace(/{{COMPANY}}/g, lead[0].organization_name);
           const formattedSubject = user.email_subject
-            .replace(/{{COMPANY}}/g, lead[0].organization_name)
-            .replace(/{{RECEIVER_NAME}}/g, lead[0].name);
+            .replace(/{{LEAD_FIRST_NAME}}/g, lead[0].first_name)
+            .replace(/{{LEAD_LAST_NAME}}/g, lead[0].last_name)
+            .replace(/{{COMPANY}}/g, lead[0].organization_name);
 
           const transporter = nodeMailer.createTransport({
             service: "Gmail",

@@ -52,9 +52,6 @@ const UserAccountNav = ({ user }) => {
         }`}
         style={{ display: dropdownOpen ? "block" : "none" }}
       >
-        <Link href={`/edit-profile`} className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">
-          Edit Profile
-        </Link>
         <Link
           href={process.env.NEXT_PUBLIC_STRIPE_CUSTOMER_PORTAL_URL}
           className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700"

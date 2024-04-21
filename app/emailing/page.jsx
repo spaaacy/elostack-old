@@ -213,7 +213,10 @@ const Emailing = () => {
         <div className="bg-gray-900 p-6">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold text-white">
-              {template.subject.replace(/{{RECEIVER_NAME}}/g, "John Doe").replace(/{{COMPANY}}/g, "Google")}
+              {template.subject
+                .replace(/{{LEAD_FIRST_NAME}}/g, "John")
+                .replace(/{{LEAD_LAST_NAME}}/g, "Doe")
+                .replace(/{{COMPANY}}/g, "Google")}
             </h2>
             <div className="flex items-center space-x-4">
               <button className="bg-purple-600 hover:bg-purple-700 text-white rounded-md px-4 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
@@ -232,7 +235,10 @@ const Emailing = () => {
         <div
           className="p-6 text-white whitespace-pre-line"
           dangerouslySetInnerHTML={{
-            __html: template.body.replace(/{{RECEIVER_NAME}}/g, "John Doe").replace(/{{COMPANY}}/g, "Google"),
+            __html: template.body
+              .replace(/{{LEAD_FIRST_NAME}}/g, "John")
+              .replace(/{{LEAD_LAST_NAME}}/g, "Doe")
+              .replace(/{{COMPANY}}/g, "Google"),
           }}
         ></div>
       </div>
@@ -256,6 +262,9 @@ const Emailing = () => {
         setSelectedCompanies(results.subscriber.options.companies);
         setSelectedStates(results.subscriber.options.states);
         setSelectedSeniorities(results.subscriber.options.seniorities);
+        if (results.subscriber.options.companies.length === 0) setCompanySelectAll(true);
+        if (results.subscriber.options.seniorities.length === 0) setSenioritySelectAll(true);
+        if (results.subscriber.options.states.length === 0) setStateSelectAll(true);
         setTemplate({
           body: results.subscriber.email_body,
           subject: results.subscriber.email_subject,
@@ -322,6 +331,7 @@ const Emailing = () => {
           email_body: template.body,
           email_subject: template.subject,
           active: true,
+          leads_exhausted: false,
           options: {
             companies: selectedCompanies.length > 0 ? selectedCompanies : [],
             states: selectedStates.length > 0 ? selectedStates : [],
@@ -832,11 +842,17 @@ const Emailing = () => {
             <h4 className="text-lg font-semibold mb-6 text-purple-400">Email Template:</h4>
             <div className="bg-gray-700 p-6 rounded-lg shadow-lg">
               <p className="text-white">
-                {template.subject.replace(/{{RECEIVER_NAME}}/g, "John Doe").replace(/{{COMPANY}}/g, "Google")}
+                {template.subject
+                  .replace(/{{LEAD_FIRST_NAME}}/g, "John")
+                  .replace(/{{LEAD_LAST_NAME}}/g, "Doe")
+                  .replace(/{{COMPANY}}/g, "Google")}
               </p>
               <hr className="mt-4 text-black" />
               <p className="text-white mt-4 whitespace-pre-line">
-                {template.body.replace(/{{RECEIVER_NAME}}/g, "John Doe").replace(/{{COMPANY}}/g, "Google")}
+                {template.body
+                  .replace(/{{LEAD_FIRST_NAME}}/g, "John")
+                  .replace(/{{LEAD_LAST_NAME}}/g, "Doe")
+                  .replace(/{{COMPANY}}/g, "Google")}
               </p>
             </div>
           </div>

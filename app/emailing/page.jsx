@@ -4,6 +4,7 @@ import Footer from "@/components/common/Footer";
 import Head from "next/head";
 import { Suspense, useContext, useEffect, useState } from "react";
 import { FaTrash, FaEye, FaEyeSlash, FaPlus, FaLinkedin, FaChevronDown } from "react-icons/fa";
+import { GoAlertFill } from "react-icons/go";
 import { useRouter, useSearchParams } from "next/navigation";
 import { UserContext } from "@/context/UserContext";
 import Loader from "@/components/common/Loader";
@@ -117,7 +118,7 @@ const Emailing = () => {
           body: JSON.stringify({
             companies: selectedCompanies,
             states: selectedStates,
-            seniority: selectedSeniorities,
+            seniorities: selectedSeniorities,
           }),
         });
         if (response.status === 200) {
@@ -407,6 +408,14 @@ const Emailing = () => {
       <section className="text-center mt-2 mb-10">
         <div className="flex flex-col sm:flex-row justify-between items-center">
           <h2 className="text-3xl font-bold text-white mb-4 sm:mb-0">Preferences</h2>
+          {subscriber && subscriber.leads_exhausted && (
+            <div className="bg-yellow-500 flex items-center rounded-lg px-4 py-2 text-right">
+              {<GoAlertFill size={30} className="mr-4" />} All previously selected leads have been used, or have hit
+              their monthly limit.
+              <br />
+              Please change your preferences.
+            </div>
+          )}
         </div>
       </section>
       {currentStep === 1 && (

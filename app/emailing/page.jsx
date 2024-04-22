@@ -58,6 +58,9 @@ const Emailing = () => {
   const [companyInput, setCompanyInput] = useState("");
   const [showPopup, setShowPopup] = useState(false);
   const [attachments, setAttachments] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pages, setPages] = useState();
+  const [lastPage, setLastPage] = useState();
 
   const [selectedSeniorities, setSelectedSeniorities] = useState([]);
   const [selectedCompanies, setSelectedCompanies] = useState([]);
@@ -72,15 +75,13 @@ const Emailing = () => {
 
   useEffect(() => {
     const loadData = async () => {
+      await fetchMetadata();
       if (session?.data?.session) {
-        await fetchMetadata();
         await fetchSubscriber();
         await fetchAttachments();
         await fetchUser();
-        setLoading(false);
-      } else {
-        router.push("/signin");
       }
+      setLoading(false);
     };
 
     if (session) {
@@ -109,7 +110,7 @@ const Emailing = () => {
     }
   };
 
-  const fetchMatches = () => {
+  const fetchMatches = (page) => {
     if (delayedCall) clearTimeout(delayedCall);
     setDelayedCall(
       setTimeout(async () => {
@@ -119,12 +120,25 @@ const Emailing = () => {
             companies: selectedCompanies,
             states: selectedStates,
             seniorities: selectedSeniorities,
+            page: page ? page : 1,
           }),
         });
         if (response.status === 200) {
           const results = await response.json();
           setSelectedPeople(results.leads);
           setLeadCount(results.count);
+          const lastPage = Math.floor(results.count / 100);
+          setLastPage(lastPage);
+          if (!page) {
+            const pagesArray = [];
+            for (let i = 0; i < Math.floor(results.count / 100); i++) {
+              if (i === 4) break;
+              pagesArray.push(i + 1);
+              if (i === 3 && lastPage != i) pagesArray.push(lastPage);
+            }
+            setCurrentPage(1);
+            setPages(pagesArray);
+          }
         }
       }, 1000)
     );
@@ -383,6 +397,26 @@ const Emailing = () => {
         window.location.reload();
       }
     }
+  };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    fetchMatches(page);
+
+    // Generate page array
+    const pagesArray = [1];
+    if (page === 1 || page === 2) {
+      pagesArray.push(2, 3, 4);
+      pagesArray.push(lastPage);
+    } else if (page === lastPage || page === lastPage - 1) {
+      pagesArray.push(lastPage - 3, lastPage - 2, lastPage - 1, lastPage);
+    } else {
+      pagesArray.push(lastPage);
+      pagesArray.splice(1, 0, page - 1, page, page + 1);
+    }
+    setPages(pagesArray);
+    console.log(page);
+    console.log(pagesArray);
   };
 
   if (loading)
@@ -699,11 +733,33 @@ const Emailing = () => {
                   </tbody>
                 </table>
               </div>
+              <div className="flex justify-center mt-2">
+                {pages &&
+                  pages.map((page, i) => {
+                    return (
+                      <>
+                        {i === 1 && currentPage !== 1 && lastPage !== 5 && (
+                          <p className="ml-8 text-sm text-gray-400">...</p>
+                        )}
+                        {i === 4 && currentPage !== lastPage && lastPage !== 5 && (
+                          <p className="ml-8 text-sm text-gray-400">...</p>
+                        )}
+                        <button
+                          onClick={() => handlePageChange(page)}
+                          className="inline ml-8 hover:underline text-sm text-gray-400"
+                          key={page}
+                        >
+                          {page}
+                        </button>
+                      </>
+                    );
+                  })}
+              </div>
             </div>
           </div>
         </div>
       )}
-      {currentStep === 1 && (
+      {user && currentStep === 1 && (
         <div className="flex justify-end mt-8">
           <button
             onClick={() => setCurrentStep(2)}

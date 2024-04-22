@@ -131,7 +131,7 @@ const Emailing = () => {
           setLastPage(lastPage);
           if (!page) {
             const pagesArray = [];
-            for (let i = 0; i < Math.ceil(results.count / 100); i++) {
+            for (let i = 0; i < lastPage; i++) {
               if (i === 4) break;
               pagesArray.push(i + 1);
               if (i === 3 && lastPage != i) pagesArray.push(lastPage);
@@ -403,6 +403,13 @@ const Emailing = () => {
     setCurrentPage(page);
     fetchMatches(page);
 
+    if (lastPage <= 5) {
+      const pagesArray = [];
+      for (let i = 0; i < lastPage; i++) pagesArray.push(i + 1);
+      setPages(pagesArray);
+      return;
+    }
+
     // Generate page array
     const pagesArray = [1];
     if (page === 1 || page === 2) {
@@ -415,8 +422,6 @@ const Emailing = () => {
       pagesArray.splice(1, 0, page - 1, page, page + 1);
     }
     setPages(pagesArray);
-    console.log(page);
-    console.log(pagesArray);
   };
 
   if (loading)
@@ -735,13 +740,14 @@ const Emailing = () => {
               </div>
               <div className="flex justify-center mt-2">
                 {pages &&
+                  pages.length > 1 &&
                   pages.map((page, i) => {
                     return (
                       <>
-                        {i === 1 && currentPage !== 1 && lastPage !== 5 && (
+                        {i === 1 && currentPage !== 1 && lastPage !== 5 && lastPage > 5 && (
                           <p className="ml-8 text-sm text-gray-400">...</p>
                         )}
-                        {i === 4 && currentPage !== lastPage && lastPage !== 5 && (
+                        {i === 4 && currentPage !== lastPage && lastPage !== 5 && lastPage > 5 && (
                           <p className="ml-8 text-sm text-gray-400">...</p>
                         )}
                         <button

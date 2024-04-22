@@ -127,11 +127,11 @@ const Emailing = () => {
           const results = await response.json();
           setSelectedPeople(results.leads);
           setLeadCount(results.count);
-          const lastPage = Math.floor(results.count / 100);
+          const lastPage = Math.ceil(results.count / 100);
           setLastPage(lastPage);
           if (!page) {
             const pagesArray = [];
-            for (let i = 0; i < Math.floor(results.count / 100); i++) {
+            for (let i = 0; i < Math.ceil(results.count / 100); i++) {
               if (i === 4) break;
               pagesArray.push(i + 1);
               if (i === 3 && lastPage != i) pagesArray.push(lastPage);

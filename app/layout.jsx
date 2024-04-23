@@ -3,7 +3,7 @@ import GoogleAnalytics from "@/components/common/GoogleAnalytics";
 import { UserProvider } from "@/context/UserContext";
 import "@/styles/globals.css";
 import { usePathname } from "next/navigation";
-import { LinkedInInsightTag } from "nextjs-linkedin-insight-tag";
+import { GoogleTagManager } from "@next/third-parties/google";
 
 const getTitle = (pathname) => {
   if (pathname.startsWith("/emailing")) {
@@ -33,6 +33,7 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
+      <GoogleTagManager gtmId="GTM-XYZ" />
       <head>
         <GoogleAnalytics ga_id={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS} />
         <title>{metadata.title}</title>
@@ -40,7 +41,6 @@ export default function RootLayout({ children }) {
       </head>
       <body className="flex flex-col min-h-screen bg-[#0f0f1c]">
         <UserProvider>{children}</UserProvider>
-        <LinkedInInsightTag />
       </body>
     </html>
   );

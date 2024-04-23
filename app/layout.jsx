@@ -33,7 +33,7 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
-      <GoogleTagManager gtmId="GTM-XYZ" />
+      <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER} />
       <head>
         <GoogleAnalytics ga_id={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS} />
         <title>{metadata.title}</title>

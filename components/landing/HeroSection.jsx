@@ -53,13 +53,11 @@ export default function Home() {
       <main css={containerStyle}>
         <h1 className="text-white text-5xl md:text-7xl mb-5">
           <FaPaperPlane className="inline-block mr-4" color="#6f2da8" aria-hidden="true" />
-          Land Your Dream Job with <br />
+          Get Noticed by recruiters with <br />
           <span css={gradientTextStyle}>Targeted Email Campaigns</span>
         </h1>
         <h2 className="text-white text-xl md:text-2xl mb-10">
-          Reach out directly to your favorite companies and get noticed by top recruiters
-          <br />
-          boosting your chances of getting hired with EloStack.
+          Reach out directly to your favorite companies and land your dream job!
         </h2>
         <Link href={"/emailing"}>
           <button css={buttonStyle}>Start Your Job Search Now</button>

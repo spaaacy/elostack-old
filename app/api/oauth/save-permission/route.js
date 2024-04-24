@@ -27,9 +27,9 @@ export async function POST(req, res) {
     const { error } = await supabase
       .from("subscriber")
       .update({
-        user_id,
         refresh_token: tokens.refresh_token,
         access_token: tokens.access_token,
+        expiry_date: tokens.expiry_date,
       })
       .eq("user_id", user_id);
     if (error) throw error;

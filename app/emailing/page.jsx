@@ -797,7 +797,7 @@ const Emailing = () => {
               )}
             </button>
           </div>
-          <p className="mb-2 text-xs text-gray-400">{`* Hint: User {{RECEIVER_NAME}} and {{COMPANY}} as placeholders for subject/body`}</p>
+          <p className="mb-2 text-xs text-gray-400">{`* Hint: User {{LEAD_FIRST_NAME}}, {{LEAD_LAST_NAME}} and {{COMPANY}} as placeholders for subject/body`}</p>
           <div className="mb-4">
             <label htmlFor="templateSubject" className="block text-lg font-semibold mb-1">
               Subject:
@@ -821,7 +821,7 @@ const Emailing = () => {
               onChange={(e) => handleTemplateChange(e, "body")}
               rows={12}
               className="w-full p-3 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder={`Dear {{RECEIVER_NAME}},\n\nI am a highly skilled software developer with 5 years of experience in Web Development. I am interested in exploring opportunities with at {{COMPANY}}. Please find my resume attached.\n\nRegards,\nYour Name`}
+              placeholder={`Dear {{LEAD_FIRST_NAME}} {{LEAD_LAST_NAME}},\n\nI am a highly skilled software developer with 5 years of experience in Web Development. I am interested in exploring opportunities with at {{COMPANY}}. Please find my resume attached.\n\nRegards,\nYour Name`}
             ></textarea>
           </div>
           <div className="mb-4">

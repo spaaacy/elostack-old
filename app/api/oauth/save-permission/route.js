@@ -29,7 +29,7 @@ export async function POST(req, res) {
       .update({
         refresh_token: tokens.refresh_token,
         access_token: tokens.access_token,
-        expiry_date: tokens.expiry_date,
+        oauth_expiry_date: tokens.expiry_date,
       })
       .eq("user_id", user_id);
     if (error) throw error;

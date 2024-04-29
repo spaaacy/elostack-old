@@ -670,7 +670,7 @@ const Emailing = () => {
                 </div>
               </div>
             </div>
-            {(subscriber || user?.credits > 0) && (
+            {subscriber && (
               <button
                 disabled={subscriber && !subscriber.waitlist_granted && !subscriber.active}
                 onClick={toggleCampaignStatus}

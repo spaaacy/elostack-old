@@ -37,9 +37,14 @@ Deno.serve(async (req, res) => {
         // Check if user's subscription is active
         if (!user.active) continue;
         // Check if user's access & refresh token are available
+        const dateNow = Date.now();
+        const date = new Date(dateNow);
+        const gmt = date.toLocaleString("en-US", { timeZone: "GMT" });
+        const gmtDate = new Date(gmt);
+
         if (
           !user.refresh_token ||
-          (!user.refresh_token && user.access_token && Date.parse(user.oauth_expiry_date) < Date.now())
+          (!user.refresh_token && user.access_token && Date.parse(user.oauth_expiry_date) < gmtDate.getTime())
         ) {
           const { error } = await supabase.rpc("toggle_subscriber_active", {
             subscriber_user_id: user.user_id,

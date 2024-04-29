@@ -24,12 +24,14 @@ export async function POST(req, res) {
 
     const { tokens } = await oauth2Client.getToken(code);
     console.log(tokens);
+    const date = new Date(tokens.expiry_date);
     const { error } = await supabase
       .from("subscriber")
       .update({
+        active: true,
         refresh_token: tokens.refresh_token,
         access_token: tokens.access_token,
-        oauth_expiry_date: tokens.expiry_date,
+        oauth_expiry_date: date.toLocaleString("en-US", { timeZone: "GMT" }),
       })
       .eq("user_id", user_id);
     if (error) throw error;

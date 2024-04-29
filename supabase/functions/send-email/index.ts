@@ -2,11 +2,7 @@ import { createClient } from "npm:@supabase/supabase-js@2.41.1";
 import nodeMailer from "npm:nodemailer@6.9.13";
 import { Buffer } from "https://deno.land/std@0.136.0/node/buffer.ts";
 
-// const supabase = createClient(Deno.env.get("SUPABASE_URL"), Deno.env.get("SUPABASE_ANON_KEY"));
-const supabase = createClient(
-  "https://behfmqoilcgpyoobcuck.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJlaGZtcW9pbGNncHlvb2JjdWNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDg1NjQ5NjYsImV4cCI6MjAyNDE0MDk2Nn0.sUkHtw15ul70rwuEARoJ4B-Mcilge2gbbo9eZyf53ak"
-);
+const supabase = createClient(Deno.env.get("SUPABASE_URL"), Deno.env.get("SUPABASE_ANON_KEY"));
 
 Deno.serve(async (req, res) => {
   if (req.method !== "POST") {
@@ -158,8 +154,7 @@ Deno.serve(async (req, res) => {
           await transporter.sendMail(
             {
               from: user.user.email,
-              // to: lead.email,
-              to: "aakifmohamed@elostack.com",
+              to: chosenLead.email,
               subject: formattedSubject,
               text: formattedTemplate,
               attachments,

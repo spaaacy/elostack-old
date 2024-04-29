@@ -26,6 +26,7 @@ export async function POST(req, res) {
 
       // If you only need one scope you can pass it as a string
       scope: scopes,
+      prompt: "consent",
     });
 
     return NextResponse.json({ url }, { status: 200 });

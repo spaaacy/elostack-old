@@ -366,8 +366,8 @@ const Emailing = () => {
         if (user.credits > 0) setShowPopup(true);
         else router.push("/plans");
       } else if (response.status === 200) {
-        if (!subscriber.waitlist_granted) setShowPopup(true);
-        else if (subscriber.waitlist_granted && !subscriber.access_token && !subscriber.refresh_token)
+        if (!user.waitlist_granted) setShowPopup(true);
+        else if (user.waitlist_granted && !subscriber.access_token && !subscriber.refresh_token)
           requestEmailPermissions();
         else window.location.reload();
       } else {
@@ -380,7 +380,7 @@ const Emailing = () => {
   };
 
   const toggleCampaignStatus = async () => {
-    if (subscriber && subscriber.waitlist_granted && (!subscriber.access_token || !subscriber.refresh_token)) {
+    if (subscriber && user.waitlist_granted && (!subscriber.access_token || !subscriber.refresh_token)) {
       requestEmailPermissions();
     } else if (user && user.credits > 0 && subscriber) {
       const response = await fetch(`/api/subscriber/toggle-active`, {
@@ -672,15 +672,19 @@ const Emailing = () => {
             </div>
             {subscriber && (
               <button
-                disabled={subscriber && !subscriber.waitlist_granted && !subscriber.active}
+                disabled={subscriber && !user.waitlist_granted && !subscriber.active}
                 onClick={toggleCampaignStatus}
                 className={`${
-                  subscriber && !subscriber.waitlist_granted && !subscriber.active
+                  subscriber && !user.waitlist_granted && !subscriber.active
                     ? "bg-gray-800 text-gray-500"
                     : "bg-purple-600 hover:bg-purple-700"
                 } mt-4 py-2 px-4   font-semibold rounded-lg  transition-colors duration-300`}
               >
-                {subscriber && subscriber.active ? "Pause Campaign" : "Resume Campaign"}
+                {!subscriber.refresh_token
+                  ? "Grant Permissions"
+                  : subscriber.active
+                  ? "Pause Campaign"
+                  : "Resume Campaign"}
               </button>
             )}
           </div>

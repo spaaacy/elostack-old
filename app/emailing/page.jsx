@@ -558,8 +558,8 @@ const Emailing = () => {
                         companySelectAll ? "text-gray-500 bg-gray-900  " : "bg-gray-700 text-white"
                       }  w-full p-2 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500`}
                     />
-                    {companyDropdownVisible && (
-                      <div className="absolute mt-2 w-full bg-gray-700 rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto">
+                    {!companySelectAll && (
+                      <div className="mt-2 w-full bg-gray-700 rounded-lg shadow-lg z-10 max-h-40 overflow-y-auto">
                         {companies
                           .filter((company) =>
                             company.organization_name.toLowerCase().includes(companyInput.toLowerCase())

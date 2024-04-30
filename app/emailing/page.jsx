@@ -345,7 +345,7 @@ const Emailing = () => {
           user_id: userId,
           email_body: template.body,
           email_subject: template.subject,
-          active: false,
+          active: user.waitlist_granted ? true : false,
           leads_exhausted: false,
           options: {
             companies: selectedCompanies.length > 0 ? selectedCompanies : [],
@@ -364,6 +364,8 @@ const Emailing = () => {
       });
       if (response.status === 201) {
         if (user.credits > 0) setShowPopup(true);
+        else if (user.waitlist_granted && !subscriber.access_token && !subscriber.refresh_token)
+          requestEmailPermissions();
         else router.push("/plans");
       } else if (response.status === 200) {
         if (!user.waitlist_granted) setShowPopup(true);

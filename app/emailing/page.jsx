@@ -362,7 +362,11 @@ const Emailing = () => {
         },
         body: formData,
       });
-      if (response.status === 201 || response.status === 200) {
+      if (response.status === 201) {
+        if (user.waitlist_granted && user.credits > 0) requestEmailPermissions();
+        else if (user.credits > 0 && !user.waitlist_granted) setShowPopup(true);
+        else if (user.credits <= 0) router.push("/plans");
+      } else if (response.status === 200) {
         if (user.waitlist_granted && !subscriber.access_token && !subscriber.refresh_token && user.credits > 0)
           requestEmailPermissions();
         else if (user.credits > 0 && !user.waitlist_granted) setShowPopup(true);

@@ -371,6 +371,7 @@ const Emailing = () => {
           requestEmailPermissions();
         else if (user.credits > 0 && !user.waitlist_granted) setShowPopup(true);
         else if (user.credits <= 0) router.push("/plans");
+        else window.location.reload();
       } else {
         toast.error("Something went wrong...");
       }

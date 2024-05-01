@@ -38,7 +38,7 @@ export async function POST(req) {
       const trial = event.data.object.amount_due === 0;
       const { error } = await supabase.rpc("increment_subscriber_credits", {
         subscriber_user_id: user_id,
-        amount: trial ? 168 : weeks * 168,
+        amount: trial ? 672 : weeks * 168,
       });
       if (error) throw error;
     }

@@ -7,6 +7,7 @@ import Loader from "@/components/common/Loader";
 import formatDate from "@/utils/formatDate";
 import Footer from "@/components/common/Footer";
 import { useRouter } from "next/navigation";
+import { FaLinkedin } from "react-icons/fa";
 
 const Page = () => {
   const { session } = useContext(UserContext);
@@ -67,7 +68,6 @@ const Page = () => {
             <h2 className="text-2xl font-bold text-purple-400">Your Applications</h2>
           </div>
           <div className="space-y-6">
-            {console.log(applications)}
             {applications?.length > 0 ? (
               applications.map((app, i) => (
                 <div
@@ -76,12 +76,21 @@ const Page = () => {
                 >
                   <div>
                     <h3 className="font-semibold text-lg text-white">
-                      {app.receiver.first_name + " " + app.receiver.last_name} at {app.receiver.company}
+                      {app.lead.first_name + " " + app.lead.last_name} at {app.lead.company}
                     </h3>
+                    <p className="text-sm text-gray-400">{app.lead.email}</p>
                     <p className="text-sm text-gray-400">Applied on {formatDate(app.created_at)}</p>
                   </div>
-                  <div className="flex">
-                    <p className="capitalize font-light text-white">{app.receiver.city + ", " + app.receiver.state}</p>
+                  <div className="flex gap-2 justify-center">
+                    <p className="capitalize font-light text-white">{app.lead.city + ", " + app.lead.state}</p>
+                    <a
+                      href={app.lead.linkedin_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-purple-400 hover:text-purple-500 transition-colors duration-300"
+                    >
+                      <FaLinkedin size={24} />
+                    </a>
                   </div>
                 </div>
               ))

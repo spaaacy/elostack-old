@@ -17,11 +17,6 @@ const FAQProvider = ({ children }) => {
         "Email automation is the process of sending targeted, personalized emails to your subscribers based on their behavior, preferences, and interactions with your website or brand.",
     },
     {
-      question: "How can email automation benefit my business?",
-      answer:
-        "Email automation can help you nurture leads, increase customer engagement, drive sales, and save time by automating repetitive email tasks. It allows you to send the right message to the right person at the right time.",
-    },
-    {
       question: "Do I need technical skills to use your email automation platform?",
       answer:
         "No, our email automation platform is designed to be user-friendly and intuitive. You can easily create and manage email campaigns without any coding or technical expertise.",

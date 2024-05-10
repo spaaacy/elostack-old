@@ -12,7 +12,10 @@ Deno.serve(async (req, res) => {
   }
 
   const authHeader = req.headers.get("authorization");
-  const freeTier = req.headers.get("free-tier");
+  const request = await req.json();
+  const freeTier = request["freeTier"];
+  console.log(`freeTier ${freeTier}`);
+  console.log(freeTier);
   if (authHeader && authHeader.startsWith("Bearer ")) {
     if (authHeader.split(" ")[1] !== Deno.env.get("CRON_SECRET")) {
       return new Response("Unauthorized!", { status: 401 });
@@ -60,8 +63,7 @@ Deno.serve(async (req, res) => {
           throw Error("Refresh and access token not found!");
         }
 
-        if ((user.user.credits > 0 && freeTier === "true") || (freeTier === "false" && user.user.credits <= 0))
-          continue;
+        if ((user.user.credits > 0 && freeTier) || (!freeTier && user.user.credits <= 0)) continue;
 
         // Find lead
         let chosenLead;

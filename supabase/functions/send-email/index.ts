@@ -14,8 +14,6 @@ Deno.serve(async (req, res) => {
   const authHeader = req.headers.get("authorization");
   const request = await req.json();
   const freeTier = request["freeTier"];
-  console.log(`freeTier ${freeTier}`);
-  console.log(freeTier);
   if (authHeader && authHeader.startsWith("Bearer ")) {
     if (authHeader.split(" ")[1] !== Deno.env.get("CRON_SECRET")) {
       return new Response("Unauthorized!", { status: 401 });

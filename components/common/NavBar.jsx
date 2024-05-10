@@ -114,7 +114,14 @@ const NavBar = () => {
           {isMenuOpen ? <>&#10005;</> : <>&#9776;</>}
         </button>
         {session?.data.session ? (
-          <UserAccountNav user={user} />
+          <div className="flex justify-center items-center">
+            {user && (
+              <p className="mr-4 text-sm font-semibold">
+                {user.credits > 0 ? `Credits: ${user.credits}` : "Free Tier"}
+              </p>
+            )}
+            <UserAccountNav user={user} />
+          </div>
         ) : (
           <Link
             href="/signin"

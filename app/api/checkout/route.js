@@ -47,8 +47,6 @@ export async function POST(req, res) {
       cancel_url: `${req.nextUrl.origin}/emailing?cancelled=true`,
     };
 
-    if (data.trial_used === false) sessionObject["subscription_data"]["trial_period_days"] = 28;
-
     const checkoutSession = await stripe.checkout.sessions.create(sessionObject);
 
     return NextResponse.json({ session: checkoutSession }, { status: 200 });

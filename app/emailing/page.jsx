@@ -363,14 +363,11 @@ const Emailing = () => {
         body: formData,
       });
       if (response.status === 201) {
-        if (user.waitlist_granted && user.credits > 0) requestEmailPermissions();
-        else if (user.credits > 0 && !user.waitlist_granted) setShowPopup(true);
-        else if (user.credits <= 0) router.push("/plans");
+        if (user.waitlist_granted) requestEmailPermissions();
+        else setShowPopup(true);
       } else if (response.status === 200) {
-        if (user.waitlist_granted && !subscriber.access_token && !subscriber.refresh_token && user.credits > 0)
-          requestEmailPermissions();
-        else if (user.credits > 0 && !user.waitlist_granted) setShowPopup(true);
-        else if (user.credits <= 0) router.push("/plans");
+        if (user.waitlist_granted && !subscriber.access_token && !subscriber.refresh_token) requestEmailPermissions();
+        else if (!user.waitlist_granted) setShowPopup(true);
         else window.location.reload();
       } else {
         toast.error("Something went wrong...");
@@ -771,7 +768,7 @@ const Emailing = () => {
           </div>
         </div>
       )}
-      {user && currentStep === 1 && (
+      {currentStep === 1 && user ? (
         <div className="flex justify-end mt-8">
           <button
             onClick={() => setCurrentStep(2)}
@@ -779,6 +776,15 @@ const Emailing = () => {
           >
             Next
           </button>
+        </div>
+      ) : (
+        <div className="flex justify-end mt-8">
+          <Link
+            href={"/signin"}
+            className="px-4 py-2 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300"
+          >
+            Next
+          </Link>
         </div>
       )}
       {currentStep === 2 && (

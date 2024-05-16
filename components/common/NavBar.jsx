@@ -74,10 +74,10 @@ const NavBar = () => {
           Emailing
         </Link>
         <Link
-          href="/applications"
+          href="/plans"
           className="block text-gray-300 hover:text-white hover:bg-gray-800 px-2 py-1 rounded-sm text-sm font-medium"
         >
-          Applications
+          Plans
         </Link>
         <Link
           href="/applications"

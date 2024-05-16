@@ -43,7 +43,6 @@ const Emailing = () => {
     body: "",
   });
   const [loaded, setLoaded] = useState(false);
-  const [showPreview, setShowPreview] = useState(false);
 
   const [delayedCall, setDelayedCall] = useState();
   const [subscriber, setSubscriber] = useState();
@@ -765,26 +764,26 @@ const Emailing = () => {
                   })}
               </div>
             </div>
+            {user ? (
+              <div className="flex justify-end mt-8">
+                <button
+                  onClick={() => setCurrentStep(2)}
+                  className="px-4 py-2 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300"
+                >
+                  Next
+                </button>
+              </div>
+            ) : (
+              <div className="flex justify-end mt-8">
+                <Link
+                  href={"/signin"}
+                  className="px-4 py-2 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300"
+                >
+                  Next
+                </Link>
+              </div>
+            )}
           </div>
-        </div>
-      )}
-      {currentStep === 1 && user ? (
-        <div className="flex justify-end mt-8">
-          <button
-            onClick={() => setCurrentStep(2)}
-            className="px-4 py-2 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300"
-          >
-            Next
-          </button>
-        </div>
-      ) : (
-        <div className="flex justify-end mt-8">
-          <Link
-            href={"/signin"}
-            className="px-4 py-2 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300"
-          >
-            Next
-          </Link>
         </div>
       )}
       {currentStep === 2 && (
@@ -792,22 +791,6 @@ const Emailing = () => {
           <div className="flex flex-col sm:flex-row items-center mb-6">
             <h3 className="text-2xl font-bold text-purple-400 mb-4 sm:mb-0 sm:mr-4">Email Template</h3>
             <HelpIcon text="Customize the subject line and body of your email template. Optionally, attach files like your resume or cover letter." />
-            <button
-              onClick={() => setShowPreview(!showPreview)}
-              className="ml-auto px-4 py-2 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300 flex items-center"
-            >
-              {showPreview ? (
-                <>
-                  <FaEyeSlash className="mr-2" />
-                  Hide Preview
-                </>
-              ) : (
-                <>
-                  <FaEye className="mr-2" />
-                  Show Preview
-                </>
-              )}
-            </button>
           </div>
           <p className="mb-2 text-xs text-gray-400">{`* Hint: User {{LEAD_FIRST_NAME}}, {{LEAD_LAST_NAME}} and {{COMPANY}} as placeholders for subject/body`}</p>
           <div className="mb-4">
@@ -870,12 +853,10 @@ const Emailing = () => {
               <p className="mt-2 text-sm text-gray-400">Click the "+" icon to add attachments</p>
             )}
           </div>
-          {showPreview && (
-            <div className="mt-8">
-              <h4 className="text-2xl font-semibold mb-4 text-purple-400">Preview:</h4>
-              {renderEmailPreview()}
-            </div>
-          )}
+          <div className="mt-8">
+            <h4 className="text-2xl font-semibold mb-4 text-purple-400">Preview:</h4>
+            {renderEmailPreview()}
+          </div>
         </section>
       )}
       {currentStep === 2 && (

@@ -52,6 +52,7 @@
     "react-tooltip": "^5.26.3",
     "remark-gfm": "^4.0.0",
     "slick-carousel": "^1.8.1",
+    "smtp-server": "^3.13.4",
     "stripe": "^14.21.0",
     "styled-components": "^6.1.8",
     "tailwind-merge": "^2.2.1",

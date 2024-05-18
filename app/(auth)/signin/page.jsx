@@ -6,7 +6,7 @@ import Head from "next/head";
 import { z } from "zod";
 import { createClient } from "@supabase/supabase-js";
 import { useContext, useEffect, useState } from "react";
-import NavBar from "@/components/common/NavBar";
+import NavBar from "@/components/nav-bar/NavBar";
 import { UserContext } from "@/context/UserContext";
 import Loader from "@/components/common/Loader";
 import Image from "next/image";

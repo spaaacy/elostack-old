@@ -1,7 +1,7 @@
 "use client";
 
 import { Suspense, useContext, useEffect, useState } from "react";
-import NavBar from "@/components/common/NavBar";
+import NavBar from "@/components/nav-bar/NavBar";
 import { UserContext } from "@/context/UserContext";
 import { useRouter, useSearchParams } from "next/navigation";
 import Loader from "@/components/common/Loader";

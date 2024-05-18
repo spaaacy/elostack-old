@@ -2,7 +2,7 @@
 
 import Head from "next/head";
 import Footer from "@/components/common/Footer";
-import NavBar from "@/components/common/NavBar";
+import NavBar from "@/components/nav-bar/NavBar";
 import HeroSection from "@/components/landing/HeroSection";
 import FAQ from "@/components/landing/FAQ";
 import Benefits from "@/components/landing/Benefits";

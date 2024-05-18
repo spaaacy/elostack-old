@@ -1,5 +1,5 @@
 "use client";
-import NavBar from "@/components/common/NavBar";
+import NavBar from "@/components/nav-bar/NavBar";
 import Footer from "@/components/common/Footer";
 import Head from "next/head";
 import { Suspense, useContext, useEffect, useState } from "react";

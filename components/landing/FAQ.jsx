@@ -2,7 +2,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Footer from "@/components/common/Footer";
-import NavBar from "@/components/common/NavBar";
+import NavBar from "@/components/nav-bar/NavBar";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { FaQuestionCircle } from "react-icons/fa"; // Importing an icon from react-icons

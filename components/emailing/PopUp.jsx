@@ -13,7 +13,7 @@ const PopupBox = ({ setIsOpen }) => {
     <div className="fixed inset-0 flex items-center justify-center z-50">
       <div className="absolute inset-0 bg-black opacity-50"></div>
       <div className="relative bg-gray-800 w-full max-w-md mx-auto rounded-lg shadow-lg p-6">
-        <h2 className="text-xl font-bold mb-4 text-purple-400">🚀 Email Campaign Update</h2>
+        <h2 className="text-xl font-bold mb-4 text-purple-400">Email Campaign Update</h2>
         <p className="text-white mb-6">
           Thank you for setting up your email campaign! We will send you an email in a couple of hours to setup your
           Gmail account.

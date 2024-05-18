@@ -232,18 +232,10 @@ const Emailing = () => {
                 .replace(/{{LEAD_LAST_NAME}}/g, "Doe")
                 .replace(/{{COMPANY}}/g, "Google")}
             </h2>
-            <div className="flex items-center space-x-4">
-              <button className="bg-purple-600 hover:bg-purple-700 text-white rounded-md px-4 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
-                Reply
-              </button>
-              <button className="bg-purple-600 hover:bg-purple-700 text-white rounded-md px-4 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
-                Forward
-              </button>
-            </div>
           </div>
           <div className="flex items-center space-x-2 text-sm text-gray-400">
             <span>To: John Doe &lt;johndoe@google.com&gt;</span>
-            <span className="border-l border-gray-600 pl-2">From: Your Name &lt;yourname@gmail.com&gt;</span>
+            <span className="border-l border-gray-600 pl-2">From: Your Name &lt;{user.email}&gt;</span>
           </div>
         </div>
         <div
@@ -787,9 +779,9 @@ const Emailing = () => {
         </div>
       )}
       {currentStep === 2 && (
-        <section className="bg-gray-800 p-8 rounded-lg shadow-lg mb-8 mx-28">
-          <div className="flex flex-col sm:flex-row items-center mb-6">
-            <h3 className="text-2xl font-bold text-purple-400 mb-4 sm:mb-0 sm:mr-4">Email Template</h3>
+        <section className="bg-gray-800 p-8 rounded-lg shadow-lg mb-8 lg:mx-28">
+          <div className="flex flex-row items-center mb-6">
+            <h3 className="text-2xl font-bold text-purple-400 mb-0 mr-4">Email Template</h3>
             <HelpIcon text="Customize the subject line and body of your email template. Optionally, attach files like your resume or cover letter." />
           </div>
           <p className="mb-2 text-xs text-gray-400">{`* Hint: User {{LEAD_FIRST_NAME}}, {{LEAD_LAST_NAME}} and {{COMPANY}} as placeholders for subject/body`}</p>
@@ -853,30 +845,29 @@ const Emailing = () => {
               <p className="mt-2 text-sm text-gray-400">Click the "+" icon to add attachments</p>
             )}
           </div>
+
           <div className="mt-8">
             <h4 className="text-2xl font-semibold mb-4 text-purple-400">Preview:</h4>
             {renderEmailPreview()}
           </div>
+          <div className="flex justify-between mt-8">
+            <button
+              onClick={() => setCurrentStep(1)}
+              className="px-4 py-2 bg-gray-600 text-white font-semibold rounded-lg hover:bg-gray-700 transition-colors duration-300"
+            >
+              Back
+            </button>
+            <button
+              onClick={() => setCurrentStep(3)}
+              className="px-4 py-2 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300"
+            >
+              Review
+            </button>
+          </div>
         </section>
       )}
-      {currentStep === 2 && (
-        <div className="flex justify-between mt-8">
-          <button
-            onClick={() => setCurrentStep(1)}
-            className="px-4 py-2 bg-gray-600 text-white font-semibold rounded-lg hover:bg-gray-700 transition-colors duration-300"
-          >
-            Back
-          </button>
-          <button
-            onClick={() => setCurrentStep(3)}
-            className="px-4 py-2 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-colors duration-300"
-          >
-            Review
-          </button>
-        </div>
-      )}
       {currentStep === 3 && (
-        <section className="bg-gray-800 p-8 rounded-lg shadow-lg mb-8 mx-28">
+        <section className="bg-gray-800 p-8 rounded-lg shadow-lg mb-8 lg:mx-28">
           <h3 className="text-2xl font-bold text-purple-400 mb-6">Review Campaign</h3>
           <div className="bg-gray-700 p-6 rounded-lg shadow-lg mb-6">
             <p className="text-white">
